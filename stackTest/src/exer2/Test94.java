@@ -26,7 +26,7 @@ class TreeNode {
     }
  }
 
- //非递归
+ //迭代
 class Solution {
     public List<Integer> inorderTraversal(TreeNode root) {
         ArrayList<Integer> list = new ArrayList<>();
