@@ -43,36 +43,39 @@ import java.util.Stack;
 class Solution {
     public String decodeString(String s) {
 
+        Stack<String> stack = new Stack<>();
         String str = "";
-        String temp;
-        Stack<Character> stack = new Stack<>();
+        //遍历字符串
         for (int i = 0; i < s.length(); i++) {
-
-            Character c = s.charAt(i);
-
-            if (c != ']'){
-                stack.add(c);
+            String sub = s.substring(i, i+1);
+            if (sub.equals("]")){
+                String temp = "", temp0 ="";
+                //拼接栈内字符串
+                while (!stack.isEmpty() && !stack.peek().equals("[")){
+                    temp = stack.pop() + temp;
+                }
+                stack.pop();//"["出栈
+                String times ="";
+                //拼接重复次数k
+                while (!stack.isEmpty() && (stack.peek().charAt(0) >= '0' && stack.peek().charAt(0) <= '9')){
+                    times = stack.pop() + times;
+                }
+                int time = Integer.parseInt(times);
+                //字符串重复k次拼接
+                for (int j = 0; j < time; j++) {
+                    temp0 += temp;
+                }
+                //拼接后的字符串入栈
+                stack.add(temp0);
             }else{
-                temp = "";
-                while (!stack.isEmpty()){
-                    Character ch = stack.pop();
-                    if (ch != '['){
-                        temp = ch + temp;
-                    }else{
-                        break;
-                    }
-                }
-                Character ch = stack.pop();
-                Integer times = Integer.parseInt(String.valueOf(ch));
-                String str1 = "";
-                for (int j = 0; j < times; j++) {
-                    str1 += temp;
-                }
-                str1 = "";
-                System.out.println("str1 = " + str1);
-                str += str1;
+                stack.add(sub);
             }
         }
+        //栈内字符串拼接
+        for (int i = 0; i < stack.size(); i++) {
+            str += stack.get(i);
+        }
+
         return str;
     }
 }
