@@ -39,23 +39,17 @@ package leetcode.editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public boolean canJump(int[] nums) {
-        int max = 0, now = 0;
-        while (true){
-            int maxi = 0;
-            for (int i = now; i <= max && i < nums.length; i++) {
-                maxi = i + nums[i];
-                if (maxi >= max){
-                    max = maxi;
-                    now = i;
+        int max = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (i <= max){
+                int tempMax = i + nums[i];
+                max = tempMax > max ? tempMax : max;
+                if (max >= nums.length - 1){
+                    return true;
                 }
             }
-            if (max >= nums.length-1){
-                return true;
-            }
-            if (nums[now] == 0){
-                return false;
-            }
         }
+        return false;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
