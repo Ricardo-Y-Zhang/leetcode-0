@@ -4,6 +4,8 @@
 
 ### 1/20. 有效的括号
 
+
+
 #### （1）题目
 
 给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串 s ，判断字符串是否有效。
@@ -60,15 +62,21 @@ class Solution {
 
 ### 2/94. 二叉树的中序遍历
 
+
+
 #### （1）题目
 
 给定一个二叉树的根节点 `root` ，返回它的 **中序** 遍历。
+
+
 
 #### （2）思路
 
 * 二叉树的中序遍历顺序为**左根右**
 * 手动维护一个栈和一个指向树节点的指针，**模仿递归的中序遍历**
 * root指向当前遍历的节点，root非空时，root入栈，root指向左孩子节点（无需考虑左孩子节点是否为空）；root为空时，栈顶元素出栈，加入list，root指向其右孩子节点（无需考虑右孩子节点是否为空）
+
+
 
 #### （3）实现
 
@@ -154,12 +162,16 @@ class Solution {
 
 ### 3/114. 二叉树展开为链表
 
+
+
 #### （1）题目
 
 给你二叉树的根结点 root ，请你将它展开为一个单链表：
 
 展开后的单链表应该同样使用 TreeNode ，其中 right 子指针指向链表中下一个结点，而左子指针始终为 null 。
 展开后的单链表应该与二叉树 先序遍历 顺序相同。
+
+
 
 #### （2）思路
 
@@ -247,6 +259,8 @@ class Solution{
 
 ### 4/155. 最小栈
 
+
+
 #### （1）题目
 
 设计一个支持 push ，pop ，top 操作，并能在常数时间内检索到最小元素的栈。
@@ -315,6 +329,8 @@ class MinStack {
 
 ### 5/234. 回文链表
 
+
+
 #### （1）题目
 
 请判断一个链表是否为回文链表。
@@ -371,6 +387,8 @@ class Solution {
 
 
 ### 6/394. 字符串解码
+
+
 
 #### （1）题目
 
@@ -454,6 +472,8 @@ class Solution {
 
 
 ### 7/581. 最短无序连续子数组
+
+
 
 #### （1）题目
 
@@ -572,6 +592,8 @@ class Solution {
 
 ### 8/739. 每日温度
 
+
+
 #### （1）题目
 
 请根据每日 `气温` 列表 `temperatures` ，请计算在每一天需要等几天才会有更高的温度。如果气温在这之后都不会升高，请在该位置用 `0` 来代替
@@ -657,6 +679,8 @@ class Solution {
 
 ### 9/32. 最长有小括号(hard)
 
+
+
 #### （1）题目
 
 给你一个只包含 `'('` 和 `')'` 的字符串，找出最长有效（格式正确且连续）括号子串的长度。
@@ -741,6 +765,8 @@ class Solution {
 
 ### 10/42. 接雨水(hard未解决)
 
+
+
 #### （1）题目
 
 给定 *n* 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。
@@ -764,6 +790,8 @@ class Solution {
 ## 二、贪心
 
 ### 11/11. 盛最多水的容器
+
+
 
 #### （1）题目
 
@@ -815,6 +843,8 @@ class Solution {
 
 
 ### 12/55. 跳跃游戏
+
+
 
 #### （1）题目
 
@@ -905,6 +935,8 @@ class Solution {
 
 ### 13/406. 根据身高重建队列
 
+
+
 #### （1）题目
 
 假设有打乱顺序的一群人站成一个队列，数组 people 表示队列中一些人的属性（不一定按顺序）。每个 people[i] = [hi, ki] 表示第 i 个人的身高为 hi ，前面 正好 有 ki 个身高大于或等于 hi 的人。
@@ -969,6 +1001,8 @@ class Solution {
 
 
 ### 14/621. 任务调度器（百度二面面试题）
+
+
 
 #### （1）题目
 
@@ -1040,7 +1074,11 @@ class Solution {
 
 ## 三、位运算
 
+
+
 #### 15/87. 子集
+
+
 
 #### （1）题目
 
@@ -1097,6 +1135,8 @@ class Solution {
 
 ### 16/136. 只出现一次的数
 
+
+
 #### （1）题目
 
 给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。
@@ -1114,7 +1154,7 @@ class Solution {
 
 
 
-#### （3）思路
+#### （3）实现
 
 ```java
 
@@ -1139,6 +1179,8 @@ class Solution {
 
 
 ### 17/287. 寻找重复数（未解决）
+
+
 
 #### （1）题目
 
@@ -1216,6 +1258,8 @@ class Solution {
 
 ### 18/338. 比特币计数
 
+
+
 #### （1）题目
 
 给定一个非负整数 **num**。对于 **0 ≤ i ≤ num** 范围中的每个数字 **i** ，计算其二进制数中的 1 的数目并将它们作为数组返回。
@@ -1284,5 +1328,184 @@ class Solution{
         return res;
     }
 }
+```
+
+
+
+### 19/461. 汉明距离
+
+
+
+#### （1）题目
+
+两个整数之间的 [汉明距离](https://baike.baidu.com/item/汉明距离) 指的是这两个数字对应二进制位不同的位置的数目。
+
+给你两个整数 `x` 和 `y`，计算并返回它们之间的汉明距离。
+
+
+
+#### （2）思路
+
+* 按位异或^：二进制中，相同取0，相异取1
+
+* 求对应二进制中位不同的位置的数目
+  * k = x^y
+  * k&1即为k末位位置上的数，k >>= 1即为去掉末位位置
+
+
+
+#### （3）实现
+
+```java
+package leetcode.editor.cn;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int hammingDistance(int x, int y) {
+        int k = x ^ y;
+        int times = 0;
+        while (k != 0){
+            times += k & 1;
+            k >>= 1;
+        }
+        return times;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 20/94. 二叉树的中序遍历（同2）
+
+
+
+
+
+### 21/96. 不同的二叉搜索树
+
+
+
+#### （1）题目
+
+给你一个整数 `n` ，求恰由 `n` 个节点组成且节点值从 `1` 到 `n` 互不相同的 **二叉搜索树** 有多少种？返回满足题意的二叉搜索树的种数。
+
+
+
+#### （2）思路
+
+* 动态规划
+  * 令n个节点时，互不相同的二叉搜索树共有G(n)种
+  * n个节点时，当x为根节点时，则左子树中共有x-1个节点（小于x），右子树中有n-x个节点（大于x）
+  * 则以x为根节点的互不相同的二叉搜索树有G(x-1) * G(n-x)种
+  * G(n) = G(0) * G(n-1)  + G(1) * G(n-2)  + ... + G(x-1) * G(n-x) + ... + G(n-1) * G(0)（其中G(0) = 1）
+
+
+
+#### （3）实现
+
+```java
+package leetcode.editor.cn;
+
+import java.util.ArrayList;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int numTrees(int n) {
+        ArrayList<Integer> list = new ArrayList<>();
+        list.add(1);
+        int times;
+        for (int i = 1; i <= n; i++) {
+            times = 0;
+            for (int j = 0; j < i; j++) {
+                times += list.get(j) * list.get(i-j-1);
+            }
+            list.add(times);
+        }
+        return list.get(n);
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
+### 22/98. 验证二叉搜索树
+
+
+
+#### （1）题目
+
+给定一个二叉树，判断其是否是一个有效的二叉搜索树。
+
+假设一个二叉搜索树具有如下特征：
+
+节点的左子树只包含小于当前节点的数。
+节点的右子树只包含大于当前节点的数。
+所有左子树和右子树自身必须也是二叉搜索树。
+
+
+
+#### （2）思路
+
+* 有效的二叉搜索树的**中序遍历**结果为顺序数组，左 < 根 < 右
+* 中序遍历二叉树得中序遍历结果list
+* 遍历list，查看是否为顺序数组
+* **也可以定义全局变量preValue记录中序遍历中上一个节点的值，在中序遍历的过程中比较是否为顺序数组**
+
+
+
+
+
+#### （3）实现
+
+```java
+package leetcode.editor.cn;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+
+import java.util.ArrayList;
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public boolean isValidBST(TreeNode root) {
+        ArrayList<Integer> list = new ArrayList<>();
+        inorder(root, list);
+        for (int i = 0; i < list.size() - 1; i++) {
+            if (list.get(i) >= list.get(i + 1)){
+                return false;
+            }
+        }
+        return true;
+    }
+    public void inorder(TreeNode root, ArrayList<Integer> list){
+        if (root != null){
+            inorder(root.left, list);
+            list.add(root.val);
+            inorder(root.right, list);
+        }
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
 ```
 
