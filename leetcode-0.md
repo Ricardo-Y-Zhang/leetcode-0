@@ -1509,3 +1509,490 @@ class Solution {
 //leetcode submit region end(Prohibit modification and deletion)
 ```
 
+
+
+
+
+### 23/101. 对称二叉树
+
+
+
+#### （1）题目
+
+给定一个二叉树，检查它是否是镜像对称的。
+
+
+
+#### （2）思路
+
+* 根左右和根右左遍历二叉树，若遍历结果一致，则二叉树是镜像对称的
+
+
+
+#### （3）实现
+
+* 递归
+
+```java
+
+package leetcode.editor.cn;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public boolean isSymmetric(TreeNode root) {
+        return judge(root, root);
+    }
+
+    public boolean judge(TreeNode root1, TreeNode root2){
+        if (root1 != null && root2 != null){
+            if (root1.val == root2.val){
+                return judge(root1.left, root2.right) && judge(root1.right, root2.left);
+            }else{
+                return false;
+            }
+        }else if (root1 == null && root2 == null){
+            return true;
+        }else{
+            return false;
+        }
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+* 迭代
+
+```java
+class Solution{
+    public boolean isSymmetric(TreeNode root){
+        Stack<TreeNode> stack1 = new Stack<TreeNode>();
+        Stack<TreeNode> stack2 = new Stack<TreeNode>();
+        TreeNode root1 = root, root2 = root;
+        while (root1 != null || root2 != null || !stack1.isEmpty() || !stack2.isEmpty()){
+            if (root1 != null && root2 != null){
+                stack1.add(root1);
+                stack2.add(root2);
+                if (root1.val != root2.val){
+                    return false;
+                }
+                root1 = root1.left;
+                root2 = root2.right;
+            }else if(root1 == null && root2 == null){
+                root1 = stack1.pop();
+                root2 = stack2.pop();
+                root1 = root1.right;
+                root2 = root2.left;
+            }else{
+                return false;
+            }
+        }
+        return true;
+    }
+}
+```
+
+
+
+
+
+### 24/102. 二叉树的层序遍历
+
+
+
+#### （1）题目
+
+
+给你一个二叉树，请你返回其按 **层序遍历** 得到的节点值。 （即逐层地，从左到右访问所有节点）。
+
+ 
+
+**示例：**
+二叉树：`[3,9,20,null,null,15,7]`,
+
+```
+    3
+   / \
+  9  20
+    /  \
+   15   7
+```
+
+返回其层序遍历结果：
+
+```
+[
+  [3],
+  [9,20],
+  [15,7]
+]
+```
+
+
+
+#### （2）思路
+
+* 层序遍历树：维护一个队列LinkedList，记录每一层的最后一个节点last，遍历到该层的最后一个节点时，队列中的最后一个元素即为下一层的最后一个节点；将每一层节点的val存于list中，遍历到每一层的最后一个节点时，将list压入res中，并清空list，队列非空时更新last
+* **LinkedList作为Queue的实现**
+
+
+
+#### （3）实现
+
+```java
+
+package leetcode.editor.cn;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        ArrayList<List<Integer>> list = new ArrayList<>();
+        ArrayList<Integer> list1 = new ArrayList<>();
+
+        if (root == null){
+            return list;
+        }
+
+        TreeNode last = root;//记录每一层的最后一个节点
+
+        LinkedList<TreeNode> list2 = new LinkedList<TreeNode>();
+        list2.add(root);
+
+        while (!list2.isEmpty()){
+            TreeNode  now = list2.poll();
+            list1.add(now.val);
+
+            if (now.left != null){
+                list2.add(now.left);
+            }
+            if (now.right != null){
+                list2.add(now.right);
+            }
+
+            if (now == last){
+                ArrayList<Integer> tempList = new ArrayList<>(list1);
+                list.add(tempList);
+                list1.clear();
+                if (!list2.isEmpty()){
+                    last = list2.getLast();
+                }
+            }
+        }
+        return list;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+
+```
+
+
+
+
+
+### 25/104. 二叉树的最大深度
+
+
+
+#### （1）题目
+
+给定一个二叉树，找出其最大深度。
+
+二叉树的深度为根节点到最远叶子节点的最长路径上的节点数。
+
+说明: 叶子节点是指没有子节点的节点。
+
+示例：
+给定二叉树 [3,9,20,null,null,15,7]，
+
+        3
+       / \
+      9  20
+        /  \
+       15   7
+    
+返回它的最大深度 3 。
+
+
+
+#### （2）思路
+
+* 深度优先搜索：维护一个全局变量maxDeepth，使用dps(TreeNode root, int deepth)遍历树
+
+
+
+
+
+#### （3）实现
+
+```java
+
+package leetcode.editor.cn;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    int maxDeepth = 0;
+    public int maxDepth(TreeNode root) {
+        maxDeepth = 0;
+        dps(root, 1);
+        return maxDeepth;
+    }
+
+    public void dps(TreeNode root, int deepth){
+        if (root != null){
+            if (deepth > maxDeepth){
+                maxDeepth = deepth;
+            }
+            dps(root.left, deepth+1);
+            dps(root.right, deepth+1);
+        }
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+* 题解
+
+```java
+class Solution {
+    public int maxDepth(TreeNode root){
+        if (root == null){
+            return 0;
+        }else{
+            return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
+        }
+    }
+}
+```
+
+
+
+
+
+### 26/105. 从前序和中序遍历序列构造二叉树
+
+
+
+#### （1）题目
+
+给定一棵树的前序遍历 `preorder` 与中序遍历 `inorder`。请构造二叉树并返回其根节点。
+
+
+
+#### （2）思路
+
+* 递归通过前序和中序遍历序列构造二叉树
+* 前序遍历序列的结果：[根节点，[左子树的前序遍历结果]，[右子树的前序遍历结果]]
+* 中序遍历序列的结果：[[左子树的中序遍历结果]，根节点，[右子树的中序遍历结果]]
+* 前序遍历序列中的第一个元素即为根节点，找到其在中序遍历序列中的位置，即可得到其左子树的节点数，从而得到左子树的中序遍历结果和前序遍历结果，右子树同理
+* 递归构造其左右子树
+
+
+
+#### （3）实现
+
+```java
+
+package leetcode.editor.cn;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+
+
+import java.util.ArrayList;
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+
+        return build(preorder, inorder, 0, preorder.length-1, 0, inorder.length-1);
+    }
+    
+	//left1,right1,left2,right2分别为当前子树在前序遍历序列和中序遍历序列中的起始和中止位置
+    public TreeNode build(int[] preorder, int[] inorder, int left1, int right1, int left2, int right2){
+        if (left1 > right1){
+            return null;
+        }
+        TreeNode root = new TreeNode();
+        
+        //当前根节点在inorder序列中的位置
+        int i = 0;
+        for (; i <=  right2; i++){
+            if (preorder[left1] == inorder[i]){
+                break;
+            }
+        }
+		
+        //左子树节点的个数
+        int nums = i - left2;
+        
+        root.val = preorder[left1];
+        //递归构造左子树和右子树
+        root.left = build(preorder, inorder, left1+1, left1+nums, left2, i-1);
+        root.right = build(preorder, inorder, left1+nums+1, right1, i+1, right2);
+        return root;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
+### 27/114. 二叉树展开为链表（同3）
+
+
+
+
+
+
+
+### 28/124. 二叉树中最大的路径和
+
+
+
+#### （1）题目
+
+路径 被定义为一条从树中任意节点出发，沿父节点-子节点连接，达到任意节点的序列。同一个节点在一条路径序列中 至多出现一次 。该路径 至少包含一个 节点，且不一定经过根节点。
+
+路径和 是路径中各节点值的总和。
+
+给你一个二叉树的根节点 root ，返回其 最大路径和 。
+
+
+
+#### （2）思路
+
+* 所求最大路径中**除根节点外的节点**只能有左孩子结点和右孩子节点中的一个，**不能同时拥有左子树和右子树**
+* 动态规划
+  * 维护一个max，储存最大路径和
+  * left储存以左孩子节点为根节点的最大单节点（均只有一个孩子节点）路径和
+  * right储存以右孩子节点为根节点的最大单节点（均只有一个孩子节点）路径和
+  * 则以当前节点为根节点的最大单节点（均只有一个孩子节点）路径和为max(0, left+root.val , right+root.val)
+  * 以当前节点为根节点的最大路径和（当前节点可以拥有左右孩子节点）为max(left+root.val, right+root.val, left+right+root.val)
+
+
+
+#### （3）实现
+
+```java
+package leetcode.editor.cn;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    //记录最大路径和
+    int max = -10001;
+    public int maxPathSum(TreeNode root) {
+        max = -10001;
+        getMax(root);
+        return max;
+    }
+
+    public int getMax(TreeNode root){
+        if (root == null){
+            return 0;
+        }
+        //左右孩子节点为根节点的最大单路径和（均只有一个孩子节点）
+        int left = getMax(root.left);
+        int right = getMax(root.right);
+        int tempMax = Math.max(left+root.val, right+root.val);
+        
+        //以当前节点为根节点的最大路劲和
+        int tempMax1 = Math.max(tempMax, left+right+root.val);
+        if (tempMax1 > max){
+            max = tempMax1;
+        }
+        return Math.max(0, tempMax);
+    }
+
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
