@@ -1749,14 +1749,14 @@ class Solution {
       9  20
         /  \
        15   7
-    
+
 返回它的最大深度 3 。
 
 
 
 #### （2）思路
 
-* 深度优先搜索：维护一个全局变量maxDeepth，使用dps(TreeNode root, int deepth)遍历树
+* 深度优先搜索：维护一个全局变量maxDeepth，使用dfs(TreeNode root, int deepth)遍历树
 
 
 
@@ -1994,5 +1994,442 @@ class Solution {
 
 }
 //leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 29/226. 翻转二叉树
+
+
+
+#### （1）题目
+
+翻转一棵二叉树。
+
+示例：
+
+输入：
+
+     	 4
+       /   \
+      2     7
+     / \   / \
+    1   3 6   9
+
+输出：
+
+         4
+       /   \
+      7     2
+     / \   / \
+    9   6 3   1
+ 
+
+
+
+#### （2）思路
+
+* 先交换左右孩子节点，再递归翻转左右子树（所占内存小）
+
+#### （3）实现
+
+```java
+package leetcode.editor.cn;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public TreeNode invertTree(TreeNode root) {
+        if (root == null){
+            return root;
+        }
+        TreeNode temp = root.left;
+        root.left = root.right;
+        root.right = temp;
+        invertTree(root.left);
+        invertTree(root.right);
+
+        return root;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 30/236. 二叉树的最近公共祖先
+
+
+
+#### （1）题目
+
+给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。
+
+百度百科中最近公共祖先的定义为：“对于有根树 T 的两个节点 p、q，最近公共祖先表示为一个节点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。”
+
+ 
+
+#### （2.1）思路
+
+* 深度优先搜索DFS，记录根节点到目标节点路径上的节点，分别存储于list1，list2中
+* 比较list1和list2，从root节点开始，最后一个公共节点即为最近公共祖先
+
+
+
+#### （3.1）实现
+
+```java
+
+package leetcode.editor.cn;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+
+import java.util.ArrayList;
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+
+    ArrayList<TreeNode> list0 = new ArrayList<TreeNode>();
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        ArrayList<TreeNode> list1 = new ArrayList<>();
+        ArrayList<TreeNode> list2 = new ArrayList<>();
+
+        DFS(root, p, new ArrayList<TreeNode>());
+        list1.addAll(list0);
+
+        DFS(root, q, new ArrayList<TreeNode>());
+        list2.addAll(list0);
+
+        TreeNode res = new TreeNode();
+        for (int i = 0; i < Math.min(list1.size(), list2.size()); i++) {
+            res = list1.get(i);
+            if (i == list1.size() - 1 || i == list2.size()-1 || list1.get(i+1) != list2.get(i+1)){
+                break;
+            }
+        }
+        return res;
+    }
+
+    public void DFS(TreeNode root, TreeNode target, ArrayList<TreeNode> list){
+        if (root == null){
+            return;
+        }
+        list.add(root);
+        if (root == target){
+            list0.clear();
+            list0.addAll(list);
+            return;
+        }
+        DFS(root.left, target, list);
+        DFS(root.right, target, list);
+        list.remove(list.size()-1);
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+#### （2.2）思路（重要）
+
+* 递归：递归遍历整棵二叉树，定义 f<sub>x</sub>表示x节点的子树中是否含有节点p或节点q，如果包含为 true，否则为 false。那么符合条件的最近公共祖先 xx 一定满足如下条件：**(f<sub>lson</sub>&&f<sub>rson</sub>)||((x = p || x = q) && (f<sub>lson</sub>||f<sub>rson</sub>))**
+* 其中lson和rson表示x节点的左右孩子节点
+
+
+
+#### （3.2）实现
+
+```java
+
+class Solution {
+    TreeNode res = null;
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        res = null;
+        DFS(root, p, q);
+        return res;
+    }
+
+    //返回值为当前节点及其子树中是否含有p,q节点
+    public boolean DFS(TreeNode root, TreeNode p, TreeNode q){
+        if (root == null){
+            return false;
+        }
+
+        //左右子树是否符合条件
+        boolean lson = DFS(root.left, p, q);
+        boolean rson = DFS(root.right, p, q);
+
+        if ((lson && rson) || ((root.val == p.val || root.val == q.val) && (lson || rson))){
+            res = root;
+        }
+
+        return lson || rson || (root.val == p.val || root.val == q.val);
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+### 31/297. 二叉树的序列化与反序列化
+
+
+
+#### （1）题目
+
+序列化是将一个数据结构或者对象转换为连续的比特位的操作，进而可以将转换后的数据存储在一个文件或者内存中，同时也可以通过网络传输到另一个计算机环境，采取相反方式重构得到原数据。
+
+请设计一个算法来实现二叉树的序列化与反序列化。这里不限定你的序列 / 反序列化算法执行逻辑，你只需要保证一个二叉树可以被序列化为一个字符串并且将这个字符串反序列化为原始的树结构。
+
+提示: 输入输出格式与 LeetCode 目前使用的方式一致，详情请参阅 LeetCode 序列化二叉树的格式。你并非必须采取这种方式，你也可以采用其他的方法解决这个问题。
+
+
+
+#### （2）思路
+
+* 每一个节点转换为字符串，首位表示该节点是否为空，0为空，1为非空；次位表示val的正负，1为正，0为负；第三位表示val的位数；后面为Math.abs(val)
+* 层序遍历二叉树，序列化该二叉树，空孩子节点也入队，将其序列化为0
+* root=[1,2,3,null,null,4,5]序列化后为 1111 1112 0 0 1114 1115
+* 反序列化时，继续层序遍历二叉树，先创建root节点并入队，依次补充队首节点的左右孩子节点；左右孩子节点均补齐后，队首元素出队；直至序列化的字符串为空
+* **思路较麻烦，题解BFS中**
+  * 序列化时，**空节点为"null"，非空节点为"node.val"，中间以","分隔**
+  * 反序列化时，**以","分割字符串：**`String[] nodes = data.substring(1, data.length()-1).split(",");`
+
+#### （3）实现
+
+```java
+
+package leetcode.editor.cn;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+
+
+import java.util.LinkedList;
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Codec {
+
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        String str = "";
+        LinkedList<TreeNode> list = new LinkedList<>();
+        list.add(root);
+        str += nodeToString(root);
+        while (!list.isEmpty()){
+            TreeNode first = list.pollFirst();
+            if (first != null){
+                list.add(first.left);
+                str += nodeToString(first.left);
+                list.add(first.right);
+                str += nodeToString(first.right);
+            }
+        }
+        return str;
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        
+        LinkedList<TreeNode> list = new LinkedList<>();
+        
+        //创建root节点
+        TreeNode root = null;
+        String state = data.substring(0, 1);
+        data = data.substring(1);
+        if ("0".equals(state)){
+            root = null;
+        }else{
+            String temp = data.substring(0, 1);//正负
+            data = data.substring(1);
+            int digit = Integer.parseInt(data.substring(0, 1));//val的位数
+            data = data.substring(1);
+            int val = Integer.parseInt(data.substring(0, digit));//val
+            data = data.substring(digit);
+            if ("0".equals(temp)){
+                val *= -1;
+            }
+            root = new TreeNode(val);
+        }
+        //root节点入队
+        list.add(root);
+        //标识队首节点的左右孩子节点是否填充
+        boolean flag1 = false;
+        boolean flag2 = false;
+
+        TreeNode first = list.pollFirst();
+        while (!data.isEmpty()){
+			
+            //反序列化data的第一个节点
+            state = data.substring(0, 1);
+            data = data.substring(1);
+            TreeNode node = null;
+            if ("0".equals(state)){
+                node = null;
+            }else{
+                String temp = data.substring(0, 1);//正负
+                data = data.substring(1);
+                int digit = Integer.parseInt(data.substring(0, 1));
+                data = data.substring(1);
+                int val = Integer.parseInt(data.substring(0, digit));
+                data = data.substring(digit);
+                if ("0".equals(temp)){
+                    val *= -1;
+                }
+                node = new TreeNode(val);
+                //非空节点入队
+                list.add(node);
+            }
+            //将节点连接到队首节点的左右孩子节点
+            if (flag1 == false){
+                first.left = node;
+                flag1 = true;
+            }else{
+                first.right = node;
+                flag2 = true;
+            }
+            if (flag1 == true && flag2 == true && !data.isEmpty()){
+                //队首节点的左右孩子节点均补充后，更换队首节点并重置flag1，flag2
+                first = list.pollFirst();
+                flag1 = false;
+                flag2 = false;
+            }
+        }
+        return root;
+    }
+
+    //节点转换为字符串
+    public String nodeToString(TreeNode root){
+        var str = "";
+        if (root == null){
+            str += 0;
+        }else{
+            str += 1;
+            int val = root.val;
+            if (val < 0){
+                str += 0;
+            }else{
+                str += 1;
+            }
+            val = Math.abs(val);
+            int digit = 0;
+            if (val == 0){
+                digit++;
+            }
+            int temp = val;
+            while (temp != 0){
+                temp /= 10;
+                digit++;
+            }
+            str += digit;
+            str += val;
+        }
+        return str;
+    }
+
+}
+
+// Your Codec object will be instantiated and called as such:
+// Codec ser = new Codec();
+// Codec deser = new Codec();
+// TreeNode ans = deser.deserialize(ser.serialize(root));
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+* 题解
+
+```java
+public class Codec {
+    public String serialize(TreeNode root) {
+        //tree: [v1,v2,null,...]
+        StringBuilder res = new StringBuilder("[");
+        Queue<TreeNode> queue = new LinkedList();
+        queue.add(root);
+        while(!queue.isEmpty()){
+            TreeNode cur = queue.remove();
+            if(cur == null){
+                res.append("null,");
+            }else{
+                res.append(cur.val + ",");
+                queue.add(cur.left);
+                queue.add(cur.right);
+            }
+        }
+        res.setLength(res.length() - 1);
+        res.append("]");
+        return res.toString();
+    }
+
+    public TreeNode deserialize(String data) {
+        String[] nodes = data.substring(1, data.length()-1).split(",");
+        TreeNode root = getNode(nodes[0]);
+        Queue<TreeNode> parents = new LinkedList();
+        TreeNode parent = root;
+        boolean isLeft = true;
+        for(int i = 1; i < nodes.length; i++){
+            TreeNode cur = getNode(nodes[i]);
+            if(isLeft){
+                parent.left = cur;
+            }else{
+                parent.right = cur;
+            }
+            if(cur != null){
+                parents.add(cur);
+            }
+            isLeft = !isLeft;
+            if(isLeft){
+                parent = parents.poll();
+            }
+        }
+        return root;
+    }
+
+    private TreeNode getNode(String val){
+        if(val.equals("null")){
+            return null;
+        }
+        return new TreeNode(Integer.valueOf(val));
+    }
+}
 ```
 
