@@ -139,6 +139,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[337]house-robber-iii.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[337]house-robber-iii.java" />
+              <option name="questionId" value="337" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[338]counting-bits.java">
           <value>
             <LeetcodeEditor>
@@ -168,6 +176,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[42]trapping-rain-water.java" />
               <option name="questionId" value="42" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[437]path-sum-iii.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[437]path-sum-iii.java" />
+              <option name="questionId" value="437" />
             </LeetcodeEditor>
           </value>
         </entry>
