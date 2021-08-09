@@ -2665,3 +2665,217 @@ class Solution {
 }
 ```
 
+
+
+
+
+### 34/538. 把二叉搜索树转换为累加树
+
+
+
+#### （1）题目
+
+给出二叉 搜索 树的根节点，该树的节点值各不相同，请你将其转换为累加树（Greater Sum Tree），使每个节点 node 的新值等于原树中大于或等于 node.val 的值之和。
+
+提醒一下，二叉搜索树满足下列约束条件：
+
+节点的左子树仅包含键 小于 节点键的节点。
+节点的右子树仅包含键 大于 节点键的节点。
+左右子树也必须是二叉搜索树。
+
+
+
+#### （2）思路
+
+* 由二叉搜索树的定义可知，大于节点node的值的节点为node的右子树
+* 根据右根左的顺序遍历二叉树，**遍历序列中在node之前的节点的value >  node.value**
+* **node.val = 遍历序列中上一个节点的value + node.val**，维护一个队列记录遍历序列，先递归遍历其右子树，更改节点值，节点值入队，再递归遍历其左子树，**注意不能状态恢复**
+
+
+
+#### （3）实现
+
+```java
+import java.util.ArrayList;
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    ArrayList<Integer> list = new ArrayList<>();
+    public TreeNode convertBST(TreeNode root) {
+        list.clear();
+        convert(root);
+        return root;
+    }
+
+    public void convert(TreeNode root){
+        if (root == null){
+            return ;
+        }
+
+        convert(root.right);
+        
+        if (!list.isEmpty()){
+            root.val += list.get(list.size()-1);
+        }
+        
+        list.add(root.val);
+        
+        convert(root.left);
+    }
+
+}
+```
+
+
+
+
+
+### 35/543. 二叉树的直径
+
+
+
+#### （1）题目
+
+ 给定一棵二叉树，你需要计算它的直径长度。一棵二叉树的直径长度是任意两个结点路径长度中的最大值。这条路径可能穿过也可能不穿过根结点。
+
+
+
+#### （2）思路
+
+* 深度优先搜索二叉树，返回值为该节点的高度，left，right分别为其左右孩子节点的高度
+  * 则以该节点为起点的路径的最大值 = left + right
+  * 该节点高度 = max(left, right) + 1
+* 维护一个全局变量max，记录二叉树中路径长度中的最大值；遍历每个节点，以每个节点为起点，计算其路径长度的最大值
+
+
+
+#### （3）实现
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    int max = 0;
+    public int diameterOfBinaryTree(TreeNode root) {
+        max = 0;
+        DFS(root);
+        return max;
+    }
+
+    public int DFS(TreeNode root){
+
+        if (root == null){
+            return 0;
+        }
+        int left = DFS(root.left);
+        int right = DFS(root.right);
+
+        int length = left + right;
+        if (length > max){
+            max = length;
+        }
+        return Math.max(left, right) + 1;
+    }
+
+}
+```
+
+
+
+
+
+### 36/617. 合并二叉树
+
+
+
+#### （1）题目
+
+给定两个二叉树，想象当你将它们中的一个覆盖到另一个上时，两个二叉树的一些节点便会重叠。
+
+你需要将他们合并为一个新的二叉树。合并的规则是如果两个节点重叠，那么将他们的值相加作为节点合并后的新值，否则不为 NULL 的节点将直接作为新二叉树的节点。
+
+
+
+#### （2）思路
+
+* **深度优先遍历树**，根据当前root1和root2的状态，决定新树的状态
+  * root1 == null && root2 == null：root =  null
+  * root1 == null && root2 != null：root = root2
+  * root1 != null && root2 == null：root = root1
+  * root1 != null && root2 != null：root.val = root1.val + root2.val，**并继续构造root的左右孩子节点**
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    
+    public TreeNode mergeTrees(TreeNode root1, TreeNode root2) {
+        
+        TreeNode root = new TreeNode();
+        
+        if (root1 != null && root2 != null){
+            
+            root.val = root1.val + root2.val;
+            root.left = mergeTrees(root1.left, root2.left);
+            root.right = mergeTrees(root1.right, root2.right);
+            
+        }else if (root1 != null && root2 == null){
+            root = root1;
+        }else if (root1 == null && root2 != null){
+            root = root2;
+        }else if (root1 == null && root2 == null){
+            root = null;
+        }
+        
+        return root;
+    }
+
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
