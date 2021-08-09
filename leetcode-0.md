@@ -2025,7 +2025,7 @@ class Solution {
       7     2
      / \   / \
     9   6 3   1
- 
+
 
 
 
@@ -2156,7 +2156,7 @@ class Solution {
 
 
 
-#### （2.2）思路（重要）
+#### （2.2）思路（ipt）
 
 * 递归：递归遍历整棵二叉树，定义 f<sub>x</sub>表示x节点的子树中是否含有节点p或节点q，如果包含为 true，否则为 false。那么符合条件的最近公共祖先 xx 一定满足如下条件：**(f<sub>lson</sub>&&f<sub>rson</sub>)||((x = p || x = q) && (f<sub>lson</sub>||f<sub>rson</sub>))**
 * 其中lson和rson表示x节点的左右孩子节点
@@ -2429,6 +2429,238 @@ public class Codec {
             return null;
         }
         return new TreeNode(Integer.valueOf(val));
+    }
+}
+```
+
+
+
+
+
+### 32/437. 路径总和 III（ipt）
+
+
+
+#### （1）题目
+
+给定一个二叉树的根节点 root ，和一个整数 targetSum ，求该二叉树里节点值之和等于 targetSum 的 路径 的数目。
+
+路径 不需要从根节点开始，也不需要在叶子节点结束，但是路径方向必须是向下的（只能从父节点到子节点）。
+
+
+
+
+
+#### （2）思路
+
+* root.val可能为负数
+* 前缀和：到达前当前元素的路径上，所有元素的和；两节点间的路径和=两节点的前缀和之差
+* 维护一个HashMap<Integer, Integer>，记录从根节点到当前节点的路径上所有节点的前缀和；key为前缀和，value为该前缀和出现次数
+* tempSum记录当前节点的前缀和，若路径上存在前缀和为tempSum-targetSum的节点，则该节点到当前节点的路径和为targetSum；即res +=  map.get(tempSum - targetSum)
+* 题目要求**路径方向必须是向下的（只能从父节点到子节点）**
+  * 即讨论前缀和时，一个节点必须是另一个节点的祖先节点
+  * **状态恢复：遍历完一个节点的所有子节点后，将其前缀和从map中移除**
+* 细节：考虑节点的前缀和 = targetSum的情况，**map.put(0, 1)**
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+
+import java.util.HashMap;
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    int res;
+    public int pathSum(TreeNode root, int targetSum) {
+        res = 0;
+        HashMap<Integer, Integer> map = new HashMap<>();
+        map.put(0, 1);
+        getSum(root, targetSum, 0, map);
+        return res;
+    }
+
+    public void getSum(TreeNode root, int targetSum, int tempSum, HashMap<Integer, Integer> map){
+        if (root == null){
+            return;
+        }
+
+        tempSum += root.val;
+
+        int need = tempSum - targetSum;
+
+        res += map.getOrDefault(need, 0);
+
+        map.put(tempSum, map.getOrDefault(tempSum, 0)+1);
+
+        getSum(root.left, targetSum, tempSum, map);
+        getSum(root.right, targetSum, tempSum, map);
+        map.put(tempSum, map.get(tempSum)-1);
+    }
+
+}
+//leetcode submit region end(Prohibit modification and deletion)
+
+```
+
+
+
+
+
+### 33/337. 打家劫舍III
+
+
+
+#### （1）题目
+
+在上次打劫完一条街道之后和一圈房屋后，小偷又发现了一个新的可行窃的地区。这个地区只有一个入口，我们称之为“根”。 除了“根”之外，每栋房子有且只有一个“父“房子与之相连。一番侦察之后，聪明的小偷意识到“这个地方的所有房屋的排列类似于一棵二叉树”。 如果两个直接相连的房子在同一天晚上被打劫，房屋将自动报警。
+
+计算在不触动警报的情况下，小偷一晚能够盗取的最高金额。
+
+
+
+
+
+#### （2）思路
+
+* 每一个节点有两种状态，打劫或不打劫
+  * 打劫，则根据题目规则，不能打劫其子节点，**root.val + leftl + leftr + rightl + rightr**
+  * 不打劫，可以打劫其子节点，**left + right**
+  * 其中left，right为从其左右孩子节点开始，可以打劫到的最高金额；leftl，leftr，rightl，rightr为从其孩子节点的左右孩子节点开始，可以打劫到的最高金额
+* 该方法需要**剪枝**
+  * 维护一个map<TreeNode, Integer>，存储从该节点开始，能打劫到的最高金额
+  * 遍历到某节点时，先查看是否map中是否含有该key，若有直接返回value
+
+
+
+#### （3）实现
+
+```java
+
+//leetcode submit region begin(Prohibit modification and deletion)
+
+
+import java.util.HashMap;
+
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    HashMap<TreeNode, Integer> map = new HashMap<TreeNode, Integer>();
+    public int rob(TreeNode root) {
+        if (root == null){
+            return 0;
+        }
+		//剪枝
+        if (map.containsKey(root)){
+            return map.get(root);
+        }
+		//不打劫该节点
+        int notChoose = rob(root.left) + rob(root.right);
+
+        //打劫该节点
+        int lefl = 0, lefr = 0, rigl = 0, rigr = 0;
+        if (root.left != null){
+            lefl = rob(root.left.left);
+            lefr = rob(root.left.right);
+        }
+        if (root.right != null){
+            rigl = rob(root.right.left);
+            rigr = rob(root.right.right);
+        }
+
+        int choose = root.val + lefl + lefr + rigl + rigr;
+
+
+        int max = Math.max(notChoose, choose);
+        map.put(root, max);
+        return max;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+#### （2.2）思路（ipt）
+
+* 每个节点都存在两种状态：打劫rob或不打劫notRob
+  * 打劫
+    * 状态转移：不能打劫其子节点
+    * **rob = L<sub>notRob</sub> + R<sub>notRob</sub> **
+  * 不打劫
+    * 状态转移：可以打劫其子节点，也可不打劫其子节点
+    * 若要打劫到最高金额，则需**选择其中最大值**
+    * **notRob = max( L<sub>notRob</sub>, L<sub>rob</sub>) + max(R<sub>notRob</sub>, R<sub>rob</sub> )**
+  * 从此节点开始，能打劫到的最高金额 = max(rob, notRob)
+* 因为每个节点都有**两种状态**，不妨将函数的返回值定义为长度为2的数组：**value[]**
+  * value[0] = 打劫该节点能获取的最高金额
+  * value[1] = 不打劫该节点能获取的最高金额
+
+
+
+#### （3.2）实现
+
+```java
+
+class Solution {
+
+    public int rob (TreeNode root){
+        int[] results = get(root);
+        return Math.max(results[0], results[1]);
+    }
+
+    public int[] get(TreeNode root){
+        int[] value = new int[2];
+        if (root == null){
+            return ints;
+        }
+
+        int[] left = get(root.left);
+        int[] right = get(root.right);
+
+        //打劫，即不打劫其子节点
+        int choose = root.val + left[1] + right[1];
+
+        //不打劫，可打劫其子节点，也可不打劫其子节点，取最大值
+        int leftMax = Math.max(left[0], left[1]);
+        int rightMax = Math.max(right[0], right[1]);
+
+        int notChoose = leftMax + rightMax;
+
+        value[0] = choose;
+        value[1] = notChoose;
+
+        return value;
     }
 }
 ```
