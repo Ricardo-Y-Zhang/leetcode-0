@@ -2879,3 +2879,123 @@ class Solution {
 //leetcode submit region end(Prohibit modification and deletion)
 ```
 
+
+
+
+
+### 37/207. 课程表
+
+
+
+#### （1）题目
+
+你这个学期必须选修 numCourses 门课程，记为 0 到 numCourses - 1 。
+
+在选修某些课程之前需要一些先修课程。 先修课程按数组 prerequisites 给出，其中 prerequisites[i] = [ai, bi] ，表示如果要学习课程 ai 则 必须 先学习课程  bi 。
+
+例如，先修课程对 [0, 1] 表示：想要学习课程 0 ，你需要先完成课程 1 。
+请你判断是否可能完成所有课程的学习？如果可以，返回 true ；否则，返回 false 。
+
+
+
+#### （2）思路
+
+* 拓扑排序
+* 使用 **ArrayList<Integer>[ ] edge = new ArrayList[numCourses]**存储边，使用 int[ ] k = new int[numCourses]存储节点的入度
+* 使用栈存储入度为0的节点，遍历数组k，将所有入度 = 0的节点压入栈
+* 弹出栈顶元素pop，遍历以该节点为起点的边 edge[pop]，对应节点的入度 -  1；并将入度 = 0的节点压入栈
+* 记录入栈节点数，栈空时比较入栈节点数和numCourses是否相等
+
+
+
+#### （3）实现
+
+```java
+import java.util.*;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+
+        //节点入度
+        int[] k = new int[numCourses];
+
+        //边
+        ArrayList<Integer>[] edge = new ArrayList[numCourses];
+
+        boolean[] flag = new boolean[numCourses];
+
+        for (int i = 0; i < prerequisites.length; i++) {
+            int[] temp = prerequisites[i];
+            int left = temp[0];
+            int right = temp[1];
+
+            //更新入度
+            k[left]++;
+
+            //更新边
+            if (flag[right] == false){
+                ArrayList<Integer> e = new ArrayList<>();
+                e.add(left);
+                edge[right] = e;
+                flag[right] = true;
+            }else{
+                edge[right].add(left);
+            }
+        }
+
+        //记录入度为0的节点数
+        int nums = 0;
+
+        //存放入度为0的节点
+        Stack<Integer> stack = new Stack<>();
+        for (int i = 0; i < numCourses; i++) {
+            if (k[i] == 0){
+                stack.add(i);
+                nums++;
+            }
+        }
+
+
+        while (!stack.isEmpty()){
+            Integer pop = stack.pop();
+            if (flag[pop] == true){
+                ArrayList<Integer> list = edge[pop];
+                for (int temp : list){
+                    k[temp]--;
+                    if (k[temp] == 0){
+                        stack.add(temp);
+                        nums++;
+                    }
+                }
+            }
+        }
+        
+        return nums == numCourses;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 38/399. 除法求值
+
+
+
+#### （1）题目
+
+给你一个变量对数组 equations 和一个实数值数组 values 作为已知条件，其中 equations[i] = [Ai, Bi] 和 values[i] 共同表示等式 Ai / Bi = values[i] 。每个 Ai 或 Bi 是一个表示单个变量的字符串。
+
+另有一些以数组 queries 表示的问题，其中 queries[j] = [Cj, Dj] 表示第 j 个问题，请你根据已知条件找出 Cj / Dj = ? 的结果作为答案。
+
+返回 所有问题的答案 。如果存在某个无法确定的答案，则用 -1.0 替代这个答案。如果问题中出现了给定的已知条件中没有出现的字符串，也需要用 -1.0 替代这个答案。
+
+注意：输入总是有效的。你可以假设除法运算中不会出现除数为 0 的情况，且不存在任何矛盾的结果。
+
+
+
+#### （2）思路
+
