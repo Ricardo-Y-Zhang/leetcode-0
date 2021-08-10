@@ -1378,6 +1378,10 @@ class Solution {
 
 
 
+## 四、树
+
+
+
 ### 20/94. 二叉树的中序遍历（同2）
 
 
@@ -2883,6 +2887,10 @@ class Solution {
 
 
 
+## 五、深度优先搜索
+
+
+
 ### 37/207. 课程表
 
 
@@ -2981,7 +2989,7 @@ class Solution {
 
 
 
-### 38/399. 除法求值
+### 38/399. 除法求值（未解决）
 
 
 
@@ -2998,4 +3006,113 @@ class Solution {
 
 
 #### （2）思路
+
+* 将A<sub>i</sub> / B<sub>i</sub>看成 节点A<sub>i</sub>指向节点B<sub>i</sub>的有向边，值看为有向边的值，则其逆向边为值的倒数
+* C<sub>j</sub> / D<sub>j</sub> = C<sub>j</sub> → D<sub>j</sub>的路径中边的乘积，若两节点不连通，即答案无法确定
+* A<sub>i</sub> , B<sub>i</sub>由小写英文字母和数字组成，将a~z转化为0~25；edge [25] [25]存储有向边，同时将其逆向边也存储
+
+
+
+
+
+## 六、广度优先搜索
+
+
+
+### 39/279. 完全平方数
+
+
+
+#### （1）题目
+
+给定正整数 n，找到若干个完全平方数（比如 1, 4, 9, 16, ...）使得它们的和等于 n。你需要让组成和的完全平方数的个数最少。
+
+给你一个整数 n ，返回和为 n 的完全平方数的 最少数量 。
+
+完全平方数 是一个整数，其值等于另一个整数的平方；换句话说，其值等于一个整数自乘的积。例如，1、4、9 和 16 都是完全平方数，而 3 和 11 不是。
+
+
+
+#### （2）思路
+
+
+
+
+
+
+
+## 七、unknown
+
+
+
+### 40/2. 两数相加
+
+
+
+#### （1）题目
+
+给你两个 非空 的链表，表示两个非负的整数。它们每位数字都是按照 逆序 的方式存储的，并且每个节点只能存储 一位 数字。
+
+请你将两个数相加，并以相同形式返回一个表示和的链表。
+
+你可以假设除了数字 0 之外，这两个数都不会以 0 开头。
+
+
+
+#### （2）思路
+
+* 链表节点数过大，不能转换为整数做简单的加法
+* 同时从链表头开始，将两个链表节点的val相加，满10进1
+  * **用k记录进位**，node.value = ( x + y + k) % 10，k = ( x + y + k) / 10
+  * L<sub>1</sub>.val = x，L<sub>2</sub>.val = y；**注意L<sub>1</sub>, L<sub>2</sub> = null的情况，此时对应的x=0, y = 0**
+  * 递归构建新链表的后续节点，L<sub>1</sub>，L<sub>2</sub> = null时，其后续节点继续置为null
+  * **当 L<sub>1</sub> == null && L<sub>2</sub> == null时，终止递归**
+
+
+
+#### （3）实现
+
+```java
+
+//leetcode submit region begin(Prohibit modification and deletion)
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+
+        ListNode root = build(l1, l2, 0);
+        return root;
+    }
+
+    public ListNode build (ListNode l1, ListNode l2, int k){
+        //递归终止条件
+        if (l1 == null && l2 == null && k == 0){
+            return null;
+        }
+
+        ListNode node = new ListNode();
+
+        int x = (l1 != null) ? l1.val : 0;
+        int y = (l2 != null) ? l2.val : 0;
+
+        node.val = (x + y + k) % 10;
+        k = (x + y + k) / 10;
+
+        l1 = (l1 != null) ? l1.next : null;
+        l2 = (l2 != null) ? l2.next : null;
+
+        node.next = build(l1, l2, k);
+        return node;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
 

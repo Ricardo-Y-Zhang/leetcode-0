@@ -123,6 +123,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[279]perfect-squares.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[279]perfect-squares.java" />
+              <option name="questionId" value="279" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[287]find-the-duplicate-number.java">
           <value>
             <LeetcodeEditor>
@@ -136,6 +144,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[297]serialize-and-deserialize-binary-tree.java" />
               <option name="questionId" value="297" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[2]add-two-numbers.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[2]add-two-numbers.java" />
+              <option name="questionId" value="2" />
             </LeetcodeEditor>
           </value>
         </entry>
