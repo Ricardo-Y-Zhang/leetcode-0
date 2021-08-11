@@ -3116,3 +3116,63 @@ class Solution {
 //leetcode submit region end(Prohibit modification and deletion)
 ```
 
+
+
+
+
+### 41/3. 无重复字符的最长子串
+
+
+
+#### （1）题目
+
+给定一个字符串 `s` ，请你找出其中不含有重复字符的 **最长子串** 的长度。
+
+
+
+#### （2）思路
+
+* **双指针遍历字符串**，分别指向截取字符串的两端；**HashMap<Character, Integer>记录截取字符串里的字符**
+* 右指针right指向的字符c
+  * map.getOrDefault ( c, 0 ) = 0，不重复，更新字符串的长度
+  * map.getOrDefault ( c, 0 ) = 1，重复，移动左指针指向重复元素的右边（并非right的右边），即找到新的无重复的最长子串
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        //记录无重复字符的最长字符串长度
+        int length = 0;
+        //记录截取字符串里的字符
+        HashMap<Character, Integer> map = new HashMap<>();
+        
+        for (int i = 0, j = 0; j < s.length(); j++){
+            
+            char c = s.charAt(j);
+            //判断右指针j指向的字符是否重复
+            int time = map.getOrDefault(c, 0);
+            if (time == 0){//非重复
+                map.put(c, 1);
+                //更新length
+                int tempLength = j + 1 - i;
+                length = (tempLength > length) ? tempLength : length;
+            }else {//重复
+                //找到截取字符串中与c重复的元素
+                while (s.charAt(i) != s.charAt(j)){
+                    map.put(s.charAt(i), 0);
+                    i++;
+                }
+                //更新左指针
+                i++;
+            }
+        }
+        return length;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
