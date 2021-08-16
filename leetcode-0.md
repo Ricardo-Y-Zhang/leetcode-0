@@ -3176,3 +3176,394 @@ class Solution {
 //leetcode submit region end(Prohibit modification and deletion)
 ```
 
+
+
+
+
+### 42/5. 最长回文子串
+
+
+
+#### （1）题目
+
+给你一个字符串 `s`，找到 `s` 中最长的回文子串。
+
+
+
+#### （2）思路
+
+* 判断字符串是否为回文串：
+  * 首尾指针
+  * 从中间位置开始，左右指针
+* 遍历字符串，以当前字符为回文串的中间字符，向两边发散，找到以当前字符为中间字符的最长回文串
+  * 回文串长度为奇数，当前字符为中间字符
+  * 回文串长度为偶数，当前字符为中间字符之一
+
+
+
+#### （3）实现
+
+```java
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public String longestPalindrome(String s) {
+
+        String res = "";
+        for (int i = 0; i < s.length(); i++) {
+            int left = i, right = i;
+            for (; left >= 0 && right < s.length(); left--, right++){
+                if (s.charAt(left) == s.charAt(right)){
+                    String temp = s.substring(left, right+1);
+                    if (temp.length() > res.length()){
+                        res = temp;
+                    }
+                }else{
+                    break;
+                }
+            }
+
+
+
+            for (left = i, right = i + 1; left >= 0 && right < s.length(); left--, right++){
+                if (s.charAt(left) == s.charAt(right)){
+                    String temp = s.substring(left, right+1);
+                    if (temp.length() > res.length()){
+                        res = temp;
+                    }
+                }else{
+                    break;
+                }
+            }
+        }
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+
+```
+
+
+
+
+
+### 43/17. 电话号码的字母组合
+
+
+
+#### （1）题目
+
+给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。答案可以按 任意顺序 返回。
+
+给出数字到字母的映射如下（与电话按键相同）。注意 1 不对应任何字母。
+
+
+
+#### （2）思路
+
+* 模拟
+
+
+
+#### （3）实现
+
+```java
+import java.util.ArrayList;
+import java.util.Arrays;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public List<String> letterCombinations(String digits) {
+
+        List<String> res = new ArrayList<String>();
+
+        ArrayList<ArrayList<String>> list = new ArrayList<>();
+
+        String[] str1 = {"a", "b", "c"};
+        list.add(new ArrayList<String>(Arrays.asList(str1)));
+
+        String[] str2 = {"d", "e", "f"};
+        list.add(new ArrayList<String>(Arrays.asList(str2)));
+
+        String[] str3 = {"g", "h", "i"};
+        list.add(new ArrayList<String>(Arrays.asList(str3)));
+
+        String[] str4 = {"j", "k", "l"};
+        list.add(new ArrayList<String>(Arrays.asList(str4)));
+
+        String[] str5 = {"m", "n", "o"};
+        list.add(new ArrayList<String>(Arrays.asList(str5)));
+
+        String[] str6 = {"p", "q", "r", "s"};
+        list.add(new ArrayList<String>(Arrays.asList(str6)));
+
+        String[] str7 = {"t", "u", "v"};
+        list.add(new ArrayList<String>(Arrays.asList(str7)));
+
+        String[] str8 = {"w", "x", "y", "z"};
+        list.add(new ArrayList<String>(Arrays.asList(str8)));
+
+        for (int i = 0; i < digits.length(); i++) {
+            int number = Integer.parseInt(digits.substring(i, i+1));
+            //当前数字对应的字母
+            ArrayList<String> strings = list.get(number - 2);
+
+            //暂时储存组合后的字符串
+            ArrayList<String> temp = new ArrayList<>();
+			
+            //第一位的情况
+            if (res.isEmpty()){
+                temp.addAll(strings);
+            }
+			
+            //将前面组合的字符串与当前数字对应的字母一一组合
+            while (!res.isEmpty()){
+                String str0 = res.get(res.size()-1);
+                res.remove(res.size()-1);
+                for (int j = 0; j < strings.size(); j++) {
+                    temp.add(str0 + strings.get(j));
+                }
+            }
+			
+            //更新结果
+            res.addAll(temp);
+        }
+
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+
+```
+
+
+
+
+
+### 44/19. 删除链表的倒数第n个节点
+
+
+
+#### （1）题目
+
+给你一个链表，删除链表的倒数第 `n` 个结点，并且返回链表的头结点。
+
+**进阶：**你能尝试使用一趟扫描实现吗？
+
+
+
+#### （2）思路
+
+* 删除某个节点，需要找到其**前序节点**
+  * pre.next = pre.next.next
+* 一次遍历，使用**快慢指针**，quick指针**先走n次**，slow指针再出发，当quick指针指向尾节点时，slow指针指向倒数第n个节点
+  * 需考虑slow指针一步未走的情况，即删除head节点
+
+
+
+#### （3）实现
+
+```java
+
+//leetcode submit region begin(Prohibit modification and deletion)
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode quick = head, slow = head;
+
+        for (int i = 0; i < n; i++) {
+            quick = quick.next;
+        }
+
+        //删除表头head的情况
+        if (quick == null){
+            head = head.next;
+        }else{
+            while (quick.next != null){
+                quick = quick.next;
+                slow = slow.next;
+            }
+
+            slow.next = slow.next.next;
+        }
+
+        return head;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 45/15. 三数之和
+
+
+
+#### （1）题目
+
+给你一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c ，使得 a + b + c = 0 ？请你找出所有和为 0 且不重复的三元组。
+
+注意：答案中不可以包含重复的三元组。
+
+
+
+#### （2）思路
+
+* 三重循环的时间复杂度为O(n<sup>3</sup>)，会超时；需要优化
+* 使用times[200002]储存number出现的次数，**number = 数组下标 - 100000**
+* Arrays.sort(nums)给nums排序，两重循环遍历nums，要保证没有重复的三元组，需要i,j指向的number与上一次的不相同
+* a = nums[i], b = nums[j]，则 c = - (a+ b)，通过times数组判断是否存在这样的c，注意a，b，c相等的情况
+
+
+
+
+
+#### （3）思路
+
+```java
+import java.util.ArrayList;
+import java.util.Arrays;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+
+        List<List<Integer>> res = new ArrayList<List<Integer>>();
+
+        Arrays.sort(nums);
+
+        //记录number出现的次数
+        int[] times = new int[200002];
+
+        for (int i = 0; i < nums.length; i++) {
+            times[nums[i] + 100000]++;
+        }
+
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] > 0){
+                break;
+            }
+
+            if (i != 0 && nums[i] == nums[i-1]){
+                continue;
+            }
+
+            for (int j = i + 1; j < nums.length; j++) {
+
+                if (j != i + 1 && nums[j] == nums[j-1]){
+                    continue;
+                }
+				//add = a+b
+                int add = nums[i] + nums[j];
+				
+                int index = -add + 100000;
+
+                if (add > 0 || -add < nums[j] || index < 0){
+                    break;
+                }
+
+                if (index > 200001){
+                    continue;
+                }
+
+                int time = times[index];
+
+                if (-add == nums[i]){
+                    time--;
+                }
+                if (-add == nums[j]){
+                    time--;
+                }
+
+                if (time > 0){
+                    ArrayList<Integer> list = new ArrayList<>();
+
+                    list.add(nums[i]);
+                    list.add(nums[j]);
+                    list.add(-add);
+                    res.add(list);
+                }
+            }
+        }
+
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+#### （2.2）思路（ipt）
+
+* **在有序的序列中，找a+b=0，可使用双指针法**
+  * left，right指向序列的首尾
+  * nums[left] + nums[right] > 0，right--
+  * nums[left] + nums[right] < 0，left++
+  * nums[left] + nums[right] = 0，left++, right--
+* 此题中，需要**不包含重复的三元组**，则在选择a, b, c 的过程中，需要去重，不选择与上一轮相同的数
+
+
+
+#### （3.2）实现
+
+```java
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+        ArrayList<List<Integer>> res = new ArrayList<>();
+
+        Arrays.sort(nums);
+
+        for (int i = 0; i < nums.length; i++) {
+
+            //去重，不选择重复的a
+            if (i != 0 && nums[i] == nums[i-1]){
+                continue;
+            }
+
+            //第二轮和第三轮选择同时进行
+            int j = i + 1, k = nums.length - 1;
+            while (j < k){
+                if (nums[i] + nums[j] + nums[k] == 0){
+                    ArrayList<Integer> list = new ArrayList<>();
+                    list.add(nums[i]);
+                    list.add(nums[j]);
+                    list.add(nums[k]);
+                    res.add(list);
+                    j++;
+                    k--;
+
+                    //去重，不选择重复的b,c
+                    while (j < k && nums[j] == nums[j-1]){
+                        j++;
+                    }
+
+                    while (j < k && nums[k] == nums[k+1]){
+                        k--;
+                    }
+                }else if (nums[i] + nums[j] + nums[k] > 0){
+                    k--;
+                }else if (nums[i] + nums[j] + nums[k] < 0){
+                    j++;
+                }
+            }
+        }
+
+        return res;
+    }
+}
+```
+
