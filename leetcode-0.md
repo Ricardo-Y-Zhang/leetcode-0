@@ -3567,3 +3567,199 @@ class Solution {
 }
 ```
 
+
+
+
+
+### 47/22. 括号的生成
+
+
+
+#### （1）题目
+
+数字 `n` 代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且 **有效的** 括号组合。
+
+有效括号组合需满足：左括号必须以正确的顺序闭合。
+
+
+
+#### （2）思路
+
+* 以left，right分别表示剩余的左右括号数
+* 每个位置有两种可能，左括号或右括号
+  * left > 0时，可以为左括号
+  * **right > 0 && left > right时，可以为右括号**；即已放置的左括号数大于右括号数
+* 递归添加每个位置上的括号，递归边界为left == 0 && right == 0
+
+
+
+#### （3）实现
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    List<String> res = new ArrayList<>();
+    public List<String> generateParenthesis(int n) {
+        res.clear();
+        generate(n, n, "");
+        return res;
+    }
+
+    public void generate(int left, int right, String str){
+        if (left == 0 && right == 0){
+            res.add(str);
+            return;
+        }
+
+        if (left > 0){
+            generate(left-1, right, str + "(");
+        }
+        if (right > 0 && right > left){
+            generate(left, right-1, str + ")");
+        }
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 48/31. 下一个排列
+
+
+
+#### （1）题目
+
+实现获取 下一个排列 的函数，算法需要将给定数字序列重新排列成字典序中下一个更大的排列（即，组合出下一个更大的整数）。
+
+如果不存在下一个更大的排列，则将数字重新排列成最小的排列（即升序排列）。
+
+必须 原地 修改，只允许使用额外常数空间。
+
+ 
+
+#### （2）思路
+
+* 若当前排列为**降序排列**，即不存在下一个更大的排列，要将序列重新排列为最小的排列，首位指针交换
+* 若当前排序**不是降序排列**，则存在下一个更大的排列
+  * target记录序列中**最后一个非降序排列的元素位置**；即nums[target + 1] > nums[target]
+  * **minIndex记录在target后且大于nums[target]的最小的元素的位置**
+  * **交换minIndex 和 target元素，并对target后的元素排序，Arrays.sort(nums, target+1, nums.length)**
+
+
+
+#### （3）实现
+
+```java
+import java.util.Arrays;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public void nextPermutation(int[] nums) {
+        int target = -1;
+        for (int i = 0; i < nums.length-1; i++) {
+            if (i+1 < nums.length && nums[i] < nums[i+1]){
+                target = i;
+            }
+        }
+
+        if (target != -1){
+            int min = 110, minIndex = -1;
+            for (int i = target + 1; i < nums.length; i++) {
+               if (nums[i] < min && nums[i] > nums[target]){
+                   min = nums[i];
+                   minIndex = i;
+               }
+            }
+
+            nums[minIndex] = nums[target];
+            nums[target] = min;
+            Arrays.sort(nums, target+1, nums.length);
+        }else{
+            for (int i = 0; i < nums.length / 2; i++) {
+                int temp = nums[i];
+                int index = nums.length - 1 - i;
+                nums[i] = nums[index];
+                nums[index] = temp;
+            }
+        }
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 49/33. 搜索旋转排序数组
+
+
+
+#### （1）题目
+
+整数数组 nums 按升序排列，数组中的值 互不相同 。
+
+在传递给函数之前，nums 在预先未知的某个下标 k（0 <= k < nums.length）上进行了 旋转，使数组变为 [nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]]（下标 从 0 开始 计数）。例如， [0,1,2,4,5,6,7] 在下标 3 处经旋转后可能变为 [4,5,6,7,0,1,2] 。
+
+给你 旋转后 的数组 nums 和一个整数 target ，如果 nums 中存在这个目标值 target ，则返回它的下标，否则返回 -1 。
+
+ 
+
+#### （2）思路
+
+* 旋转排序数组也是部分有序的
+* left, right分别表示当前的搜索数组的最左边和最右边的数，mid = (left + right) / 2
+  * 若nums[mid] = target，返回mid
+  * 若**nums[left] <= nums[mid]**
+    * **left~mid为有序数组，mid+1~right为无序数组**
+    * 判断nums[left], nums[mid], target的大小关系，可以知道target在左半还是在右半数组
+  * 若**nums[left] > nums[mid]**
+    * **left~mid-1为无序数组，mid~right为有序数组 **
+    * 判断nums[mid], nums[right], target的大小关系，可以知道target在左半还是右半数组
+  * left > right时，跳出循环
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int search(int[] nums, int target) {
+        int left = 0, right = nums.length-1;
+        while (left <= right){
+            int mid = (left + right)/2;
+
+            if (nums[mid] == target){
+                return mid;
+            }
+
+            //左半有序
+            if (nums[mid] >= nums[left]){
+                if (nums[left] <= target && target < nums[mid]){
+                    right = mid-1;
+                }else{
+                    left = mid + 1;
+                }
+            }else {
+                if (nums[mid] < target && target <= nums[right]){
+                    left = mid + 1;
+                }else{
+                    right = mid - 1;
+                }
+            }
+        }
+        return -1;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
