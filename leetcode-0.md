@@ -3763,3 +3763,221 @@ class Solution {
 
 
 
+
+
+### 50/34. 在排序数组中查找元素的第一个和最后一个位置
+
+
+
+#### （1）题目
+
+给定一个按照升序排列的整数数组 nums，和一个目标值 target。找出给定目标值在数组中的开始位置和结束位置。
+
+如果数组中不存在目标值 target，返回 [-1, -1]。
+
+进阶：
+
+你可以设计并实现时间复杂度为 O(log n) 的算法解决此问题吗？
+
+
+
+#### （2）思路
+
+* nums为一个非递减数组，可以使用二分查找
+* left, right表示当前查找数组的左右边界，mid = (left + right) / 2；leftIndex，rightIndex记录元素的第一个和最后一个位置
+  * nums[mid] > target，继续在左半区间查找，right = mid - 1
+  * nums[mid] < target，继续在右半区间查找，left = mid + 1
+  * nums[mid] = target
+    * 更新leftIndex，并在其左半区间继续查找，right = mid - 1
+    * 更新rightIndex，并在其右半区间继续查找，left = mid + 1
+
+
+
+#### （3）实现
+
+```java
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int left = 0, right = nums.length-1;
+        int leftIndex = -1, rightIndex = -1;
+
+        //确定leftIndex
+        while (left <= right &&  right >= 0){
+            int mid = (left + right)/2;
+            if (nums[mid] < target){
+                left = mid + 1;
+            }else if (nums[mid] > target){
+                right = mid - 1;
+            }else{
+                //更新leftIndex，并在左半区间继续查找
+                leftIndex = mid;
+                right = mid - 1;
+            }
+        }
+
+        left = 0;
+        right = nums.length - 1;
+
+        //确定rightIndex
+        while (left <= right && left < nums.length){
+            int mid = (left + right)/2;
+            if (nums[mid] < target){
+                left = mid + 1;
+            }else if (nums[mid] > target){
+                right = mid - 1;
+            }else{
+                //更新rightIndex，并在右半区间继续查找
+                rightIndex = mid;
+                left = mid + 1;
+            }
+        }
+
+        int[] res = {leftIndex, rightIndex};
+
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 51/46. 全排列
+
+
+
+#### （1）题目
+
+给定一个不含重复数字的数组 `nums` ，返回其 **所有可能的全排列** 。你可以 **按任意顺序** 返回答案。
+
+
+
+#### （2）思路
+
+* 模拟，回溯
+* ArrayList<ArrayList<Integer>> res记录结果；ArrayList<Integer> list记录当前遍历序列；boolean[] flag 记录已经遍历的元素，false为未遍历，true为已经遍历；count记录已经遍历的元素个数
+* count = nums.length时，表示已经遍历完全部元素，将list加入res中
+  * `res.add(new ArrayList<Integer>(list));`
+  * **需新建list，否则因为传入为地址值，后续修改list时，会修改res中的值**
+* 每一轮中选取nums中未遍历的元素（flag = false），加入list，更新flag，count后，进入下一轮遍历
+* **遍历结束后，需要回溯，更新flag，list**
+
+
+
+#### （3）实现
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    List<List<Integer>> res = new ArrayList<List<Integer>>();
+    public List<List<Integer>> permute(int[] nums) {
+        boolean[]   flag = new boolean[nums.length];
+        generate(nums, flag, 0, new ArrayList<>());
+
+        return res;
+    }
+
+    void generate(int[] nums, boolean[] flag, int count, ArrayList<Integer> list){
+        
+        if (count == nums.length){
+            res.add(new ArrayList<>(list));
+            return;
+        }
+        
+        for (int i = 0; i < flag.length; i++) {
+            if (flag[i] == false){
+                list.add(nums[i]);
+                flag[i] = true;
+                generate(nums, flag, count+1, list);
+                
+                //回溯
+                list.remove(count);
+                flag[i] = false;
+            }
+        }
+    }
+
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 52/39. 组合总和
+
+
+
+#### （1）题目
+
+给定一个无重复元素的正整数数组 candidates 和一个正整数 target ，找出 candidates 中所有可以使数字和为目标数 target 的唯一组合。
+
+candidates 中的数字可以无限制重复被选取。如果至少一个所选数字数量不同，则两种组合是唯一的。 
+
+对于给定的输入，保证和为 target 的唯一组合数少于 150 个。
+
+
+
+#### （2）思路
+
+* 模拟
+* ArrayList<ArrayList<Integer>> res记录答案，ArrayLIst<Integer> list记录当前遍历序列，index记录遍历当前遍历元素的下标，sum记录遍历序列元素和
+* **当前轮次，sum = target，将list加入res**
+* 每一轮遍历中，**依次将从当前index开始的元素试图加入list中**， tempSum = sum + candidate[i]
+  * **tempSum <= target，更新sum，list，并递归进入下一轮遍历；递归结束，回溯，更新sum，list**
+  * tempSum > target，跳出循环
+* 剪枝：对candidate排序
+
+
+
+#### （3）实现
+
+```java
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+
+    List<List<Integer>> res = new ArrayList<>();
+
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+
+        Arrays.sort(candidates);
+
+        generate(candidates, target, 0, 0, new ArrayList<>());
+
+        return res;
+    }
+
+    void generate(int[] candidates, int target, int index, int sum, ArrayList<Integer> list){
+        if (sum == target){
+            res.add(new ArrayList<>(list));
+            return;
+        }
+
+        for (int i = index; i < candidates.length; i++) {
+            int tempSum = sum + candidates[i];
+
+            if (tempSum <= target){
+                list.add(candidates[i]);
+                generate(candidates, target, i, tempSum, list);
+                list.remove(list.size()-1);
+            }else{
+                break;
+            }
+        }
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
