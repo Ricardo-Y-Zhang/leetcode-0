@@ -315,6 +315,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[49]group-anagrams.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[49]group-anagrams.java" />
+              <option name="questionId" value="49" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[4]median-of-two-sorted-arrays.java">
           <value>
             <LeetcodeEditor>
@@ -376,6 +384,22 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[621]task-scheduler.java" />
               <option name="questionId" value="621" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[62]unique-paths.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[62]unique-paths.java" />
+              <option name="questionId" value="62" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[64]minimum-path-sum.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[64]minimum-path-sum.java" />
+              <option name="questionId" value="64" />
             </LeetcodeEditor>
           </value>
         </entry>

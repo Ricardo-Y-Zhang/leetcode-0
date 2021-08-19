@@ -3981,3 +3981,179 @@ class Solution {
 //leetcode submit region end(Prohibit modification and deletion)
 ```
 
+
+
+
+
+### 53/62. 不同路径
+
+
+
+#### （1）题目
+
+一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为 “Start” ）。
+
+机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为 “Finish” ）。
+
+问总共有多少条不同的路径？
+
+
+
+#### （2）思路
+
+* 动态规划；每个位置有两种选择，向下或向右走，若用简单递归，时间复杂度为O( 2<sup>m*n</sup> )
+* path[n] [m]记录每个位置的路径数
+  * path[0] [0] = 1
+  * **状态转移方程：path[x] [y] = path[x-1] [y] + path[x] [y-1]**
+  * x或y < 0 时，path[x] [y] = 0
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+
+    public int uniquePaths(int m, int n) {
+        int[][] path = new int[n][m];
+        for (int i = 0; i < m; i++) {
+            
+            for (int j = 0; j < n; j++) {
+                
+                if (i == 0 && j == 0){
+                    path[j][i] = 1;
+                }else if (i == 0){
+                    path[j][i] = path[j-1][i];
+                }else if (j == 0){
+                    path[j][i] = path[j][i-1];
+                }else {
+                    path[j][i] = path[j][i-1] + path[j-1][i];
+                }
+            }
+        }
+
+        return path[n-1][m-1];
+
+    }
+
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 54/64. 最小路径和
+
+
+
+#### （1）题目
+
+给定一个包含非负整数的 m x n 网格 grid ，请找出一条从左上角到右下角的路径，使得路径上的数字总和为最小。
+
+说明：每次只能向下或者向右移动一步。
+
+
+
+#### （2）思路
+
+* 动态规划
+* 由题可知，每一个点的最短路径和只与其上方和左方节点有关
+* pathSum[n] 记录每一行节点的最短路径和，**不需要记录所有节点的最短路径和**
+  * **状态转移方程**：第x层的第y个节点，**pathSum[y] = min(pathSum[y-1] , pathSum[y]) + grid[x] [y]**
+  * 当计算到第y个节点时，pathSum[y-1]为**当前层的y-1节点**的最小路径和，pathSum[y]为**上一层的y节点**的最小路径和
+  * 注意特殊情况，x=0时，无上一层节点，只有左节点；y=0时，只有上一层节点，无左节点；x=0&&y=0
+
+
+
+#### （3）实现
+
+```java
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int minPathSum(int[][] grid) {
+        int x = grid[0].length, y = grid.length;
+
+        int[] pathSum = new int[x];
+
+        for (int i = 0; i < y; i++) {
+            for (int j = 0; j < x; j++) {
+
+                if (i == 0 && j == 0){
+                    pathSum[0] = grid[0][0];
+                }else if (i == 0){
+                    pathSum[j] = pathSum[j-1] + grid[i][j];
+                }else if (j == 0){
+                    pathSum[j] = pathSum[j] + grid[i][j];
+                }else {
+                    pathSum[j] = ( pathSum[j-1] < pathSum[j] ? pathSum[j-1] : pathSum[j] ) + grid[i][j];
+                }
+            }
+        }
+
+        return pathSum[x-1];
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 55/49. 字母异位词分组
+
+
+
+#### （1）题目
+
+给你一个字符串数组，请你将 字母异位词 组合在一起。可以按任意顺序返回结果列表。
+
+字母异位词 是由重新排列源单词的字母得到的一个新单词，所有源单词中的字母都恰好只用一次。
+
+
+
+#### （2）思路
+
+* **字母异位词按字典序升序排序后相同**
+* HashMap<String, List<String>>，**将排序之后的字符串作为key**，互为字母异位词的字符串组成的List作为value
+* `map.getOrDefault(temp, new ArrayList<String>())`，获取排序后的字符串为key的字母异位词组成的List，没有返回空的List
+
+
+
+#### （3）实现
+
+```java
+import java.util.*;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+
+
+        HashMap<String, List<String>> map = new HashMap<>();
+
+        for (int i = 0; i < strs.length; i++) {
+			
+            //转换为字典序升序的字符串
+            String key = strs[i];
+
+            char[] chars = key.toCharArray();
+            Arrays.sort(chars);
+
+            key = new String(chars);
+
+            List<String> list = map.getOrDefault(key, new ArrayList<String>());
+            list.add(strs[i]);
+
+            map.put(key, list);
+        }
+        return new ArrayList<List<String>>(map.values());
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
