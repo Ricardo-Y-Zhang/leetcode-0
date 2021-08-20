@@ -4157,3 +4157,294 @@ class Solution {
 //leetcode submit region end(Prohibit modification and deletion)
 ```
 
+
+
+
+
+### 56/79. 单词搜索
+
+
+
+#### （1）题目
+
+给定一个 m x n 二维字符网格 board 和一个字符串单词 word 。如果 word 存在于网格中，返回 true ；否则，返回 false 。
+
+单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。同一个单元格内的字母不允许被重复使用。
+
+ 
+
+#### （2）思路
+
+* 回溯
+* choose[] []记录当前轮次中board中哪些字母被选择； count记录当前在寻找word中的字符下标；i，j记录当前遍历字符在board中下标；全局变量flag记录是否找到该word
+* 以board中**每个符合要求的字符为起点**进行搜索，即与word[0]相同的字符
+* 当前搜索字符为board[x] [y]，对应word中count下标的字符，将choose[x] [y] = true；下次搜索可以搜索其上下左右的字符且满足要求的未搜索过的字符，即**choose[x1] [y1] = false && board[x1] [y1] = word.charAt(count+1)**；搜索结束回溯，将**choose[x] [y] = false**;
+* 剪枝：flag == true时，说明已经搜索到word，直接返回
+
+
+
+#### （3）实现
+
+```java
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+
+    boolean flag = false;
+    //上下左右
+    int[][] plus = {{-1,1,0,0}, {0,0,-1,1}};
+    
+    public boolean exist(char[][] board, String word) {
+        boolean[][] choose;
+        flag = false;
+        Label: for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                //在之前轮次中已经搜索到word，直接跳出
+                if (flag == true){
+                    break Label;
+                }
+                //从与word[0]相等的字母开始搜索
+                if (board[i][j] == word.charAt(0)){
+                    choose = new boolean[board.length][board[0].length];
+                    judge(board, word, 0, i, j, choose);
+                }
+
+            }
+        }
+        return flag;
+    }
+
+    void judge(char[][] board, String word, int count, int x, int y, boolean[][] choose){
+
+        if (flag == true){
+            return;
+        }
+        //修改当前位置的搜索状态
+        choose[x][y] = true;
+
+        if (count == word.length() - 1){
+            flag = true;
+            return;
+        }else if (count < word.length()-1){
+            //上下左右位置
+            for (int i = 0; i < 4; i++) {
+                int x1 = x + plus[0][i];
+                int y1 = y + plus[1][i];
+                
+                //满足要求：未搜索过且和word中下一个字符相等
+                if (x1 >= 0 && x1 < board.length && y1 >= 0 && y1 < board[0].length && choose[x1][y1] == false && board[x1][y1] == word.charAt(count+1)){
+                    judge(board, word, count+1, x1, y1, choose);
+                }
+
+            }
+        }
+
+        //回溯
+        choose[x][y] = false;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 57/128. 最长连续序列（ipt）
+
+
+
+#### （1）题目
+
+给定一个未排序的整数数组 nums ，找出数字连续的最长序列（不要求序列元素在原数组中连续）的长度。
+
+请你设计并实现时间复杂度为 O(n) 的算法解决此问题。
+
+
+
+#### （2）思路
+
+* 对数组排序
+* 时间复杂度：O(nlog<sub>n</sub>)
+* 遍历数组，temp记录以当前元素结尾的最长连续序列长度
+  * i == 0 || nums[i] == nums[i-1] + 1时，temp++
+  * nums[i] == nums[i-1]时，temp = temp
+  * 其他情况，temp = 1
+  * 记录最大的temp
+
+
+
+#### （3）实现
+
+```java
+import java.util.Arrays;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int longestConsecutive(int[] nums) {
+
+        //temp记录以上一个元素结尾的最长序列长度
+        int res = 0, temp  = 0;
+        Arrays.sort(nums);
+
+        for (int i = 0; i < nums.length; i++) {
+            //更新当前以当前元素结尾的最长序列长度
+            if (i == 0 || nums[i] == nums[i-1]+1){
+                temp++;
+                res = res > temp ? res : temp;
+            }else if (nums[i] == nums[i-1]){
+                temp = temp;
+            }else {
+                temp = 1;
+            }
+        }
+
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+#### （2.2）思路（ipt）
+
+* 集合去重，利用**O(1)**的时间复杂度取查询是否有下一个
+* 遍历集合，**若存在比当前元素小的连续元素，则让小的元素取搜索**
+* 时间复杂度：O(n)， 空间复杂度：O(n)
+
+
+
+#### （3.2）实现
+
+```java
+
+import java.util.HashSet;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int longestConsecutive(int[] nums) {
+
+        int res = 0;
+        HashSet<Integer> set = new HashSet<>();
+
+        //HashSet去重
+        for (int i = 0; i < nums.length; i++) {
+            set.add(nums[i]);
+        }
+
+        //
+        for (int num : set){
+
+            //优化搜索，只对没有更小的连续数的值搜索
+            if (!set.contains(num-1)){
+                int length = 1, number = num + 1;
+                while (set.contains(number)){
+                    length++;
+                    number++;
+                }
+
+                res = res > length ? res : length;
+            }
+        }
+
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+#### （2.3）思路
+
+* 并查集
+
+
+
+#### （3.3）实现
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int longestConsecutive(int[] nums) {
+
+        if (nums.length == 0){
+            return 0;
+        }
+
+        UnionFind uf = new UnionFind(nums);
+
+        for (int v : nums){
+            uf.union(v, v+1);//结盟
+        }
+
+        //二次遍历，记录领队距离
+        int max = 1;
+        for (int v : nums){
+            max = max > uf.find(v) - v + 1 ? max : (uf.find(v) - v +1);
+        }
+
+        return max;
+    }
+
+}
+
+class UnionFind {
+    private int count;
+    private Map<Integer, Integer> parent;
+
+    UnionFind(int[] arr){
+        parent = new HashMap<Integer, Integer>();
+
+        for (int v : arr){
+            parent.put(v, v);
+        }
+
+        count = parent.size();//无用
+    }
+
+    void union(int p, int q){
+        Integer rootP = find(p), rootQ = find(q);
+        if (rootP == rootQ){
+            return;
+        }
+        if (rootP == null || rootQ == null){
+            return;
+        }
+
+        parent.put(rootP, rootQ);;
+
+        count--;
+    }
+
+    Integer find(int p){
+        if (!parent.containsKey(p)){
+            return null;
+        }
+
+        int root = p;
+        while (root != parent.get(root)){
+            root = parent.get(root);
+        }
+
+        //路径压缩
+        while (p != parent.get(p)){
+            int curr = p;
+            p = parent.get(p);
+            parent.put(curr, root);
+        }
+
+        return root;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+

@@ -67,6 +67,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[128]longest-consecutive-sequence.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[128]longest-consecutive-sequence.java" />
+              <option name="questionId" value="128" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[136]single-number.java">
           <value>
             <LeetcodeEditor>
@@ -416,6 +424,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[78]subsets.java" />
               <option name="questionId" value="78" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[79]word-search.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[79]word-search.java" />
+              <option name="questionId" value="79" />
             </LeetcodeEditor>
           </value>
         </entry>
