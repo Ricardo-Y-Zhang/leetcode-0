@@ -83,7 +83,7 @@ class UnionFind {
             return;
         }
 
-        parent.put(rootP, rootQ);;
+        parent.put(rootP, rootQ);
 
         count--;
     }

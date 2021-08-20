@@ -4380,6 +4380,7 @@ class Solution {
             return 0;
         }
 
+        //初始化并查集，各自为战
         UnionFind uf = new UnionFind(nums);
 
         for (int v : nums){
@@ -4405,12 +4406,13 @@ class UnionFind {
         parent = new HashMap<Integer, Integer>();
 
         for (int v : arr){
-            parent.put(v, v);
+            parent.put(v, v);//各自为战
         }
 
         count = parent.size();//无用
     }
 
+    //合并
     void union(int p, int q){
         Integer rootP = find(p), rootQ = find(q);
         if (rootP == rootQ){
@@ -4420,7 +4422,7 @@ class UnionFind {
             return;
         }
 
-        parent.put(rootP, rootQ);;
+        parent.put(rootP, rootQ);
 
         count--;
     }
