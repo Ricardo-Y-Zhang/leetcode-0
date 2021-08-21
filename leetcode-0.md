@@ -4450,3 +4450,289 @@ class UnionFind {
 //leetcode submit region end(Prohibit modification and deletion)
 ```
 
+
+
+
+
+### 58/142. 环形链表II
+
+
+
+#### （1）题目
+
+给定一个链表，返回链表开始入环的第一个节点。 如果链表无环，则返回 null。
+
+为了表示给定链表中的环，我们使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 pos 是 -1，则在该链表中没有环。注意，pos 仅仅是用于标识环的情况，并不会作为参数传递到函数中。
+
+说明：不允许修改给定的链表。
+
+进阶：
+
+你是否可以使用 O(1) 空间解决此题？
+
+
+
+#### （2）思路
+
+* 快慢指针
+* 快慢指针均指向头节点head，快指针fast每次走两步，慢指针slow每次走一步
+  * 若是环形链表，则fast，slow将在某一节点相遇
+  * 若不是环形链表，fast将指向空节点
+* 当快慢指针相遇后，将快指针指向头节点head，与慢指针一样每次走一步，快慢指针相遇的节点即为环的起点
+* 数学分析：
+  * 第一次相遇：f，s分别为第一次相遇时快慢指针走的路程，a为头节点到环入口的距离，b为环的长度
+    * f = 2s（快指针每次两步，慢指针每次一步）
+    * f - s = nb（快指针追上慢指针，比慢指针多走几个环）
+    * 由上 s = nb
+  * 第二次相遇：快指针指向头节点head，每次走一步，当快指针走到环的起点时
+    * f = a，s = nb + a
+    * 慢指针也将走到环的起点
+
+
+
+#### （3）实现
+
+```java
+
+//leetcode submit region begin(Prohibit modification and deletion)
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode detectCycle(ListNode head) {
+
+        //快慢指针
+        ListNode fast = head, slow = head;
+        
+        //第一次相遇
+        while (fast != null && fast.next != null){
+            fast = fast.next.next;
+            slow = slow.next;
+            if (fast == slow){
+                break;
+            }
+        }
+
+
+        if (fast == null || fast.next == null){
+            return null;
+        }
+	
+        //第二次相遇
+        fast = head;
+        while (fast != slow){
+            fast = fast.next;
+            slow = slow.next;
+        }
+
+        return slow;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+### 59/139. 单词拆分
+
+
+
+#### （1）题目
+
+给定一个非空字符串 s 和一个包含非空单词的列表 wordDict，判定 s 是否可以被空格拆分为一个或多个在字典中出现的单词。
+
+说明：
+
+拆分时可以重复使用字典中的单词。
+你可以假设字典中没有重复的单词。
+
+
+
+#### （2）思路
+
+* 动态规划（若无好的策略，考虑动态规划）
+* state[s.length() + 1]记录字符串s到当前下标，是否能成功拆分
+  * state[x] ，true表示s中[0, x) 部分可成功拆分，false表示不能拆分
+  * state[0] = true
+* 遍历state[]，更新每个位置状态
+* 遍历到state[x] 时，**遍历wordDict中的元素str，考虑str是否能和已经拆分成功的字符串组合成功**
+  * 考虑state[x-str.length()]是否为true
+  * 考虑s.subString(x - str.length(), x)是否和str相同
+  * **状态转移方程：state[x] = state[x-str.length()] && s.subString(x-str.length(), x).equals(str)**
+
+
+
+#### （3）实现
+
+```java
+import java.util.List;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    
+    public boolean wordBreak(String s, List<String> wordDict) {
+        
+        boolean[] state = new boolean[s.length() + 1];
+        state[0] = true;
+
+        for (int i = 1; i < state.length; i++) {
+            
+            //遍历wordDict，查看是否能和已经拆分成功的字符串组合
+            for (String str : wordDict){
+                int fromIndex = i - str.length();
+                
+                //状态转移方程
+                if (fromIndex >= 0 && state[fromIndex] == true && str.equals(s.substring(fromIndex, i))){
+                    state[i] = true;
+                    break;
+                }
+            }
+
+        }
+
+        return state[s.length()];
+
+    }
+
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 60/146. LRU缓存机制
+
+
+
+#### （1）题目
+
+运用你所掌握的数据结构，设计和实现一个  LRU (最近最少使用) 缓存机制 。
+实现 LRUCache 类：
+
+LRUCache(int capacity) 以正整数作为容量 capacity 初始化 LRU 缓存
+int get(int key) 如果关键字 key 存在于缓存中，则返回关键字的值，否则返回 -1 。
+void put(int key, int value) 如果关键字已经存在，则变更其数据值；如果关键字不存在，则插入该组「关键字-值」。当缓存容量达到上限时，它应该在写入新数据之前删除最久未使用的数据值，从而为新的数据值留出空间。
+
+
+进阶：你是否可以在 O(1) 时间复杂度内完成这两种操作？
+
+
+
+#### （2）思路
+
+* 使用双向链表和哈希表实现
+
+
+
+#### （3）实现
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class LRUCache {
+
+
+    class DLinkedNode{
+        int key;
+        int value;
+        DLinkedNode prev;
+        DLinkedNode next;
+        public DLinkedNode(){}
+        public DLinkedNode(int key, int value){
+            this.key = key;
+            this.value = value;
+        }
+    }
+
+    private Map<Integer, DLinkedNode> cache = new HashMap<>();
+    private int size;
+    private int capacity;
+    private DLinkedNode head, tail;
+    public LRUCache(int capacity) {
+        this.size = 0;
+        this.capacity = capacity;
+
+        head = new DLinkedNode();
+        tail = new DLinkedNode();
+        head.next = tail;
+        tail.prev = head;
+    }
+    
+    public int get(int key) {
+        DLinkedNode node = cache.get(key);
+        if (node == null){
+            return -1;
+        }
+
+        moveToHead(node);
+        return node.value;
+    }
+    
+    public void put(int key, int value) {
+        DLinkedNode node = cache.get(key);
+        if (node == null){
+
+            DLinkedNode newNode = new DLinkedNode(key, value);
+
+            cache.put(key, newNode);
+
+            addToHead(newNode);
+
+            size++;
+            if (size > capacity){
+                DLinkedNode tail = removeTail();
+
+                cache.remove(tail.key);
+                size--;
+            }
+        }else{
+            node.value = value;
+            moveToHead(node);
+        }
+    }
+
+    private void addToHead(DLinkedNode node) {
+        node.prev = head;
+        node.next = head.next;
+        head.next.prev = node;
+        head.next = node;
+    }
+
+    private void removeNode(DLinkedNode node) {
+        node.prev.next = node.next;
+        node.next.prev = node.prev;
+    }
+
+    private void moveToHead(DLinkedNode node){
+        removeNode(node);
+        addToHead(node);
+    }
+
+    private DLinkedNode removeTail(){
+        DLinkedNode res = tail.prev;
+        removeNode(res);
+        return res;
+    }
+}
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache obj = new LRUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
+ */
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
