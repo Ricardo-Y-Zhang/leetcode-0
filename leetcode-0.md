@@ -4736,3 +4736,244 @@ class LRUCache {
 //leetcode submit region end(Prohibit modification and deletion)
 ```
 
+
+
+
+
+### 61/152. 乘积最大子数组
+
+
+
+#### （1）题目
+
+给你一个整数数组 `nums` ，请你找出数组中乘积最大的连续子数组（该子数组中至少包含一个数字），并返回该子数组所对应的乘积。
+
+
+
+#### （2）思路
+
+* 动态规划
+* 考虑到元素可能为负数，则需要记录乘积的最大值和最小值
+* dpMin[ ], dpMax[ ]记录以当前下标为终点的连续子数组的乘积的最大值和最小值
+* 状态转移方程：
+  * **dpMin[i] = min ( dpMin[i-1] * nums[i], dpMax[i-1] * nums[i], nums[i] )**
+  * **dpMax[i] = max ( dpMin[i-1] * nums[i], dpMax[i-1] * nums[i], nums[i] )**
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int maxProduct(int[] nums) {
+
+        int res = nums[0];
+
+        int[] dpMax = new int[nums.length];
+
+        int[] dpMin = new int[nums.length];
+
+        //初始化
+        dpMax[0] = nums[0];
+        dpMin[0] = nums[0];
+
+        for (int i = 1; i < nums.length; i++){
+            //状态转移
+            dpMax[i] = getMax(dpMax[i-1] * nums[i], dpMin[i-1] * nums[i], nums[i]);
+            dpMin[i] = getMin(dpMax[i-1] * nums[i], dpMin[i-1] * nums[i], nums[i]);
+
+            //记录最大乘积
+            res = dpMax[i] > res ? dpMax[i] : res;
+         }
+
+        return res;
+    }
+
+    public int getMax(int a, int b, int c){
+        int max = a > b ? a : b;
+        max = max > c ? max : c;
+        return max;
+    }
+
+    public int getMin(int a, int b, int c){
+        int min = a < b ? a : b;
+        min = min < c ? min : c;
+        return min;
+    }
+
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 62/221. 最大正方形
+
+
+
+#### （1）题目
+
+在一个由 `'0'` 和 `'1'` 组成的二维矩阵内，找到只包含 `'1'` 的最大正方形，并返回其面积。
+
+
+
+#### （2）思路
+
+* 动态规划
+* dp[x] [y] 记录以(x, y)为底角的矩阵内的最大正方形的边长
+* 状态转移方程：
+  * 若matrix[x] [y] = '0' ，dp[x] [y] = 0
+  * 若matrix[x] [y] = '1'， 考虑dp[x-1] [y-1]（注意x=0，y=0的情况）
+    * dp[x-1] [y-1] = len
+    * 考虑  matrix[x] [y] ~ matrix[x-len] [y] 和 matrix[x] [y] ~ matrix[x] [y-len] 上连续为 '1' 的个数 plus
+    * dp[x] [y] = plus
+  * 记录最大边长res
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int maximalSquare(char[][] matrix) {
+
+        int res = 0;
+
+        int[][] dp = new int[matrix.length][matrix[0].length];
+
+        for (int i = 0; i < matrix.length; i++) {
+            
+            for (int j = 0; j < matrix[0].length; j++) {
+                
+                if (matrix[i][j] == '1'){
+                    
+                    //边界位置
+                    if (i == 0 || j == 0){
+                        dp[i][j] = 1;
+                    }else{
+                        //左上位置的最大边长
+                        int len = dp[i-1][j-1];
+
+                        //记录行列同为'1'的个数
+                        int plus = 0;
+                        for (int k = i, l = j; k >= i-len && l >= j-len; k--, l--) {
+                            if (matrix[k][j] == '0' || matrix[i][l] == '0'){
+                                break;
+                            }
+
+                            plus++;
+                        }
+
+                        //更新以(i, j) 为底角的矩阵的最大正方形边长
+                        dp[i][j] = plus;
+                    }
+                }
+                
+                //更新整个矩阵的最大正方形边长
+                res = res > dp[i][j] ? res : dp[i][j];
+            }
+        }
+
+        return res * res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 63/208. 实现Trie（前缀树）（ipt）
+
+
+
+#### （1）题目
+
+Trie（发音类似 "try"）或者说 前缀树 是一种树形数据结构，用于高效地存储和检索字符串数据集中的键。这一数据结构有相当多的应用情景，例如自动补完和拼写检查。
+
+请你实现 Trie 类：
+
+Trie() 初始化前缀树对象。
+void insert(String word) 向前缀树中插入字符串 word 。
+boolean search(String word) 如果字符串 word 在前缀树中，返回 true（即，在检索之前已经插入）；否则，返回 false 。
+boolean startsWith(String prefix) 如果之前已经插入的字符串 word 的前缀之一为 prefix ，返回 true ；否则，返回 false 
+
+
+
+#### （2）思路
+
+
+
+
+
+#### （3）实现
+
+```java
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Trie {
+
+    private Trie[] children;
+    private boolean isEnd;
+
+    /** Initialize your data structure here. */
+    public Trie() {
+        children = new Trie[26];
+        isEnd = false;
+    }
+    
+    /** Inserts a word into the trie. */
+    public void insert(String word) {
+        Trie node = this;
+        for (int i = 0; i < word.length(); i++) {
+            char ch = word.charAt(i);
+            int index = ch - 'a';
+            if (node.children[index] == null){
+                node.children[index] = new Trie();
+            }
+            node = node.children[index];
+        }
+
+        node.isEnd = true;
+    }
+    
+    /** Returns if the word is in the trie. */
+    public boolean search(String word) {
+        Trie node = searchPrefix(word);
+        return node != null && node.isEnd;
+    }
+    
+    /** Returns if there is any word in the trie that starts with the given prefix. */
+    public boolean startsWith(String prefix) {
+        return searchPrefix(prefix) != null;
+    }
+
+    private Trie searchPrefix(String prefix){
+        Trie node = this;
+        for (int i = 0; i < prefix.length(); i++) {
+            char ch = prefix.charAt(i);
+            int index = ch - 'a';
+            if (node.children[index] == null){
+                return null;
+            }
+            node = node.children[index];
+        }
+        return node;
+    }
+}
+
+/**
+ * Your Trie object will be instantiated and called as such:
+ * Trie obj = new Trie();
+ * obj.insert(word);
+ * boolean param_2 = obj.search(word);
+ * boolean param_3 = obj.startsWith(prefix);
+ */
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
