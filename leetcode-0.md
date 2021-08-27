@@ -4977,3 +4977,107 @@ class Trie {
 //leetcode submit region end(Prohibit modification and deletion)
 ```
 
+
+
+
+
+### 64/238. 除自身以外数组的乘积
+
+
+
+#### （1）题目
+
+给你一个长度为 n 的整数数组 nums，其中 n > 1，返回输出数组 output ，其中 output[i] 等于 nums 中除 nums[i] 之外其余各元素的乘积。
+
+
+
+#### （2）思路
+
+* prefix[ ], suffix[ ]记录数组的前缀乘积和后缀乘积
+* 返回数组res[i] = prefix[i] * suffix[i]
+* 时间复杂度：O(n)，空间复杂度：O(n)
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        int[] prefix = new int[nums.length];
+
+        int[] suffix = new int[nums.length];
+
+        prefix[0] = 1;
+        int temp = 1;
+
+        for (int i = 1; i < nums.length; i++) {
+            temp *= nums[i-1];
+            prefix[i] = temp;
+        }
+
+        suffix[nums.length-1] = 1;
+        temp = 1;
+        for (int i = nums.length-2; i >= 0 ; i--) {
+            temp *= nums[i+1];
+            suffix[i] = temp;
+        }
+
+        int[] res = new int[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+
+            res[i] = prefix[i] * suffix[i];
+        }
+
+        return res;
+    }
+}
+```
+
+
+
+
+
+#### （2.2）思路（改进）
+
+* 使用prefix[ ]记录nums数组的前缀乘积，不使用suffix[ ]记录nums数组的后缀乘积，并将prefix[ ]作为最后的输出数组
+* 第一次遍历填充prefix[ ]，第二次遍历记录当前位置的后缀乘积temp，同时修改prefix[ ]
+  * prefix[i] *= temp
+
+* 时间复杂度：O(n)，空间复杂度：O(1)
+
+
+
+#### （3.2）实现
+
+```java
+class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        int[] prefix = new int[nums.length];
+
+        prefix[0] = 1;
+        int temp = 1;
+
+        for (int i = 1; i < nums.length; i++) {
+
+            temp *= nums[i-1];
+
+            prefix[i] = temp;
+        }
+
+        temp = 1;
+
+        for (int i = nums.length-1; i >= 0 ; i--) {
+
+            prefix[i] = prefix[i] * temp;
+
+            temp *= nums[i];
+
+        }
+
+        return prefix;
+    }
+}
+```
+

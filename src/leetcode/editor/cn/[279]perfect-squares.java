@@ -33,42 +33,43 @@
 
 package leetcode.editor.cn;
 
+import java.util.HashSet;
+
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     int res = 10000;
-    int[] k = new int[101];
     public int numSquares(int n) {
-        res = 10000;
-        for (int i = 0; i < 101; i++) {
-            k[i] = i * i;
+        HashSet<Integer> set = new HashSet<>();
+
+        for (int i = 1; i < 101; i++) {
+            set.add(i*i);
         }
 
-//        for (int i = 1; i <= (int) Math.sqrt(n); i++) {
-//            find(n, i, 0, 0);
-//            System.out.println("res = " + res);
-//        }
-        find(43, 5, 0, 0);
+        if (set.contains(n)){
+            return 1;
+        }
+
+        find(0, set, n);
+
         return res;
     }
 
-    public void find(int n, int x, int temp, int num){
-        if (x == 0){
+    public void find(int num, HashSet<Integer> set, int target) {
+        if (num >= res || target < 0){
             return;
         }
 
-        if (temp + k[x] < n){
-            System.out.println("x = " + x);
-            find(n, x, temp + k[x], num+1);
-        }else {
-            if (temp + k[x] == n) {
-                System.out.println("x = " + x);
-                num++;
-                if (num < res) {
-                    res = num;
+
+        for (int i = 100; i >= 1; i--) {
+            int newTarget = target - i*i;
+            int newNum  = num + 1;
+            if (newNum < res && newTarget > 0){
+                if (set.contains(newTarget)){
+                    res = newNum + 1;
+                }else {
+                    find(newNum, set, newTarget);
                 }
-                num--;
             }
-            find(n,x-1, temp, num);
         }
     }
 
