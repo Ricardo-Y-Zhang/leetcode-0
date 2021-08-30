@@ -3041,7 +3041,536 @@ class Solution {
 
 
 
-## 七、unknown
+
+
+## 七、动态规划
+
+
+
+### 53/62. 不同路径
+
+
+
+#### （1）题目
+
+一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为 “Start” ）。
+
+机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为 “Finish” ）。
+
+问总共有多少条不同的路径？
+
+
+
+#### （2）思路
+
+* 动态规划；每个位置有两种选择，向下或向右走，若用简单递归，时间复杂度为O( 2<sup>m*n</sup> )
+* path[n] [m]记录每个位置的路径数
+  * path[0] [0] = 1
+  * **状态转移方程：path[x] [y] = path[x-1] [y] + path[x] [y-1]**
+  * x或y < 0 时，path[x] [y] = 0
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+
+    public int uniquePaths(int m, int n) {
+        int[][] path = new int[n][m];
+        for (int i = 0; i < m; i++) {
+            
+            for (int j = 0; j < n; j++) {
+                
+                if (i == 0 && j == 0){
+                    path[j][i] = 1;
+                }else if (i == 0){
+                    path[j][i] = path[j-1][i];
+                }else if (j == 0){
+                    path[j][i] = path[j][i-1];
+                }else {
+                    path[j][i] = path[j][i-1] + path[j-1][i];
+                }
+            }
+        }
+
+        return path[n-1][m-1];
+
+    }
+
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 54/64. 最小路径和
+
+
+
+#### （1）题目
+
+给定一个包含非负整数的 m x n 网格 grid ，请找出一条从左上角到右下角的路径，使得路径上的数字总和为最小。
+
+说明：每次只能向下或者向右移动一步。
+
+
+
+#### （2）思路
+
+* 动态规划
+* 由题可知，每一个点的最短路径和只与其上方和左方节点有关
+* pathSum[n] 记录每一行节点的最短路径和，**不需要记录所有节点的最短路径和**
+  * **状态转移方程**：第x层的第y个节点，**pathSum[y] = min(pathSum[y-1] , pathSum[y]) + grid[x] [y]**
+  * 当计算到第y个节点时，pathSum[y-1]为**当前层的y-1节点**的最小路径和，pathSum[y]为**上一层的y节点**的最小路径和
+  * 注意特殊情况，x=0时，无上一层节点，只有左节点；y=0时，只有上一层节点，无左节点；x=0&&y=0
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int minPathSum(int[][] grid) {
+        int x = grid[0].length, y = grid.length;
+
+        int[] pathSum = new int[x];
+
+        for (int i = 0; i < y; i++) {
+            for (int j = 0; j < x; j++) {
+
+                if (i == 0 && j == 0){
+                    pathSum[0] = grid[0][0];
+                }else if (i == 0){
+                    pathSum[j] = pathSum[j-1] + grid[i][j];
+                }else if (j == 0){
+                    pathSum[j] = pathSum[j] + grid[i][j];
+                }else {
+                    pathSum[j] = ( pathSum[j-1] < pathSum[j] ? pathSum[j-1] : pathSum[j] ) + grid[i][j];
+                }
+            }
+        }
+
+        return pathSum[x-1];
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 59/139. 单词拆分
+
+
+
+#### （1）题目
+
+给定一个非空字符串 s 和一个包含非空单词的列表 wordDict，判定 s 是否可以被空格拆分为一个或多个在字典中出现的单词。
+
+说明：
+
+拆分时可以重复使用字典中的单词。
+你可以假设字典中没有重复的单词。
+
+
+
+#### （2）思路
+
+* 动态规划（若无好的策略，考虑动态规划）
+* state[s.length() + 1]记录字符串s到当前下标，是否能成功拆分
+  * state[x] ，true表示s中[0, x) 部分可成功拆分，false表示不能拆分
+  * state[0] = true
+* 遍历state[]，更新每个位置状态
+* 遍历到state[x] 时，**遍历wordDict中的元素str，考虑str是否能和已经拆分成功的字符串组合成功**
+  * 考虑state[x-str.length()]是否为true
+  * 考虑s.subString(x - str.length(), x)是否和str相同
+  * **状态转移方程：state[x] = state[x-str.length()] && s.subString(x-str.length(), x).equals(str)**
+
+
+
+#### （3）实现
+
+```java
+import java.util.List;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    
+    public boolean wordBreak(String s, List<String> wordDict) {
+        
+        boolean[] state = new boolean[s.length() + 1];
+        state[0] = true;
+
+        for (int i = 1; i < state.length; i++) {
+            
+            //遍历wordDict，查看是否能和已经拆分成功的字符串组合
+            for (String str : wordDict){
+                int fromIndex = i - str.length();
+                
+                //状态转移方程
+                if (fromIndex >= 0 && state[fromIndex] == true && str.equals(s.substring(fromIndex, i))){
+                    state[i] = true;
+                    break;
+                }
+            }
+
+        }
+
+        return state[s.length()];
+
+    }
+
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
+### 61/152. 乘积最大子数组
+
+
+
+#### （1）题目
+
+给你一个整数数组 `nums` ，请你找出数组中乘积最大的连续子数组（该子数组中至少包含一个数字），并返回该子数组所对应的乘积。
+
+
+
+#### （2）思路
+
+* 动态规划
+* 考虑到元素可能为负数，则需要记录乘积的最大值和最小值
+* dpMin[ ], dpMax[ ]记录以当前下标为终点的连续子数组的乘积的最大值和最小值
+* 状态转移方程：
+  * **dpMin[i] = min ( dpMin[i-1] * nums[i], dpMax[i-1] * nums[i], nums[i] )**
+  * **dpMax[i] = max ( dpMin[i-1] * nums[i], dpMax[i-1] * nums[i], nums[i] )**
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int maxProduct(int[] nums) {
+
+        int res = nums[0];
+
+        int[] dpMax = new int[nums.length];
+
+        int[] dpMin = new int[nums.length];
+
+        //初始化
+        dpMax[0] = nums[0];
+        dpMin[0] = nums[0];
+
+        for (int i = 1; i < nums.length; i++){
+            //状态转移
+            dpMax[i] = getMax(dpMax[i-1] * nums[i], dpMin[i-1] * nums[i], nums[i]);
+            dpMin[i] = getMin(dpMax[i-1] * nums[i], dpMin[i-1] * nums[i], nums[i]);
+
+            //记录最大乘积
+            res = dpMax[i] > res ? dpMax[i] : res;
+         }
+
+        return res;
+    }
+
+    public int getMax(int a, int b, int c){
+        int max = a > b ? a : b;
+        max = max > c ? max : c;
+        return max;
+    }
+
+    public int getMin(int a, int b, int c){
+        int min = a < b ? a : b;
+        min = min < c ? min : c;
+        return min;
+    }
+
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 62/221. 最大正方形
+
+
+
+#### （1）题目
+
+在一个由 `'0'` 和 `'1'` 组成的二维矩阵内，找到只包含 `'1'` 的最大正方形，并返回其面积。
+
+
+
+#### （2）思路
+
+* 动态规划
+* dp[x] [y] 记录以(x, y)为底角的矩阵内的最大正方形的边长
+* 状态转移方程：
+  * 若matrix[x] [y] = '0' ，dp[x] [y] = 0
+  * 若matrix[x] [y] = '1'， 考虑dp[x-1] [y-1]（注意x=0，y=0的情况）
+    * dp[x-1] [y-1] = len
+    * 考虑  matrix[x] [y] ~ matrix[x-len] [y] 和 matrix[x] [y] ~ matrix[x] [y-len] 上连续为 '1' 的个数 plus
+    * dp[x] [y] = plus
+  * 记录最大边长res
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int maximalSquare(char[][] matrix) {
+
+        int res = 0;
+
+        int[][] dp = new int[matrix.length][matrix[0].length];
+
+        for (int i = 0; i < matrix.length; i++) {
+            
+            for (int j = 0; j < matrix[0].length; j++) {
+                
+                if (matrix[i][j] == '1'){
+                    
+                    //边界位置
+                    if (i == 0 || j == 0){
+                        dp[i][j] = 1;
+                    }else{
+                        //左上位置的最大边长
+                        int len = dp[i-1][j-1];
+
+                        //记录行列同为'1'的个数
+                        int plus = 0;
+                        for (int k = i, l = j; k >= i-len && l >= j-len; k--, l--) {
+                            if (matrix[k][j] == '0' || matrix[i][l] == '0'){
+                                break;
+                            }
+
+                            plus++;
+                        }
+
+                        //更新以(i, j) 为底角的矩阵的最大正方形边长
+                        dp[i][j] = plus;
+                    }
+                }
+                
+                //更新整个矩阵的最大正方形边长
+                res = res > dp[i][j] ? res : dp[i][j];
+            }
+        }
+
+        return res * res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 66/300. 最长递增子序列
+
+
+
+#### （1）题目
+
+给你一个整数数组 nums ，找到其中最长严格递增子序列的长度。
+
+子序列是由数组派生而来的序列，删除（或不删除）数组中的元素而不改变其余元素的顺序。例如，[3,6,2,7] 是数组 [0,3,1,6,2,2,7] 的子序列。
+
+ 
+
+
+
+#### （2）思路
+
+* 动态规划
+* **dp[index]记录以下标为index结尾的上升子序列的最大长度，dp[ ]初始化为1**
+* 动态转移方程：
+  * **dp[i] = max ( dp[i]，dp[j] + 1)，nums[i] > nums[j] && 0 <= j < i**
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+
+        int res = 0;
+
+        int[] dp = new int[nums.length];
+
+        Arrays.fill(dp, 1);
+
+        for (int i = 0; i < nums.length; i++) {
+
+            for (int j = 0; j < i; j++) {
+
+                if (nums[j] < nums[i]){
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                }
+            }
+
+            res = Math.max(res, dp[i]);
+        }
+
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+
+```
+
+
+
+
+
+### 八、背包问题
+
+
+
+### 65/279. 完全平方数
+
+
+
+#### （1）题目
+
+给定正整数 n，找到若干个完全平方数（比如 1, 4, 9, 16, ...）使得它们的和等于 n。你需要让组成和的完全平方数的个数最少。
+
+给你一个整数 n ，返回和为 n 的完全平方数的 最少数量 。
+
+完全平方数 是一个整数，其值等于另一个整数的平方；换句话说，其值等于一个整数自乘的积。例如，1、4、9 和 16 都是完全平方数，而 3 和 11 不是。
+
+
+
+#### （2）思路
+
+* 将1~100的平方数压入HashSet中，全局变量res记录当前的组成和的完全平方数的最少个数
+* BFS：num为已经组合的元素个数，target为n剩余的和，从大到小，将1~100的平方数的当作组成元素；更新num，target
+  * num >= res || target < 0，跳出
+  * num < res && target > 0 
+    * set.contains(target)：res = num + 1
+    * ! set.contains(target)：进入下一层递归
+
+
+
+#### （3）实现
+
+```java
+import java.util.HashSet;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    int res = 10000;
+    public int numSquares(int n) {
+        HashSet<Integer> set = new HashSet<>();
+
+        for (int i = 1; i < 101; i++) {
+            set.add(i*i);
+        }
+
+        if (set.contains(n)){
+            return 1;
+        }
+
+        find(0, set, n);
+
+        return res;
+    }
+
+    public void find(int num, HashSet<Integer> set, int target) {
+        if (num >= res || target < 0){
+            return;
+        }
+
+
+        for (int i = 100; i >= 1; i--) {
+            int newTarget = target - i*i;
+            int newNum  = num + 1;
+            if (newNum < res && newTarget > 0){
+                if (set.contains(newTarget)){
+                    res = newNum + 1;
+                }else {
+                    find(newNum, set, newTarget);
+                }
+            }
+        }
+    }
+
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+#### （2.2）思路
+
+* 完全背包（元素可以选无限个）（朴素解法）
+  * f[i] [j]为考虑前 i 个数字，凑出数字总和 j 所需用到的最少数字数量
+  * 状态转移方程：f[i] [j] = min ( f [i - 1] [j - k * t] + k ) ，0 <= k * t <= j
+  * 超时风险
+* 完全背包（进阶）
+  * f[i] [j]为考虑前 i 个数字，凑出数字总和 j 所需用到的最少数字数量
+  * t为第 i 个数字大小
+  * f [i] [j] = min ( f [i-1] [j] + 0, **f [ i-1 ] [ j-t ] + 1，f [ i-1 ] [ j-2t ] + 2，...... ，f [ i-1 ] [ j-kt ] + k )** ，0 <= k*t <= j
+  * f [i] [ j-t ] =                   **min ( f [ i-1 ] [ j-t ] + 0，f [ i-1 ] [ j-2t ] + 1，f [i - 1] [j - 3t] + 2，...... ，f [ i-1 ] [ j-kt ] + (k - 1) )** ，0 <= k*t <=j
+  * 由上 **f [i] [j] = min ( f [ i-1 ] [j]，f [i] [ j-t ] + 1 ) **
+  * i 的维度消除：f [j] = min ( f [j], f[ j-t ] + 1 )
+
+
+
+#### （3.2）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+
+    public int numSquares(int n) {
+        int[] dp = new int[n+1];
+
+        Arrays.fill(dp, 0x3f3f3f3f);
+        dp[0] = 0;
+
+        for (int t = 1; t * t <= n; t++){
+            int x  = t * t;
+            for (int j = x; j <= n; j++){
+                //状态转移方程
+                dp[j] = Math.min(dp[j], dp[j-x] + 1);
+            }
+        }
+
+        return dp[n];
+    }
+
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+## 九、unknown
 
 
 
@@ -3985,125 +4514,6 @@ class Solution {
 
 
 
-### 53/62. 不同路径
-
-
-
-#### （1）题目
-
-一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为 “Start” ）。
-
-机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为 “Finish” ）。
-
-问总共有多少条不同的路径？
-
-
-
-#### （2）思路
-
-* 动态规划；每个位置有两种选择，向下或向右走，若用简单递归，时间复杂度为O( 2<sup>m*n</sup> )
-* path[n] [m]记录每个位置的路径数
-  * path[0] [0] = 1
-  * **状态转移方程：path[x] [y] = path[x-1] [y] + path[x] [y-1]**
-  * x或y < 0 时，path[x] [y] = 0
-
-
-
-#### （3）实现
-
-```java
-//leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-
-    public int uniquePaths(int m, int n) {
-        int[][] path = new int[n][m];
-        for (int i = 0; i < m; i++) {
-            
-            for (int j = 0; j < n; j++) {
-                
-                if (i == 0 && j == 0){
-                    path[j][i] = 1;
-                }else if (i == 0){
-                    path[j][i] = path[j-1][i];
-                }else if (j == 0){
-                    path[j][i] = path[j][i-1];
-                }else {
-                    path[j][i] = path[j][i-1] + path[j-1][i];
-                }
-            }
-        }
-
-        return path[n-1][m-1];
-
-    }
-
-}
-//leetcode submit region end(Prohibit modification and deletion)
-```
-
-
-
-
-
-### 54/64. 最小路径和
-
-
-
-#### （1）题目
-
-给定一个包含非负整数的 m x n 网格 grid ，请找出一条从左上角到右下角的路径，使得路径上的数字总和为最小。
-
-说明：每次只能向下或者向右移动一步。
-
-
-
-#### （2）思路
-
-* 动态规划
-* 由题可知，每一个点的最短路径和只与其上方和左方节点有关
-* pathSum[n] 记录每一行节点的最短路径和，**不需要记录所有节点的最短路径和**
-  * **状态转移方程**：第x层的第y个节点，**pathSum[y] = min(pathSum[y-1] , pathSum[y]) + grid[x] [y]**
-  * 当计算到第y个节点时，pathSum[y-1]为**当前层的y-1节点**的最小路径和，pathSum[y]为**上一层的y节点**的最小路径和
-  * 注意特殊情况，x=0时，无上一层节点，只有左节点；y=0时，只有上一层节点，无左节点；x=0&&y=0
-
-
-
-#### （3）实现
-
-```java
-
-//leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-    public int minPathSum(int[][] grid) {
-        int x = grid[0].length, y = grid.length;
-
-        int[] pathSum = new int[x];
-
-        for (int i = 0; i < y; i++) {
-            for (int j = 0; j < x; j++) {
-
-                if (i == 0 && j == 0){
-                    pathSum[0] = grid[0][0];
-                }else if (i == 0){
-                    pathSum[j] = pathSum[j-1] + grid[i][j];
-                }else if (j == 0){
-                    pathSum[j] = pathSum[j] + grid[i][j];
-                }else {
-                    pathSum[j] = ( pathSum[j-1] < pathSum[j] ? pathSum[j-1] : pathSum[j] ) + grid[i][j];
-                }
-            }
-        }
-
-        return pathSum[x-1];
-    }
-}
-//leetcode submit region end(Prohibit modification and deletion)
-```
-
-
-
-
-
 ### 55/49. 字母异位词分组
 
 
@@ -4541,73 +4951,6 @@ public class Solution {
 
 
 
-### 59/139. 单词拆分
-
-
-
-#### （1）题目
-
-给定一个非空字符串 s 和一个包含非空单词的列表 wordDict，判定 s 是否可以被空格拆分为一个或多个在字典中出现的单词。
-
-说明：
-
-拆分时可以重复使用字典中的单词。
-你可以假设字典中没有重复的单词。
-
-
-
-#### （2）思路
-
-* 动态规划（若无好的策略，考虑动态规划）
-* state[s.length() + 1]记录字符串s到当前下标，是否能成功拆分
-  * state[x] ，true表示s中[0, x) 部分可成功拆分，false表示不能拆分
-  * state[0] = true
-* 遍历state[]，更新每个位置状态
-* 遍历到state[x] 时，**遍历wordDict中的元素str，考虑str是否能和已经拆分成功的字符串组合成功**
-  * 考虑state[x-str.length()]是否为true
-  * 考虑s.subString(x - str.length(), x)是否和str相同
-  * **状态转移方程：state[x] = state[x-str.length()] && s.subString(x-str.length(), x).equals(str)**
-
-
-
-#### （3）实现
-
-```java
-import java.util.List;
-
-//leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-    
-    public boolean wordBreak(String s, List<String> wordDict) {
-        
-        boolean[] state = new boolean[s.length() + 1];
-        state[0] = true;
-
-        for (int i = 1; i < state.length; i++) {
-            
-            //遍历wordDict，查看是否能和已经拆分成功的字符串组合
-            for (String str : wordDict){
-                int fromIndex = i - str.length();
-                
-                //状态转移方程
-                if (fromIndex >= 0 && state[fromIndex] == true && str.equals(s.substring(fromIndex, i))){
-                    state[i] = true;
-                    break;
-                }
-            }
-
-        }
-
-        return state[s.length()];
-
-    }
-
-}
-//leetcode submit region end(Prohibit modification and deletion)
-```
-
-
-
 
 
 ### 60/146. LRU缓存机制（未解决）
@@ -4733,154 +5076,6 @@ class LRUCache {
  * int param_1 = obj.get(key);
  * obj.put(key,value);
  */
-//leetcode submit region end(Prohibit modification and deletion)
-```
-
-
-
-
-
-### 61/152. 乘积最大子数组
-
-
-
-#### （1）题目
-
-给你一个整数数组 `nums` ，请你找出数组中乘积最大的连续子数组（该子数组中至少包含一个数字），并返回该子数组所对应的乘积。
-
-
-
-#### （2）思路
-
-* 动态规划
-* 考虑到元素可能为负数，则需要记录乘积的最大值和最小值
-* dpMin[ ], dpMax[ ]记录以当前下标为终点的连续子数组的乘积的最大值和最小值
-* 状态转移方程：
-  * **dpMin[i] = min ( dpMin[i-1] * nums[i], dpMax[i-1] * nums[i], nums[i] )**
-  * **dpMax[i] = max ( dpMin[i-1] * nums[i], dpMax[i-1] * nums[i], nums[i] )**
-
-
-
-#### （3）实现
-
-```java
-//leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-    public int maxProduct(int[] nums) {
-
-        int res = nums[0];
-
-        int[] dpMax = new int[nums.length];
-
-        int[] dpMin = new int[nums.length];
-
-        //初始化
-        dpMax[0] = nums[0];
-        dpMin[0] = nums[0];
-
-        for (int i = 1; i < nums.length; i++){
-            //状态转移
-            dpMax[i] = getMax(dpMax[i-1] * nums[i], dpMin[i-1] * nums[i], nums[i]);
-            dpMin[i] = getMin(dpMax[i-1] * nums[i], dpMin[i-1] * nums[i], nums[i]);
-
-            //记录最大乘积
-            res = dpMax[i] > res ? dpMax[i] : res;
-         }
-
-        return res;
-    }
-
-    public int getMax(int a, int b, int c){
-        int max = a > b ? a : b;
-        max = max > c ? max : c;
-        return max;
-    }
-
-    public int getMin(int a, int b, int c){
-        int min = a < b ? a : b;
-        min = min < c ? min : c;
-        return min;
-    }
-
-}
-//leetcode submit region end(Prohibit modification and deletion)
-```
-
-
-
-
-
-### 62/221. 最大正方形
-
-
-
-#### （1）题目
-
-在一个由 `'0'` 和 `'1'` 组成的二维矩阵内，找到只包含 `'1'` 的最大正方形，并返回其面积。
-
-
-
-#### （2）思路
-
-* 动态规划
-* dp[x] [y] 记录以(x, y)为底角的矩阵内的最大正方形的边长
-* 状态转移方程：
-  * 若matrix[x] [y] = '0' ，dp[x] [y] = 0
-  * 若matrix[x] [y] = '1'， 考虑dp[x-1] [y-1]（注意x=0，y=0的情况）
-    * dp[x-1] [y-1] = len
-    * 考虑  matrix[x] [y] ~ matrix[x-len] [y] 和 matrix[x] [y] ~ matrix[x] [y-len] 上连续为 '1' 的个数 plus
-    * dp[x] [y] = plus
-  * 记录最大边长res
-
-
-
-#### （3）实现
-
-```java
-//leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-    public int maximalSquare(char[][] matrix) {
-
-        int res = 0;
-
-        int[][] dp = new int[matrix.length][matrix[0].length];
-
-        for (int i = 0; i < matrix.length; i++) {
-            
-            for (int j = 0; j < matrix[0].length; j++) {
-                
-                if (matrix[i][j] == '1'){
-                    
-                    //边界位置
-                    if (i == 0 || j == 0){
-                        dp[i][j] = 1;
-                    }else{
-                        //左上位置的最大边长
-                        int len = dp[i-1][j-1];
-
-                        //记录行列同为'1'的个数
-                        int plus = 0;
-                        for (int k = i, l = j; k >= i-len && l >= j-len; k--, l--) {
-                            if (matrix[k][j] == '0' || matrix[i][l] == '0'){
-                                break;
-                            }
-
-                            plus++;
-                        }
-
-                        //更新以(i, j) 为底角的矩阵的最大正方形边长
-                        dp[i][j] = plus;
-                    }
-                }
-                
-                //更新整个矩阵的最大正方形边长
-                res = res > dp[i][j] ? res : dp[i][j];
-            }
-        }
-
-        return res * res;
-    }
-}
 //leetcode submit region end(Prohibit modification and deletion)
 ```
 
@@ -5080,4 +5275,12 @@ class Solution {
     }
 }
 ```
+
+
+
+
+
+
+
+
 

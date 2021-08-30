@@ -33,44 +33,26 @@
 
 package leetcode.editor.cn;
 
+import java.util.Arrays;
 import java.util.HashSet;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-    int res = 10000;
+
     public int numSquares(int n) {
-        HashSet<Integer> set = new HashSet<>();
+        int[] dp = new int[n+1];
 
-        for (int i = 1; i < 101; i++) {
-            set.add(i*i);
-        }
+        Arrays.fill(dp, 0x3f3f3f3f);
+        dp[0] = 0;
 
-        if (set.contains(n)){
-            return 1;
-        }
-
-        find(0, set, n);
-
-        return res;
-    }
-
-    public void find(int num, HashSet<Integer> set, int target) {
-        if (num >= res || target < 0){
-            return;
-        }
-
-
-        for (int i = 100; i >= 1; i--) {
-            int newTarget = target - i*i;
-            int newNum  = num + 1;
-            if (newNum < res && newTarget > 0){
-                if (set.contains(newTarget)){
-                    res = newNum + 1;
-                }else {
-                    find(newNum, set, newTarget);
-                }
+        for (int t = 1; t * t <= n; t++){
+            int x  = t * t;
+            for (int j = x; j <= n; j++){
+                dp[j] = Math.min(dp[j], dp[j-x] + 1);
             }
         }
+
+        return dp[n];
     }
 
 }
