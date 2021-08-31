@@ -3443,6 +3443,78 @@ class Solution {
 
 
 
+### 68/309. 最佳买卖股票时机含冷冻期
+
+
+
+#### （1）题目
+
+给定一个整数数组，其中第 i 个元素代表了第 i 天的股票价格 。
+
+设计一个算法计算出最大利润。在满足以下约束条件下，你可以尽可能地完成更多的交易（多次买卖一支股票）:
+
+你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。
+卖出股票后，你无法在第二天买入股票 (即冷冻期为 1 天)。
+
+
+
+#### （2）思路
+
+* 动态规划
+* 由于冷冻期的存在，每天结束有三种状态
+  * 持有股票：0
+  * 不持有股票，非冷冻期（当天未卖出）：1
+  * 不持有股票，冷冻期（当天卖出）：2
+* dp[prices.length] [3] 记录**当天结束后的最大收益**
+* 初始化：
+  * dp[0] [0] = -prices[0]
+  * dp[0] [1] = 0
+  * dp[0] [2] = 0
+* 状态转移方程：
+  * 持有股票：可以是前一天就持有股票，当天不做操作；可以是前一天不持有股票，非冷冻期，当天买入股票
+    * **dp[i] [0] = max( dp[i-1] [0]，dp[i-1] [1] - prices[i] )**
+  * 不持有股票，非冷冻期：可以是前一天就不持有股票，非冷冻期，当天不操作；可以是前一天不持有股票，冷冻期，当天不操作
+    * **dp[i] [1] = max( dp[i-1] [1]，dp[i-1] [2] )**
+  *  不持有股票，冷冻期：前一天持有股票，当天卖出
+    * **dp[i] [2] = dp[i-1] [0] + prices[i]**
+* 最大收益只可能出现在不持有股票的情况中，记录下最大收益即可
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int maxProfit(int[] prices) {
+        int[][] dp = new int[prices.length][3];
+
+        int res = 0;
+
+        dp[0][0] = -prices[0];
+        dp[0][1] = 0;
+        dp[0][2] = 0;
+
+
+        for (int i = 1; i < prices.length; i++) {
+            dp[i][0] = Math.max(dp[i-1][1]-prices[i], dp[i-1][0]);
+            dp[i][1] = Math.max(dp[i-1][2], dp[i-1][1]);
+            dp[i][2] = dp[i-1][0] + prices[i];
+
+            int max = dp[i][1] > dp[i][2] ? dp[i][1] : dp[i][2];
+            res = res > max ? res : max;
+        }
+
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
 ### 八、背包问题
 
 
@@ -3565,6 +3637,64 @@ class Solution {
 }
 //leetcode submit region end(Prohibit modification and deletion)
 ```
+
+
+
+
+
+### 67/322. 零钱兑换
+
+
+
+#### （1）题目
+
+给你一个整数数组 `coins` ，表示不同面额的硬币；以及一个整数 `amount` ，表示总金额。
+
+计算并返回可以凑成总金额所需的 **最少的硬币个数** 。如果没有任何一种硬币组合能组成总金额，返回 `-1` 。
+
+你可以认为每种硬币的数量是无限的。
+
+
+
+#### （2）思路
+
+* 完全背包问题
+* dp[index] 记录凑成总金额index的所需的最少硬币个数；依次将所有的coins放入，更新dp[index]
+* 状态转移方程：
+  * dp[ j ] = min ( dp[ j-t ]+1，dp[ j ])
+
+
+
+#### （3）实现
+
+```java
+import java.util.Arrays;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int coinChange(int[] coins, int amount) {
+
+        int[] dp = new int[amount+1];
+
+        Arrays.fill(dp, 0x3f3f3f3f);
+        
+        dp[0] = 0;
+
+        for (int i = 0; i < coins.length; i++){
+            int t = coins[i];
+
+            for (int j = t; j <= amount; j++) {
+                dp[j] = Math.min(dp[j-t]+1, dp[j]);
+            }
+        }
+
+        return dp[amount] == 0x3f3f3f3f ? -1 : dp[amount];
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
 
 
 
