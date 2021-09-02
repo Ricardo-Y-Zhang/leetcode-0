@@ -71,7 +71,6 @@ class Solution {
 
         for (Integer key : keySet) {
             int value = map.get(key);
-
             if (value >= ktime){
                 res[i++] = key;
             }

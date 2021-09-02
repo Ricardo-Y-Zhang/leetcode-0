@@ -3019,23 +3019,7 @@ class Solution {
 
 
 
-### 39/279. 完全平方数
-
-
-
-#### （1）题目
-
-给定正整数 n，找到若干个完全平方数（比如 1, 4, 9, 16, ...）使得它们的和等于 n。你需要让组成和的完全平方数的个数最少。
-
-给你一个整数 n ，返回和为 n 的完全平方数的 最少数量 。
-
-完全平方数 是一个整数，其值等于另一个整数的平方；换句话说，其值等于一个整数自乘的积。例如，1、4、9 和 16 都是完全平方数，而 3 和 11 不是。
-
-
-
-#### （2）思路
-
-
+### 39/279. 完全平方数（同65）
 
 
 
@@ -3506,6 +3490,92 @@ class Solution {
         }
 
         return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 70/416. 分割等和子集
+
+
+
+#### （1）题目
+
+给你一个 **只包含正整数** 的 **非空** 数组 `nums` 。请你判断是否可以将这个数组分割成两个子集，使得两个子集的元素和相等。
+
+
+
+#### （2）思路
+
+* 01背包问题
+
+* sum为数组nums的元素和
+* 该题即为求数组nums中是否存在子集，使其元素和为sum/2（01背包问题）
+* sum为奇数直接返回false，sum为偶数转换为01背包问题
+* dp[i] [j]记录前i个元素是否能凑齐和为j的子集合，nums[i] = t
+* 初始化：
+  * dp[i] [0] = 1
+  * dp[0] [nums[0]] = 1，nums[0] <= sum/2
+* 状态转移方程：
+  * dp[i] [j] = dp[i-1] [j]，j < t
+  * dp[i] [j] = max ( dp[i-1] [j]，dp[i-1] [j-t])，t <= j <= sum/2
+  * 判断 dp[i] [sum/2] == 1
+
+
+
+```java
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public boolean canPartition(int[] nums) {
+        int sum = 0;
+
+        for (int temp : nums){
+            sum += temp;
+        }
+
+        if (sum % 2 != 0){
+            return false;
+        }
+
+        int target = sum / 2;
+
+        int[][] dp = new int[nums.length][target+1];
+
+        for (int i = 0; i < nums.length; i++) {
+            dp[i][0] = 1;
+        }
+
+        if (nums[0] <= target){
+            dp[0][nums[0]] = 1;
+            if (nums[0] == target){
+                return true;
+            }
+        }
+
+        for (int i = 1; i < nums.length; i++) {
+            int t = nums[i];
+
+            if (t <= target){
+                dp[i][t] = 1;
+                for (int j = 0; j < t; j++) {
+                    dp[i][j] = dp[i-1][j];
+                }
+                for (int j = t; j <= target; j++) {
+                    dp[i][j] = Math.max(dp[i-1][j], dp[i-1][j-t]);
+                }
+            }
+
+            if (dp[i][target] == 1){
+                return true;
+            }
+        }
+
+        return false;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
@@ -5407,6 +5477,79 @@ class Solution {
 ```
 
 
+
+
+
+### 69/347. 前k个高频出现元素
+
+
+
+#### （1）题目
+
+给你一个整数数组 `nums` 和一个整数 `k` ，请你返回其中出现频率前 `k` 高的元素。你可以按 **任意顺序** 返回答案。
+
+
+
+#### （2）思路
+
+* HashMap<Integer, Integer> map 记录每个整数的出现频率
+* 将每个整数的出现频率time记录在ArrayList<Integer> times中，并**对times从大到小排序**
+* **找出第k多的出现频率times[k-1]**
+* 遍历map，value >= times[k-1]时，记录该key
+
+
+
+#### （3）实现
+
+```java
+import java.util.*;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int[] topKFrequent(int[] nums, int k) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+
+        for (int i = 0; i < nums.length; i++) {
+            int num = map.getOrDefault(nums[i], 0);
+            num++;
+            map.put(nums[i], num);
+        }
+
+        Set<Integer> keySet = map.keySet();
+
+        ArrayList<Integer> times = new ArrayList<>();
+        for (Integer key : keySet){
+            times.add(map.get(key));
+        }
+
+        Collections.sort(times, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer integer, Integer t1) {
+                return Integer.compare(t1, integer);
+            }
+        });
+
+        //第k多的出现次数
+        int ktime = times.get(k-1);
+
+        int[] res = new int[k];
+
+        int i = 0;
+
+        for (Integer key : keySet) {
+            int value = map.get(key);
+
+            if (value >= ktime){
+                res[i++] = key;
+            }
+        }
+
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
 
 
 
