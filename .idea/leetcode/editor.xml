@@ -403,6 +403,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[448]find-all-numbers-disappeared-in-an-array.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[448]find-all-numbers-disappeared-in-an-array.java" />
+              <option name="questionId" value="448" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[461]hamming-distance.java">
           <value>
             <LeetcodeEditor>
@@ -424,6 +432,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[48]rotate-image.java" />
               <option name="questionId" value="48" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[494]target-sum.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[494]target-sum.java" />
+              <option name="questionId" value="494" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -467,6 +483,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[560]subarray-sum-equals-k.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[560]subarray-sum-equals-k.java" />
+              <option name="questionId" value="560" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[581]shortest-unsorted-continuous-subarray.java">
           <value>
             <LeetcodeEditor>
@@ -504,6 +528,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[62]unique-paths.java" />
               <option name="questionId" value="62" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[647]palindromic-substrings.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[647]palindromic-substrings.java" />
+              <option name="questionId" value="647" />
             </LeetcodeEditor>
           </value>
         </entry>

@@ -3499,90 +3499,6 @@ class Solution {
 
 
 
-### 70/416. 分割等和子集
-
-
-
-#### （1）题目
-
-给你一个 **只包含正整数** 的 **非空** 数组 `nums` 。请你判断是否可以将这个数组分割成两个子集，使得两个子集的元素和相等。
-
-
-
-#### （2）思路
-
-* 01背包问题
-
-* sum为数组nums的元素和
-* 该题即为求数组nums中是否存在子集，使其元素和为sum/2（01背包问题）
-* sum为奇数直接返回false，sum为偶数转换为01背包问题
-* dp[i] [j]记录前i个元素是否能凑齐和为j的子集合，nums[i] = t
-* 初始化：
-  * dp[i] [0] = 1
-  * dp[0] [nums[0]] = 1，nums[0] <= sum/2
-* 状态转移方程：
-  * dp[i] [j] = dp[i-1] [j]，j < t
-  * dp[i] [j] = max ( dp[i-1] [j]，dp[i-1] [j-t])，t <= j <= sum/2
-  * 判断 dp[i] [sum/2] == 1
-
-
-
-```java
-
-//leetcode submit region begin(Prohibit modification and deletion)
-class Solution {
-    public boolean canPartition(int[] nums) {
-        int sum = 0;
-
-        for (int temp : nums){
-            sum += temp;
-        }
-
-        if (sum % 2 != 0){
-            return false;
-        }
-
-        int target = sum / 2;
-
-        int[][] dp = new int[nums.length][target+1];
-
-        for (int i = 0; i < nums.length; i++) {
-            dp[i][0] = 1;
-        }
-
-        if (nums[0] <= target){
-            dp[0][nums[0]] = 1;
-            if (nums[0] == target){
-                return true;
-            }
-        }
-
-        for (int i = 1; i < nums.length; i++) {
-            int t = nums[i];
-
-            if (t <= target){
-                dp[i][t] = 1;
-                for (int j = 0; j < t; j++) {
-                    dp[i][j] = dp[i-1][j];
-                }
-                for (int j = t; j <= target; j++) {
-                    dp[i][j] = Math.max(dp[i-1][j], dp[i-1][j-t]);
-                }
-            }
-
-            if (dp[i][target] == 1){
-                return true;
-            }
-        }
-
-        return false;
-    }
-}
-//leetcode submit region end(Prohibit modification and deletion)
-```
-
-
-
 
 
 ### 八、背包问题
@@ -3759,6 +3675,176 @@ class Solution {
         }
 
         return dp[amount] == 0x3f3f3f3f ? -1 : dp[amount];
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+### 70/416. 分割等和子集
+
+
+
+#### （1）题目
+
+给你一个 **只包含正整数** 的 **非空** 数组 `nums` 。请你判断是否可以将这个数组分割成两个子集，使得两个子集的元素和相等。
+
+
+
+#### （2）思路
+
+* 01背包问题
+
+* sum为数组nums的元素和
+* 该题即为求数组nums中是否存在子集，使其元素和为sum/2（01背包问题）
+* sum为奇数直接返回false，sum为偶数转换为01背包问题
+* dp[i] [j]记录前i个元素是否能凑齐和为j的子集合，nums[i] = t
+* 初始化：
+  * dp[i] [0] = 1
+  * dp[0] [nums[0]] = 1，nums[0] <= sum/2
+* 状态转移方程：
+  * dp[i] [j] = dp[i-1] [j]，j < t
+  * dp[i] [j] = max ( dp[i-1] [j]，dp[i-1] [j-t])，t <= j <= sum/2
+  * 判断 dp[i] [sum/2] == 1
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public boolean canPartition(int[] nums) {
+        int sum = 0;
+
+        for (int temp : nums){
+            sum += temp;
+        }
+
+        if (sum % 2 != 0){
+            return false;
+        }
+
+        int target = sum / 2;
+
+        int[][] dp = new int[nums.length][target+1];
+
+        for (int i = 0; i < nums.length; i++) {
+            dp[i][0] = 1;
+        }
+
+        if (nums[0] <= target){
+            dp[0][nums[0]] = 1;
+            if (nums[0] == target){
+                return true;
+            }
+        }
+
+        for (int i = 1; i < nums.length; i++) {
+            int t = nums[i];
+
+            if (t <= target){
+                dp[i][t] = 1;
+                for (int j = 0; j < t; j++) {
+                    dp[i][j] = dp[i-1][j];
+                }
+                for (int j = t; j <= target; j++) {
+                    dp[i][j] = Math.max(dp[i-1][j], dp[i-1][j-t]);
+                }
+            }
+
+            if (dp[i][target] == 1){
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
+###   72/494. 目标和
+
+
+
+#### （1）题目
+
+给你一个整数数组 nums 和一个整数 target 。
+
+向数组中的每个整数前添加 '+' 或 '-' ，然后串联起所有整数，可以构造一个 表达式 ：
+
+例如，nums = [2, 1] ，可以在 2 之前添加 '+' ，在 1 之前添加 '-' ，然后串联起来得到表达式 "+2-1" 。
+返回可以通过上述方法构造的、运算结果等于 target 的不同 表达式 的数目。
+
+
+
+
+
+#### （2）思路
+
+* 动态规划，背包问题
+* 数组中每一个元素都有两个状态，加或减；若使用回溯算法，则会超时，需使用动规
+* **由于表达式的结果可能为负数，所以需要做一个s的右偏移，使负值也能被合理计算存储，这里s取2001**
+* 使用dp[nums.length] [4003]记录截止到该元素为止，可能的表达式的和个数；即dp[i] [j] 为截止到nums[i] 为止，表达式为 **j-2001 **的个数
+* 动态转移方程：
+  * dp[i] [j] = dp[i-1] [j -nums[i]] + dp[i-1] [j+nums[i]]
+  * 需判断 j-nums[i] < 0 和 j+nums[i] >= 4003的情况
+  * 初始化:
+    * dp[0] [nums[0] + 2001] ++;
+    * dp[0] [-nums[0] + 2001] ++;
+    * **注意nums[0] = 0 的情况，若不使用 ++，则会出错**
+
+
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int findTargetSumWays(int[] nums, int target) {
+
+        int[] sum = new int[nums.length];
+
+        for (int i = 0; i < nums.length; i++) {
+            if (i == 0){
+                sum[i] = nums[i];
+            }else{
+                sum[i] = sum[i-1] + nums[i];
+            }
+        }
+
+        int[][] dp = new int[nums.length][4003];
+
+        for (int i = 0; i < nums.length; i++) {
+            if (i == 0){
+                dp[0][nums[i]+2001]++;
+                dp[0][-nums[i]+2001]++;
+            }else{
+                for (int j = 0; j < 4003; j++) {
+                    //考虑 +- nums[i]的情况
+                    int left = j - nums[i], right = j + nums[i];
+
+                    //注意边界
+                    int dpl = (left < 0) ? 0 : dp[i-1][left];
+                    int dpr = (right >= 4003) ? 0 : dp[i-1][right];
+
+                    dp[i][j] = dpl + dpr;
+                }
+            }
+        }
+
+        return dp[nums.length-1][target + 2001];
+
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
@@ -5554,6 +5640,177 @@ class Solution {
 
 
 
+
+### 71/448. 找到所有数组中消失的数字
+
+
+
+#### （1）题目
+
+给你一个含 n 个整数的数组 nums ，其中 nums[i] 在区间 [1, n] 内。请你找出所有在 [1, n] 范围内但没有出现在 nums 中的数字，并以数组的形式返回结果。
+
+
+
+#### （2）思路
+
+* 排序后依次比较
+
+
+
+#### （3）实现
+
+```java
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public List<Integer> findDisappearedNumbers(int[] nums) {
+        Arrays.sort(nums);
+
+        List<Integer> res =  new ArrayList<>();
+
+        for (int i = 0; i < nums.length; i++) {
+            if (i == 0){
+                for (int j = 1; j < nums[i]; j++) {
+                    res.add(j);
+                }
+            }else if (nums[i] != nums[i-1] + 1 || nums[i] != nums[i-1]){
+                for (int j = nums[i-1] + 1; j < nums[i]; j++) {
+                    res.add(j);
+                }
+            }
+        }
+
+        for (int i = nums[nums.length-1] + 1; i <= nums.length; i++) {
+            res.add(i);
+        }
+
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 72/647. 回文子串
+
+
+
+#### （1）题目
+
+给你一个字符串 s ，请你统计并返回这个字符串中 回文子串 的数目。
+
+回文字符串 是正着读和倒过来读一样的字符串。
+
+子字符串 是字符串中的由连续字符组成的一个序列。
+
+具有不同开始位置或结束位置的子串，即使是由相同的字符组成，也会被视作不同的子串。
+
+
+
+#### （2）实现
+
+* 遍历字符串
+* 以当前字符作为奇数回文串的中间字符或为偶数回文串的中间偏左字符，计算回文串个数
+
+
+
+#### （3）实现
+
+```java
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int countSubstrings(String s) {
+        int res = 0;
+
+        for (int i = 0; i < s.length(); i++) {
+            res++;//单个字符的回文串
+
+            for (int j = i, k = i+1; j >= 0 && k < s.length(); j--, k++) {//偶数回文串
+                if (s.charAt(j) == s.charAt(k)){
+                    res++;
+                }else{
+                    break;
+                }
+            }
+
+            for (int j = i-1, k = i+1; j >= 0 && k < s.length() ; j--, k++) {//奇数回文串
+                if (s.charAt(j) == s.charAt(k)){
+                    res++;
+                }else{
+                    break;
+                }
+            }
+        }
+
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 74/560. 和为k的子数组
+
+
+
+#### （1）题目
+
+给你一个整数数组 `nums` 和一个整数 `k` ，请你统计并返回该数组中和为 `k` 的连续子数组的个数。
+
+
+
+
+
+#### （2）思路
+
+* 前缀和，**子数组元素和问题使用前缀和**
+* 使用HashMap<Integer, Integer>记录数组的前缀和及个数
+* 遍历数组，计算当前元素的**前缀和**为sum[i]，则若存在前缀和为 **sum[i] - k** ，即可构成和为k的子数组 ；**更新HashMap中前缀和为sum[i]的数量**
+
+
+
+
+
+#### （3）实现
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int subarraySum(int[] nums, int k) {
+        int res = 0;
+        int sum = 0;
+
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, 1);
+
+        for (int i = 0; i < nums.length; i++) {
+            sum += nums[i];
+
+            int key = sum - k;
+            res += map.getOrDefault(key, 0);
+
+            int value = map.getOrDefault(sum, 0);
+            map.put(sum, value+1);
+        }
+
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
 
 
 
