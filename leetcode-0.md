@@ -5814,3 +5814,199 @@ class Solution {
 
 
 
+
+
+### 75/438. 找到字符串中所有字母异位词
+
+
+
+#### （1）题目
+
+给定两个字符串 `s` 和 `p`，找到 `s` 中所有 `p` 的 **异位词** 的子串，返回这些子串的起始索引。不考虑答案输出的顺序。
+
+**异位词** 指字母相同，但排列不同的字符串
+
+
+
+#### （2）思路
+
+* 使用ArrayList<Integer> res记录字母异位词的起始索引
+
+* 从下标index起始的字母异位词与**上一个字母异位词**相关，即res中的最后一个元素
+  * 若不存在上一个字母异位词，则直接判断从index起始的子串是否为字母异位词，将结果加入res
+  * 若存在，令left为其起始索引，right为其终止索引
+    * 若index >= right，直接判断从index起始的子串是否为字母异位词，将结果加入res
+    * 若**index < right**，则存在公共部分，判断**s.subString(left，index)**和**s.subString(right，index + p.length())**是否为字母异位词，将结果加入res
+
+
+
+#### （3）实现
+
+```java
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public List<Integer> findAnagrams(String s, String p) {
+
+        List<Integer> res = new ArrayList<>();
+
+        for (int i = 0; i <= s.length() - p.length(); i++) {
+            //不存在上一个字母异位词
+            if (res.size() == 0){
+                String temp = s.substring(i, i+p.length());
+                if (Judge(temp, p)){
+                    res.add(i);
+                }
+            }else{//存在上一个字母异位词
+                int left = res.get(res.size()-1);
+                int right = left + p.length();
+
+                //不存在公共部分
+                if (i >= right){
+                    String temp = s.substring(i, i+p.length());
+                    if (Judge(temp, p)){
+                        res.add(i);
+                    }
+                }else{//存在公共部分
+                    String temp1 = s.substring(left, i);
+                    String temp2 = s.substring(right, i + p.length());
+
+                    if (Judge(temp1, temp2)){
+                        res.add(i);
+                    }
+                }
+            }
+        }
+
+        return res;
+    }
+
+
+    //判断是否为字母异位词
+    public boolean Judge(String str1, String str2){
+        char[] char1 = str1.toCharArray();
+
+        Arrays.sort(char1);
+
+        str1 = new String(char1);
+
+        char[] char2 = str2.toCharArray();
+
+        Arrays.sort(char2);
+
+        str2 = new String(char2);
+
+        return str1.equals(str2);
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
+### 76/48. 旋转图像
+
+
+
+#### （1）题目
+
+给定一个 n × n 的二维矩阵 matrix 表示一个图像。请你将图像顺时针旋转 90 度。
+
+你必须在 原地 旋转图像，这意味着你需要直接修改输入的二维矩阵。请不要 使用另一个矩阵来旋转图像。
+
+
+
+#### （2.1）思路
+
+* 使用额外的矩阵来旋转图像
+* （i，j）位置的元素最终的旋转位置是（j，n-1-i）
+
+
+
+#### （3.1）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public void rotate(int[][] matrix) {
+        int n = matrix.length;
+
+        int[][] res = new int[n][n];
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                res[j][n-1-i] = matrix[i][j];
+            }
+        }
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                matrix[i][j] = res[i][j];
+            }
+        }
+    }
+
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+#### （2.2）思路
+
+* 不使用额外的矩阵来旋转图像
+
+* 如图所示，只需要将第0行中[0，n-1-0)中元素即图中红色的元素，旋转90度，并将被覆盖的元素也旋转90度，重复4次，即将4条边的元素均旋转一次；同理将第1行中[1，n-1-1)中的元素即图中黄色的元素，旋转90度，并将覆盖的元素也旋转90度，重复4次；即可得到旋转后的图像
+
+![](matrix.png)
+
+
+
+#### （3.2）实现
+
+```java
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public void rotate(int[][] matrix) {
+        int n = matrix.length;
+
+        for (int i = 0; i < n / 2; i++) {
+        
+            //第i行中[i, n-1-i)元素
+            for (int j = i; j < n-i-1; j++) {
+            
+                int x = i, y = j, x1 = j, y1 = n-1-i;
+                
+                int temp = matrix[x1][y1];
+                
+                matrix[x1][y1] = matrix[x][y];
+                
+                //旋转4次
+                for (int k = 0; k < 4; k++){
+                    int x2 = y1 , y2 = n - 1 - x1;
+                    int temp1 = matrix[x2][y2];
+                    matrix[x2][y2] = temp;
+                    temp =  temp1;
+                    x1 = x2;
+                    y1 = y2;
+                }
+                
+            }
+        }
+    }
+
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
