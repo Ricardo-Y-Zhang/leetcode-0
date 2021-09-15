@@ -6010,3 +6010,65 @@ class Solution {
 //leetcode submit region end(Prohibit modification and deletion)
 ```
 
+
+
+
+
+
+
+### 77/240. 搜索二维矩阵II
+
+
+
+#### （1）题目
+
+编写一个高效的算法来搜索 m x n 矩阵 matrix 中的一个目标值 target 。该矩阵具有以下特性：
+
+每行的元素从左到右升序排列。
+每列的元素从上到下升序排列
+
+
+
+#### （2）思路
+
+* 该二维矩阵的特性：**每一行的元素均小于最后一个元素，每一列元素均大于第一个元素**
+* 选取特定的起始点进行搜索，以达到剪枝的目的
+  * 选左上角，向右向下均增大，不能选
+  * 选右下角，向左向上均减小，不能选
+  * 选左下角，向上减小，向右增大，可选
+  * 选右上角，向下增大，向左减小，可选
+* 选取右上角作为起始点
+  * matrix[x] [y] == target，返回
+  * matrix[x] [y] < target，去除第x行，因为第x行元素均小于target
+  * matrix[x] [y] > target，去除第y列，因为第y列元素均大于target
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public boolean searchMatrix(int[][] matrix, int target) {
+
+        int m = matrix.length, n = matrix[0].length;
+
+        //选择右上角作为起始点
+        int x = 0, y = n-1;
+
+        while (x < m && y >= 0){
+            if (matrix[x][y] == target){
+                return true;
+            }else if (matrix[x][y] < target){//去除第x行
+                x++;
+            }else if (matrix[x][y] > target){//去除第y列
+                y--;
+            }
+        }
+
+        return false;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
