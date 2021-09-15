@@ -46,7 +46,22 @@ package leetcode.editor.cn;
 class Solution {
     public boolean searchMatrix(int[][] matrix, int target) {
 
+        int m = matrix.length, n = matrix[0].length;
 
+        //选择右上角作为起始点
+        int x = 0, y = n-1;
+
+        while (x < m && y >= 0){
+            if (matrix[x][y] == target){
+                return true;
+            }else if (matrix[x][y] < target){//去除第x行
+                x++;
+            }else if (matrix[x][y] > target){//去除第y列
+                y--;
+            }
+        }
+
+        return false;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
