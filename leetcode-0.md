@@ -6072,3 +6072,165 @@ class Solution {
 //leetcode submit region end(Prohibit modification and deletion)
 ```
 
+
+
+
+
+### 78/16. 最接近的三数之和
+
+
+
+#### （1）题目
+
+给定一个包括 n 个整数的数组 nums 和 一个目标值 target。找出 nums 中的三个整数，使得它们的和与 target 最接近。返回这三个数的和。假定每组输入只存在唯一答案。
+
+
+
+#### （2）思路
+
+* res记录最接近的三数之和
+* 对数组排序后，遍历数组选取第一个元素，在内层选取另外两个元素时使用双指针法
+  * temp = nums[i] + nums[j] + nums[k]
+  * temp == target时，直接返回target；否则更新res，若temp更接近target，则更新res
+  * temp < target时，左指针 j 右移
+  * temp > target时，右指针 k 左移
+  * 左右指针相遇时跳出循环
+* 时间复杂度 O(n<sup>2</sup>)
+
+
+
+#### （3）实现
+
+```java
+import java.util.Arrays;
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int threeSumClosest(int[] nums, int target) {
+        Arrays.sort(nums);
+
+        int res = 0x3f3f3f3f;
+
+        for (int i = 0; i < nums.length - 2; i++) {
+            for (int j = i + 1, k = nums.length-1; j != k;){
+                int temp = nums[i] + nums[j] + nums[k];
+                int min1 = Math.abs(temp - target), min2 = Math.abs(res - target);
+                if (min1 == 0){
+                    return target;
+                }
+				
+                //更新res
+                if (min1 < min2){
+                    res = temp;
+                }
+
+                //更新左右指针
+                if (temp < target){
+                    j++;
+                }else if (temp > target){
+                    k--;
+                }
+            }
+        }
+
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
+### 79/18. 四数之和
+
+
+
+#### （1）题目
+
+给你一个由 n 个整数组成的数组 nums ，和一个目标值 target 。请你找出并返回满足下述全部条件且不重复的四元组 [nums[a], nums[b], nums[c], nums[d]] ：
+
+0 <= a, b, c, d < n
+a、b、c 和 d 互不相同
+nums[a] + nums[b] + nums[c] + nums[d] == target
+你可以按 任意顺序 返回答案 
+
+
+
+#### （2）思路
+
+* 数组nums排序后，遍历数组选择第一个和第二个元素，另外两个元素使用双指针法选取，即左右指针指向剩余数组的首尾；注意需找到不重复的四元组
+* temp = nums[i] + nums[j] + nums[k] + nums[l]
+* temp == target，记录该四元组；同时任意移动左右指针（左指针 k 右移），**注意要与上一次指向的元素不相同**
+* temp < target，**左指针 k 右移**，**注意要与上一次指向的元素不相同**
+* temp > target，**右指针 l 左移**，**注意要与上一次指向的元素不相同**
+
+
+
+
+
+#### （3）实现
+
+```java
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        List<List<Integer>> res = new ArrayList<>();
+
+        Arrays.sort(nums);
+
+        //选取第一个元素
+        for (int i = 0; i < nums.length-3; i++) {
+            //去重
+            if (i != 0 && nums[i] == nums[i-1]){
+                continue;
+            }
+            
+            //选取第二个元素
+            for (int j = i+1; j < nums.length-2; j++) {
+                //去重
+                if (j != i + 1 && nums[j] == nums[j-1]){
+                    continue;
+                }
+                
+                //左右指针，左右指针相遇，结束循环
+                int k = j + 1, l = nums.length - 1;
+                while (k < l){
+                    int temp = nums[i] + nums[j] + nums[k] + nums[l];
+                    if (temp == target){
+                        List<Integer> list = new ArrayList<>();
+                        list.add(nums[i]);
+                        list.add(nums[j]);
+                        list.add(nums[k]);
+                        list.add(nums[l]);
+                        res.add(list);
+                        k++;
+                    }else if (temp < target){
+                        k++;
+                    }else {
+                        l--;
+                    }
+                    
+                    //去重
+                    while (k < l && k != j + 1 && nums[k] == nums[k-1]){
+                        k++;
+                    }
+                    while (k < l && l != nums.length-1 && nums[l] == nums[l+1]){
+                        l--;
+                    }
+                }
+            }
+        }
+        
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
