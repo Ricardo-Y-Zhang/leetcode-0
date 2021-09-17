@@ -6076,6 +6076,10 @@ class Solution {
 
 
 
+## 十、数组
+
+
+
 ### 78/16. 最接近的三数之和
 
 
@@ -6233,4 +6237,199 @@ class Solution {
 }
 //leetcode submit region end(Prohibit modification and deletion)
 ```
+
+
+
+
+
+
+
+### 80/36. 有效的数独
+
+
+
+#### （1）题目
+
+请你判断一个 9x9 的数独是否有效。只需要 根据以下规则 ，验证已经填入的数字是否有效即可。
+
+数字 1-9 在每一行只能出现一次。
+数字 1-9 在每一列只能出现一次。
+数字 1-9 在每一个以粗实线分隔的 3x3 宫内只能出现一次。（请参考示例图）
+数独部分空格内已填入了数字，空白格用 '.' 表示。
+
+注意：
+
+一个有效的数独（部分已被填充）不一定是可解的。
+只需要根据以上规则，验证已经填入的数字是否有效即可。
+
+
+
+
+
+#### （2）思路
+
+* isVisit[3] [10] 每一行记录1-9是否出现过
+* 按照有效数独的规则进行判断
+  * 先判断每一行每一列是否满足有效数独的规则，isVisit[0] 记录每一行中1-9是否出现，isVisit[1] 记录每一列中1-9是否出现
+  * 判断每一个3X3宫是否满足有效数独的规则，isVisit[0]，isVisit[1]，isVisit[2]分别记录同水平线上的宫中1-9是否出现过
+
+
+
+
+
+#### （3）实现
+
+```java
+import java.util.Arrays;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public boolean isValidSudoku(char[][] board) {
+        boolean[][] isVisit = new boolean[3][10];
+
+        //判断每一行每一列
+        for (int i = 0; i < 9; i++) {
+            Arrays.fill(isVisit[0], false);
+            Arrays.fill(isVisit[1], false);
+            for (int j = 0; j < 9; j++) {
+                
+                //每一行
+                if (board[i][j] != '.'){
+                    int temp = Integer.parseInt(String.valueOf(board[i][j]));
+                    if (isVisit[0][temp] == true){
+                        return false;
+                    }
+                    isVisit[0][temp] = true;
+                }
+
+                //每一列
+                if (board[j][i] != '.'){
+                    int temp = Integer.parseInt(String.valueOf(board[j][i]));
+                    if (isVisit[1][temp] == true){
+                        return false;
+                    }
+                    isVisit[1][temp] = true;
+                }
+            }
+        }
+
+        
+        //判断每一个3X3宫
+        for (int i = 0; i < 9; i++) {
+            //初始化
+            if (i % 3 == 0){
+                for (int j = 0; j < 3; j++) {
+                    Arrays.fill(isVisit[j],false);
+                }
+            }
+            for (int j = 0; j < 9; j++) {
+                if (board[i][j] != '.'){
+                    int temp = Integer.parseInt(String.valueOf(board[i][j]));
+
+                    //k为board[i][j]所属宫的编号，分别为0,1,2
+                    int k = j / 3;
+
+                    if (isVisit[k][temp] == true){
+                        return false;
+                    }
+
+                    isVisit[k][temp] = true;
+                }
+            }
+        }
+
+        return true;
+
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+
+```
+
+
+
+
+
+
+
+### 81/40. 组合总和II
+
+
+
+#### （1）题目
+
+给定一个数组 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。
+
+candidates 中的每个数字在每个组合中只能使用一次。
+
+注意：解集不能包含重复的组合
+
+
+
+
+
+#### （2）思路
+
+* 回溯
+* 先对candidates数组排序，使用**find(int[] candidates, int target, int num, List<Integer> temp, int sum)**查找不重复的集合，num为当前递归的数组元素下标，List<Integer> temp存储当前递归中的选取的元素组合，sum为当前递归选取的元素组合之和
+* temp == target 时，记录该元素组合temp，并结束此次递归（元素均为正数）
+* temp > target时，结束此次递归
+* temp < target时，递归将后续元素加入集合，**注意去重（每一次选取的元素不能相同）**
+
+
+
+
+
+#### （3）实现
+
+```java
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    List<List<Integer>> res = new ArrayList<>();
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+
+
+        Arrays.sort(candidates);
+
+        find(candidates, target,  0, new ArrayList<>(), 0);
+
+        return res;
+    }
+
+    public void find(int[] candidates, int target, int num, List<Integer> temp, int sum){
+        //记录该组合并结束递归
+        if (sum == target){
+            res.add(new ArrayList<>(temp));
+        }
+        
+        //结束递归
+        if (sum >= target){
+            return;
+        }
+
+        //递归将后续元素加入组合
+        for (int i = num; i < candidates.length; i++) {
+
+            //去除重复组合
+            if ((i == num) || (i != num && candidates[i] != candidates[i-1])){
+                
+                temp.add(candidates[i]);
+                
+                find(candidates, target, i+1, temp, sum + candidates[i]);
+                
+                //回溯
+                temp.remove(temp.size()-1);
+            }
+
+        }
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
 
