@@ -6076,6 +6076,55 @@ class Solution {
 
 
 
+### 82/292. Nim游戏
+
+
+
+#### （1）题目
+
+你和你的朋友，两个人一起玩 Nim 游戏：
+
+桌子上有一堆石头。
+你们轮流进行自己的回合，你作为先手。
+每一回合，轮到的人拿掉 1 - 3 块石头。
+拿掉最后一块石头的人就是获胜者。
+假设你们每一步都是最优解。请编写一个函数，来判断你是否可以在给定石头数量为 n 的情况下赢得游戏。如果可以赢，返回 true；否则，返回 false 。
+
+
+
+
+
+#### （2）思路
+
+* **当堆中有4块石头，后手的人将会赢得游戏**；无论先手的人拿走1，2，3块石头，最后一块都会被后手的人拿走
+* 考虑每一步都是最优解
+  * n % 4 == 0时，无论先手的人拿走1，2，3块石头，后手的人对应拿走3，2，1块石头；**使得剩余石头数量n % 4 == 0**，后手将会赢得游戏
+  * n % 4 == x (x != 0)时，**先手拿走x块石头**，则可看作朋友作为n % 4 == 0情况下的先手开始游戏
+
+
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public boolean canWinNim(int n) {
+        return (n % 4) != 0;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
+
+
 ## 十、数组
 
 
@@ -6432,4 +6481,138 @@ class Solution {
 ```
 
 
+
+
+
+### 83/45. 跳跃游戏 II
+
+
+
+#### （1）题目
+
+给你一个非负整数数组 nums ，你最初位于数组的第一个位置。
+
+数组中的每个元素代表你在该位置可以跳跃的最大长度。
+
+你的目标是使用最少的跳跃次数到达数组的最后一个位置。
+
+假设你总是可以到达数组的最后一个位置。
+
+
+
+
+
+#### （2）思路
+
+* 贪心，每次跳跃都选取可以到达的最远距离
+
+* index记录当前位置，maxIndex记录当前跳跃能到达的最远距离，count记录当前跳跃次数
+  * maxIndex = Math.max(maxIndex, nums[i] + i)
+
+
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int jump(int[] nums) {
+        //index记录遍历下标，count记录跳跃次数，maxIndex记录当前跳跃能到达的最远距离
+        int index = 0, count = 0, maxIndex = 0;
+
+        while (maxIndex < nums.length-1){
+
+            int tempMax = maxIndex;
+
+            //记录当前跳跃能到达的最远距离
+            while(index <= tempMax){
+                maxIndex = Math.max(maxIndex, index + nums[index]);
+                index++;
+            }
+
+            count++;
+
+        }
+
+        return count;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+
+```
+
+
+
+
+
+
+
+### 84/47. 全排列 II
+
+
+
+#### （1）题目
+
+给定一个可包含重复数字的序列 `nums` ，**按任意顺序** 返回所有不重复的全排列。
+
+
+
+#### （2）思路
+
+* 回溯
+* boolean[] isChoosen记录当前元素是否选择，List<Integer> temp记录当前已选择的元素，List<List<Integer>> res记录最终结果
+* 对nums进行排序，使相同元素相邻
+* 每次递归中，遍历nums，选取合适的元素加入temp中
+  * 不选择已选取的元素，**isChoosen[i] == true**
+  * 一次递归中，**不能选择两个相同的元素**，**i != 0 && nums[i] == nums[i-1] && isChoosen[i] == false && isChoosen[i-1] == false**
+  * 选取元素，加入temp中，并修改isChoosen状态，isChoosen[i] = true
+  * 若已经选取了全部元素，**temp.size() == nums.length**，则在res中记录temp；否则进入下一层递归
+  * 回溯，将元素从temp中删除，并修改isChoosen状态，isChoosen[i] = false
+
+
+
+
+
+#### （3）实现
+
+```java
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+
+    List<List<Integer>> res = new ArrayList<>();
+
+    List<Integer> temp = new ArrayList<>();
+
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        Arrays.sort(nums);
+        find(new boolean[nums.length], nums);
+        return res;
+    }
+
+    public void find(boolean[] isChoosen, int[] nums) {
+        for (int i = 0; i < nums.length; i++) {
+            if (isChoosen[i] == true || (i != 0 && nums[i] == nums[i-1] && isChoosen[i] == false && isChoosen[i-1] == false)){
+            }else{
+                isChoosen[i] = true;
+                temp.add(nums[i]);
+                if (temp.size() == nums.length){
+                    res.add(new ArrayList<>(temp));
+                }else{
+                    find(isChoosen, nums);
+                }
+                isChoosen[i] = false;
+                temp.remove(temp.size()-1);
+            }
+        }
+    }
+
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
 

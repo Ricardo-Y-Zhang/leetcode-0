@@ -259,6 +259,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[292]nim-game.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[292]nim-game.java" />
+              <option name="questionId" value="292" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[297]serialize-and-deserialize-binary-tree.java">
           <value>
             <LeetcodeEditor>
@@ -451,6 +459,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[45]jump-game-ii.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[45]jump-game-ii.java" />
+              <option name="questionId" value="45" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[461]hamming-distance.java">
           <value>
             <LeetcodeEditor>
@@ -464,6 +480,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[46]permutations.java" />
               <option name="questionId" value="46" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[47]permutations-ii.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[47]permutations-ii.java" />
+              <option name="questionId" value="47" />
             </LeetcodeEditor>
           </value>
         </entry>
