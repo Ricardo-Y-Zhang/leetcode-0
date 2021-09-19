@@ -6616,3 +6616,109 @@ class Solution {
 //leetcode submit region end(Prohibit modification and deletion)
 ```
 
+
+
+
+
+
+
+### 86/57. 插入区间
+
+
+
+#### （1）题目
+
+给你一个 **无重叠的** *，*按照区间起始端点排序的区间列表。
+
+在列表中插入一个新的区间，你需要确保列表中的区间仍然有序且不重叠（如果有必要的话，可以合并区间）。
+
+
+
+
+
+#### （2）思路
+
+* 模拟
+* 模拟插入区间的过程，遍历区间列表，查看当前区间与目标区间是否有交集，flag记录目标区间是否已经插入
+* left为当前遍历区间的左边界，right为当前遍历区间的右边界
+* flag == flase，目标区间未插入：
+  * newInterval[0] < left：
+    * newInterval[1]  < left，两个区间没有交集，将两个区间压入新的区间列表，将flag置为true
+    * newInterval[1] >= left，两个区间有交集，**合并区间为 [newInterval[0]，Math.max(newInterval[1]，right)]**，**并将该区间作为新的需要插入的目标区间**
+  * left <= newInterval[0] <= right：
+    * 两个区间有交集，**合并区间为 [left，Math.max(newInterval[1]，right)]**，并将该区间作为新的需要插入的目标区间
+  * newInterval[0] > right：
+    * 两个区间没有交集，将两个区间压入新的区间列表，将flag置为true
+* flag == true，目标区间已经插入，将当前遍历的区间压入新的区间列表
+* 遍历完所有区间后，判断目标区间是否已经插入，未插入将其压入新的区间列表
+
+
+
+
+
+#### （3）实现
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int[][] insert(int[][] intervals, int[] newInterval) {
+        List<int[]> list = new ArrayList<>();
+
+        boolean flag = false;
+
+        for (int i = 0; i < intervals.length; i++) {
+            int left = intervals[i][0], right = intervals[i][1];
+
+            if (flag == false){//目标区间未插入
+                if (newInterval[0] < left){
+                    if (newInterval[1] < left){//无交集
+                        list.add(new int[]{newInterval[0], newInterval[1]});
+
+                        list.add(new int[]{left, right});
+
+                        flag = true;
+                    }else if (newInterval[1] >= left){//有交集
+                        //合并区间
+                        left = newInterval[0];
+                        right = Math.max(right, newInterval[1]);
+
+                        //更新需要插入的目标区间
+                        newInterval[0] = left;
+                        newInterval[1] = right;
+                    }
+                }else if (left <= newInterval[0] && right >= newInterval[0]){//必有交集
+                    //合并区间
+                    right = Math.max(newInterval[1], right);
+                    
+                    //更新需插入的目标区间
+                    newInterval[0] = left;
+                    newInterval[1] = right;
+                }else {//无交集
+                    list.add(new int[]{left, right});
+                }
+            }else {
+                list.add(new int[]{left, right});
+            }
+
+        }
+
+        if (flag == false){
+            list.add(new int[]{newInterval[0], newInterval[1]});
+        }
+
+        int[][] res = new int[list.size()][2];
+
+        for (int i = 0; i < res.length; i++) {
+            res[i][0] = list.get(i)[0];
+            res[i][1] = list.get(i)[1];
+        }
+
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
