@@ -6123,6 +6123,65 @@ class Solution {
 
 
 
+### 87/650. 只有两个键的键盘
+
+
+
+#### （1）题目
+
+最初记事本上只有一个字符 'A' 。你每次可以对这个记事本进行两种操作：
+
+Copy All（复制全部）：复制这个记事本中的所有字符（不允许仅复制部分字符）。
+Paste（粘贴）：粘贴 上一次 复制的字符。
+给你一个数字 n ，你需要使用最少的操作次数，在记事本上输出 恰好 n 个 'A' 。返回能够打印出 n 个 'A' 的最少操作次数。
+
+
+
+#### （2）思路
+
+* 最终的字符数为n，则**最后一次复制的字符数量为 n / k（k = 2，3，4 ...n）**；**需要的操作次数为k**（1次复制，n-1次粘贴）
+* **复制的字符数量越多**，需要的操作次数越少
+* 不断寻找最大的上一次复制的字符数量，直到其为1
+
+
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int minSteps(int n) {
+
+        int res = 0;
+      //跳出循环条件，当前字符数=1
+        while (n != 1){
+          //寻找可得到当前字符数n的最大的复制字符数
+            for (int i = 2; i <= n; i++) {
+                if (n % i == 0){
+                  
+                  //更新总操作次数，1次复制，i-1次粘贴
+                    res += i;
+                  
+                  //更新当前字符数
+                    n /= i;
+                    break;
+                }
+            }
+        }
+
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+
+```
+
+
+
+
+
 
 
 ## 十、数组
@@ -6615,6 +6674,95 @@ class Solution {
 }
 //leetcode submit region end(Prohibit modification and deletion)
 ```
+
+
+
+
+
+
+
+### 85/54. 螺旋矩阵
+
+
+
+#### （1）题目
+
+给你一个 `m` 行 `n` 列的矩阵 `matrix` ，请按照 **顺时针螺旋顺序** ，返回矩阵中的所有元素。
+
+
+
+#### （2）思路
+
+* 模拟
+* 模拟顺时针螺旋遍历矩阵，left，right，up，down分别为当前遍历的左右上下界，num为遍历元素个数
+  * 先遍历**up行的[left, right]**元素
+  * 再遍历**right列的[up+1, down]**元素
+  * **判断是否遍历了全部元素，num==n*m时，跳出循环**（由于是n * m的矩阵，可能出现最内层的元素为一行或一列，若不判断会出现重复遍历）
+  * 再遍历**down行的[right-1, left]**元素
+  * 再遍历**left列的[down-1, up+1]**元素
+  * 遍历过程中不断更新num
+* 外层元素遍历完后，更新left，right，up，down；left++，right--，up++，down--
+
+
+
+
+
+#### （3）实现
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> res = new ArrayList<>();
+
+        int m = matrix.length, n = matrix[0].length;
+
+        int left = 0, right = n-1, up = 0, down = m-1;
+
+        int num = 0;
+
+        while (num < n * m){
+            for (int i = left; i <= right; i++) {
+                res.add(matrix[up][i]);
+                num++;
+            }
+
+            for (int i = up + 1; i <= down; i++) {
+                res.add(matrix[i][right]);
+                num++;
+            }
+
+            if (num == n*m){
+                break;
+            }
+
+            for (int i = right-1; i >= left; i--) {
+                res.add(matrix[down][i]);
+                num++;
+            }
+
+            for (int i = down-1; i > up; i--) {
+                res.add(matrix[i][left]);
+                num++;
+            }
+
+            left++;
+            right--;
+            up++;
+            down--;
+        }
+
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+
+```
+
+
 
 
 
