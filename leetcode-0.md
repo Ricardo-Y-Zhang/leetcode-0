@@ -3501,6 +3501,171 @@ class Solution {
 
 
 
+### 88/673. 最长递增子序列的个数
+
+
+
+#### （1）题目
+
+给定一个未排序的整数数组，找到最长递增子序列的个数。
+
+
+
+#### （2）思路
+
+* 动归
+* dp[i] 记录以nums[i] 结尾的最长递增子序列的**长度**，num[i] 记录以nums[i]结尾的最长递增子序列的**个数**
+* 从小到大计算dp[i]，动态转移方程：dp[i] = max (dp[j] + 1, dp[i])（j < i && nums[j] < nums[i]）
+* 更新num[i]，动态转移方程：
+  * num[i] = num[j] （j < i && nums[j] < nums[i] && dp[i]  < dp[j] + 1）
+  * num[i] += num[j]（j < i && nums[j] < nums[i] && dp[i] == dp[j] + 1）
+* 记录最长递增子序列的长度 maxLen，遍历dp[i]，res += num[i] （dp[i] == maxLen）
+
+
+
+
+
+#### （3）实现
+
+```java
+import java.util.Arrays;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int findNumberOfLIS(int[] nums) {
+
+        int[] dp = new int[nums.length];
+
+        int[] num = new int[nums.length];
+
+      //初始化
+        Arrays.fill(dp, 1);
+
+        Arrays.fill(num, 1);
+
+        int maxLen = 0, res = 0;
+
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = 0; j < i; j++) {
+                if (nums[i] > nums[j]){
+                    int temp = dp[j] + 1;
+                    if (temp == dp[i]){//更新num[i]
+                        num[i] += num[j];
+                    }else if (temp > dp[i]){//更新num[i],dp[i]
+                        num[i] = num[j];
+                        dp[i] = temp;
+                    }
+                }
+            }
+            if (dp[i] > maxLen){//更新maxLen
+                maxLen = dp[i];
+            }
+        }
+
+        for (int i = 0; i < dp.length; i++) {
+            if (dp[i] == maxLen){
+                res += num[i];
+            }
+        }
+
+
+        for (int i = 0; i < dp.length; i++) {
+            System.out.println("dp[i] = " + dp[i]);
+        }
+
+        for (int i = 0; i < num.length; i++) {
+            System.out.println("num[i] = " + num[i]);
+        }
+
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+
+```
+
+
+
+
+
+
+
+### 90/63. 不同路径 II
+
+
+
+#### （1）题目
+
+一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为“Start” ）。
+
+机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为“Finish”）。
+
+现在考虑网格中有障碍物。那么从左上角到右下角将会有多少条不同的路径？
+
+
+
+网格中的障碍物和空位置分别用 1 和 0 来表示。
+
+
+
+#### （2）思路
+
+* 动态规划
+* dp[i] [j] 记录从左上角到obstacleGrid[i] [j] 的路径数量，初始化dp[0] [0] = 1
+* 从上到下，从左到右，依次计算dp[i] [j]，**若此位置为障碍物，dp[i] [j] = 0**；若是空位置，由于每次只能向右向下移动，动态转移方程：
+  * **dp[i] [j] = dp[i-1] [j] + dp[i] [j-1] （i-1 >= 0 && j-1 >= 0）**
+  * 此时不需要判断（i-1, j）和（i, j-1）是否为空位置，因为若为障碍物，dp[i-1] [j] = 0, dp[i] [j-1] = 0
+* **注意起点位置可能为障碍物，需要特判**
+
+
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+
+        int[][] dp = new int[obstacleGrid.length][obstacleGrid[0].length];
+
+        if (obstacleGrid[0][0] == 1){
+            return 0;
+        }
+        
+        dp[0][0] = 1;
+
+        for (int i = 0; i < dp.length; i++) {
+            for (int j = 0; j < dp[0].length; j++) {
+                if (obstacleGrid[i][j] == 0){
+                    int up = 0, left = 0;
+                    if (i-1 >= 0){
+                        up = dp[i-1][j];
+                    }
+
+                    if (j-1 >= 0){
+                        left = dp[i][j-1];
+                    }
+
+                    dp[i][j] += up + left;
+                }
+            }
+        }
+        
+        return dp[dp.length-1][dp[0].length-1];
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+
+```
+
+
+
+
+
+
+
 ### 八、背包问题
 
 
@@ -6868,5 +7033,88 @@ class Solution {
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
+### 89/59. 螺旋矩阵 II
+
+
+
+#### （1）题目
+
+给你一个正整数 `n` ，生成一个包含 `1` 到 `n2` 所有元素，且元素按顺时针顺序螺旋排列的 `n x n` 正方形矩阵 `matrix` 。
+
+
+
+#### （2）思路
+
+* 同85/54. 螺旋矩阵
+* left, right, up, down记录当前遍历层的左右上下边界，**注意第四步的判断**
+* * 先遍历**up行的[left, right]**元素
+  * 再遍历**right列的[up+1, down]**元素
+  * **判断是否遍历了全部元素，num==n*m时，跳出循环**（由于是n * m的矩阵，可能出现最内层的元素为一行或一列，若不判断会出现重复遍历）
+  * 再遍历**down行的[right-1, left]**元素
+  * 再遍历**left列的[down-1, up+1]**元素
+  * 遍历过程中不断更新num
+* 外层元素遍历完后，更新left，right，up，down；left++，right--，up++，down--
+
+
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int[][] generateMatrix(int n) {
+
+        int[][] res = new int[n][n];
+
+        int num = 1;
+
+        int left = 0, right = n-1, up = 0, down = n-1;
+
+        while (num <= n * n){
+            for (int i = left; i <= right; i++) {
+                res[up][i] = num;
+                num++;
+            }
+
+            for (int i = up+1; i <= down; i++) {
+                res[i][right] = num;
+                num++;
+            }
+
+            if (num > n*n){
+                break;
+            }
+
+            for (int i = right-1; i > left; i--) {
+                res[down][i] = num;
+                num++;
+            }
+
+            for (int i = down; i > up; i--) {
+                res[i][left] = num;
+                num++;
+            }
+
+            left++;
+            right--;
+            up++;
+            down--;
+        }
+
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+
 ```
 

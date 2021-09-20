@@ -579,6 +579,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[59]spiral-matrix-ii.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[59]spiral-matrix-ii.java" />
+              <option name="questionId" value="59" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[5]longest-palindromic-substring.java">
           <value>
             <LeetcodeEditor>
@@ -611,6 +619,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[63]unique-paths-ii.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[63]unique-paths-ii.java" />
+              <option name="questionId" value="63" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[647]palindromic-substrings.java">
           <value>
             <LeetcodeEditor>
@@ -632,6 +648,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[650]2-keys-keyboard.java" />
               <option name="questionId" value="650" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[673]number-of-longest-increasing-subsequence.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[673]number-of-longest-increasing-subsequence.java" />
+              <option name="questionId" value="673" />
             </LeetcodeEditor>
           </value>
         </entry>
