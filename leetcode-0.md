@@ -6349,6 +6349,59 @@ class Solution {
 
 
 
+### 90/58. 最后一个单词的长度
+
+
+
+#### （1）题目
+
+给你一个字符串 `s`，由若干单词组成，单词前后用一些空格字符隔开。返回字符串中最后一个单词的长度。
+
+**单词** 是指仅由字母组成、不包含任何空格字符的最大子字符串。
+
+
+
+#### （2）思路
+
+* 单词不包含任何空格字符，因此非空格字符才会影响单词长度
+* 遍历字符串，res记录最后一个单词的长度，ch = s.charAt(i)，只考虑ch != ' '的情况
+  * 若该字符是一个单词的起始字符（i == 0 或前一个字符为空格），则res = 1
+  * 若该字符不是起始字符，则res++
+  * 最终的res即为最后一个单词的长度
+
+
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int lengthOfLastWord(String s) {
+        int res = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+
+            if (ch != ' '){
+                if (i == 0 || s.charAt(i-1) == ' '){
+                    res = 1;
+                }else {
+                    res++;
+                }
+            }
+        }
+
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
 ## 十、数组
 
 
@@ -7112,6 +7165,91 @@ class Solution {
         }
 
         return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+
+```
+
+
+
+
+
+
+
+### 91/74. 搜索二维矩阵
+
+
+
+#### （1）题目
+
+编写一个高效的算法来判断 m x n 矩阵中，是否存在一个目标值。该矩阵具有如下特性：
+
+每行中的整数从左到右按升序排列。
+每行的第一个整数大于前一行的最后一个整数。
+
+
+
+#### （2）思路
+
+* 根据二维矩阵的性质，可先确定target所在行数，再使用二分法确定target所在列数
+* 使用midi，midj记录target的下标
+* 先使用二分法确定midi
+  * mīdi = (left + right) / 2，min表示midi行的第一个元素（最小值），max表示midi行的最后一个元素（最大值）
+  * min <= target <= max：target在第midi行，跳出循环
+  * target < min：right = mid - 1
+  * target > max：left = mid + 1
+* 若未找到合适的midi，则直接返回false
+* 在第midi行，使用二分法查找target
+
+
+
+
+
+#### （3）实现
+
+```
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public boolean searchMatrix(int[][] matrix, int target) {
+    
+        int m = matrix.length, n = matrix[0].length;
+        
+        int i1 = 0, j1 = 0, i2 = m-1, j2 = n-1;
+        
+        int midi = 0, midj = 0;
+        
+        //查找target所在行
+        while (i1 <= i2){
+            midi = (i1 + i2) / 2;
+            if (matrix[midi][0] <= target && matrix[midi][n-1] >= target){
+                break;
+            }else if (matrix[midi][0] > target){
+                i2 = midi - 1;
+            }else if (matrix[midi][n-1] < target){
+                i1 = midi + 1;
+            }
+        }
+        
+        if (i1 > i2){
+            return false;
+        }
+
+				//查找target所在列
+        while (j1 <= j2){
+            midj = (j1 + j2) / 2;
+
+            if (matrix[midi][midj] == target){
+                return true;
+            }else if (matrix[midi][midj] < target){
+                j1 = midj + 1;
+            }else if (matrix[midi][midj] > target){
+                j2 = midj - 1;
+            }
+        }
+
+        return false;
+
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

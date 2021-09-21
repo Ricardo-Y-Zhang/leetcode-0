@@ -579,6 +579,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[58]length-of-last-word.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[58]length-of-last-word.java" />
+              <option name="questionId" value="58" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[59]spiral-matrix-ii.java">
           <value>
             <LeetcodeEditor>
@@ -664,6 +672,22 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[739]daily-temperatures.java" />
               <option name="questionId" value="739" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[73]set-matrix-zeroes.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[73]set-matrix-zeroes.java" />
+              <option name="questionId" value="73" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[74]search-a-2d-matrix.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[74]search-a-2d-matrix.java" />
+              <option name="questionId" value="74" />
             </LeetcodeEditor>
           </value>
         </entry>
