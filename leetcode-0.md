@@ -7256,3 +7256,301 @@ class Solution {
 
 ```
 
+
+
+
+
+### 93/77. 组合
+
+
+
+#### （1）题目
+
+给定两个整数 `n` 和 `k`，返回范围 `[1, n]` 中所有可能的 `k` 个数的组合。
+
+你可以按 **任何顺序** 返回答案。
+
+
+
+#### （2）思路
+
+* 回溯
+* 使用int [] num记录1~n，List<List<Integer>> res 记录返回结果，List<Integer> temp记录当前递归的组合，index记录上一次递归加入组合的数的下标
+* 从下标index+1开始遍历数组
+  * 将当前元素加入temp
+    * temp中元素个数 = k，满足条件，用res记录temp
+    * temp中元素个数 < k，还需要继续加入元素，将index更新为当前元素在num中下标，进入下一层递归
+  * 回溯，将元素从temp中删除
+
+
+
+
+
+#### （3）实现
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+
+    List<List<Integer>> res = new ArrayList<>();
+
+    public List<List<Integer>> combine(int n, int k) {
+
+        int[] num = new int[n];
+        for (int i = 0; i < n; i++) {
+            num[i] = i + 1;
+        }
+
+        find(num, k, new ArrayList<>(), -1);
+
+        return res;
+    }
+
+    public void find(int[] num, int k, List<Integer> temp, int index){
+        
+        for (int i = index + 1; i < num.length; i++) {
+            temp.add(num[i]);
+            
+            if (temp.size() == k){//满足条件
+                res.add(new ArrayList<>(temp));
+            }else{//进入下一层递归，更新index
+                find(num, k, temp, i);
+            }
+            
+            temp.remove(temp.size()-1);//状态恢复
+        }
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
+### 94/73. 矩阵置零
+
+
+
+#### （1）题目
+
+给定一个 m x n 的矩阵，如果一个元素为 0 ，则将其所在行和列的所有元素都设为 0 。请使用 原地 算法。
+
+进阶：
+
+一个直观的解决方案是使用  O(mn) 的额外空间，但这并不是一个好的解决方案。
+一个简单的改进方案是使用 O(m + n) 的额外空间，但这仍然不是最好的解决方案。
+你能想出一个仅使用常量空间的解决方案吗
+
+
+
+
+
+#### （2）思路
+
+* 只需要将**包含0的列和行**的所有元素置为0
+* 原地算法：空间复杂度为常数
+* **使用矩阵的第一行元素，记录该列是否包含0，使用矩阵的第一列元素，记录改行是否包含0**
+* 此时无法判断第一行或第一列中是否包含0，**故使用flag1和flag2记录第一行和第一列中是否包含0**
+* 遍历第一行和第一列元素，flag1，flag2记录是否包含0
+* 遍历剩余元素，若matrix[i] [j] = 0，则将**matrix[i] [0] 和matrix[0] [j]置为0**，表示第i行和第j列中包含0
+* 遍历第一行和第一列**除第一个以外的元素**
+  * matrix[0] [j] = 0，则将第 j 列的元素置为0
+  * matrix[i] [0] = 0，则将第 i 行的元素置为0
+  * **此时不能计算matrix[0] [0]，若matrix[0] [0] = 0，则会影响第一行和第一列的元素**
+* 根据flag1和flag2将第一行和第一列的元素置为0
+
+
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public void setZeroes(int[][] matrix) {
+
+        int m = matrix.length, n = matrix[0].length;
+
+        //记录第一行和第一列中是否有0
+        boolean flag1 = false, flag2 = false;
+
+        //判断第一行是否有0
+        for (int i = 0; i < n; i++) {
+            if (matrix[0][i] == 0){
+                flag1 = true;
+                break;
+            }
+        }
+
+        //判断第一列是否有0
+        for (int i = 0; i < m; i++){
+            if (matrix[i][0] == 0){
+                flag2 = true;
+                break;
+            }
+        }
+
+
+        //判断(i, j)是否为0，并将对应的第一行和第一列的对应元素置为0
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+
+                if (matrix[i][j] == 0){
+                    matrix[0][j] = 0;
+                    matrix[i][0] = 0;
+                }
+            }
+        }
+
+        //将第一行中为0的元素的所在列置为0
+        for (int i = 1; i < n; i++) {
+            if (matrix[0][i] == 0){
+                for (int j = 0; j < m; j++) {
+                    matrix[j][i] = 0;
+                }
+            }
+        }
+
+        //将第一列中为0的元素的所在行置为0
+        for (int i = 1; i < m; i++) {
+            if (matrix[i][0] == 0){
+                for (int j = 0; j < n; j++) {
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+
+        //若第一行第一列中有0，则将第一行第一列置为0
+        if (flag1 == true){
+            for (int i = 0; i < n; i++) {
+                matrix[0][i] = 0;
+            }
+        }
+
+        if (flag2 == true){
+            for (int i = 0; i < m; i++) {
+                matrix[i][0] = 0;
+            }
+        }
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+
+
+```
+
+
+
+
+
+
+
+
+
+## 十一、链表
+
+
+
+### 92/725. 分隔链表
+
+
+
+#### （1）题目
+
+给你一个头结点为 head 的单链表和一个整数 k ，请你设计一个算法将链表分隔为 k 个连续的部分。
+
+每部分的长度应该尽可能的相等：任意两部分的长度差距不能超过 1 。这可能会导致有些部分为 null 。
+
+这 k 个部分应该按照在链表中出现的顺序排列，并且排在前面的部分的长度应该大于或等于排在后面的长度。
+
+返回一个由上述 k 部分组成的数组。
+
+
+
+#### （2）思路
+
+* 记录链表的总结点数为nums，先将链表分割为k等份，**每一份为 num = nums/k个节点**，**则剩余surplus = nums % k个节点**
+* 将剩余的surplus个节点依次分给前surplus个部分；**即前surplus个部分包含 num+1个节点，其余包含num个节点**
+* 使用pre记录每个部分的最后一个节点，temp遍历链表
+* 前surplus个部分包含num+1个节点，其余部分包含num个节点，并将最后一个节点pre.next = null，若节点不足，则用null补足
+
+
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode[] splitListToParts(ListNode head, int k) {
+
+        ListNode[]  res = new ListNode[k];
+        int nums = 0;//记录节点总数
+        ListNode temp = head;
+        
+        while (temp != null){
+            nums++;
+            temp = temp.next;
+        }
+
+        int num = nums / k, surplus = nums % k;
+
+        temp = head;
+        ListNode pre = head;
+        
+        for (int i = 0; i < k; i++) {
+            //记录每个部分的首个节点
+            res[i] = temp;
+            //每个部分包含num个节点
+            for (int j = 0; j < num; j++) {
+                pre = temp;
+                //节点不足，用null补足
+                if (temp != null){
+                    temp = temp.next;
+                }else{
+                    temp = null;
+                }
+            }
+            
+            //前surplus部分包含num+1个节点
+            if (surplus != 0){
+                pre = temp;
+                if (temp != null){
+                    temp = temp.next;
+                }else{
+                    temp = null;
+                }
+                surplus--;
+            }
+
+            //分割，将最后一个节点pre.next = null
+            if (pre != null){
+                pre.next = null;
+            }
+        }
+
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+
+```
+

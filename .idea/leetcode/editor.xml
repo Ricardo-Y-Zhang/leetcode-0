@@ -667,6 +667,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[725]split-linked-list-in-parts.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[725]split-linked-list-in-parts.java" />
+              <option name="questionId" value="725" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[739]daily-temperatures.java">
           <value>
             <LeetcodeEditor>
@@ -688,6 +696,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[74]search-a-2d-matrix.java" />
               <option name="questionId" value="74" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[77]combinations.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[77]combinations.java" />
+              <option name="questionId" value="77" />
             </LeetcodeEditor>
           </value>
         </entry>
