@@ -6402,6 +6402,51 @@ class Solution {
 
 
 
+
+
+### 95/326. 3的幂
+
+
+
+#### （1）题目
+
+给定一个整数，写一个函数来判断它是否是 3 的幂次方。如果是，返回 true ；否则，返回 false 。
+
+整数 n 是 3 的幂次方需满足：存在整数 x 使得 n == 3<sup>x</sup>
+
+
+
+#### （2）思路
+
+* 32位有符号整数范围内，最大的3的幂是3<sup>19</sup> = 1162611467，只需判断n是不是3<sup>19</sup>的约数即可
+* 需注意n为0或负数的情况
+
+
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public boolean isPowerOfThree(int n) {
+        if (n <= 0){
+            return false;
+        }
+
+        return (Math.round(Math.pow(3, 19)) % n) == 0;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
 ## 十、数组
 
 
@@ -7449,6 +7494,57 @@ class Solution {
 
 
 
+
+
+
+### 96/80. 删除有序数组中的重复项 II
+
+
+
+#### （1）题目
+
+给你一个有序数组 nums ，请你 原地 删除重复出现的元素，使每个元素 最多出现两次 ，返回删除后数组的新长度。
+
+不要使用额外的数组空间，你必须在 原地 修改输入数组 并在使用 O(1) 额外空间的条件下完成。
+
+
+
+#### （2）思路
+
+* 由于nums是有序数组，相同元素必然是连续的，判断下标为i的元素在位置 i 及其后出现次数是否超过两次，只需判断nums[i] == nums[i+2]
+* 使用n记录数组的实时长度
+* 遍历nums数组[0, n-2)位置，若**nums[i] == nums[i+2]**，则位置 i 的元素出现次数超过两次：
+  * **删除该位置元素，将[i+1，n)位置元素向前移动**
+  * 更新数组长度n，**n--**
+  * 注意下一轮循环时，**仍需要从当前位置开始**，因为当前位置是新的元素
+
+
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        int n = nums.length;
+
+        for (int i = 0; i < n - 2; i++) {
+            if (nums[i] == nums[i+2]){//下标i的元素出现次数超过两次
+                for (int j = i+1; j < n; j++) {
+                    nums[j-1] = nums[j];
+                }
+                n--;//更新数组长度n
+                i--;//更新遍历指针，当前位置为新元素
+            }
+        }
+
+        return n;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
 
 
 
