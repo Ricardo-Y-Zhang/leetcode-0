@@ -53,36 +53,25 @@ package leetcode.editor.cn;
 class Solution {
     public boolean search(int[] nums, int target) {
 
-        int n = nums.length, left = 0, right = n - 1;
+        int left = 0, right = nums.length - 1;
         while (left <= right){
-
             int mid = (left + right) / 2;
             if (nums[mid] == target){
                 return true;
-            }else if (nums[mid] < target){
-                //System.out.println("nums[" + mid + "]:" + nums[mid] );
-                if (nums[mid] > nums[0] || (nums[mid] == nums[0] && judge(nums, mid)) == true){
+            }
+            if (nums[left] == nums[mid] && nums[mid] == nums[right]){//无法判断
+                left++;
+                right--;
+            }else if (nums[left] <= nums[mid]){//左有序
+                if (nums[left] <= target && target < nums[mid]){//target在左有序序列
+                    right = mid - 1;
+                }else{
                     left = mid + 1;
-                }else {
-                    if (nums[n-1] > target){
-                        left = mid + 1;
-                    }else if (nums[n-1] == target){
-                        return true;
-                    }else{
-                        right = mid - 1;
-                    }
                 }
-            }else{
-              //  System.out.println("nums[" + mid + "]:" + nums[mid] );
-                if (nums[mid] > nums[0] || (nums[mid] == nums[0] && judge(nums, mid)) == true){//在前半有序序列
-                    if (nums[0] < target){
-                        right = mid -1;
-                    }else if (nums[0] == target){
-                        return true;
-                    }else{
-                        left = mid + 1;
-                    }
-                }else {
+            }else{//右有序
+                if (nums[mid] < target && target <= nums[right]){//target在右有序序列
+                    left = mid + 1;
+                }else{
                     right = mid - 1;
                 }
             }
@@ -91,15 +80,6 @@ class Solution {
         return false;
     }
 
-    boolean judge(int[] nums, int index){
-        for (int i = index; i > 0; i--) {
-            if (nums[i-1] > nums[i]){
-                return false;
-            }
-        }
-
-        return true;
-    }
 }
 //leetcode submit region end(Prohibit modification and deletion)
 

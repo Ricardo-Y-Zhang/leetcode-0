@@ -1378,6 +1378,155 @@ class Solution {
 
 
 
+
+
+### 97/371. 两整数之和
+
+
+
+#### （1）题目
+
+给你两个整数 `a` 和 `b` ，**不使用** 运算符 `+` 和 `-` ，计算并返回两整数之和。
+
+
+
+#### （2.1）思路
+
+* 位运算实现加法
+* 注意有符号整数用补码来表示和存储：正整数的补码和原码相同，负整数的补码为其原码除符号位外的所有位取反后加1
+
+
+
+
+
+#### （3.1）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int getSum(int a, int b) {
+         if (a >= 0 && b >= 0 || a <= 0 && b <= 0){
+             int sum = 0;
+
+             int plus = 0;
+             int A = Math.abs(a), B = Math.abs(b);
+             for (int i = 0; i < 13; i++) {
+                 int temp1 = A & (1 << i), temp2 = B & (1 << i);
+
+                 if (temp1 == 0 &&  temp2 == 0 && plus == 0){
+
+                 }else if (temp1 == 0 && temp2 == 0 && plus == 1){
+                     sum = sum | (1<<i);
+                     plus = 0;
+                 }else if (temp1 != 0 && temp2 != 0 && plus == 0){
+                     plus = 1;
+                 }else if (temp1 != 0 && temp2 != 0 && plus == 1){
+                     sum = sum | (1<<i);
+                 }else if (plus == 0){
+                     sum = sum | (1<<i);
+                 }else if (plus == 1){
+                     plus = 1;
+                 }
+             }
+             if (a < 0 ||  b < 0){
+                 sum *= -1;
+             }
+
+             return sum;
+         }else {
+             int sum = 0;
+
+             int minus = 0;
+             int max = Math.max(Math.abs(a), Math.abs(b)), min = Math.min(Math.abs(a), Math.abs(b));
+             for (int i = 0; i < 13; i++) {
+                 int temp1 = max & (1 << i), temp2 = min & (1 << i);
+
+                 if (temp1 == temp2 && minus == 1){
+                     sum = sum | (1<<i);
+                 }else if (temp1 < temp2 && minus == 0){
+                     sum = sum | (1<<i);
+                     minus = 1;
+                 }else if (temp1 < temp2 && minus == 1){
+                     minus = 1;
+                 }else if (temp1 > temp2 && minus == 0){
+                     sum = sum | (1<<i);
+                 }else if (temp1 > temp2 && minus == 1){
+                     minus = 0;
+                 }
+             }
+             if (max != Math.max(a, b)){
+                 sum *= -1;
+             }
+             return sum;
+         }
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+#### （2.2）思路
+
+* 位运算中二进制的加法，有下面四种情况
+
+````
+0 + 0 = 0 
+0 + 1 = 1
+1 + 0 = 1
+1 + 1 = 0(进位1)
+````
+
+* 如上，这与异或运算的结果相同
+
+
+
+```
+  0 1 0 1
+^ 0 1 0 0
+__________
+  0 0 0 1
+```
+
+* 如上，a ^ b是一个**无进位加法**的结果；若需要计算 a + b ，则需要计算出**进位**的数，将无进位加法的结果和进位的数相加
+* (a & b) << 1为加法的**进位的数**
+* a ^ b + (a & b) << 1即为 a + b 的结果
+* 算法：
+  * a + b的计算可以拆分为（a + b的无进位结果） + （a + b的进位结果）
+  * 无进位结果使用**异或运算**计算，a ^ b
+  * 进位结果使用**与运算**和**左移运算**计算
+  * 循环，直到进位为 0
+
+
+
+
+
+#### （3.2）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int getSum(int a, int b) {
+         while (b != 0){
+             int temp = a ^ b;
+             b = (a & b) << 1;
+             a = temp;
+         }
+
+         return a;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
 ## 四、树
 
 
@@ -7550,6 +7699,255 @@ class Solution {
 
 
 
+### 98/81. 搜索旋转排序数组II
+
+
+
+#### （1）题目
+
+已知存在一个按非降序排列的整数数组 nums ，数组中的值不必互不相同。
+
+在传递给函数之前，nums 在预先未知的某个下标 k（0 <= k < nums.length）上进行了 旋转 ，使数组变为 [nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]]（下标 从 0 开始 计数）。例如， [0,1,2,4,4,4,5,6,6,7] 在下标 5 处经旋转后可能变为 [4,5,6,6,7,0,1,2,4,4] 。
+
+给你 旋转后 的数组 nums 和一个整数 target ，请你编写一个函数来判断给定的目标值是否存在于数组中。如果 nums 中存在这个目标值 target ，则返回 true ，否则返回 false 。
+
+
+
+
+
+#### （2）思路
+
+* 旋转排序数组也是部分有序的，使用二分法搜索时，需要先判断**当前mid在哪一部分有序序列中**
+* left，right分别记录二分法的左右边界
+* mid = (left + right) / 2 （left <= right）
+  * nums[mid] == target，跳出循环
+  * nums[mid] < target：
+    * mid在**前半部分**有序序列中，大于nums[mid]的元素在mid之后，则应该在mid后寻找target，**left = mid + 1**
+    * mid在**后半部分**有序列中，前后均有可能，判断最后一个元素nums[n-1]和target的关系
+      * nums[n-1] == target，跳出循环
+      * nums[n-1] < target，大于nums[n-1]的数在mid之前，在mid前寻找target，**right = mid - 1**
+      * nums[n-1] > target，小于nums[n-1]，大于nums[mid]的数在(mid，n-1)之间，left = mid + 1
+  * nums[mid] > target：
+    * mid在**前半部分**有序序列中，前后均有可能，判断第一个元素nums[0]和target的关系
+      * nums[0] == target，跳出循环
+      * nums[0] < target，大于nums[0]，小于nums[mid]的元素，在(0, mid)之间，**right = mid -1**
+      * nums[0] > target，小于nums[0]的元素在(mid, n-1)之间，**left = mid + 1**
+    * mid在**后半部分**有序序列中，小于nums[mid]的元素在(0, mid)之间，**right = mid - 1**
+* 判断元素在前半有序序列还是后半有序序列，从当前位置向前查找，若不是降序，则在后半序列，反之在前半序列
+
+
+
+
+
+#### （3）实现
+
+```java
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public boolean search(int[] nums, int target) {
+
+        int n = nums.length, left = 0, right = n - 1;
+        while (left <= right){
+
+            int mid = (left + right) / 2;
+            if (nums[mid] == target){
+                return true;
+            }else if (nums[mid] < target){
+                //System.out.println("nums[" + mid + "]:" + nums[mid] );
+                if (nums[mid] > nums[0] || (nums[mid] == nums[0] && judge(nums, mid)) == true){
+                    left = mid + 1;
+                }else {
+                    if (nums[n-1] > target){
+                        left = mid + 1;
+                    }else if (nums[n-1] == target){
+                        return true;
+                    }else{
+                        right = mid - 1;
+                    }
+                }
+            }else{
+              //  System.out.println("nums[" + mid + "]:" + nums[mid] );
+                if (nums[mid] > nums[0] || (nums[mid] == nums[0] && judge(nums, mid)) == true){//在前半有序序列
+                    if (nums[0] < target){
+                        right = mid -1;
+                    }else if (nums[0] == target){
+                        return true;
+                    }else{
+                        left = mid + 1;
+                    }
+                }else {
+                    right = mid - 1;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    boolean judge(int[] nums, int index){
+        for (int i = index; i > 0; i--) {
+            if (nums[i-1] > nums[i]){
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+
+```
+
+
+
+
+
+#### （2.2）思路（ipt）
+
+* 二分法
+* 对于任意位置index，**必存在[0, inde]或[index, n)是有序序列**
+* 每次二分查找是，**判断mid左侧还是右侧是有序序列**，并**判断target是否在在有序序列中**，再根据结果决定下一次查找区间；可能存在无法判断的情况：nums[left] == nums[mid] == nums[right]，此时，在[left+1, right-1]中查找
+* nums[mid] == target，跳出循环
+* nums[mid] != target，判断左右侧有序序列
+  * nums[left] == nums[mid] == nums[right]（无法判断）：left++，right--，进入下一次循环
+  * nums[left] <= nums[mid]（此时，**nums[right] < nums[left] <= nums[mid]**，**左有序**）
+    * nums[left] <= target && target < nums[mid] （target在左有序 区间）：right = mid - 1，进入下一次循环
+    * 反之，target在右无序区间：left = mid + 1，进入下一次循环
+  * 反之，右有序
+    * nums[mid] < target && target <= nums[right]（target在右有序区间）：left = mid + 1，进入下一次循环
+    * 反之，target在左无序区间：right = mid - 1，进入下一次循环
+
+
+
+
+
+#### （3.2）实现
+
+```java
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public boolean search(int[] nums, int target) {
+
+        int left = 0, right = nums.length - 1;
+        while (left <= right){
+            int mid = (left + right) / 2;
+            if (nums[mid] == target){
+                return true;
+            }
+            if (nums[left] == nums[mid] && nums[mid] == nums[right]){//无法判断
+                left++;
+                right--;
+            }else if (nums[left] <= nums[mid]){//左有序
+                if (nums[left] <= target && target < nums[mid]){//target在左有序序列
+                    right = mid - 1;
+                }else{
+                    left = mid + 1;
+                }
+            }else{//右有序
+                if (nums[mid] < target && target <= nums[right]){//target在右有序序列
+                    left = mid + 1;
+                }else{
+                    right = mid - 1;
+                }
+            }
+        }
+
+        return false;
+    }
+
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
+### 99/90. 子集 II
+
+
+
+#### （1）题目
+
+给你一个整数数组 nums ，其中可能包含重复元素，请你返回该数组所有可能的子集（幂集）。
+
+解集 不能 包含重复的子集。返回的解集中，子集可以按 任意顺序 排列。
+
+
+
+
+
+#### （2）思路
+
+* 回溯
+* 可将问题分解为查找不重复的**元素个数为0~n的子集集合**，n为数组nums的长度
+* index记录当前递归的起始数组下标位置，temp记录子集，target记录目标子集元素个数
+  * 先对num**排序**，使相同元素相邻
+  * 遍历[index, n）数组，选出**不重复的元素**nums[i]加入子集temp
+  * 子集个数 = target，则记录temp
+  * 子集个数 != target，进入下一层递归，起始数组下标为i+1
+  * **状态回溯，将加入的元素移除**
+
+
+
+
+
+#### （3）实现
+
+````java
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    List<List<Integer>> res = new ArrayList<>();
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+
+        res.add(new ArrayList<>());
+
+        Arrays.sort(nums);
+
+        for (int i = 0; i < nums.length; i++) {
+            find(nums, 0,new ArrayList<Integer>(), i+1);
+        }
+
+        return res;
+    }
+
+    public void find(int[] nums, int index, List<Integer> temp, int target){
+
+
+        for (int i = index; i < nums.length; i++) {
+            if (i == index || nums[i] != nums[i-1]){//当前位置不重复
+                temp.add(nums[i]);
+
+                if (target == temp.size()){
+                    res.add(new ArrayList<Integer>(temp));
+                }else{
+                    find(nums, i+1, temp, target);
+                }
+
+                temp.remove(temp.size()-1);
+            }
+        }
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+````
+
+
+
+
+
+
+
+
+
 ## 十一、链表
 
 
@@ -7647,6 +8045,9 @@ class Solution {
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
-
 ```
+
+
+
+
 
