@@ -39,6 +39,7 @@ package leetcode.editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Definition for a binary tree node.
@@ -56,31 +57,32 @@ import java.util.HashMap;
  * }
  */
 class Solution {
-    int res;
+    int res = 0;
     public int pathSum(TreeNode root, int targetSum) {
-        res = 0;
-        HashMap<Integer, Integer> map = new HashMap<>();
+        Map<Integer, Integer> map = new HashMap<>();
         map.put(0, 1);
-        getSum(root, targetSum, 0, map);
+        dfs(root, 0, map, targetSum);
         return res;
     }
 
-    public void getSum(TreeNode root, int targetSum, int tempSum, HashMap<Integer, Integer> map){
+    void dfs(TreeNode root, int sum, Map<Integer, Integer> map, int targetSum) {
         if (root == null){
             return;
         }
 
-        tempSum += root.val;
+        sum += root.val;
 
-        int need = tempSum - targetSum;
+        res += map.getOrDefault(sum-targetSum, 0);
 
-        res += map.getOrDefault(need, 0);
+        map.put(sum, map.getOrDefault(sum, 0)+1);
+        if (root.left != null){
+            dfs(root.left, sum, map, targetSum);
+        }
+        if (root.right != null){
+            dfs(root.right, sum, map, targetSum);
+        }
 
-        map.put(tempSum, map.getOrDefault(tempSum, 0)+1);
-
-        getSum(root.left, targetSum, tempSum, map);
-        getSum(root.right, targetSum, tempSum, map);
-        map.put(tempSum, map.get(tempSum)-1);
+        map.put(sum,map.getOrDefault(sum, 0)-1);
     }
 
 }

@@ -2613,16 +2613,18 @@ public class Codec {
 * 题目要求**路径方向必须是向下的（只能从父节点到子节点）**
   * 即讨论前缀和时，一个节点必须是另一个节点的祖先节点
   * **状态恢复：遍历完一个节点的所有子节点后，将其前缀和从map中移除**
-* 细节：考虑节点的前缀和 = targetSum的情况，**map.put(0, 1)**
+* **细节**：考虑节点的前缀和 = targetSum的情况，**map.put(0, 1)**
 
 
 
 #### （3）实现
 
 ```java
+
 //leetcode submit region begin(Prohibit modification and deletion)
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Definition for a binary tree node.
@@ -2640,36 +2642,36 @@ import java.util.HashMap;
  * }
  */
 class Solution {
-    int res;
+    int res = 0;
     public int pathSum(TreeNode root, int targetSum) {
-        res = 0;
-        HashMap<Integer, Integer> map = new HashMap<>();
+        Map<Integer, Integer> map = new HashMap<>();
         map.put(0, 1);
-        getSum(root, targetSum, 0, map);
+        dfs(root, 0, map, targetSum);
         return res;
     }
 
-    public void getSum(TreeNode root, int targetSum, int tempSum, HashMap<Integer, Integer> map){
+    void dfs(TreeNode root, int sum, Map<Integer, Integer> map, int targetSum) {
         if (root == null){
             return;
         }
 
-        tempSum += root.val;
+        sum += root.val;
 
-        int need = tempSum - targetSum;
+        res += map.getOrDefault(sum-targetSum, 0);
+        
+        map.put(sum, map.getOrDefault(sum, 0)+1);
+        if (root.left != null){
+            dfs(root.left, sum, map, targetSum);
+        }
+        if (root.right != null){
+            dfs(root.right, sum, map, targetSum);
+        }
 
-        res += map.getOrDefault(need, 0);
-
-        map.put(tempSum, map.getOrDefault(tempSum, 0)+1);
-
-        getSum(root.left, targetSum, tempSum, map);
-        getSum(root.right, targetSum, tempSum, map);
-        map.put(tempSum, map.get(tempSum)-1);
+        map.put(sum,map.getOrDefault(sum, 0)-1);
     }
 
 }
 //leetcode submit region end(Prohibit modification and deletion)
-
 ```
 
 
@@ -3808,6 +3810,84 @@ class Solution {
 //leetcode submit region end(Prohibit modification and deletion)
 
 ```
+
+
+
+
+
+
+
+### 100/120. 三角形最小路径和
+
+
+
+#### （1）题目
+
+给定一个三角形 `triangle` ，找出自顶向下的最小路径和。
+
+每一步只能移动到下一行中相邻的结点上。相邻的结点 在这里指的是 下标 与 上一层结点下标 相同或者等于 上一层结点下标 + 1 的两个结点。也就是说，如果正位于当前行的下标 i ，那么下一步可以移动到下一行的下标 i 或 i + 1 。
+
+
+
+#### （2）思路
+
+* 动态规划
+* 当前index位置节点的最小路径和只与**上一层index和index-1位置**节点的最小路径和有关
+* res[n] 记录每一层节点的最小路径和，n为三角形行数；temp为当前层元素集合
+  * index = 0，只存在正上方节点，res[index] += temp.get(index)
+  * index = temp.size()-1，只存在左上方节点，res[index] = res[index-1] + temp.get(index)
+  * 其他情况，正上方和左上方节点均存在，res[index] = min(res[index-1], res[index]) + temp.get(index)
+  * **注意：**由于res数组会改变，应该**从后向前遍历**，否则获取的左上方节点的路径和可能已经改变
+* 遍历res，记录最小路径和min
+* 也可在原数组上直接修改
+
+
+
+
+
+#### （3）实现
+
+```java
+import java.util.List;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int minimumTotal(List<List<Integer>> triangle) {
+        int n = triangle.size();
+
+        int[] res = new int[n];
+
+        res[0] = triangle.get(0).get(0);
+
+        for (int i = 1; i < n; i++) {
+
+            List<Integer> temp = triangle.get(i);
+
+            for (int j = temp.size()-1; j >= 0; j--) {
+                if (j == temp.size()-1){
+                    res[j] = res[j-1] + temp.get(j);
+                }else if (j == 0){
+                    res[j] += temp.get(j);
+                }else {
+                    res[j] = Math.min(res[j], res[j-1]) + temp.get(j);
+                }
+            }
+        }
+
+        int min = 1 << 31 - 1;
+        for (int i = 0; i < n; i++) {
+            min = Math.min(min, res[i]);
+        }
+
+        return min;
+
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+
+```
+
+
 
 
 
@@ -7941,6 +8021,67 @@ class Solution {
 ````
 
 
+
+
+
+
+
+### 101/153. 寻找旋转排序数组中的最小值（思路表达有问题）
+
+
+
+#### （1）题目
+
+已知一个长度为 n 的数组，预先按照升序排列，经由 1 到 n 次 旋转 后，得到输入数组。例如，原数组 nums = [0,1,2,4,5,6,7] 在变化后可能得到：
+若旋转 4 次，则可以得到 [4,5,6,7,0,1,2]
+若旋转 7 次，则可以得到 [0,1,2,4,5,6,7]
+注意，数组 [a[0], a[1], a[2], ..., a[n-1]] 旋转一次 的结果为数组 [a[n-1], a[0], a[1], a[2], ..., a[n-2]] 。
+
+给你一个元素值 互不相同 的数组 nums ，它原来是一个升序排列的数组，并按上述情形进行了多次旋转。请你找出并返回数组中的 最小元素 。
+
+
+
+
+
+#### （2）思路
+
+* 经过旋转后的数组，必然存在一部分有序序列，另一部分为无序序列；**最小值存在与无序序列中**
+* min记录数组的最小值，初始化为min = 1 << 31 - 1；使用**二分法查询**，left = 0，right = nums.length - 1，mid = (left + right) / 2
+  * nums[left] < nums[mid] ：左边为有序序列，**记录其最小值nums[left]，left  = mid + 1**
+  * 其他情况：右边为有序序列，**记录其可能的最小值nums[right]，right = mid - 1**
+
+
+
+
+
+#### （3）实现
+
+```java
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int findMin(int[] nums) {
+        int min = 1 << 31 - 1;
+
+        int left = 0, right = nums.length-1;
+
+        while (left <= right){
+            int mid = (left + right) / 2;
+            min = Math.min(min, nums[mid]);
+            if (nums[left] < nums[mid]){
+                min = Math.min(min, nums[left]);
+                left = mid + 1;
+            }else {
+                min = Math.min(min, nums[right]);
+                right = mid - 1;
+            }
+        }
+
+        return min;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
 
 
 
