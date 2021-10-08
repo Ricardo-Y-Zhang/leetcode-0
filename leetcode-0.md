@@ -6676,6 +6676,73 @@ class Solution {
 
 
 
+
+
+### 102/187. 重复的DNA序列
+
+
+
+#### （1）题目
+
+所有 DNA 都由一系列缩写为 'A'，'C'，'G' 和 'T' 的核苷酸组成，例如："ACGAATTCCG"。在研究 DNA 时，识别 DNA 中的重复序列有时会对研究非常有帮助。
+
+编写一个函数来找出所有目标子串，目标子串的长度为 10，且在 DNA 字符串 s 中出现次数超过一次。
+
+
+
+
+
+#### （2）思路
+
+* 需要找出出现次数超过一次的长度为10的字符串，则需要记录所有子串
+* ‘使用HashSet或HashMap<String, Integer>记录子串即可，此处使用HashSet<String> set记录所有的子串，ArrayList<String> res记录结果
+* 遍历字符串，截取长度为10的子串temp
+  * 若temp**在set中且不在res中**，则记录temp
+  * 将temp加入set中
+
+
+
+
+
+#### （3）实现
+
+```java
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public List<String> findRepeatedDnaSequences(String s) {
+        List<String> res = new ArrayList<>();
+
+        Set<String> set = new HashSet<>();
+
+        for (int i = 0; i < s.length()-9; i++) {
+            String temp = s.substring(i, i + 10);
+
+            if (set.contains(temp) && !res.contains(temp)){
+                res.add(temp);
+            }
+
+            set.add(temp);
+
+        }
+
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+
+```
+
+
+
+
+
+
+
 ## 十、数组
 
 
@@ -8078,6 +8145,129 @@ class Solution {
         }
 
         return min;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
+### 103/186. 旋转数组
+
+
+
+#### （1）题目
+
+给定一个数组，将数组中的元素向右移动 k 个位置，其中 k 是非负数。
+
+ 
+
+进阶：
+
+尽可能想出更多的解决方案，至少有三种不同的方法可以解决这个问题。
+你可以使用空间复杂度为 O(1) 的 原地 算法解决这个问题吗？
+
+
+
+#### （2）思路
+
+* 将数组元素向右移动k次（k < nums.length），即**数组尾部的k个元素会移动到数组头部，其余元素向后移动k次**
+* 将a<sub>1</sub>, a<sub>2</sub> ... a<sub>m</sub>, a<sub>m+1</sub> ... a<sub>n</sub> **整体翻转**为 a<sub>n</sub> ... a<sub>m+1</sub>, a<sub>m</sub> ... a<sub>2</sub>, a<sub>1</sub> （m+1 ~ n共k个元素）
+* 将**前k个元素即[0, k-1]翻转一次**，剩余的元素**[k, n]翻转一次**，即可得到a<sub>m+1</sub> ... a<sub>n</sub>, a<sub>1</sub>, a<sub>2</sub> ... a<sub>m</sub>
+
+
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public void rotate(int[] nums, int k) {
+        k %= nums.length;
+
+        if (k == 0){
+            return;
+        }
+
+        reverse(nums, 0, nums.length-1);
+
+        reverse(nums, 0, k-1);
+
+        reverse(nums, k, nums.length-1);
+    }
+
+
+    public void reverse(int[] nums, int left, int right){
+        for (int i = left; i <= (left + right) / 2; i++) {
+            int temp = nums[left + right - i];
+
+            nums[left + right - i] = nums[i];
+
+            nums[i] = temp;
+        }
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
+### 104/162. 寻找峰值
+
+
+
+#### （1）题目
+
+峰值元素是指其值严格大于左右相邻值的元素。
+
+给你一个整数数组 nums，找到峰值元素并返回其索引。数组可能包含多个峰值，在这种情况下，返回 任何一个峰值 所在位置即可。
+
+你可以假设 nums[-1] = nums[n] = -∞ 。
+
+你必须实现时间复杂度为 O(log n) 的算法来解决此问题。
+
+
+
+#### （2）思路
+
+* **nums[-1] = nums[n] = -∞**，即**边界为负无穷**，所以数组必定存在峰值，**沿着递增的方向寻找必定能找到峰值**
+* 对于任意位置 i 的元素
+  * nums[i] > nums[i+1]，则在左半区间[-1, i+1]中，存在**nums[i] > nums[i+1] && nums[i] > nums[-1]**，**[0, i]中必定存在峰值**
+  * 反之，在右半区间[i, n]中，存在**nums[i+1] > nums[i] && nums[i+1] > nums[n]**，**[i+1, n-1]中必定存在峰值**
+
+
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int findPeakElement(int[] nums) {
+        int left = 0, right = nums.length - 1;
+
+        while (left < right){
+            int mid = (left + right) / 2;
+
+            if(nums[mid] > nums[mid+1]) {//左侧存在峰值
+                right = mid;
+            }else{//右侧存在峰值
+                left = mid + 1;
+            }
+        }
+
+        return right;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
