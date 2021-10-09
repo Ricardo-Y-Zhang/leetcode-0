@@ -3893,6 +3893,71 @@ class Solution {
 
 
 
+### 106/213. 打家劫舍 II
+
+
+
+#### （1）题目
+
+你是一个专业的小偷，计划偷窃沿街的房屋，每间房内都藏有一定的现金。这个地方所有的房屋都 围成一圈 ，这意味着第一个房屋和最后一个房屋是紧挨着的。同时，相邻的房屋装有相互连通的防盗系统，如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警 。
+
+给定一个代表每个房屋存放金额的非负整数数组，计算你 在不触动警报装置的情况下 ，今晚能够偷窃到的最高金额
+
+
+
+#### （2）思路
+
+* 动态规划
+* dp[index]记录**打劫到下标为index的房屋，所能偷窃的最高金额**，由于第一个房屋和最后一个房屋相邻，需分情况考虑，dp1记录**不偷窃第一个房屋**的情况，dp2记录**偷窃第一个房屋**的情况，初始化dp1[0] = 0，dp2[0] = nums[0]
+* 状态转移方程：**dp[i] = max(dp[i-1]，dp[i-2] + nums[i])**
+  * 根据规则，有两种情况
+    * 可以选择**偷窃下标为 i** 的房屋，则**不能偷窃下标为 i-1** 的房屋，**只需考虑偷窃到 i-2 **房屋的情况：dp[i-2] + nums[i]
+    * 也可以选择**不偷窃下标为 i** 的房屋，则可以**偷窃下标为 i-1** 的房屋，需要**考虑偷窃到 i-1** 房屋的情况：dp[i-1]
+* 遍历dp数组，更新dp1，dp2，注意 i = 1 的情况，此时 i-2 房屋不存在
+* 能偷窃的最高金额即为不偷窃第一个房屋时，偷窃到最后一个房屋能偷窃的最高金额和偷窃第一个房屋时，偷窃到倒数第二个房屋能偷窃的最高金额中的最大值，即**max( dp1[n-1]，dp2[n-2] )**
+
+
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int rob(int[] nums) {
+        int[] dp1 = new int[nums.length];
+
+        int[] dp2 = new int[nums.length];
+
+        //初始化
+        dp1[0] = 0;
+        dp2[0] = nums[0];
+
+        for (int i = 1; i < nums.length; i++) {
+            if (i == 1){
+                dp1[i] = nums[1];
+                dp2[i] = Math.max(nums[0], nums[1]);
+            }else{
+                dp1[i] = Math.max(dp1[i-1], dp1[i-2] + nums[i]);
+                dp2[i] = Math.max(dp2[i-1], dp2[i-2] + nums[i]);
+            }
+        }
+
+        if (nums.length == 1){
+            return nums[0];
+        }
+
+        return Math.max(dp1[nums.length-1], dp2[nums.length-2]);
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
 
 
 ### 八、背包问题
@@ -8274,6 +8339,69 @@ class Solution {
 ```
 
 
+
+
+
+
+
+### 105/209. 长度最小的子数组
+
+
+
+#### （1）题目
+
+给定一个含有 n 个正整数的数组和一个正整数 target 。
+
+找出该数组中满足其和 ≥ target 的长度最小的 连续子数组 [numsl, numsl+1, ..., numsr-1, numsr] ，并返回其长度。如果不存在符合条件的子数组，返回 0 。
+
+
+
+
+
+#### （2）思路
+
+* 滑动窗口
+* 计算出nums数组的前缀和prefix，定义两个指针start, end分别表示子数组的开始位置和结束位置
+* 更新end位置，每层迭代，若start右移后的子数组满足要求即>=target，则将start指针右移；直到start右移后不满足要求；记录满足要求子数组的最小长度
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int minSubArrayLen(int target, int[] nums) {
+        int[] prefix = new int[nums.length+1];
+
+        prefix[0] = 0;
+
+        for (int i = 0; i < nums.length; i++) {
+            prefix[i+1] = prefix[i] + nums[i];
+        }
+
+        if (prefix[nums.length] < target){
+            return 0 ;
+        }
+
+        int start = -1, res = nums.length;
+        for (int end = 0; end < nums.length; end++) {
+
+            while (start <= end){
+                if (prefix[end+1] - prefix[start+1] >= target){
+                    start++;
+                    res = res < (end+1-start) ? res : (end+1-start);
+                }else{
+                    break;
+                }
+            }
+        }
+
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
 
 
 
