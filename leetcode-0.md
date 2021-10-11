@@ -8407,6 +8407,175 @@ class Solution {
 
 
 
+
+
+### 107/216. 组合总和 III
+
+
+
+#### （1）题目
+
+找出所有相加之和为 n 的 k 个数的组合。组合中只允许含有 1 - 9 的正整数，并且每种组合中不存在重复的数字。
+
+说明：
+
+所有数字都是正整数。
+解集不能包含重复的组合。 
+
+
+
+#### （2）思路
+
+* 回溯，枚举
+* 在k个位置上，枚举放入1~9，且后续放入的数比前面的数大（去重）
+
+
+
+
+
+#### （3）实现
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    List<List<Integer>> res = new ArrayList<>();
+
+    List<Integer> temp = new ArrayList<>();
+
+    public List<List<Integer>> combinationSum3(int k, int n) {
+        find(1, k, 0, n, 1);
+
+        return res;
+    }
+
+    public void find(int round, int k, int sum, int n, int index){
+        if (round > k){
+            return;
+        }
+
+        for (int i = index; i < 10; i++) {
+           sum += i;
+           temp.add(i);
+
+           if (sum == n && round == k){
+               res.add(new ArrayList<Integer>(temp));
+           }else if (sum < n && round < k){
+               find(round+1, k, sum, n, i+1);
+           }
+
+           sum -= i;
+           temp.remove(temp.size()-1);
+        }
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
+### 108/229. 求众数 III
+
+
+
+#### （1）题目
+
+给定一个大小为 n 的整数数组，找出其中所有出现超过 ⌊ n/3 ⌋ 次的元素。
+
+进阶：尝试设计时间复杂度为 O(n)、空间复杂度为 O(1)的算法解决此问题
+
+
+
+
+
+#### （2）思路
+
+* **摩尔投票法**
+* 投票阶段选出两个可能的候选者cand1和cand2，验证阶段，验证两个候选者是否满足要求，出现超过n/3次
+
+
+
+
+
+#### （3）实现
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public List<Integer> majorityElement(int[] nums) {
+        List<Integer> res = new ArrayList<>();
+
+        int cand1 = nums[0], cand2 = nums[0];
+        int count1 = 0, count2 = 0;
+
+        for (int temp : nums){
+            if (temp == cand1) {
+                count1++;
+                continue;
+            }
+
+            if (temp == cand2) {
+                count2++;
+                continue;
+            }
+
+            if (count1 == 0) {
+                count1 = 1;
+                cand1 = temp;
+                continue;
+            }
+
+            if (count2 == 0){
+                count2 = 1;
+                cand2 = temp;
+                continue;
+            }
+
+            count1--;
+            count2--;
+        }
+
+        //验证
+        count1 = 0;
+        count2 = 0;
+
+        for (int temp : nums){
+            if (temp == cand1) {
+                count1++;
+            }else if (temp == cand2){
+                count2++;
+            }
+        }
+
+        if (count1 > nums.length/3) {
+            res.add(cand1);
+        }
+
+        if (count2 > nums.length/3) {
+            res.add(cand2);
+        }
+
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
 ## 十一、链表
 
 
