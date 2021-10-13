@@ -315,6 +315,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[275]h-index-ii.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[275]h-index-ii.java" />
+              <option name="questionId" value="275" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[279]perfect-squares.java">
           <value>
             <LeetcodeEditor>
@@ -331,6 +339,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[289]game-of-life.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[289]game-of-life.java" />
+              <option name="questionId" value="289" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[292]nim-game.java">
           <value>
             <LeetcodeEditor>
@@ -344,6 +360,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[297]serialize-and-deserialize-binary-tree.java" />
               <option name="questionId" value="297" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[29]divide-two-integers.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[29]divide-two-integers.java" />
+              <option name="questionId" value="29" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -504,6 +528,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[40]combination-sum-ii.java" />
               <option name="questionId" value="40" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[412]fizz-buzz.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[412]fizz-buzz.java" />
+              <option name="questionId" value="412" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -755,6 +787,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[6]zigzag-conversion.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[6]zigzag-conversion.java" />
+              <option name="questionId" value="6" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[725]split-linked-list-in-parts.java">
           <value>
             <LeetcodeEditor>
@@ -824,6 +864,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[81]search-in-rotated-sorted-array-ii.java" />
               <option name="questionId" value="81" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[8]string-to-integer-atoi.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[8]string-to-integer-atoi.java" />
+              <option name="questionId" value="8" />
             </LeetcodeEditor>
           </value>
         </entry>

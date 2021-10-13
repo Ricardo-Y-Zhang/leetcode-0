@@ -8576,6 +8576,149 @@ class Solution {
 
 
 
+### 109/29. 两数相除
+
+
+
+#### （1）题目
+
+给定两个整数，被除数 dividend 和除数 divisor。将两数相除，要求不使用乘法、除法和 mod 运算符。
+
+返回被除数 dividend 除以除数 divisor 得到的商。
+
+整数除法的结果应当截去（truncate）其小数部分，例如：truncate(8.345) = 8 以及 truncate(-2.7335) = -2
+
+
+
+#### （2）思路
+
+* 位运算
+* 可将除法转换为减法，temp记录当前递归的减数，tempSum为减数temp是除数divisor的倍数即temp/divisor
+  * 若dividend > temp，则将temp左移一位，tempSum左移一位，进入下一层递归
+  * 下层递归结束后，若dividend >= temp，则将dividend -= temp，res += tempSum
+
+
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    int res = 0;
+    long target = 0;
+    public int divide(int dividend, int divisor) {
+        if (dividend == (-1) << 31 && divisor == -1){
+            return (1 << 31) - 1;
+        }
+
+        if (divisor == 1){
+            return dividend;
+        }
+
+        if (divisor == -1){
+            return -dividend;
+        }
+
+        boolean flag = false;
+        if ((dividend < 0 && divisor > 0) || (dividend > 0 && divisor < 0)){
+            flag = true;
+        }
+        target = Math.abs((long)dividend);
+        dfs(Math.abs((long) divisor), 1);
+        if (flag == true){
+            res = -res;
+        }
+
+        return res;
+    }
+
+    public void dfs(long temp, int tempSum){
+        if (target > temp) {
+            dfs(temp << 1, tempSum << 1);
+        }
+
+        if (target >= temp){
+            res += tempSum;
+            target -= temp;
+        }
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
+
+
+### 110/275. H指数 II
+
+
+
+#### （1）题目
+
+给你一个整数数组 citations ，其中 citations[i] 表示研究者的第 i 篇论文被引用的次数，citations 已经按照 升序排列 。计算并返回该研究者的 h 指数。
+
+h 指数的定义：h 代表“高引用次数”（high citations），一名科研人员的 h 指数是指他（她）的 （n 篇论文中）总共有 h 篇论文分别被引用了至少 h 次。且其余的 n - h 篇论文每篇被引用次数 不超过 h 次。
+
+提示：如果 h 有多种可能的值，h 指数 是其中最大的那个。
+
+请你设计并实现对数时间复杂度的算法解决此问题。
+
+
+
+#### （2）思路
+
+* 二分查找
+* 若查找过程中citations[mid] >= n - mid，则移动有边界right，否则移动左边界left
+
+
+
+#### （3）实现
+
+```java
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int hIndex(int[] citations) {
+
+        int res = 0;
+        int left = 0, right = citations.length - 1;
+
+        while (left <= right){
+            int mid = (left + right) / 2;
+            int h = citations.length - mid;
+            if (citations[mid] >= h){
+                if (res < h){
+                    res = h;
+                }
+                right = mid - 1;
+            }else {
+                left = mid + 1;
+            }
+        }
+
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
+
+
+
+
 ## 十一、链表
 
 
