@@ -571,6 +571,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[43]multiply-strings.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[43]multiply-strings.java" />
+              <option name="questionId" value="43" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[448]find-all-numbers-disappeared-in-an-array.java">
           <value>
             <LeetcodeEditor>
@@ -883,6 +891,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[91]decode-ways.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[91]decode-ways.java" />
+              <option name="questionId" value="91" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[94]binary-tree-inorder-traversal.java">
           <value>
             <LeetcodeEditor>
@@ -904,6 +920,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[98]validate-binary-search-tree.java" />
               <option name="questionId" value="98" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer II 069]B1IidL.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer II 069]B1IidL.java" />
+              <option name="questionId" value="1000333" />
             </LeetcodeEditor>
           </value>
         </entry>

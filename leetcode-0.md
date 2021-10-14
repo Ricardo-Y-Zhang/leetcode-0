@@ -3960,6 +3960,88 @@ class Solution {
 
 
 
+### 115/91. 解码方法
+
+
+
+#### （1）题目
+
+一条包含字母 A-Z 的消息通过以下映射进行了 编码 ：
+
+'A' -> 1
+'B' -> 2
+...
+'Z' -> 26
+要 解码 已编码的消息，所有数字必须基于上述映射的方法，反向映射回字母（可能有多种方法）。例如，"11106" 可以映射为：
+
+"AAJF" ，将消息分组为 (1 1 10 6)
+"KJF" ，将消息分组为 (11 10 6)
+注意，消息不能分组为  (1 11 06) ，因为 "06" 不能映射为 "F" ，这是由于 "6" 和 "06" 在映射中并不等价。
+
+给你一个只含数字的 非空 字符串 s ，请计算并返回 解码 方法的 总数 。
+
+题目数据保证答案肯定是一个 32 位 的整数。
+
+
+
+#### （2）思路
+
+* 动规
+* 对于任意位置 i 上的字符，有两种解码方式
+  * 单独解码 “1” ~ “9”
+  * 与前一位置一同解码 “10” ~ “26”
+* dp[ ] 记录字符串中以当前位置为终点的子字符串的解码方法总数，即dp[i] 为 s.substring(0, i+1)子串的解码方法总数
+* 状态转移方程
+  * dp[i] = dp[i-1] + dp[i-2] （可单独解码，也可与前一位置一同解码）
+  * dp[i] = dp[i-1] （只能单独解码成功，无法一同解码）
+  * dp[i] = dp[i-2] （只能一同解码成功，无法单独解码）
+  * dp[i] = 0（无法单独解码或一同解码）
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int numDecodings(String s) {
+        if (s.charAt(0) == '0') {
+            return 0;
+        }
+
+        int[] dp = new int[s.length()];
+        dp[0] = 1;
+        for (int i = 1; i < dp.length ; i++) {
+            int pre = 0, prere = 0;
+
+            if (s.charAt(i) != '0') {//i位置的元素可单独成功解码
+                pre = dp[i-1];
+            }
+
+            int temp = Integer.parseInt(s.substring(i-1, i+1));
+            if (temp >= 10 && temp <= 26) {//(i-1, i)位置的元素可一起成功解码
+                if (i == 1) {
+                    prere = 1;
+                }else {
+                    prere = dp[i-2];
+                }
+            }
+
+            dp[i] = pre + prere;
+        }
+
+        return dp[s.length()-1];
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
 ### 八、背包问题
 
 
@@ -8713,6 +8795,61 @@ class Solution {
 
 
 
+### 114/剑指Offer II 069. 山峰数组的顶部
+
+
+
+#### （1）题目
+
+
+
+符合下列属性的数组 arr 称为 山峰数组（山脉数组） ：
+
+arr.length >= 3
+存在 i（0 < i < arr.length - 1）使得：
+arr[0] < arr[1] < ... arr[i-1] < arr[i]
+arr[i] > arr[i+1] > ... > arr[arr.length - 1]
+给定由整数组成的山峰数组 arr ，返回任何满足 arr[0] < arr[1] < ... arr[i - 1] < arr[i] > arr[i + 1] > ... > arr[arr.length - 1] 的下标 i ，即山峰顶部。
+
+
+
+#### （2）思路
+
+* arr数组元素各不相同，因此峰顶元素右侧必然满足严格递减，左侧必然不满足
+
+* 峰顶左侧元素满足 arr[i-1] < arr[i]
+
+* 峰顶右侧元素满足 arr[i+1] < arr[i]
+
+  
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int peakIndexInMountainArray(int[] arr) {
+        int left = 0, right = arr.length - 1, res = 0;
+
+        while (left <= right) {
+            int mid = (left + right) / 2;
+
+            if (arr[mid] > arr[mid+1]) {
+                res = mid;
+                right = mid - 1;
+            }else {
+                left = mid + 1;
+            }
+        }
+
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
 
 
 
@@ -8819,6 +8956,233 @@ class Solution {
 ```
 
 
+
+## 十二、字符串
+
+
+
+### 112/6. Z字形变换
+
+
+
+#### （1）题目
+
+将一个给定字符串 s 根据给定的行数 numRows ，以从上往下、从左到右进行 Z 字形排列。
+
+比如输入字符串为 "PAYPALISHIRING" 行数为 3 时，排列如下：
+
+```
+P   A   H   N
+A P L S I I G
+Y   I   R
+```
+
+之后，你的输出需要从左往右逐行读取，产生出一个新的字符串，比如：`"PAHNAPLSIIGYIR"`。
+
+请你实现这个将字符串进行指定行数变换的函数：
+
+```
+string convert(string s, int numRows);
+```
+
+
+
+#### （2）思路
+
+* 模拟，在遍历s时，将每个字符填到正确的行
+* 按照 行从[0, numRows-1]，[numRows-2, 1]的顺序将每个字符填到正确的行，若遍历结束，直接跳出循环
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public String convert(String s, int numRows) {
+        String[] temp = new String[numRows];
+        for (int i = 0; i < numRows; i++) {
+            temp[i] = "";
+        }
+
+        int index = 0;
+        lable: while (true) {
+            for (int i = 0; i < numRows; i++) {
+                if (index != s.length()) {
+                    temp[i] += s.substring(index, index+1);
+                    index++;
+                }else{
+                    break lable;
+                }
+            }
+
+            for (int i = numRows-2; i > 0; i--) {
+                if (index != s.length()){
+                    temp[i] += s.charAt(index);
+                    index++;
+                }else{
+                    break lable;
+                }
+            }
+        }
+
+        String res = "";
+        for (int i = 0; i < numRows; i++) {
+            res += temp[i];
+        }
+
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 113/8. 字符串转换整数（atoi）
+
+
+
+#### （1）题目
+
+请你来实现一个 myAtoi(string s) 函数，使其能将字符串转换成一个 32 位有符号整数（类似 C/C++ 中的 atoi 函数）。
+
+函数 myAtoi(string s) 的算法如下：
+
+读入字符串并丢弃无用的前导空格
+检查下一个字符（假设还未到字符末尾）为正还是负号，读取该字符（如果有）。 确定最终结果是负数还是正数。 如果两者都不存在，则假定结果为正。
+读入下一个字符，直到到达下一个非数字字符或到达输入的结尾。字符串的其余部分将被忽略。
+将前面步骤读入的这些数字转换为整数（即，"123" -> 123， "0032" -> 32）。如果没有读入数字，则整数为 0 。必要时更改符号（从步骤 2 开始）。
+如果整数数超过 32 位有符号整数范围 [−231,  231 − 1] ，需要截断这个整数，使其保持在这个范围内。具体来说，小于 −231 的整数应该被固定为 −231 ，大于 231 − 1 的整数应该被固定为 231 − 1 。
+返回整数作为最终结果。
+注意：
+
+本题中的空白字符只包括空格字符 ' ' 。
+除前导空格或数字后的其余字符串外，请勿忽略 任何其他字符。
+
+
+
+#### （2）思路
+
+* 模拟
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int myAtoi(String s) {
+        long res = 0, index = 0;
+        //跳过前导空格
+        while (true) {
+            if (s.length() != 0 && s.charAt(0) == ' '){
+                s = s.substring(1);
+            }else {
+                break;
+            }
+        }
+
+
+        //正负
+        boolean flag = true;
+        if (s.length() != 0 && s.charAt(0) == '-'){
+            flag = false;
+            s = s.substring(1);
+        }else if (s.length() != 0 && s.charAt(0) == '+'){
+            s = s.substring(1);
+        }
+
+
+        //读取数字
+        while (s.length() != 0 && s.charAt(0) >= '0' && s.charAt(0) <= '9'){
+            res *= 10;
+            res += Integer.parseInt(String.valueOf(s.charAt(0)));
+            if (flag == true && res >= (1<<31) - 1) {//越界
+                break;
+            }
+            if (flag == false && res >= (long)1 << 31){//越界
+                break;
+            }
+            s = s.substring(1);
+
+        }
+
+        //正负赋值
+        if (flag == false){
+            res = -res;
+        }
+
+        if (res >= (1<<31) - 1) {
+            return (1<<31) - 1;
+        }
+        if (res <= (-1) << 31){
+            return (-1) << 31;
+        }
+        return (int)res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 116/43. 字符串相乘
+
+
+
+#### （1）题目
+
+给定两个以字符串形式表示的非负整数 `num1` 和 `num2`，返回 `num1` 和 `num2` 的乘积，它们的乘积也表示为字符串形式。
+
+
+
+#### （2）思路
+
+* 模拟
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public String multiply(String num1, String num2) {
+        if (num1.charAt(0) == '0' || num2.charAt(0) == '0') {
+            return "0";
+        }
+
+        int[] res = new int[num1.length() + num2.length()];
+
+        for (int i = num1.length()-1; i >= 0; i--) {
+            int value1 = num1.charAt(i) - '0';
+            for (int j = num2.length()-1; j >= 0; j--) {
+                int value2 = num2.charAt(j) - '0';
+                int value = res[i+j+1] + value1 * value2;
+                res[i+j+1] = value % 10;
+                res[i+j] += value / 10;
+            }
+        }
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < res.length; i++) {
+            if (i == 0 && res[i] == 0){
+                continue;
+            }
+            stringBuilder.append(res[i]);
+        }
+        return stringBuilder.toString();
+
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
 
 
 
