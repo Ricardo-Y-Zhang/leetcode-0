@@ -9186,3 +9186,244 @@ class Solution {
 
 
 
+
+
+### 117/38. 外观数列
+
+
+
+#### （1）题目
+
+给定一个正整数 n ，输出外观数列的第 n 项。
+
+「外观数列」是一个整数序列，从数字 1 开始，序列中的每一项都是对前一项的描述。
+
+你可以将其视作是由递归公式定义的数字字符串序列：
+
+countAndSay(1) = "1"
+countAndSay(n) 是对 countAndSay(n-1) 的描述，然后转换成另一个数字字符串。
+
+前五项如下：
+
+```java
+1.     1
+2.     11
+3.     21
+4.     1211
+5.     111221
+第一项是数字 1 
+描述前一项，这个数是 1 即 “ 一 个 1 ”，记作 "11"
+描述前一项，这个数是 11 即 “ 二 个 1 ” ，记作 "21"
+描述前一项，这个数是 21 即 “ 一 个 2 + 一 个 1 ” ，记作 "1211"
+描述前一项，这个数是 1211 即 “ 一 个 1 + 一 个 2 + 二 个 1 ” ，记作 "111221"
+```
+
+
+
+#### （2）思路
+
+* 模拟
+* str记录当前的数字字符串序列，初始化str = "1"，进行 n-1 次循环，遍历str
+  * ch记录当前重复的字符，num记录ch连续出现的次数，temp记录新的数字字符串；初始化ch = str.charAt(0)，num = 1
+  * 若当前遍历的字符与ch相同，num++
+  * 若当前遍历的字符与ch不相同，更新ch，num = 1；将ch，num拼接到temp中
+  * 结束遍历后，将ch，num拼接到temp后；将temp赋值给str
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public String countAndSay(int n) {
+        String str = "1";
+        for (int i = 2; i <= n; i++) {
+            String temp = "";
+            char ch = str.charAt(0);
+            int num = 1;
+            for (int j = 1; j < str.length(); j++) {
+                if (ch == str.charAt(j)) {
+                    num++;
+                }else {
+                    temp += num;
+                    temp += ch;
+                    ch = str.charAt(j);
+                    num = 1;
+                }
+            }
+            temp += num;
+            temp += ch;
+            str = temp;
+        }
+
+        return str;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 118/93. 复原IP地址
+
+
+
+#### （1）题目
+
+给定一个只包含数字的字符串，用以表示一个 IP 地址，返回所有可能从 s 获得的 有效 IP 地址 。你可以按任何顺序返回答案。
+
+有效 IP 地址 正好由四个整数（每个整数位于 0 到 255 之间组成，且不能含有前导 0），整数之间用 '.' 分隔。
+
+例如："0.1.2.201" 和 "192.168.1.1" 是 有效 IP 地址，但是 "0.011.255.245"、"192.168.1.312" 和 "192.168@1.1" 是 无效 IP 地址。
+
+
+
+#### （2）思路
+
+* 回溯
+* 对所有可能的字符串分隔方式进行搜索，并筛选出满足要求的作为答案
+* s记录当前未分隔的字符串，index记录当前搜索的是IP地址的第index段，temp记录当前的IP地址
+  * index > 4 || s.length() == 0时，结束本次递归
+  * 考虑到不能含有前导0，先判断 s.charAt(0) == '0'的情况
+    * index == 4 ，temp += "0"
+      * s.length() == 1，符合要求，将temp加入res中，结束本次递归
+      * s.length() != 1，不符合，结束本次递归
+    * index != 4，temp += "0."
+      * 进入下一层递归，s = s.substring(1)，index++，temp
+  * s.charAt(0) != '0'
+    * index == 4
+      * 将s转换为num，判断num是否满足要求[0, 255]，若满足，将s拼接到temp，temp加入res
+    * index != 4
+      * 考虑将s的前1~3位转换为num，判断num是否满足要求，若满足，temp += num + "."，进入下一层递归
+
+
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    List<String> res = new ArrayList<>();
+    public List<String> restoreIpAddresses(String s) {
+        find(s, 1, "");
+        return res;
+    }
+
+    public void find(String s, int index, String temp){
+        if (index > 4 || s.length() == 0){
+            return;
+        }
+
+        if (s.charAt(0) == '0'){
+            if (index == 4){
+                if (s.length() == 1){
+                    res.add(new String(temp+"0"));
+                }else{
+                    return;
+                }
+            }else {
+                find(s.substring(1), index+1, temp + "0.");
+            }
+        }else {
+            if (index == 4){
+                if (s.length() > 3){
+                    return;
+                }
+                int num = Integer.parseInt(s);
+                if (num >= 0 && num <= 255){
+                    res.add(temp + num);
+                }
+            }else{
+                for (int i = 1; i <= 3 && i <= s.length() ; i++) {
+                    int num = Integer.parseInt(s.substring(0, i));
+                    if (num >= 0 && num <= 255){
+                        find(s.substring(i), index+1, temp + num + ".");
+                    }
+                }
+            }
+        }
+
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 119/97. 交错字符串
+
+
+
+#### （1）题目
+
+给定三个字符串 s1、s2、s3，请你帮忙验证 s3 是否是由 s1 和 s2 交错 组成的。
+
+两个字符串 s 和 t 交错 的定义与过程如下，其中每个字符串都会被分割成若干 非空 子字符串：
+
+s = s1 + s2 + ... + sn
+t = t1 + t2 + ... + tm
+|n - m| <= 1
+交错 是 s1 + t1 + s2 + t2 + s3 + t3 + ... 或者 t1 + s1 + t2 + s2 + t3 + s3 + ...
+提示：a + b 意味着字符串 a 和 b 连接。
+
+
+
+#### （2）思路
+
+* 动规
+* dp[i] [j]记录字符串s3的前（i+j）字符能否由s1的前 i 个字符和s2的前 j 个字符交错组成
+  * 判断dp[i] [j]时，需要查看dp[i-1] [j] 和 dp[i] [j-1]的状态
+  * 第 (i+j) 个字符可以由s1提供，则s1的第 i 个字符要与s3的第 i+j 个字符相等，并dp[i-1] [j] == true
+    * dp[i] [j] = dp[i-1] [j] && s1.charAt(i-1) == s3.charAt(i+j-1)
+  * 第 (i+j) 个字符可以由s2提供，则s2的第 j 个字符要与s3的第 i+j 个字符相等，并dp[i] [j-1] == true
+    * dp[i] [j] = dp[i] [j-1] && s2.charAt(j-1) == s3.charAt(i+j-1)
+  * 注意 i == 0 ，j == 0的情况
+  * 初始化dp[0] [0] = true
+
+
+
+#### （3）实现
+
+```java
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public boolean isInterleave(String s1, String s2, String s3) {
+        if (s1.length() + s2.length() != s3.length()){
+            return false;
+        }
+
+        boolean[][] dp = new boolean[s1.length()+1][s2.length()+1];
+
+        dp[0][0] = true;
+
+        for (int i = 0; i <= s1.length(); i++) {
+            for (int j = 0; j <= s2.length(); j++) {
+                if (i == 0 && j == 0){
+                    continue;
+                }
+
+                if (i == 0){
+                    dp[i][j] = dp[i][j-1] && (s2.charAt(j-1) == s3.charAt(i+j-1));
+                }else if (j == 0){
+                    dp[i][j] = dp[i-1][j] && (s1.charAt(i-1) == s3.charAt(i+j-1));
+                }else {
+                    dp[i][j] = (dp[i][j-1] && (s2.charAt(j-1) == s3.charAt(i+j-1))) || (dp[i-1][j] && (s1.charAt(i-1) == s3.charAt(i+j-1)));
+                }
+            }
+        }
+
+        return dp[s1.length()][s2.length()];
+    }
+
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
