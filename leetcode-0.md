@@ -1527,6 +1527,50 @@ class Solution {
 
 
 
+### 120/476. 数字的补数
+
+
+
+#### （1）题目
+
+给你一个 **正** 整数 `num` ，输出它的补数。补数是对该数的二进制表示取反。
+
+
+
+#### （2）思路
+
+* 要将num二进制表示的每一位取反，需要找到num二进制表示**最高位的1**，前导0不取反，将这个1和低位的数取反即可
+* 遍历num二进制表示的每一位，每次将num左移1位，**直到num=0**
+* 每次将num的最低位的数取反，拼接到结果中
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int findComplement(int num) {
+        int res = 0, temp = 1;
+        while (num != 0){
+            if ((num & 1) == 0){
+                res += temp;
+            }
+            num >>= 1;
+            temp <<= 1;
+        }
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
 ## 四、树
 
 
@@ -9423,6 +9467,166 @@ class Solution {
         return dp[s1.length()][s2.length()];
     }
 
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 121/151. 翻转字符串里的单词
+
+
+
+#### （1）题目
+
+给你一个字符串 s ，逐个翻转字符串中的所有 单词 。
+
+单词 是由非空格字符组成的字符串。s 中使用至少一个空格将字符串中的 单词 分隔开。
+
+请你返回一个翻转 s 中单词顺序并用单个空格相连的字符串。
+
+说明：
+
+输入字符串 s 可以在前面、后面或者单词间包含多余的空格。
+翻转后单词间应当仅用一个空格分隔。
+翻转后的字符串中不应包含额外的空格。
+
+
+
+#### （2）思路
+
+* 遍历字符串，i指向字符串中的字符，res记录最终返回结果
+  * 若 i 指向的字符为 " "，i++，继续循环
+  * 若 i 指向的字符不为" "：
+    * 找到在 i 之后，**第一个为 " "字符的下标 j**
+    * 截取子串temp = s.substring(i, j)
+    * 将temp拼接到结果res前部，注意单词之间的空格
+    * 将 j 赋值给 i，继续循环
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public String reverseWords(String s) {
+
+        String res = "";
+        for (int i = 0; i < s.length();) {
+            if (s.charAt(i) == ' '){
+                i++;
+                continue;
+            }
+
+            int j = i;
+            for (; j < s.length(); j++) {
+                if (s.charAt(j) == ' '){
+                    break;
+                }
+            }
+
+            String temp = s.substring(i, j);
+            if ("".equals(res)){
+                res = temp + res;
+            }else {
+                res = temp + " " + res;
+            }
+
+            i = j;
+        }
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 122/165. 比较版本号
+
+
+
+#### （1）题目
+
+给你两个版本号 version1 和 version2 ，请你比较它们。
+
+版本号由一个或多个修订号组成，各修订号由一个 '.' 连接。每个修订号由 多位数字 组成，可能包含 前导零 。每个版本号至少包含一个字符。修订号从左到右编号，下标从 0 开始，最左边的修订号下标为 0 ，下一个修订号下标为 1 ，以此类推。例如，2.5.33 和 0.1 都是有效的版本号。
+
+比较版本号时，请按从左到右的顺序依次比较它们的修订号。比较修订号时，只需比较 忽略任何前导零后的整数值 。也就是说，修订号 1 和修订号 001 相等 。如果版本号没有指定某个下标处的修订号，则该修订号视为 0 。例如，版本 1.0 小于版本 1.1 ，因为它们下标为 0 的修订号相同，而下标为 1 的修订号分别为 0 和 1 ，0 < 1 。
+
+返回规则如下：
+
+如果 version1 > version2 返回 1，
+如果 version1 < version2 返回 -1，
+除此之外返回 0
+
+
+
+#### （2）思路
+
+* 双指针法遍历字符串
+* 遍历字符串version1和version2，i 指向当前version1中不是"."的字符，k指向version1中在 i 之后第一个"."的 位置；j, l同理指向version2
+* 当前version1修订号字符串为version1.substring(i, k)，version2中为version2.substring(j, l)；将其转换为整数进行比较
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int compareVersion(String version1, String version2) {
+        for (int i = 0, j = 0; i < version1.length() || j < version2.length();) {
+
+            while (i < version1.length() && version1.charAt(i) == '.' ) {// i指向version1中不是"."的字符
+                i++;
+            }
+
+            while (j < version2.length() && version2.charAt(j) == '.' ) {// j指向version2中不是"."的字符
+                j++;
+            }
+
+            int k = i;
+            for (; k < version1.length(); k++) {// k指向i之后的第一个"."位置
+                if (version1.charAt(k) == '.'){
+                    break;
+                }
+            }
+
+            int l = j;
+            for (; l < version2.length(); l++) {// l指向j之后的第一个"."的位置
+                if (version2.charAt(l) == '.') {
+                    break;
+                }
+            }
+
+            int num1 = 0;
+            if (i != version1.length()){//若字符串已经遍历结束，则当前修订号置为0
+                num1 = Integer.parseInt(version1.substring(i, k));// 修订号字符串转换为整数
+            }
+
+            int num2 = 0;
+            if (j != version2.length()){
+                num2 = Integer.parseInt(version2.substring(j, l));// 修订号字符串转换为整数
+            }
+
+            if (num1 > num2){
+                return 1;
+            }else if (num1 < num2){
+                return -1;
+            }
+
+            i = k;
+            j = l;
+        }
+
+        return 0;
+    }
 }
 //leetcode submit region end(Prohibit modification and deletion)
 ```
