@@ -6932,6 +6932,84 @@ class Solution {
 
 
 
+### 123/211. 添加与搜索单词-数据结构设计
+
+
+
+#### （1）题目
+
+请你设计一个数据结构，支持 添加新单词 和 查找字符串是否与任何先前添加的字符串匹配 。
+
+实现词典类 WordDictionary ：
+
+WordDictionary() 初始化词典对象
+void addWord(word) 将 word 添加到数据结构中，之后可以对它进行匹配
+bool search(word) 如果数据结构中存在字符串与 word 匹配，则返回 true ；否则，返回  false 。word 中可能包含一些 '.' ，每个 . 都可以表示任何一个字母。
+
+
+
+#### （2）思路
+
+* 底层存储结构使用HashMap<Integer, HashSet<String>>；Integer为单词长度，HashSet<String>为该长度的单词集合
+* 添加单词时添加到对应长度的HashSet中，搜索时注意"."的情况
+
+
+
+#### （3）实现
+
+```java
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class WordDictionary {
+    Map<Integer, Set<String>> map;
+    public WordDictionary() {
+        map = new HashMap<>();
+    }
+    
+    public void addWord(String word) {
+        int len = word.length();
+        Set<String> set = map.getOrDefault(len, new HashSet<String>());
+        set.add(word);
+        map.put(len, set);
+    }
+    
+    public boolean search(String word) {
+        int len = word.length();
+        if (!map.containsKey(len)) {
+            return false;
+        }
+
+        Set<String> set = map.get(len);
+        for (String str : set){
+            for (int i = 0; i < len; i++) {
+                if (str.charAt(i) == word.charAt(i) || str.charAt(i) == '.' || word.charAt(i) == '.'){
+                    if (i == len - 1){
+                        return true;
+                    }
+                    continue;
+                }
+                break;
+            }
+        }
+        return false;
+    }
+}
+
+/**
+ * Your WordDictionary object will be instantiated and called as such:
+ * WordDictionary obj = new WordDictionary();
+ * obj.addWord(word);
+ * boolean param_2 = obj.search(word);
+ */
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
 
 
 ## 十、数组
@@ -9626,6 +9704,181 @@ class Solution {
         }
 
         return 0;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 124/166. 分数到小数
+
+
+
+#### （1）题目
+
+给定两个整数，分别表示分数的分子 numerator 和分母 denominator，以 字符串形式返回小数 。
+
+如果小数部分为循环小数，则将循环的部分括在括号内。
+
+如果存在多个答案，只需返回 任意一个 。
+
+对于所有给定的输入，保证 答案字符串的长度小于 104 。
+
+
+
+#### （2）思路
+
+* 模拟除法运算中，最终结果要么是**出现相同余数，循环小数**，要么**余数为0.运算结束**
+* 模拟除法运算，先计算除法中整数部分，将余数赋值给a，除数赋值给b
+  * 在HashMap<Long, Integer>  map中记录余数和其所在答案字符串的位置
+  * a = a * 10, 将 (a/b)拼接到结果字符串中
+  * 新的余数 a = a % b，将a和当前答案字符串的长度记录在map中
+  * 跳出循环条件：
+    * 若a = 0，则可以除尽，跳出循环
+    * 若出现重复的余数a，即a已被记录在map中，则出现循环小数（出现位置~当前位置为循环小数部分）
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public String fractionToDecimal(int numerator, int denominator) {
+        long a = numerator, b = denominator;
+        if (a % b == 0){
+            return String.valueOf(a/b);
+        }
+        StringBuilder sb = new StringBuilder();
+        if (a*b < 0){
+            sb.append("-");
+        }
+        a = Math.abs(a);
+        b = Math.abs(b);
+        sb.append(String.valueOf(a/b) + ".");
+        a %= b;
+        Map<Long, Integer> map = new HashMap<>();
+        while (a != 0) {//辗转相除法
+            map.put(a, sb.length());
+            a *= 10;
+            sb.append(a/b);
+            a %= b;
+            if (map.containsKey(a)) {
+                int index = map.get(a);
+                return String.format("%s(%s)", sb.substring(0, index), sb.substring(index));
+            }
+        }
+
+        return sb.toString();
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 125/227. 基本计算器 II
+
+
+
+#### （1）题目
+
+给你一个字符串表达式 `s` ，请你实现一个基本计算器来计算并返回它的值。
+
+整数除法仅保留整数部分。
+
+
+
+#### （2）思路
+
+* 栈
+
+
+
+#### （3）实现
+
+```java
+import java.util.Stack;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int calculate(String s) {
+        Stack<Integer> stack = new Stack<>();
+        Stack<Character> stack1 = new Stack<>();
+        s = s.trim();
+        for (int i = 0; i < s.length();) {
+            while (i < s.length() && s.charAt(i) == ' ') {
+                i++;
+            }
+
+            if (i == s.length()){
+                break;
+            }
+
+            if (s.charAt(i) >= '0' && s.charAt(i) <= '9') {
+                int j = i;
+                while (j < s.length() && s.charAt(j) >= '0' && s.charAt(j) <= '9') {
+                    j++;
+                }
+                int temp = Integer.parseInt(s.substring(i, j));
+                stack.add(temp);
+                i = j;
+            }
+
+            while (i < s.length() && s.charAt(i) == ' ') {
+                i++;
+            }
+
+            if (i == s.length()){
+                break;
+            }
+
+            char ch = s.charAt(i);
+            i++;
+
+            while (s.charAt(i) == ' ') {
+                i++;
+            }
+
+            int temp = 0;
+            if (i < s.length() && s.charAt(i) >= '0' && s.charAt(i) <= '9') {
+                int j = i;
+                while (j < s.length() && s.charAt(j) >= '0' && s.charAt(j) <= '9') {
+                    j++;
+                }
+                temp = Integer.parseInt(s.substring(i, j));
+
+                i = j;
+            }
+
+            if (ch == '-' || ch == '+') {
+                stack1.add(ch);
+                stack.add(temp);
+            } else if (ch == '*') {
+                int pop = stack.pop();
+                stack.add(pop * temp);
+            } else {
+                int pop = stack.pop();
+                stack.add(pop / temp);
+            }
+        }
+
+
+        int res = stack.get(0);
+        for (int i = 0; i < stack1.size(); i++) {
+            if (stack1.get(i) == '+'){
+                res = res + stack.get(i+1);
+            }else {
+                res = res - stack.get(i+1);
+            }
+        }
+
+        return res;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
