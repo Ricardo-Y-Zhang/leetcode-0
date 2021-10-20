@@ -7012,6 +7012,50 @@ class WordDictionary {
 
 
 
+### 126/453. 最小操作次数使数组元素相等
+
+
+
+#### （1）题目
+
+给你一个长度为 `n` 的整数数组，每次操作将会使 `n - 1` 个元素增加 `1` 。返回让数组所有元素相等的最小操作次数。
+
+
+
+#### （2）思路
+
+* 数学问题，先将数组nums从小到大排序
+* 因为每次操作会使n-1个元素增加1，即会存在一个元素不增加的情况
+* 第一轮中，考虑第二个元素不增加的情况，共操作nums[1] - nums[0]次，使得nums[0] = nums[1]；此时数组为nums[1], nums[1], nums[2] + nums[1] -nums[0] ... nums[n-1] + nums[1] - nums[0]
+* 第二轮中，考虑第三个元素不增加的情况，共操作nums[2]-nums[0]次，使得第三个元素和第一第二元素相等
+* 依次操作n-1次，第 i 轮操作使得第 i+1 个元素与前 i 个元素相等
+* 操作总数即为每个元素与第一个元素差值之和
+
+
+
+#### （3）实现
+
+```java
+import java.util.Arrays;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int minMoves(int[] nums) {
+        int res = 0;
+        Arrays.sort(nums);
+        for (int i = 1; i < nums.length; i++) {
+            res += nums[i] - nums[0];
+        }
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
 ## 十、数组
 
 
@@ -9879,6 +9923,77 @@ class Solution {
         }
 
         return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
+### 127/299. 猜数字游戏
+
+
+
+#### （1）题目
+
+你在和朋友一起玩 猜数字（Bulls and Cows）游戏，该游戏规则如下：
+
+你写出一个秘密数字，并请朋友猜这个数字是多少。
+朋友每猜测一次，你就会给他一个提示，告诉他的猜测数字中有多少位属于数字和确切位置都猜对了（称为“Bulls”, 公牛），有多少位属于数字猜对了但是位置不对（称为“Cows”, 奶牛）。
+朋友根据提示继续猜，直到猜出秘密数字。
+请写出一个根据秘密数字和朋友的猜测数返回提示的函数，返回字符串的格式为 xAyB ，x 和 y 都是数字，A 表示公牛，用 B 表示奶牛。
+
+xA 表示有 x 位数字出现在秘密数字中，且位置都与秘密数字一致。
+yB 表示有 y 位数字出现在秘密数字中，但位置与秘密数字不一致。
+请注意秘密数字和朋友的猜测数都可能含有重复数字，每位数字只能统计一次。
+
+
+
+#### （2）思路
+
+* 遍历秘密字符串和猜测字符串，记录下字符与位置均与秘密数字一致的字符数量bull；将秘密数字中不一致的字符记录在HashMap<Character, Integer> map中，key为字符，value为字符出现次数
+* 再次遍历字符串，记录字符相同，位置不同的字符数cow；每次出现这样的字符ch，则将ch对应的value值-1
+
+
+
+#### （3）实现
+
+```java
+
+import java.util.HashMap;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public String getHint(String secret, String guess) {
+        HashMap<Character, Integer> map = new HashMap<>();
+        int bull = 0, cow = 0;
+
+        for (int i = 0; i < secret.length(); i++) {
+            char ch1 = secret.charAt(i), ch2 = guess.charAt(i);
+            if (ch1 != ch2){
+                int times = map.getOrDefault(ch1, 0);
+                map.put(ch1, times+1);
+            }else{
+                bull++;
+            }
+        }
+
+        for (int i = 0; i < secret.length(); i++) {
+            char ch1 = secret.charAt(i), ch2 = guess.charAt(i);
+            if (ch1 != ch2){
+                int times = map.getOrDefault(ch2, 0);
+                if (times != 0){
+                    cow++;
+                    map.put(ch2, times-1);
+                }
+            }
+        }
+
+        return bull + "A" + cow + "B";
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
