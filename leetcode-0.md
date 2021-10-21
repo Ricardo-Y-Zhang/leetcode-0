@@ -7056,6 +7056,58 @@ class Solution {
 
 
 
+### 128/66. 加一
+
+
+
+#### （1）题目
+
+给定一个由 整数 组成的 非空 数组所表示的非负整数，在该数的基础上加一。
+
+最高位数字存放在数组的首位， 数组中每个元素只存储单个数字。
+
+你可以假设除了整数 0 之外，这个整数不会以零开头。
+
+
+
+#### （2）思路
+
+* 加法，记录进位
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int[] plusOne(int[] digits) {
+        int add = 1;
+        for (int i = digits.length-1; i >= 0; i--) {
+            digits[i] += add;
+            add = digits[i] / 10;
+            digits[i] %= 10;
+        }
+
+        if (add == 0){
+            return digits;
+        }
+
+        int[] res = new int[digits.length+1];
+        res[0] = 1;
+        for (int i = 1; i < res.length; i++) {
+            res[i] = digits[i-1];
+        }
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
 ## 十、数组
 
 
@@ -9963,7 +10015,6 @@ yB 表示有 y 位数字出现在秘密数字中，但位置与秘密数字不�
 #### （3）实现
 
 ```java
-
 import java.util.HashMap;
 
 //leetcode submit region begin(Prohibit modification and deletion)
@@ -9998,4 +10049,87 @@ class Solution {
 }
 //leetcode submit region end(Prohibit modification and deletion)
 ```
+
+
+
+
+
+### 129/306. 累加数
+
+
+
+#### （1）题目
+
+累加数是一个字符串，组成它的数字可以形成累加序列。
+
+一个有效的累加序列必须至少包含 3 个数。除了最开始的两个数以外，字符串中的其他数都等于它之前两个数相加的和。
+
+给定一个只包含数字 '0'-'9' 的字符串，编写一个算法来判断给定输入是否是累加数。
+
+说明: 累加序列里的数不会以 0 开头，所以不会出现 1, 2, 03 或者 1, 02, 3 的情况。
+
+
+
+#### （2）思路
+
+* 回溯
+* 递归函数find(int index, String nums, long prepre, long pre)中，index为当前数的编号，nums为剩余字符串，prepre为前两个数，pre为前一个数
+* 除了第一个和第二个数外，sum = prepre + pre；判断sum是否出现在nums的前端
+  * 若没有出现，直接返回
+  * 若出现，进入下一层递归，更新index，nums，prepre，pre
+* 第一个数：选取[0, length/3]（保证序列能转换为3个数）作为第一个数；更新index，nums，pre进入下一层
+* 第二个数：选取[0, length/2]（保证还能转换为1个数）作为第二个数；进入下一层
+* 注意nums字符串第一个字符为'0'的情况，此时，只能转换为0
+* 当nums的length为0且index >= 3时，转换为累加序列成功，将flag置为true
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    boolean flag = false;
+    public boolean isAdditiveNumber(String num) {
+        find(0, num, 0, 0);
+        return flag;
+    }
+    public void find(int index, String num, long prepre, long pre){
+        if ((flag == true || num.length() == 0) && index >= 3){
+            flag = true;
+            return;
+        }
+        if (num.length() == 0){
+            return;
+        }
+
+        if (num.charAt(0) == '0'){
+            if (index == 0 || index == 1 || prepre+pre == 0){
+                find(index+1, num.substring(1), pre, 0);
+            }
+        }else{
+            if (index == 0){
+                for (int i = 0; i <= num.length()/3 && i < 17; i++) {
+                    find(index+1, num.substring(i+1), pre, Long.parseLong(num.substring(0, i+1)));
+                }
+            }else if (index == 1){
+                for (int i = 0; i <= num.length()/2 && i < 17; i++) {
+                    find(index+1, num.substring(i+1), pre, Long.parseLong(num.substring(0, i+1)));
+                }
+            }else {
+                String sum = String.valueOf(prepre+pre);
+                if (num.indexOf(sum) == 0) {
+                    find(index+1, num.substring(sum.length()), pre, prepre+pre);
+                }else{
+                    return;
+                }
+            }
+        }
+
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
 

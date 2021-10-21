@@ -355,6 +355,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[241]different-ways-to-add-parentheses.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[241]different-ways-to-add-parentheses.java" />
+              <option name="questionId" value="241" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[275]h-index-ii.java">
           <value>
             <LeetcodeEditor>
@@ -432,6 +440,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[300]longest-increasing-subsequence.java" />
               <option name="questionId" value="300" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[306]additive-number.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[306]additive-number.java" />
+              <option name="questionId" value="306" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -856,6 +872,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[650]2-keys-keyboard.java" />
               <option name="questionId" value="650" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[66]plus-one.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[66]plus-one.java" />
+              <option name="questionId" value="66" />
             </LeetcodeEditor>
           </value>
         </entry>
