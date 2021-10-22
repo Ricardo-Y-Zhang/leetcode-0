@@ -37,61 +37,55 @@
 
 package leetcode.editor.cn;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public List<Integer> majorityElement(int[] nums) {
+        //摩尔投票法
         List<Integer> res = new ArrayList<>();
 
-        int cand1 = nums[0], cand2 = nums[0];
-        int count1 = 0, count2 = 0;
-
-        for (int temp : nums){
-            if (temp == cand1) {
-                count1++;
+        int cand1 = nums[0], cand2 = nums[0], num1 = 0, num2 = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == cand1){
+                num1++;
                 continue;
             }
-
-            if (temp == cand2) {
-                count2++;
+            if (nums[i] == cand2){
+                num2++;
                 continue;
             }
-
-            if (count1 == 0) {
-                count1 = 1;
-                cand1 = temp;
+            if (num1 == 0){
+                cand1 = nums[i];
+                num1 = 1;
                 continue;
             }
-
-            if (count2 == 0){
-                count2 = 1;
-                cand2 = temp;
+            if (num2 == 0){
+                cand2 = nums[i];
+                num2 = 1;
                 continue;
             }
-
-            count1--;
-            count2--;
+            num1--;
+            num2--;
         }
 
-        //验证
-        count1 = 0;
-        count2 = 0;
-
-        for (int temp : nums){
-            if (temp == cand1) {
-                count1++;
-            }else if (temp == cand2){
-                count2++;
+        //核验是否出现超过1/3
+        num1 = 0;
+        num2 = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == cand1){
+                num1++;
+            }else if (nums[i] == cand2){
+                num2++;
             }
         }
 
-        if (count1 > nums.length/3) {
+        if (num1 > nums.length/3){
             res.add(cand1);
         }
-
-        if (count2 > nums.length/3) {
+        if (num2 > nums.length/3){
             res.add(cand2);
         }
 

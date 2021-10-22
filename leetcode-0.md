@@ -10133,3 +10133,58 @@ class Solution {
 
 
 
+
+
+## 十三、数学
+
+
+
+### 130/50. Pow(x, n)
+
+
+
+#### （1）题目
+
+实现 [pow(*x*, *n*)](https://www.cplusplus.com/reference/valarray/pow/) ，即计算 x 的 n 次幂函数（即，xn）。
+
+
+
+#### （2）思路
+
+* 快速幂法
+* 若n = 2<sup>i1</sup> + 2<sup>i2</sup> + ... + 2<sup>in</sup>
+* 则x<sup>n</sup> = x<sup>2<sup>i1</sup></sup> * x<sup>2<sup>i2</sup></sup> * ... * x<sup>2<sup>in</sup></sup>
+* 从x开始不断平方，得到x<sup>2</sup>，x<sup>4</sup>, x<sup>8</sup>...，如果n的第k个二进制位为1（从右向左），就将x<sup>2<sup>k</sup></sup>计入答案
+* 注意处理负数的问题，及负数转换为正数越界
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+
+
+    public double myPow(double x, int n) {
+        double res = 1.0;
+        long m = n;
+        boolean flag = false;
+        if (m < 0){
+            flag = true;
+        }
+        m = Math.abs(m);
+        while(m != 0){
+            if((m&1) == 1) res = res * x;
+            x = x * x;
+            m >>= 1;
+        }
+        if (flag ==true) res = 1/ res;
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
