@@ -45,22 +45,19 @@ package leetcode.editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public boolean searchMatrix(int[][] matrix, int target) {
-
+        //从矩阵的右上元素开始搜索，若target>当前元素，则target存在于该元素的下侧；若target<当前元素，则target存在于该元素的左侧
         int m = matrix.length, n = matrix[0].length;
-
-        //选择右上角作为起始点
-        int x = 0, y = n-1;
-
-        while (x < m && y >= 0){
-            if (matrix[x][y] == target){
+        int i = 0, j = n-1;
+        while (i < m && j >= 0){
+            if (matrix[i][j] == target){
                 return true;
-            }else if (matrix[x][y] < target){//去除第x行
-                x++;
-            }else if (matrix[x][y] > target){//去除第y列
-                y--;
+            }
+            if (matrix[i][j] > target){
+                j--;
+            }else if (matrix[i][j] < target){
+                i++;
             }
         }
-
         return false;
     }
 }

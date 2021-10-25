@@ -9175,6 +9175,154 @@ class Solution {
 
 
 
+
+
+
+
+### 131/24. 两两交换链表中的节点
+
+
+
+#### （1）题目
+
+给定一个链表，两两交换其中相邻的节点，并返回交换后的链表。
+
+**你不能只是单纯的改变节点内部的值**，而是需要实际的进行节点交换。
+
+
+
+#### （2）思路
+
+* 使用pre记录前一个节点，i表示当前需要交换的第一个节点，j表示当前需要交换的第二个节点
+* 每次交换 i 和 j ，并将pre.next置为 j ，同时修改 i.next = j.next
+* **跳出循环的条件为 i == null || j == null**
+* 交换完后，i 指向 j 后面的节点，j 指向此时 i 后面的节点；注意 i == null的情况
+* 当第一次交换时，注意记录头节点
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode swapPairs(ListNode head) {
+        if (head == null || head.next == null){
+            return head;
+        }
+
+        ListNode res = null;
+        ListNode pre = head;
+        ListNode i = head, j = head.next;
+        while (i != null && j != null){
+            if (i == head){//第一次交换，记录头节点
+                i.next = j.next;
+                j.next = i;
+                res = j;
+            }else{
+                i.next = j.next;
+                j.next = i;
+                pre.next = j;
+            }
+            pre = i;
+            i = i.next;
+            if (i != null) j = i.next;
+        }
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 132/61. 旋转链表
+
+
+
+#### （1）题目
+
+给你一个链表的头节点 `head` ，旋转链表，将链表每个节点向右移动 `k` 个位置。
+
+
+
+#### （2）思路
+
+* k %= length（k > length的情况）
+* 将每个节点向右移动k个位置，就是将链表的最后k个节点拼接到链表的头部
+* 找到倒数第k+1个节点，并记录倒数第k个节点和尾节点
+* 将倒数第k+1个节点的next置为null，称为新的尾节点；将尾节点的next置为head，拼接到头部；新的头节点即为所记录的倒数第k个节点
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode rotateRight(ListNode head, int k) {
+        if (head == null || head.next == null){//空链表，或只有一个节点的情况
+            return head;
+        }
+        int length = 0;//记录链表的长度
+        ListNode temp = head;
+        while (temp != null){
+            length++;
+            temp = temp.next;
+        }
+        k %= length;
+        if (k == 0){
+            return head;
+        }
+
+        temp = head;
+        for (int i = 0; i < length-k-1; i++) {//找到倒数第k+1个节点
+            temp = temp.next;
+        }
+
+        ListNode tail = head;
+        while (tail.next != null){//记录尾节点
+            tail = tail.next;
+        }
+
+        //将链表的最后k个节点拼接到链表的头部，并将链表的尾节点的next置为null
+        ListNode res = temp.next;
+        temp.next = null;
+        tail.next = head;
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
 ## 十二、字符串
 
 
@@ -10185,6 +10333,8 @@ class Solution {
 }
 //leetcode submit region end(Prohibit modification and deletion)
 ```
+
+
 
 
 
