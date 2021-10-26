@@ -785,6 +785,69 @@ class Solution {
 
 
 
+### 133/496. 下一个更大元素 I
+
+
+
+#### （1）题目
+
+给你两个 没有重复元素 的数组 nums1 和 nums2 ，其中nums1 是 nums2 的子集。
+
+请你找出 nums1 中每个元素在 nums2 中的下一个比其大的值。
+
+nums1 中数字 x 的下一个更大元素是指 x 在 nums2 中对应位置的右边的第一个比 x 大的元素。如果不存在，对应位置输出 -1 。
+
+
+
+#### （2）思路
+
+* nums1是nums2的子集，则**找出nums2中每个元素的下一个比其更大的值**，即可找出nums1中每个元素在nums2中的下一个比其大的值
+* HashMap<Ingeter, Integer> map记录每个元素与其在nums2中下一个比其大的值
+* 遍历nums2数组，对于当前元素nums2[i]，不断与stack栈顶元素top比较，直到比栈顶元素top小
+  * nums2[i] > top：则nums2[i]即为top在nums2中下一个比其大的值，将<top, nums2[i]>记录在map中
+  * nums2[i] < top：将nums2[i]压入栈中
+* 遍历nums1数组，对于当前元素temp，map.get(temp)即为temp在nums2中的下一个比其大的值，若不存在，则记为-1
+
+
+
+#### （3）实现
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Stack;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+        Map<Integer, Integer> map = new HashMap<>();
+
+        Stack<Integer> stack = new Stack<>();
+
+        int[] res = new int[nums1.length];
+
+        for (int i = 0; i < nums2.length; i++) {
+            while (!stack.isEmpty() && stack.peek() < nums2[i]){
+                map.put(stack.pop(), nums2[i]);
+            }
+            stack.push(nums2[i]);
+        }
+
+        for (int i = 0; i < nums1.length; i++) {
+            int temp = nums1[i];
+            res[i] = map.getOrDefault(temp, -1);
+        }
+        return res;
+
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
 
 
 ## 二、贪心
@@ -9312,6 +9375,75 @@ class Solution {
         temp.next = null;
         tail.next = head;
         return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
+### 134/82. 删除排序链表中的重复元素 II
+
+
+
+#### （1）题目
+
+存在一个按升序排列的链表，给你这个链表的头节点 head ，请你删除链表中所有存在数字重复情况的节点，只保留原始链表中 没有重复出现 的数字。
+
+返回同样按升序排列的结果链表。
+
+
+
+#### （2）思路
+
+* 为了方便处理，创建空表头，pre记录当前遍历节点的前一个节点，now为当前遍历节点
+* now.val = now.next.val：当前节点为重复节点
+  * 找到下一个不重复的节点temp：pre.next = temp（删除重复节点）, now = temp（temp为下一个遍历的节点）
+* now.val != now.next.val：当前节点不是重复节点
+  * pre = pre.next, now = now.next
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        ListNode pre = new ListNode(-1, head), now = head;
+        head = pre;//新头节点
+        while (now != null){
+            if (now.next != null){
+                if (now.val == now.next.val){//当前节点与下一个节点重复
+                    ListNode temp = now;
+                    while (temp != null && now.val == temp.val){//找到下一个val不重复的节点
+                        temp = temp.next;
+                    }
+                    pre.next = temp;//删除val重复的节点
+                    now = temp;
+                }else{//不重复，遍历下一个节点
+                    pre = pre.next;
+                    now = now.next;
+                }
+            }else{//尾节点
+                now = now.next;
+            }
+        }
+        return head.next;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
