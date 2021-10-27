@@ -1019,6 +1019,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[89]gray-code.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[89]gray-code.java" />
+              <option name="questionId" value="89" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[8]string-to-integer-atoi.java">
           <value>
             <LeetcodeEditor>
@@ -1040,6 +1048,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[91]decode-ways.java" />
               <option name="questionId" value="91" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[92]reverse-linked-list-ii.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[92]reverse-linked-list-ii.java" />
+              <option name="questionId" value="92" />
             </LeetcodeEditor>
           </value>
         </entry>

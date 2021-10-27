@@ -9453,6 +9453,72 @@ class Solution {
 
 
 
+### 135/92. 反转链表 II
+
+
+
+#### （1）题目
+
+给你单链表的头指针 head 和两个整数 left 和 right ，其中 left <= right 。请你反转从位置 left 到位置 right 的链表节点，返回 反转后的链表 。
+
+
+
+#### （2）思路
+
+* 将 [left+1, right]的节点依次用头插法，插入left-1和left节点之间，再将left节点和right+1节点连接
+* 新建虚拟头节点vhead，对应left = 1的时候，可以找到其前序节点
+* 遍历[0, left]节点，记录left节点 lnode 和其前一个节点 pre
+* 继续遍历[left+1, right]节点，将每个节点使用**头插法**，插在**pre节点之后**
+* 将 lnode 节点的next置为 right+1 节点
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+        if (left == right){
+            return head;
+        }
+        ListNode vhead = new ListNode();//虚拟头节点，解决left = 1的情况
+        vhead.next = head;
+
+        ListNode lnode = head, pre = vhead;//lnode记录left位置上的节点，pre记录left-1位置的节点
+        for (int i = 1; i < left; i++) {
+            pre = pre.next;
+            lnode = lnode.next;
+        }
+
+        ListNode now = lnode.next;
+        for (int i = left; i < right; i++) {
+            ListNode temp = now;//记录当前遍历节点
+            now = now.next;
+            temp.next = pre.next;//头插法
+            pre.next = temp;
+        }
+        lnode.next = now;
+        return vhead.next;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
 
 
 ## 十二、字符串
