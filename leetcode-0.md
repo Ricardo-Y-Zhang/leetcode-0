@@ -1632,6 +1632,85 @@ class Solution {
 
 
 
+### 138/89. 格雷编码
+
+
+
+#### （1）题目
+
+格雷编码是一个二进制数字系统，在该系统中，两个连续的数值仅有一个位数的差异。
+
+给定一个代表编码总位数的非负整数 n，打印其格雷编码序列。即使有多个不同答案，你也只需要返回其中一种。
+
+格雷编码序列必须以 0 开头。
+
+
+
+#### （2.1）思路
+
+* 令G(n)为n阶格雷码，则G(n+1)阶格雷码分为两部分
+  * 给G(n)每个元素二进制形式前面添加0
+  * 给G(n)**倒序**的每个元素二进制形式前面添加1
+
+
+
+#### （3.1）实现
+
+```cpp
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+
+    public List<Integer> grayCode(int n) {
+        List<Integer> list = new ArrayList();
+        list.add(0);
+
+        for (int i = 0; i < n; i++) {
+            Stack<Integer> stack = new Stack();
+            for (int temp : list){//给i-1阶格雷码的每个元素前添加1
+                stack.add(temp + (1<<i));
+            }
+            while (!stack.isEmpty()){//将新元素倒序拼接再i-1阶格雷码后面，组成i阶格雷码
+                list.add(stack.pop());
+            }
+        }
+        return list;
+    }
+
+
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+#### （2.2）思路
+
+* 格雷码计算公式:
+  * 第n个格雷码：g(n) = n xor (n>>1)
+
+
+
+#### （3.2）实现
+
+```cpp
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+
+    public List<Integer> grayCode(int n) {
+        List<Integer> list = new ArrayList();
+        for (int i = 0; i < (int) Math.pow(2, n); i++) {
+            list.add(i ^ (i>>1));
+        }
+        return list;
+    }
+
+
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
 
 
 ## 四、树
@@ -9519,6 +9598,83 @@ class Solution {
 
 
 
+### 136/86. 分隔链表
+
+
+
+#### （1）题目
+
+给你一个链表的头节点 head 和一个特定值 x ，请你对链表进行分隔，使得所有 小于 x 的节点都出现在 大于或等于 x 的节点之前。
+
+你应当 保留 两个分区中每个节点的初始相对位置。
+
+
+
+#### （2）思路
+
+* 给链表添加虚拟头节点vhead（无需特殊处理头节点）
+* tail记录当前链表的尾节点
+* 遍历链表，now记录当前节点，pre记录其前置节点
+  * now.val < x：不做操作
+  * now.val >= x：将当前节点移除，放在尾节点 tail 后面，并更新尾节点
+* 遍历结束后将尾节点的next置为null
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode partition(ListNode head, int x) {
+        if (head == null){
+            return head;
+        }
+        
+        //虚拟头节点
+        ListNode vhead = new ListNode();
+        vhead.next = head;
+
+        ListNode pre = vhead, now = head, tail = head;
+        int num = 1;//记录节点数，方便遍历
+        while (tail.next != null){
+            tail = tail.next;
+            num++;
+        }
+
+        for (int i = 0; i < num; i++) {
+            if (now.val >= x){
+                tail.next = now;
+                tail = tail.next;
+                pre.next = now.next;
+                now = pre.next;
+            }else{
+                now = now.next;
+                pre = pre.next;
+            }
+        }
+
+        tail.next = null;
+        return vhead.next;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
 
 
 ## 十二、字符串
@@ -10476,6 +10632,63 @@ class Solution {
 }
 //leetcode submit region end(Prohibit modification and deletion)
 ```
+
+
+
+
+
+### 137/869. 重新排序得到2的幂
+
+
+
+#### （1）题目
+
+给定正整数 N ，我们按任何顺序（包括原始顺序）将数字重新排序，注意其前导数字不能为零。
+
+如果我们可以通过上述方式得到 2 的幂，返回 true；否则，返回 false。
+
+
+
+#### （2）思路
+
+* 题意即是求正整数N和2的幂的元素组成是否相同
+* 求取2<sup>0</sup> ~ 2<sup>31</sup>的值，转换为string后，按字符升序排列，将排序后的字符串存入list中
+* 将正整数N同样做上述操作，转换为string后按字符升序排列，查看该字符串是否存在于list中
+
+
+
+#### （3）实现
+
+```java
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public boolean reorderedPowerOf2(int n) {
+        List<String> list = new ArrayList<>();
+        int x = 1;
+        for (int i = 0; i < 32; i++) {
+            String str = String.valueOf(x);
+            char[] chars = str.toCharArray();
+            Arrays.sort(chars);
+            str = new String(chars);
+            list.add(str);
+            x *= 2;
+        }
+
+        String str = String.valueOf(n);
+        char[] chars = str.toCharArray();
+        Arrays.sort(chars);
+        str = new String(chars);
+        return list.contains(str);
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
 
 
 
