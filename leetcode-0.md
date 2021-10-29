@@ -9675,6 +9675,262 @@ class Solution {
 
 
 
+### 139/143. 重排链表
+
+
+
+#### （1）题目
+
+给定一个单链表 L 的头节点 head ，单链表 L 表示为：
+
+ L0 → L1 → … → Ln-1 → Ln 
+请将其重新排列后变为：
+
+L0 → Ln → L1 → Ln-1 → L2 → Ln-2 → …
+
+不能只是单纯的改变节点内部的值，而是需要实际的进行节点交换。
+
+
+
+#### （2）思路
+
+* 截取链表的后半节点并翻转，组成新的链表
+* 将新链表插入前半节点中
+* 找到链表的中间节点，截取后半链表，再使用头插法翻转后半链表；再将翻转后的链表插入前半链表中
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public void reorderList(ListNode head) {
+        if (head == null || head.next == null){
+            return;
+        }
+
+        //记录链表长度
+        int length = 0;
+        ListNode now = head;
+        while (now != null){
+            now = now.next;
+            length++;
+        }
+
+        //记录链表的中间节点
+        ListNode tail = head;
+        for (int i = 0; i < (length-1)/2; i++) {
+            tail = tail.next;
+        }
+
+        //将链表的后半节点翻转并组成新链表
+        ListNode head2 = new ListNode();
+        head2.next = null;//虚拟头节点
+        now = tail.next;
+        tail.next = null;//链表中间节点next置为null
+        while (now != null){//头插法翻转链表
+            ListNode temp = now;
+            now = now.next;
+            temp.next = head2.next;
+            head2.next = temp;
+        }
+
+        //将翻转后的新链表插入前半节点中
+        head2 = head2.next;
+        now = head;
+        while (head2 != null){
+            ListNode temp1 = now, temp2 = head2;
+            now = now.next;
+            head2 = head2.next;
+            temp2.next = temp1.next;
+            temp1.next = temp2;
+        }
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 140/138. 复制带随即指针的链表
+
+
+
+#### （1）题目
+
+给你一个长度为 n 的链表，每个节点包含一个额外增加的随机指针 random ，该指针可以指向链表中的任何节点或空节点。
+
+构造这个链表的 深拷贝。 深拷贝应该正好由 n 个 全新 节点组成，其中每个新节点的值都设为其对应的原节点的值。新节点的 next 指针和 random 指针也都应指向复制链表中的新节点，并使原链表和复制链表中的这些指针能够表示相同的链表状态。复制链表中的指针都不应指向原链表中的节点 。
+
+例如，如果原链表中有 X 和 Y 两个节点，其中 X.random --> Y 。那么在复制链表中对应的两个节点 x 和 y ，同样有 x.random --> y 。
+
+返回复制链表的头节点。
+
+用一个由 n 个节点组成的链表来表示输入/输出中的链表。每个节点用一个 [val, random_index] 表示：
+
+val：一个表示 Node.val 的整数。
+random_index：随机指针指向的节点索引（范围从 0 到 n-1）；如果不指向任何节点，则为  null 。
+你的代码 只 接受原链表的头节点 head 作为传入参数。
+
+
+
+#### （2）思路
+
+* 第一次遍历链表，创建新节点，并利用HashMap<Node, Node> map存储新节点和旧节点的映射、
+* 第二次遍历链表，给新节点的next和random赋值
+* 注意head = null的情况
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+/*
+// Definition for a Node.
+class Node {
+    int val;
+    Node next;
+    Node random;
+
+    public Node(int val) {
+        this.val = val;
+        this.next = null;
+        this.random = null;
+    }
+}
+*/
+
+import java.util.HashMap;
+
+class Solution {
+    public Node copyRandomList(Node head) {
+        if (head == null){
+            return null;
+        }
+
+        HashMap<Node, Node> map = new HashMap();
+        Node now = head;
+        while (now != null){
+            Node newNode = new Node(now.val);
+            map.put(now, newNode);
+            now = now.next;
+        }
+
+        now = head;
+        while (now != null){
+            Node newNode = map.get(now);
+            newNode.next = map.getOrDefault(now.next, null);
+            newNode.random = map.getOrDefault(now.random, null);
+            now = now.next;
+        }
+        return map.get(head);
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 141/99. 恢复二叉搜索树
+
+
+
+#### （1）题目
+
+给你二叉搜索树的根节点 root ，该树中的两个节点被错误地交换。请在不改变其结构的情况下，恢复这棵树。
+
+进阶：使用 O(n) 空间复杂度的解法很容易实现。你能想出一个只使用常数空间的解决方案吗？
+
+
+
+#### （2）思路
+
+* 二叉搜索树的中序遍历结果是升序的，即需要找出两个错误节点，并交换其值
+* 可能出现两种情况
+  * 一处降序排列：13245（交换32）
+  * 两处降序排列：14325（交换42）
+* 使用pre记录当前遍历节点的前序节点，比较pre节点和当前节点的val，node1，node2记录两个错误节点；使用中序遍历该二叉树
+  * pre. val < node.val：升序，正常节点
+  * pre.val > node.val：降序，错误节点
+    * node1 = null：找到的第一对错误节点，使用node1，node2记录pre和node
+    * node1 != null：找到的第二对错误节点，使用node2记录node
+* 注意：**root节点没有先序节点即pre=null，不需要判断**
+* 遍历结束后，交换node1和node2节点的val
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+
+    TreeNode node1 = null, node2 = null, pre = null;
+    public void recoverTree(TreeNode root) {
+        dfs(root);
+        int temp = node1.val;
+        node1.val = node2.val;
+        node2.val = temp;
+
+    }
+    public void dfs(TreeNode node){
+        if (node == null){
+            return;
+        }
+
+        dfs(node.left);
+
+        if ( pre != null && pre.val > node.val){//当前节点乱序
+            if (node1 == null){//第一组乱序对
+                node1 = pre;
+                node2 = node;
+            }else{//可能的第二组乱序对
+                node2 = node;
+            }
+        }
+        pre = node;
+        dfs(node.right);
+
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
 
 
 ## 十二、字符串

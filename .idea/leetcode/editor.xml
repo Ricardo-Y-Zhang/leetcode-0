@@ -91,6 +91,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[138]copy-list-with-random-pointer.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[138]copy-list-with-random-pointer.java" />
+              <option name="questionId" value="138" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[139]word-break.java">
           <value>
             <LeetcodeEditor>
@@ -104,6 +112,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[142]linked-list-cycle-ii.java" />
               <option name="questionId" value="142" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[143]reorder-list.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[143]reorder-list.java" />
+              <option name="questionId" value="143" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1104,6 +1120,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[98]validate-binary-search-tree.java" />
               <option name="questionId" value="98" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[99]recover-binary-search-tree.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[99]recover-binary-search-tree.java" />
+              <option name="questionId" value="99" />
             </LeetcodeEditor>
           </value>
         </entry>
