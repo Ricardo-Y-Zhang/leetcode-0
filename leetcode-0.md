@@ -1713,6 +1713,74 @@ class Solution {
 
 
 
+### 142/260. 只出现一次的数字 III
+
+
+
+#### （1）题目
+
+给定一个整数数组 nums，其中恰好有两个元素只出现一次，其余所有元素均出现两次。 找出只出现一次的那两个元素。你可以按 任意顺序 返回答案。
+
+ 
+
+进阶：你的算法应该具有线性时间复杂度。你能否仅使用常数空间复杂度来实现？
+
+
+
+#### （2）思路
+
+* **x ^ x = 0, 0 ^ x = x**
+* 遍历数组，将所有元素全部异或起来，得到结果res = x<sub>1</sub> ^ x<sub>2</sub>（x<sub>1</sub>, x<sub>2</sub>为只出现一次的元素），此时需要将 x<sub>1</sub> 和 x<sub>2</sub> 区分开来
+* 其中由于x<sub>1</sub>, x<sub>2</sub>不相等，故res != 0
+* res的二进制表示中存在第 k 位为 1，**即x<sub>1</sub>, x<sub>2</sub>的二进制表达式中第 k 位不相同**
+* 将数组内的元素根据**二进制表达式中第 k 位**分为两种
+  * 第 k 位为 1（x<sub>1</sub>）
+  * 第 k 位为 0（x<sub>2</sub>）
+* 将数组内的第 k 位为 1 的元素全部异或，结果为num1 = x<sub>1</sub>
+* 将数组内的第 k 位为 0 的元素全部异或，结果为num2 = x<sub>2</sub>
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int[] singleNumber(int[] nums) {
+        int res = 0;
+        for (int i = 0; i < nums.length; i++){
+            res ^= nums[i];
+        }
+        int target = 1;
+        while (true){
+            if ((target & res) != 0){
+                break;
+            }
+            target <<= 1;
+        }
+
+        int num1 = 0, num2 = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if ((nums[i] & target) == 0){
+                num1 ^= nums[i];
+            }else{
+                num2 ^= nums[i];
+            }
+        }
+
+        int[] resNums = new int[2];
+        resNums[0] = num1;
+        resNums[1] = num2;
+        return resNums;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
 ## 四、树
 
 
@@ -11002,6 +11070,183 @@ class Solution {
 ```
 
 
+
+
+
+### 145/223. 矩形面积
+
+
+
+#### （1）题目
+
+给你 二维 平面上两个 由直线构成且边与坐标轴平行/垂直 的矩形，请你计算并返回两个矩形覆盖的总面积。
+
+每个矩形由其 左下 顶点和 右上 顶点坐标表示：
+
+第一个矩形由其左下顶点 (ax1, ay1) 和右上顶点 (ax2, ay2) 定义。
+第二个矩形由其左下顶点 (bx1, by1) 和右上顶点 (bx2, by2) 定义。
+
+
+
+#### （2）思路
+
+* 先求出两个矩形S1, S2的面积area1， area2
+* 若两个矩形有重叠，则求出重叠面积area3
+* 两矩形不重叠
+  * S1在S2的左方：bx1 >= ax2
+  * S1在S2的右方：ax1 >= bx2
+  * S1在S2的上方：ay1 >= by2
+  * S1在S2的下方：by1 >= ay2
+* 两矩形重叠：
+  * 求出ax1, ax2, bx1, bx2中的**中间值 x1, x2**
+  * 求出ay1, ay2, by1, by2中的**中间值y1, y2**
+  * 重叠矩形面积 area3 = (x2 - x1) * (y2 - y1)
+* 总面积 = area1 + area2 - area3
+
+
+
+####  （3）实现
+
+```
+import java.util.Arrays;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int computeArea(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2) {
+        int area1 = (ax2-ax1) * (ay2-ay1), area2 = (bx2-bx1) * (by2-by1);//分别为两个矩形的面积
+        if (bx1 >= ax2 || ax1 >= bx2 || ay1 >= by2 || by1 >= ay2){
+            return area1 + area2;
+        }
+
+        int[] x = new int[]{ax1, ax2, bx1, bx2}, y = new int[]{ay1, ay2, by1, by2};
+        Arrays.sort(x);
+        Arrays.sort(y);
+
+        int area3 = (x[2]-x[1]) * (y[2]-y[1]);
+
+        return area1 + area2 - area3;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
+## 十四、数据库
+
+
+
+### 143/176. 第二高的薪水
+
+
+
+#### （1）题目
+
+编写一个 SQL 查询，获取 `Employee` 表中第二高的薪水（Salary） 。
+
+```
++----+--------+
+| Id | Salary |
++----+--------+
+| 1  | 100    |
+| 2  | 200    |
+| 3  | 300    |
++----+--------+
+```
+
+例如上述 `Employee` 表，SQL查询应该返回 `200` 作为第二高的薪水。如果不存在第二高的薪水，那么查询应返回 `null`。
+
+```
++---------------------+
+| SecondHighestSalary |
++---------------------+
+| 200                 |
++---------------------+
+```
+
+
+
+#### （2）思路
+
+* 筛选出最高薪水的员工 Id
+* 选出不在此 Id集合的员工的 MAX(Salary)
+
+
+
+#### （3）实现
+
+```mysql
+SELECT MAX(Salary) "SecondHighestSalary"
+FROM Employee
+WHERE Id NOT IN (
+	SELECT Id FROM Employee
+	WHERE Salary = (SELECT MAX(Salary) 
+	FROM Employee)
+	);
+```
+
+
+
+
+
+### 144/175. 组合两个表
+
+
+
+#### （1）题目
+
+表1: `Person`
+
+```
++-------------+---------+
+| 列名         | 类型     |
++-------------+---------+
+| PersonId    | int     |
+| FirstName   | varchar |
+| LastName    | varchar |
++-------------+---------+
+PersonId 是上表主键
+```
+
+表2: `Address`
+
+```
++-------------+---------+
+| 列名         | 类型    |
++-------------+---------+
+| AddressId   | int     |
+| PersonId    | int     |
+| City        | varchar |
+| State       | varchar |
++-------------+---------+
+AddressId 是上表主键
+```
+
+编写一个 SQL 查询，满足条件：无论 person 是否有地址信息，都需要基于上述两表提供 person 的以下信息：
+
+```
+FirstName, LastName, City, State
+```
+
+
+
+#### （2）思路
+
+* 内连查询
+
+
+
+#### （3）实现
+
+```mysql
+SELECT p.FirstName, p.LastName, A.City, A.State
+FROM Person p LEFT JOIN Address a
+ON p.PersonId = a.PersonId;
+```
 
 
 
