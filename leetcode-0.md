@@ -11016,6 +11016,83 @@ class Solution {
 
 
 
+### 148/500. 键盘行
+
+
+
+#### （1）题目
+
+给你一个字符串数组 words ，只返回可以使用在 美式键盘 同一行的字母打印出来的单词。键盘如下图所示。
+
+美式键盘 中：
+
+* 第一行由字符 "qwertyuiop" 组成。
+* 第二行由字符 "asdfghjkl" 组成。
+* 第三行由字符 "zxcvbnm" 组成。
+
+
+
+#### （2）思路
+
+* 将三行字符串记录在字符串数组keyboards中
+* 遍历字符串数组words，对于每个单词word
+  * num记录word中第一个字符出现在哪一行
+  * 遍历word中的每个字符，查看是否也出现在num行字符串中
+  * 若均出现在同一行，记录该单词word
+
+
+
+#### （3）实现
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public String[] findWords(String[] words) {
+        String[] keyboards = new String[3];
+        keyboards[0] = "qwertyuiop";
+        keyboards[1] = "asdfghjkl";
+        keyboards[2] = "zxcvbnm";
+        List<String> list = new ArrayList<>();
+
+        for (String temp : words){
+            String ltemp = temp.toLowerCase();
+            String str = ltemp.substring(0, 1);
+            int num = 0;
+            for (; num < 3; num++) {
+                if (keyboards[num].contains(str)){
+                    break;
+                }
+            }
+            boolean flag = true;
+            for (int i = 0; i < ltemp.length(); i++) {
+                String str1 = ltemp.substring(i, i+1);
+                if (!keyboards[num].contains(str1)) {
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag){
+                list.add(temp);
+            }
+
+        }
+        String[] res = new String[list.size()];
+        for (int i = 0; i < res.length; i++) {
+            res[i] = list.get(i);
+        }
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
 
 
 ## 十三、数学
@@ -11246,6 +11323,155 @@ FirstName, LastName, City, State
 SELECT p.FirstName, p.LastName, A.City, A.State
 FROM Person p LEFT JOIN Address a
 ON p.PersonId = a.PersonId;
+```
+
+
+
+
+
+# 二、剑指Offer
+
+
+
+## 一、栈与队列
+
+
+
+### 146/09. 用两个栈实现队列
+
+
+
+#### （1）题目
+
+用两个栈实现一个队列。队列的声明如下，请实现它的两个函数 appendTail 和 deleteHead ，分别完成在队列尾部插入整数和在队列头部删除整数的功能。(若队列中没有元素，deleteHead 操作返回 -1 )
+
+
+
+#### （2）思路
+
+* 使用两个栈stack1, stack2实现队列；根据栈先进后出的特点，栈底元素就是下一个待删除的元素
+* 引入第二个栈，用第二个栈维护待删除的元素，栈顶元素即为下一个待删除的元素，执行删除操作时，首先看第二个栈是否为空。如果为空，将第一个栈里的元素弹出插入第二个栈
+* 队尾插入元素：元素push入stack1中
+* 队列头删除元素
+  * **stack1和stack2为空**，即队列中没有元素，返回-1
+  * **stack2为空，则将stack1中的元素push到stack2中**
+  * stack2的栈顶元素即为队列头元素，返回stack2的栈顶元素
+
+
+
+#### （3）实现
+
+```java
+import java.util.Stack;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class CQueue {
+    Stack<Integer> stack1, stack2;
+    public CQueue() {
+        stack1 = new Stack<>();
+        stack2 = new Stack<>();
+    }
+    
+    public void appendTail(int value) {
+        stack1.add(value);
+    }
+    
+    public int deleteHead() {
+        if (stack1.isEmpty() && stack2.isEmpty()) {
+            return -1;
+        }
+
+        if (stack2.isEmpty()) {
+            while (!stack1.isEmpty()) {
+                stack2.push(stack1.pop());
+            }
+        }
+
+        return stack2.pop();
+    }
+}
+
+/**
+ * Your CQueue object will be instantiated and called as such:
+ * CQueue obj = new CQueue();
+ * obj.appendTail(value);
+ * int param_2 = obj.deleteHead();
+ */
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 147/30. 包含min函数的栈
+
+
+
+#### （1）题目
+
+定义栈的数据结构，请在该类型中实现一个能够得到栈的最小元素的 min 函数在该栈中，调用 min、push 及 pop 的时间复杂度都是 O(1)。
+
+
+
+#### （2）思路
+
+* 使用辅助栈stack2储存栈内的最小元素
+* stack2的栈顶元素即为stack1栈内的最小元素
+* 元素x入栈时，更新stack2，将min(x, stack2.peek())压入stack2中
+* 元素出栈时，同时将stack2中的栈顶元素弹出
+
+
+
+#### （3）实现
+
+```java
+import java.util.Stack;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class MinStack {
+    Stack<Integer> stack1, stack2;
+
+    /** initialize your data structure here. */
+    public MinStack() {
+        stack1 = new Stack<>();
+        stack2 = new Stack<>();
+    }
+    
+    public void push(int x) {
+        stack1.push(x);
+        if (stack2.isEmpty()) {
+            stack2.push(x);
+        }else{
+            stack2.push(Math.min(x, stack2.peek()));
+        }
+    }
+    
+    public void pop() {
+       if (!stack1.isEmpty()){
+           stack1.pop();
+           stack2.pop();
+       }
+    }
+    
+    public int top() {
+        return stack1.peek();
+    }
+    
+    public int min() {
+        return stack2.peek();
+    }
+}
+
+/**
+ * Your MinStack object will be instantiated and called as such:
+ * MinStack obj = new MinStack();
+ * obj.push(x);
+ * obj.pop();
+ * int param_3 = obj.top();
+ * int param_4 = obj.min();
+ */
+//leetcode submit region end(Prohibit modification and deletion)
 ```
 
 
