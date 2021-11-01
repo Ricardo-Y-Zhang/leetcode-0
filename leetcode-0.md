@@ -11211,6 +11211,49 @@ class Solution {
 
 
 
+### 149/575. 分糖果
+
+
+
+#### （1）题目
+
+给定一个偶数长度的数组，其中不同的数字代表着不同种类的糖果，每一个数字代表一个糖果。你需要把这些糖果平均分给一个弟弟和一个妹妹。返回妹妹可以获得的最大糖果的种类数。
+
+
+
+#### （2）思路
+
+* 糖果需要平均分给两人
+  * 糖果种类 < 糖果总数/2：可以将每种糖果都分给妹妹一个
+  * 糖果种类 >= 糖果总数/2：只能将 糖果总数/2 分给妹妹
+
+
+
+#### （3）实现
+
+```java
+import java.util.HashSet;
+import java.util.Set;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int distributeCandies(int[] candyType) {
+        Set<Integer> set = new HashSet<>();
+
+        for (int temp : candyType) {
+            set.add(temp);
+        }
+
+        return Math.min(set.size(), candyType.length/2);
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
 
 
 ## 十四、数据库
@@ -11475,4 +11518,183 @@ class MinStack {
 ```
 
 
+
+
+
+## 二、链表
+
+
+
+### 150/06. 从尾到头打印链表
+
+
+
+#### （1）题目
+
+输入一个链表的头节点，从尾到头反过来返回每个节点的值（用数组返回）。
+
+
+
+#### （2）思路
+
+* 遍历链表，将每个节点的值压入栈中，栈顶元素即为链尾元素
+* 将栈顶元素弹出，依次赋值给数组
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+
+import java.util.Stack;
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public int[] reversePrint(ListNode head) {
+        Stack<Integer> stack = new Stack<>();
+
+        while (head != null) {
+            stack.push(head.val);
+            head = head.next;
+        }
+
+        int[] res = new int[stack.size()];
+        for (int i = 0; i < res.length; i++) {
+            res[i] = stack.pop();
+        }
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+### 151/24. 反转链表
+
+
+
+#### （1）题目
+
+定义一个函数，输入一个链表的头节点，反转该链表并输出反转后链表的头节点。
+
+
+
+#### （2）思路
+
+* 使用虚拟头节点方便处理
+* 遍历链表，使用头插法将每个节点插入虚拟头节点的后方
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        ListNode vhead = new ListNode();
+        vhead.next = null;
+
+        while (head != null) {
+            ListNode temp = head;
+            head = head.next;
+
+            temp.next = vhead.next;
+            vhead.next = temp;
+        }
+
+        return vhead.next;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 152/35. 复杂链表的复制
+
+
+
+#### （1）题目
+
+请实现 copyRandomList 函数，复制一个复杂链表。在复杂链表中，每个节点除了有一个 next 指针指向下一个节点，还有一个 random 指针指向链表中的任意节点或者 null。
+
+
+
+#### （2）思路
+
+* 遍历链表，复制每个节点，next和random不赋值，在map储存原节点和复制节点的映射
+* 遍历链表，给每个复制节点的next和random赋值
+  * 复制节点的next = 原节点的next在map中的映射
+  * 复制节点的random = 原节点的random在map中的映射
+
+
+
+#### （3）实现
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+/*
+// Definition for a Node.
+class Node {
+    int val;
+    Node next;
+    Node random;
+
+    public Node(int val) {
+        this.val = val;
+        this.next = null;
+        this.random = null;
+    }
+}
+*/
+class Solution {
+    public Node copyRandomList(Node head) {
+        if (head == null) {
+            return head;
+        }
+        Map<Node, Node> map = new HashMap();
+
+        Node now = head;
+        while (now != null) {
+            Node temp = new Node(now.val);
+            map.put(now, temp);
+            now = now.next;
+        }
+
+        now = head;
+        while (now != null) {
+            Node temp = map.get(now);
+            temp.next = map.get(now.next);
+            temp.random = map.get(now.random);
+            now = now.next;
+        }
+
+        return map.get(head);
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
 
