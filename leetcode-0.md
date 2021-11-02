@@ -11254,6 +11254,50 @@ class Solution {
 
 
 
+### 155/237. 删除链表中的节点
+
+
+
+#### （1）题目
+
+请编写一个函数，用于 删除单链表中某个特定节点 。在设计函数时需要注意，你无法访问链表的头节点 head ，只能直接访问 要被删除的节点 。
+
+题目数据保证需要删除的节点 不是末尾节点 。
+
+
+
+#### （2）思路
+
+* 由于只能直接访问要被删除的节点，无法访问其前序节点，故无法简单删除当前节点
+* 将下一个节点的值赋值给当前节点，删除下一个节点
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public void deleteNode(ListNode node) {
+        node.val = node.next.val;
+        node.next = node.next.next;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
 
 
 ## 十四、数据库
@@ -11693,6 +11737,113 @@ class Solution {
         }
 
         return map.get(head);
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+## 三、字符串
+
+
+
+### 153/05. 替换空格
+
+
+
+#### （1）题目
+
+请实现一个函数，把字符串 `s` 中的每个空格替换成"%20"。
+
+
+
+#### （2）思路
+
+* 不使用string.replace()
+* 字符数组，创建长度为 s 的3倍的字符数组bts，确保可以容纳替换后的字符，index记录当前字符数组的长度，遍历字符串s
+  * 当前字符ch是空格，替换为“%20”，bts[index++] = '%'，bts[index++] = '2'，bts[index++] = '0'
+  * 当前字符ch不是空格，bts[index++] = ch
+* 替换后的字符串为**new String(bts, 0, index)**
+* 或者使用StringBuilder，底层原理类似
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public String replaceSpace(String s) {
+//        StringBuilder stringBuilder = new StringBuilder();
+//        for (int i = 0; i < s.length(); i++) {
+//            char ch = s.charAt(i);
+//            if (ch == ' '){
+//                stringBuilder.append("%20");
+//            }else{
+//                stringBuilder.append(ch);
+//            }
+//        }
+//        return stringBuilder.toString();
+
+        char[] bts = new char[s.length()*3];
+        int index = 0;
+        for (int i = 0; i < s.length(); i++){
+            char ch = s.charAt(i);
+            if (ch == ' '){
+                bts[index++] = '%';
+                bts[index++] = '2';
+                bts[index++] = '0';
+            }else{
+                bts[index++] = ch;
+            }
+        }
+        String res = new String(bts, 0, index);
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 154/58-II. 左旋转字符串
+
+
+
+#### （1）题目
+
+字符串的左旋转操作是把字符串前面的若干个字符转移到字符串的尾部。请定义一个函数实现字符串左旋转操作的功能。比如，输入字符串"abcdefg"和数字2，该函数将返回左旋转两位得到的结果"cdefgab"。
+
+ 
+
+#### （2）思路
+
+* 创建字符数组char[] chs，长度为s.length()
+* 遍历字符串s的 [n, s.length()]，并给chs赋值；再遍历[0, n)，给chs赋值
+* 旋转字符串即为new String(chs)
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public String reverseLeftWords(String s, int n) {
+        char[] chars = new char[s.length()];
+        int num = 0;
+        for (int i = n; i < s.length(); i++) {
+            chars[num++] = s.charAt(i);
+        }
+        for (int i = 0; i < n; i++) {
+            chars[num++] = s.charAt(i);
+        }
+        return new String(chars);
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
