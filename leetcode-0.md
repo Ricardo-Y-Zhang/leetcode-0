@@ -11849,3 +11849,163 @@ class Solution {
 //leetcode submit region end(Prohibit modification and deletion)
 ```
 
+
+
+
+
+## 四、查找算法
+
+### 156/53-I. 在排序数组中查找数字 I
+
+
+
+#### （1）题目
+
+统计一个数字在排序数组中出现的次数。
+
+
+
+#### （2）思路
+
+* 二分查找，查找target在nums数组中出现位置的下标index
+* 从index位置分别向左向右查找，查询target出现的次数
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int search(int[] nums, int target) {
+        int res = 0;
+        int left = 0, right = nums.length-1;
+        while (left <= right){
+            int mid = (left + right)/2;
+            if (nums[mid] == target) {
+                left = mid;
+                while (left >= 0){
+                    if (nums[left--] == target){
+                        res++;
+                    }else{
+                        break;
+                    }
+                }
+                right = mid + 1;
+                while (right < nums.length){
+                    if (nums[right++] == target){
+                        res++;
+                    }else{
+                        break;
+                    }
+                }
+                break;
+            }
+            if (nums[mid] < target){
+                left = mid + 1;
+            }else{
+                right = mid - 1;
+            }
+        }
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 157/03. 数组中重复的数字（优化）
+
+
+
+#### （1）题目
+
+找出数组中重复的数字。
+
+
+在一个长度为 n 的数组 nums 里的所有数字都在 0～n-1 的范围内。数组中某些数字是重复的，但不知道有几个数字重复了，也不知道每个数字重复了几次。请找出数组中任意一个重复的数字。
+
+
+
+#### （2）思路
+
+* 使用HashMap，HashSet，排序均可
+
+
+
+#### （3）实现
+
+```java
+import java.util.HashSet;
+import java.util.Set;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int findRepeatNumber(int[] nums) {
+        Set<Integer> set = new HashSet<>();
+        int temp = -1;
+        for (int i = 0; i < nums.length; i++) {
+            temp = nums[i];
+            if (set.contains(temp)){
+                break;
+            }
+            set.add(temp);
+        }
+        return temp;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 158/53-II。 0~n-1中缺失的数字
+
+
+
+#### （1）题目
+
+一个长度为n-1的递增排序数组中的所有数字都是唯一的，并且每个数字都在范围0～n-1之内。在范围0～n-1内的n个数字中有且只有一个数字不在该数组中，请找出这个数字。
+
+
+
+#### （2）思路
+
+* 递增排序数组，使用二分法搜索
+* 数组中存在两种元素：在原位置上的元素（元素等于下标），不在原位置上的元素（元素比下标大）
+* 二分法搜索
+  * 元素等于下标：缺失元素在其右边，left = mid + 1
+  * 元素大于下标：缺失元素在其左边，right = mid - 1
+* 循环条件：**left <= right**
+* 跳出时，**left指向在缺失元素下标，right指向在原位置上的最后一个元素**
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int missingNumber(int[] nums) {
+        int left = 0, right = nums.length-1;
+
+        while (left <= right){
+            int mid = (left + right) / 2;
+            if (nums[mid] == mid){
+                left = mid + 1;
+            }else if (nums[mid] > mid){
+                right = mid - 1;
+
+            }
+        }
+        return left;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+

@@ -1187,6 +1187,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 03]shu-zu-zhong-zhong-fu-de-shu-zi-lcof.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 03]shu-zu-zhong-zhong-fu-de-shu-zi-lcof.java" />
+              <option name="questionId" value="100275" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 05]ti-huan-kong-ge-lcof.java">
           <value>
             <LeetcodeEditor>
@@ -1232,6 +1240,22 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 35]fu-za-lian-biao-de-fu-zhi-lcof.java" />
               <option name="questionId" value="100300" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 53 - II]que-shi-de-shu-zi-lcof.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 53 - II]que-shi-de-shu-zi-lcof.java" />
+              <option name="questionId" value="100331" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 53 - I]zai-pai-xu-shu-zu-zhong-cha-zhao-shu-zi-lcof.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 53 - I]zai-pai-xu-shu-zu-zhong-cha-zhao-shu-zi-lcof.java" />
+              <option name="questionId" value="100329" />
             </LeetcodeEditor>
           </value>
         </entry>
