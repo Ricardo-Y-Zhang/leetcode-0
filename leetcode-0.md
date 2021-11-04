@@ -11298,6 +11298,52 @@ class Solution {
 
 
 
+### 159/367. 有效的完全平方数
+
+
+
+#### （1）题目
+
+给定一个 正整数 num ，编写一个函数，如果 num 是一个完全平方数，则返回 true ，否则返回 false 。
+
+进阶：不要 使用任何内置的库函数，如  sqrt 。
+
+ 
+
+#### （2）思路
+
+* 二分法查找其平方根
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public boolean isPerfectSquare(int num) {
+        long left = 0, right = num;
+        while (left <= right){
+            long mid = (left + right)/2;
+            if (mid*mid == num){
+                return true;
+            }
+            if (mid*mid < num){
+                left = mid + 1;
+            }else if (mid*mid > num){
+                right = mid - 1;
+            }
+        }
+        return false;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
 
 
 ## 十四、数据库
@@ -11964,7 +12010,7 @@ class Solution {
 
 
 
-### 158/53-II。 0~n-1中缺失的数字
+### 158/53-II. 0~n-1中缺失的数字
 
 
 
@@ -12004,6 +12050,157 @@ class Solution {
             }
         }
         return left;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 160/04. 二维数组中的查找
+
+
+
+#### （1）题目
+
+在一个 n * m 的二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个高效的函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。
+
+
+
+#### （2）思路
+
+* 二分查找
+
+* 从二维数组的右上角开始查找
+* 比该元素小的元素在该元素的左侧，比该元素大的元素在该元素的下侧
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public boolean findNumberIn2DArray(int[][] matrix, int target) {
+        int n = matrix.length;
+        if (n == 0){
+            return false;
+        }
+        int m = matrix[0].length;
+
+        int x = 0, y = m-1;
+        while (x >= 0 && x < n && y >= 0 && y < m){
+            if (matrix[x][y] == target){
+                return true;
+            }
+            if (matrix[x][y] > target){
+                y--;
+            }else if (matrix[x][y] < target){
+                x++;
+            }
+        }
+
+        return false;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 161/50. 第一个只出现一次的字符
+
+
+
+#### （1）题目
+
+在字符串 s 中找出第一个只出现一次的字符。如果没有，返回一个单空格。 s 只包含小写字母。
+
+
+
+#### （2）思路
+
+* 哈希表记录字符串中每个字符的出现次数
+* 第二次遍历，查询第一个只出现一次的字符
+
+
+
+#### （3）实现
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public char firstUniqChar(String s) {
+        Map<Character, Integer> map = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            map.put(ch, map.getOrDefault(ch, 0) + 1);
+        }
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            if (map.get(ch) == 1){
+                return ch;
+            }
+        }
+        return ' ';
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 162/11. 旋转数组的最小数字（imp）
+
+
+
+#### （1）题目
+
+把一个数组最开始的若干个元素搬到数组的末尾，我们称之为数组的旋转。输入一个递增排序的数组的一个旋转，输出旋转数组的最小元素。例如，数组 [3,4,5,1,2] 为 [1,2,3,4,5] 的一个旋转，该数组的最小值为1。
+
+
+
+#### （2）思路
+
+* 二分法
+* 左右指针left，right分别指向nums数组左右两端，mid = left + (right-left) / 2
+* 其中left <= mid < right
+  * nums[mid] > nums[right]：mid在左排序数组中，旋转点在[mid+1, right]中；left = mid + 1
+  * nums[mid] < nums[right]：mid在右排序数组中，旋转点在[left, mid]中；right = mid
+  * **nums[mid] = nums[right]：无法判断mid在哪个排序数组中；right--**
+* 当left = right时跳出循环，left即为旋转点下标
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int minArray(int[] numbers) {
+        int min = 0x3f3f3f3f;
+        int left = 0, right = numbers.length-1;
+        while (left < right){
+            int mid = left + (right-left)/2;
+            if (numbers[mid] == numbers[right]){
+                right--;
+            }else if (numbers[mid] < numbers[right]){
+                right = mid;
+            }else{
+                left = mid + 1;
+            }
+
+        }
+        return numbers[left];
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
