@@ -67,6 +67,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[1218]longest-arithmetic-subsequence-of-given-difference.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[1218]longest-arithmetic-subsequence-of-given-difference.java" />
+              <option name="questionId" value="1330" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[124]binary-tree-maximum-path-sum.java">
           <value>
             <LeetcodeEditor>
@@ -1256,6 +1264,30 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 30]bao-han-minhan-shu-de-zhan-lcof.java" />
               <option name="questionId" value="100302" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 32 - III]cong-shang-dao-xia-da-yin-er-cha-shu-iii-lcof.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 32 - III]cong-shang-dao-xia-da-yin-er-cha-shu-iii-lcof.java" />
+              <option name="questionId" value="100314" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 32 - II]cong-shang-dao-xia-da-yin-er-cha-shu-ii-lcof.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 32 - II]cong-shang-dao-xia-da-yin-er-cha-shu-ii-lcof.java" />
+              <option name="questionId" value="100312" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 32 - I]cong-shang-dao-xia-da-yin-er-cha-shu-lcof.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 32 - I]cong-shang-dao-xia-da-yin-er-cha-shu-lcof.java" />
+              <option name="questionId" value="100311" />
             </LeetcodeEditor>
           </value>
         </entry>

@@ -4294,6 +4294,57 @@ class Solution {
 
 
 
+### 163/1218. 最长定差子序列
+
+
+
+#### （1）题目
+
+给你一个整数数组 arr 和一个整数 difference，请你找出并返回 arr 中最长等差子序列的长度，该子序列中相邻元素之间的差等于 difference 。
+
+子序列 是指在不改变其余元素顺序的情况下，通过删除一些元素或不删除任何元素而从 arr 派生出来的序列。
+
+
+
+#### （2）思路
+
+* 动态规划
+* 使用hashmap记录以元素num为终点的最长等差子序列的长度，key为num，value为以num为终点的最长等差子序列的长度；res记录最长等差子序列的长度
+* dp[num]代表数组中以元素num为终点的最长等差子序列的长度，动态转移方程
+  * dp[num] = dp[num-difference] + 1
+  * 若dp[num-difference]不存在，dp[num] = 1
+
+
+
+#### （3）实现
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int longestSubsequence(int[] arr, int difference) {
+        int res = 0;
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < arr.length; i++) {
+            int temp = arr[i];
+            int pre = map.getOrDefault(temp-difference, 0);
+            res = Math.max(res, pre+1);
+            map.put(temp, pre+1);
+        }
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
 
 
 ### 八、背包问题
@@ -12074,6 +12125,9 @@ class Solution {
 * 二分查找
 
 * 从二维数组的右上角开始查找
+  * matrix[i] [j] = target时：返回true
+  * matrix[i] [j] < target时：i++，消去第 i 行元素，即比target小的元素
+  * matrix[i] [j] > target时：j--，消去第 j 列元素，即比target大的元素
 * 比该元素小的元素在该元素的左侧，比该元素大的元素在该元素的下侧
 
 
@@ -12201,6 +12255,314 @@ class Solution {
 
         }
         return numbers[left];
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+## 五、搜索与回溯算法
+
+
+
+### 164/32-I. 从上到下打印二叉树
+
+
+
+#### （1）题目
+
+从上到下打印出二叉树的每个节点，同一层的节点按照从左到右的顺序打印。
+
+
+
+#### （2）思路
+
+* 层序遍历二叉树
+* 将根节点root入队，当队列非空时，队头节点出队，再将其非空的左右孩子节点入队
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public int[] levelOrder(TreeNode root) {
+        if (root == null){
+            return new int[0];
+        }
+        List<Integer> list = new ArrayList<>();
+        LinkedList<TreeNode> linkedList = new LinkedList<TreeNode>();
+        linkedList.add(root);
+        while (!linkedList.isEmpty()) {
+            TreeNode first = linkedList.pollFirst();
+            list.add(first.val);
+            if (first.left != null){
+                linkedList.add(first.left);
+            }
+            if (first.right != null) {
+                linkedList.add(first.right);
+            }
+        }
+        int[] res = new int[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            res[i] = list.get(i);
+        }
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 165/32-II. 从上到下打印二叉树 II
+
+
+
+#### （1）题目
+
+从上到下按层打印二叉树，同一层的节点按从左到右的顺序打印，每一层打印到一行。
+
+
+
+#### （2）思路
+
+* 层序遍历二叉树
+* 记录**每一层中最右节点tail**，tempTail记录**队列中下一层的最右节点**， ArrayList<Integer> temp记录每一层节点的val
+* LinkedList<TreeNode>  list模拟队列
+  * 初始化：list.add(root)
+  * BFS循环：list为空时跳出
+    * 队首节点出列，记为head
+    * 将head.val添加到temp中
+    * 添加子节点：若head的左右孩子节点不为空，将其左右孩子节点加入队列list中，并**更新tempTail**
+    * 若head为该层的最右节点tail：将temp添加到答案res中，并更新tail为tempTail
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (root == null){
+            return res;
+        }
+        LinkedList<TreeNode> list = new LinkedList<TreeNode>();
+        list.add(root);
+        TreeNode tail = root, tempTail = root;
+        List<Integer> temp = new ArrayList<>();
+        while (!list.isEmpty()) {
+            TreeNode first = list.poll();
+            temp.add(first.val);
+            if (first.left != null) {
+                list.add(first.left);
+                tempTail = first.left;
+            }
+            if (first.right != null) {
+                list.add(first.right);
+                tempTail = first.right;
+            }
+            if (first == tail) {//当前节点为该层的最右节点
+                tail = tempTail;
+                res.add(new ArrayList<>(temp));
+                temp.clear();
+            }
+        }
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 166/32-III. 从上到下打印二叉树 III
+
+
+
+#### （1）题目
+
+请实现一个函数按照之字形顺序打印二叉树，即第一行按照从左到右的顺序打印，第二层按照从右到左的顺序打印，第三行再按照从左到右的顺序打印，其他行以此类推。
+
+
+
+#### （2.1）思路
+
+* 层序遍历二叉树
+* 与上一题相同，额外记录当前的层数index，根节点的index为0
+* 当队首节点head为该层的最右节点tail时，判断index
+  * 若index为偶数，将temp添加到答案res中
+  * 若index为奇数，将temp中的元素翻转，添加到答案res中
+
+
+
+#### （3.1）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (root == null){
+            return res;
+        }
+        LinkedList<TreeNode> linkedList = new LinkedList<TreeNode>();
+        linkedList.add(root);
+        ArrayList<Integer> temp = new ArrayList<>();
+        TreeNode tail = root, nextTail = root;
+        int index = 0;
+        while (!linkedList.isEmpty()) {
+            TreeNode head = linkedList.poll();
+            temp.add(head.val);
+            if (head.left != null) {
+                linkedList.add(head.left);
+                nextTail = head.left;
+            }
+            if (head.right != null) {
+                linkedList.add(head.right);
+                nextTail = head.right;
+            }
+
+            if (tail == head) {
+                tail = nextTail;
+                if (index % 2 == 0){
+                    res.add(new ArrayList<>(temp));
+                }else {
+                    ArrayList<Integer> reverse = new ArrayList<>();
+                    while (!temp.isEmpty()){
+                        reverse.add(temp.get(temp.size()-1));
+                        temp.remove(temp.size()-1);
+                    }
+                    res.add(new ArrayList<>(reverse));
+                }
+                temp.clear();
+                index++;
+            }
+        }
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+#### （2.2）思路
+
+* 思路1中，在将temp添加到答案res中，根据当前节点层数index，处理temp
+* 使用双端队列，**在将节点val添加到temp时**，根据当前节点层数index处理
+  * index为偶数，将节点val添加到temp队尾
+  * index为奇数，将节点val添加到temp队首
+
+
+
+#### （3.2）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (root == null){
+            return res;
+        }
+        LinkedList<TreeNode> linkedList = new LinkedList<TreeNode>();
+        linkedList.add(root);
+        LinkedList<Integer> temp = new LinkedList<>();
+        TreeNode tail = root, nextTail = root;
+        int index = 0;
+        while (!linkedList.isEmpty()) {
+            TreeNode head = linkedList.poll();
+            if (index % 2 == 0){//偶数层，添加到队尾
+                temp.addLast(head.val);
+            }else{//奇数层，添加到队首
+                temp.addFirst(head.val);
+            }
+            if (head.left != null) {
+                linkedList.add(head.left);
+                nextTail = head.left;
+            }
+            if (head.right != null) {
+                linkedList.add(head.right);
+                nextTail = head.right;
+            }
+
+            if (tail == head) {
+                tail = nextTail;
+                res.add(new ArrayList<>(temp));
+                temp.clear();
+                index++;
+            }
+        }
+        return res;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
