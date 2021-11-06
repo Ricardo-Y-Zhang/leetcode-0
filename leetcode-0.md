@@ -11395,6 +11395,44 @@ class Solution {
 
 
 
+### 170/268. 丢失的数字
+
+
+
+#### （1）题目
+
+给定一个包含 `[0, n]` 中 `n` 个数的数组 `nums` ，找出 `[0, n]` 这个范围内没有出现在数组中的那个数。
+
+
+
+#### （2）思路
+
+* 求和，对0~n求和，再减去nums中的元素，结果即为未出现的元素
+* 异或，对0~n异或，再对nums中的元素异或，结果即为只异或了一次的nums中未出现的元素
+* hash表
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int missingNumber(int[] nums) {
+        int sum = nums.length * (nums.length+1) / 2;
+        for (int i = 0; i < nums.length; i++) {
+            sum -= nums[i];
+        }
+        return sum;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
 
 
 ## 十四、数据库
@@ -12567,4 +12605,219 @@ class Solution {
 }
 //leetcode submit region end(Prohibit modification and deletion)
 ```
+
+
+
+
+
+
+
+## 六、搜索与回溯算法
+
+
+
+### 167/26. 树的子结构
+
+
+
+#### （1）题目
+
+输入两棵二叉树A和B，判断B是不是A的子结构。(约定空树不是任意一个树的子结构)
+
+B是A的子结构， 即 A中有出现和B相同的结构和节点值。
+
+
+
+#### （2）思路
+
+* 先序遍历树A，当前节点为node
+* 判断以node为根节点的子树**是否包含树B**
+
+
+
+#### （3）实现
+
+````java
+//leetcode submit region begin(Prohibit modification and deletion)
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public boolean isSubStructure(TreeNode A, TreeNode B) {
+        if (B == null){
+            return false;
+        }
+        return preorder(A, B);
+    }
+
+    public boolean preorder(TreeNode root1, TreeNode root2){
+        if (root1 == null){
+            return false;
+        }
+        if (judge(root1, root2)){
+            return true;
+        }
+
+        return preorder(root1.left, root2) || preorder(root1.right, root2);
+
+    }
+
+    public boolean judge(TreeNode root1, TreeNode root2) {
+        if (root1 == root2 || root2 == null){
+            return true;
+        }
+        if (root1 == null || root1.val != root2.val){
+            return false;
+        }
+
+        return judge(root1.left, root2.left) && judge(root1.right, root2.right);
+
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+````
+
+
+
+
+
+### 168/27. 二叉树的镜像
+
+
+
+#### （1）题目
+
+请完成一个函数，输入一个二叉树，该函数输出它的镜像。
+
+
+
+#### （2）思路
+
+* 递归交换左右孩子节点
+* 终止条件：root = null
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public TreeNode mirrorTree(TreeNode root) {
+        if (root == null){
+            return root;
+        }
+
+        TreeNode temp = root.left;
+        root.left = root.right;
+        root.right = temp;
+        mirrorTree(root.left);
+        mirrorTree(root.right);
+        return root;
+    }
+
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 169/28. 对称的二叉树
+
+
+
+#### （1）题目
+
+请实现一个函数，用来判断一棵二叉树是不是对称的。如果一棵二叉树和它的镜像一样，那么它是对称的。
+
+例如，二叉树 [1,2,2,3,4,4,3] 是对称的。
+
+```
+    1
+   / \
+  2   2
+ / \ / \
+3  4 4  3
+```
+
+但是下面这个 [1,2,2,null,3,null,3] 则不是镜像对称的:
+
+```
+    1
+   / \
+  2   2
+   \   \
+   3    3
+```
+
+
+
+#### （2）思路
+
+* 判断该二叉树的左右孩子子树是否为镜像对称
+* 镜像对称条件：
+  * root1.val = root2.val
+  * root1.left.val = root2.right.val
+  * root1.right.val = root2.right.val
+  * 递归判断root1.left和root2.right是否镜像对称，root1.right和root2.left是否镜像对称
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public boolean isSymmetric(TreeNode root) {
+        if (root == null){
+            return true;
+        }
+        return judge(root.left, root.right);
+    }
+
+    public boolean judge(TreeNode root1, TreeNode root2){
+        if (root1 == null && root2 == null){
+            return true;
+        }
+        if (root1 == null || root2 == null){
+            return false;
+        }
+
+        return root1.val == root2.val && judge(root1.left, root2.right) && judge(root1.right, root2.left);
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+
+
+```
+
+
+
+
 
