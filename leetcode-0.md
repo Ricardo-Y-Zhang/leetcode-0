@@ -9331,6 +9331,51 @@ class Solution {
 
 
 
+### 174/598. 范围求和 II
+
+
+
+#### （1）题目
+
+给定一个初始元素全部为 0，大小为 m*n 的矩阵 M 以及在 M 上的一系列更新操作。
+
+操作用二维数组表示，其中的每个操作用一个含有两个正整数 a 和 b 的数组表示，含义是将所有符合 0 <= i < a 以及 0 <= j < b 的元素 M[i][j] 的值都增加 1。
+
+在执行给定的一系列操作后，你需要返回矩阵中含有最大整数的元素个数。
+
+
+
+#### （2）思路
+
+* 求矩阵中含有最大整数的元素个数，即需要找到被操作次数最多的元素个数，即求**最小的非0的a和b**，含有最大整数的元素个数为a*b
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int maxCount(int m, int n, int[][] ops) {
+        for (int i = 0; i < ops.length; i++) {
+            int x = ops[i][0], y = ops[i][1];
+            if (x == 0 || y == 0){
+                continue;
+            }else{
+                m = Math.min(x, m);
+                n = Math.min(y, n);
+            }
+        }
+        return m*n;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
 
 
 
@@ -12820,4 +12865,148 @@ class Solution {
 
 
 
+
+## 七、动态规划
+
+
+
+### 171/10-I. 斐波那契数列
+
+
+
+#### （1）题目
+
+写一个函数，输入 `n` ，求斐波那契（Fibonacci）数列的第 `n` 项（即 `F(N)`）。斐波那契数列的定义如下：
+
+```
+F(0) = 0,   F(1) = 1
+F(N) = F(N - 1) + F(N - 2), 其中 N > 1.
+```
+
+斐波那契数列由 0 和 1 开始，之后的斐波那契数就是由之前的两数相加而得出。
+
+答案需要取模 1e9+7（1000000007），如计算初始结果为：1000000008，请返回 1。
+
+
+
+#### （2）思路
+
+* 动态规划，数组dp[n]记录斐波那契数列的第n项
+* 状态转移方程：dp[i] = dp[i-1] + dp[i-2]
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int fib(int n) {
+        if (n == 0){
+            return 0;
+        }
+        int temp = (int)(1e9 + 7);
+        int[] dp = new int[n+1];
+        dp[0]=0;
+        dp[1]=1;
+        for (int i = 2; i <= n; i++) {
+            dp[i] = (dp[i-1]%temp + dp[i-2]%temp)%temp;
+        }
+        return dp[n];
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 172/10-II. 青蛙跳台阶问题
+
+
+
+#### （1）题目
+
+一只青蛙一次可以跳上1级台阶，也可以跳上2级台阶。求该青蛙跳上一个 n 级的台阶总共有多少种跳法。
+
+答案需要取模 1e9+7（1000000007），如计算初始结果为：1000000008，请返回 1。
+
+
+
+#### （2）思路
+
+* 动态规划
+* 由于每次可以跳1级台阶，也可以跳2级台阶；则以第n级台阶为例，可以从第n-1级台阶或第n-2级台阶跳跃而上
+* 状态转移方程：**dp[n] = dp[n-1] + dp[n-2]**
+* 初始化：**dp[0] = 1, dp[1] = 1**
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int numWays(int n) {
+        if (n < 2){
+            return 1;
+        }
+        int[] dp = new int[n+1];
+        dp[0]=1;
+        dp[1]=1;
+        int temp = 1000000007;
+        for (int i = 2; i < n+1; i++) {
+            dp[i] = (dp[i-1]%temp + dp[i-2]%temp)%temp;
+        }
+        return dp[n];
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 173/63. 股票的最大利润
+
+
+
+#### （1）题目
+
+假设把某股票的价格按照时间先后顺序存储在数组中，请问买卖该股票一次可能获得的最大利润是多少？
+
+
+
+#### （2）思路
+
+* 动态规划
+* dp记录**截至到当前时间的股票价格的最低价**，res记录截至到当前时间可获得的最大利润
+* 第 i 天时：
+  * 最低价：dp = min(dp, prices[i])
+  * 最大利润：res = max(res, prices[i]-dp)
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int maxProfit(int[] prices) {
+        int res = 0;
+        if (prices.length == 0){
+            return res;
+        }
+        int dp = prices[0];
+        for (int i = 1; i < prices.length; i++) {
+            dp = Math.min(dp, prices[i]);
+            res = Math.max(res, prices[i]-dp);
+        }
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
 
