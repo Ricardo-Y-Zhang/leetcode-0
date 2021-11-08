@@ -10929,8 +10929,8 @@ yB 表示有 y 位数字出现在秘密数字中，但位置与秘密数字不�
 
 #### （2）思路
 
-* 遍历秘密字符串和猜测字符串，记录下字符与位置均与秘密数字一致的字符数量bull；将秘密数字中不一致的字符记录在HashMap<Character, Integer> map中，key为字符，value为字符出现次数
-* 再次遍历字符串，记录字符相同，位置不同的字符数cow；每次出现这样的字符ch，则将ch对应的value值-1
+* 遍历秘密字符串和猜测字符串，记录下字符与位置均与秘密数字一致的字符数量bull；将秘密数字中**不一致的字符**记录在HashMap<Character, Integer> map中，key为字符，value为字符出现次数
+* 再次遍历字符串，记录**字符相同，位置不同**的字符数cow；每次出现这样的字符ch，则将ch对应的value值-1
 
 
 
@@ -13009,4 +13009,106 @@ class Solution {
 }
 //leetcode submit region end(Prohibit modification and deletion)
 ```
+
+
+
+
+
+### 175/42. 连续子数组的最大和
+
+
+
+#### （1）题目
+
+输入一个整型数组，数组中的一个或连续多个整数组成一个子数组。求所有子数组的和的最大值。
+
+要求时间复杂度为O(n)。
+
+
+
+#### （2）思路
+
+* 动态规划
+* dp[i]记录以下标为 i 的元素为结尾的子数组的和的最大值
+* 状态转移方程：dp[i] = max(dp[i-1]+nums[i], nums[i])
+* 初始化：dp[0] = nums[0]
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int maxSubArray(int[] nums) {
+        int[] dp = new int[nums.length];
+        dp[0]=nums[0];
+        int res = dp[0];
+        for (int i = 1; i < nums.length; i++) {
+            dp[i] = Math.max(dp[i-1]+nums[i], nums[i]);
+            res = Math.max(dp[i], res);
+        }
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 176/47. 礼物的最大价值
+
+
+
+#### （1）题目
+
+在一个 m*n 的棋盘的每一格都放有一个礼物，每个礼物都有一定的价值（价值大于 0）。你可以从棋盘的左上角开始拿格子里的礼物，并每次向右或者向下移动一格、直到到达棋盘的右下角。给定一个棋盘及其上面的礼物的价值，请计算你最多能拿到多少价值的礼物？
+
+
+
+#### （2）思路
+
+* 动态规划
+* **dp[i] [j]**记录到达棋盘**grid[i] [j]**所能拿到的最大价值礼物，可以从**grid[i-1] [j]或grid[i] [j-1]**到达该位置；m = grid.length, n = grid[0].length
+  * 初始化：dp[0] [0] = grid[0] [0]
+  * 动态转移方程：dp[i] [j] = max(dp[i-1] [j], dp[i] [j-1]) + grid[i] [j] （0 < i < m且0 < j < n）
+  * dp[i] [j] = dp[i] [j-1] + grid[i] [j]（i = 0）
+  * dp[i] [j] = dp[i-1] [j] + grid[i] [j]（j = 0）
+* 空间复杂度优化：使用dp[n]记录当前行所能拿到的最大价值礼物
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int maxValue(int[][] grid) {
+        int m = grid.length, n = grid[0].length;
+        int[] dp = new int[n];
+        dp[0]=grid[0][0];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i==0&&j==0){
+                    continue;
+                }
+                if (i==0){
+                    dp[j]=dp[j-1]+grid[i][j];
+                }else if (j==0){
+                    dp[j]=dp[j]+grid[i][j];
+                }else{
+                    dp[j]=Math.max(dp[j-1], dp[j])+grid[i][j];
+                }
+            }
+        }
+        return dp[n-1];
+
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
 

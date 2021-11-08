@@ -46,29 +46,23 @@ class Solution {
     public String getHint(String secret, String guess) {
         HashMap<Character, Integer> map = new HashMap<>();
         int bull = 0, cow = 0;
-
         for (int i = 0; i < secret.length(); i++) {
             char ch1 = secret.charAt(i), ch2 = guess.charAt(i);
-            if (ch1 != ch2){
-                int times = map.getOrDefault(ch1, 0);
-                map.put(ch1, times+1);
-            }else{
+            if (ch1 == ch2){
                 bull++;
+            }else{
+                map.put(ch1, map.getOrDefault(ch1, 0)+1);
             }
         }
 
         for (int i = 0; i < secret.length(); i++) {
             char ch1 = secret.charAt(i), ch2 = guess.charAt(i);
-            if (ch1 != ch2){
-                int times = map.getOrDefault(ch2, 0);
-                if (times != 0){
-                    cow++;
-                    map.put(ch2, times-1);
-                }
+            if (ch1!=ch2 && map.getOrDefault(ch2, 0)!=0){
+                cow++;
+                map.put(ch2, map.getOrDefault(ch2, 0)-1);
             }
         }
-
-        return bull + "A" + cow + "B";
+        return bull+"A"+cow+"B";
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
