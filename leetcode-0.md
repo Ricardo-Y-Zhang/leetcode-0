@@ -13112,3 +13112,105 @@ class Solution {
 
 
 
+### 177/46. 把数字翻译成字符串
+
+
+
+#### （1）题目
+
+给定一个数字，我们按照如下规则把它翻译为字符串：0 翻译成 “a” ，1 翻译成 “b”，……，11 翻译成 “l”，……，25 翻译成 “z”。一个数字可能有多个翻译。请编程实现一个函数，用来计算一个数字有多少种不同的翻译方法。
+
+
+
+#### （2）思路
+
+* 动态规划
+* 将数字num转换为字符串nums，dp[i+1] 记录字符串nums中下标[0, i]的子串有多少种翻译方法，遍历字符串nums，下标为 i
+  * 初始化：dp[0] = 1, dp[1] = 1
+  * 将子串substring(i-1, i+1)转换为整数temp，判断temp
+  * 状态转移方程：
+    * dp[i+1] = dp[i-1] + dp[i]（10 <= temp <= 25，即下标为 i 的字符可以与下标为 i-1 的字符组合成一个字母）
+    * dp[i+1] = dp[i]（其他情况，即不能组合成一个字符）
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int translateNum(int num) {
+        String nums = String.valueOf(num);
+        int[] dp = new int[nums.length()+1];
+        dp[0]=1;
+        dp[1]=1;
+        for (int i = 1; i < nums.length(); i++) {
+            int temp = Integer.parseInt(nums.substring(i-1, i+1));
+            if (temp >= 10 && temp <= 25){
+                dp[i+1] = dp[i] + dp[i-1];
+            }else{
+                dp[i+1] = dp[i];
+            }
+        }
+        return dp[nums.length()];
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 178/48. 最长不含重复字符的子字符串
+
+
+
+#### （1）题目
+
+请从字符串中找出一个最长的不包含重复字符的子字符串，计算该最长子字符串的长度。
+
+
+
+#### （2）思路
+
+* 动态规划
+* dp[i]  记录字符串中以下标 i 结尾的最长的不包含重复字符的子字符串，遍历字符串，当前位置为 i
+  * 初始化dp[0] = 1
+  * 对于位置 i-1， 以该位置结尾的最长的不包含重复字符的子字符串为 sub = s.substring(i-dp[i-1], i)
+  * 判断位置 i 的字符是否出现在sub中，index = sub.indexOf(s.substring(i, i+1))
+  * 动态转移方程：
+    * dp[i] = dp[i-1] + 1（index = -1， 没有出现）
+    * dp[i] = dp[i-1] - index（出现在位置为index上）
+  * 记录下最大的dp[i]
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        if (s.length() == 0){
+            return 0 ;
+        }
+        int[] dp = new int[s.length()];
+        dp[0] = 1;
+        int res = 1;
+        for (int i = 1; i < s.length(); i++) {
+            String sub = s.substring(i-dp[i-1], i);
+            int index = sub.indexOf(s.substring(i, i+1));
+            if (index == -1){
+                dp[i] = dp[i-1] + 1;
+            }else{
+                dp[i] = dp[i-1] - index;
+            }
+            res = Math.max(dp[i], res);
+        }
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
