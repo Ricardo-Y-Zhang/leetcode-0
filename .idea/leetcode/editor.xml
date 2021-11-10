@@ -811,6 +811,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[495]teemo-attacking.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[495]teemo-attacking.java" />
+              <option name="questionId" value="495" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[496]next-greater-element-i.java">
           <value>
             <LeetcodeEditor>
@@ -1280,6 +1288,22 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 11]xuan-zhuan-shu-zu-de-zui-xiao-shu-zi-lcof.java" />
               <option name="questionId" value="100278" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 18]shan-chu-lian-biao-de-jie-dian-lcof.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 18]shan-chu-lian-biao-de-jie-dian-lcof.java" />
+              <option name="questionId" value="100299" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 22]lian-biao-zhong-dao-shu-di-kge-jie-dian-lcof.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 22]lian-biao-zhong-dao-shu-di-kge-jie-dian-lcof.java" />
+              <option name="questionId" value="100294" />
             </LeetcodeEditor>
           </value>
         </entry>
