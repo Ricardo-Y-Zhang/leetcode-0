@@ -1315,6 +1315,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 25]he-bing-liang-ge-pai-xu-de-lian-biao-lcof.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 25]he-bing-liang-ge-pai-xu-de-lian-biao-lcof.java" />
+              <option name="questionId" value="100286" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 26]shu-de-zi-jie-gou-lcof.java">
           <value>
             <LeetcodeEditor>
@@ -1416,6 +1424,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 50]di-yi-ge-zhi-chu-xian-yi-ci-de-zi-fu-lcof.java" />
               <option name="questionId" value="100316" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 52]liang-ge-lian-biao-de-di-yi-ge-gong-gong-jie-dian-lcof.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 52]liang-ge-lian-biao-de-di-yi-ge-gong-gong-jie-dian-lcof.java" />
+              <option name="questionId" value="100326" />
             </LeetcodeEditor>
           </value>
         </entry>

@@ -13279,6 +13279,10 @@ class Solution {
 
 
 
+## 八、双指针
+
+
+
 ### 179/18. 删除链表的节点
 
 
@@ -13388,6 +13392,199 @@ class Solution {
         }
 
         return slow;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 182/25. 合并两个排序的链表
+
+
+
+#### （1）题目
+
+输入两个递增排序的链表，合并这两个链表并使新链表中的节点仍然是递增排序的。
+
+
+
+#### （2）思路
+
+* 尾插法
+* 比较当前两个链表节点的val大小，将val小的节点用尾插法插入新链表的尾节点后，指针后移
+* 当有一个指针为空时，跳出循环；将非空指针指向的节点插入新链表的尾节点后
+
+
+
+#### （3）实现
+
+```java
+
+//leetcode submit region begin(Prohibit modification and deletion)
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        ListNode vhead;
+        vhead = new ListNode();//虚拟头节点
+        vhead.next = null;
+        ListNode tail = vhead;//尾节点
+        while (l1 != null && l2 != null){
+            if (l1.val < l2.val){//l1的val较小
+                tail.next = l1;
+                tail = tail.next;
+                l1 = l1.next;
+            }else{//l2的val较小
+                tail.next = l2;
+                tail = tail.next;
+                l2 = l2.next;
+            }
+        }
+        
+        if (l1 != null){//非空节点插入
+            tail.next = l1;
+        }else if (l2 != null){
+            tail.next = l2;
+        }else{
+            tail.next = null;
+        }
+        return vhead.next;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 183/52. 两个链表的第一个公共节点
+
+
+
+#### （1）题目
+
+输入两个链表，找出它们的第一个公共节点。
+
+
+
+#### （2.1）思路
+
+* 由于两个链表在相交节点后面的部分完全相同，先对两个链表遍历，记录两条链表的长度，**计算其差值 d***
+* **让较长的链表先走 d 步**，然后两条链表同时移动，**第一个相同的节点**即是相交节点
+
+
+
+#### （3.1）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if (headA == null || headB == null){
+            return null;
+        }
+        ListNode node1 = headA, node2 = headB;
+        int len1 = 0, len2 = 0;
+        while (node1 != null){
+            len1++;
+            node1 = node1.next;
+        }
+        while (node2 != null){
+            len2++;
+            node2 = node2.next;
+        }
+        if (len1 >= len2){
+            node1 = headA;
+            node2 = headB;
+        }else{
+            node1 = headB;
+            node2 = headA;
+        }
+        for (int i = 0; i < Math.abs(len1 - len2); i++) {
+            node1 = node1.next;
+        }
+        while (node1  != node2) {
+            node1 = node1.next;
+            node2 = node2.next;
+        }
+        return node1;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+#### （2.2）思路
+
+* 对两条链表进行遍历
+  * 当第一条链表遍历完，移动到第二条链表的头部进行遍历
+  * 当第二条链表遍历完，移动到第一条链表的头部进行遍历
+* 当两个节点相同时（或为空），即为相交节点
+* 证明：
+  * 令链表headA = a + c，链表headB = b + c
+  * 遍历两条链表即为
+    * **a + c + b** + c
+    * **b + c + a** + c
+  * 因此两个节点会**同时指向相交节点**
+
+#### （3.2）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if (headA == null || headB == null){
+            return null;
+        }
+        ListNode node1 = headA, node2 = headB;
+        while (node1 != node2){
+            if (node1 == null){
+                node1 = headB;
+            }else{
+                node1 = node1.next;
+            }
+            if (node2 == null){
+                node2 = headA;
+            }else{
+                node2 = node2.next;
+            }
+        }
+        return node1;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
