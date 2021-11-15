@@ -13590,3 +13590,110 @@ public class Solution {
 //leetcode submit region end(Prohibit modification and deletion)
 ```
 
+
+
+
+
+### 184/21. 调整数组顺序使奇数位于偶数前面
+
+
+
+#### （1）题目
+
+输入一个整数数组，实现一个函数来调整该数组中数字的顺序，使得所有奇数在数组的前半部分，所有偶数在数组的后半部分。
+
+
+
+#### （2）思路
+
+* 指针even指向数组中的偶数，odd指向数组中的奇数
+* 遍历数组，指针even指向数组中的偶数，odd指向数组中的奇数
+  * odd < even：奇数在偶数前面，符合条件；odd指向even的后一位
+  * odd > even：奇数在偶数后面，不符合条件，调换该奇数和偶数的位置，switch(nums[odd], nums[even])
+* 跳出循环条件：even == n || odd == n
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int[] exchange(int[] nums) {
+        int even = 0, odd = 0, n = nums.length;
+        while (even < n && odd < n){
+            while (even < n && nums[even] % 2 == 1){
+                even++;
+            }
+            while (odd < n && nums[odd] % 2 == 0){
+                odd++;
+            }
+            if (odd == n || even == n){
+                break;
+            }
+            if (even < odd){
+                int temp = nums[even];
+                nums[even] = nums[odd];
+                nums[odd] = temp;
+            }else{
+                odd = even + 1;
+            }
+        }
+        return nums;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 185/57. 和为s的两个数字
+
+
+
+#### （1）题目
+
+输入一个递增排序的数组和一个数字s，在数组中查找两个数，使得它们的和正好是s。如果有多对数字的和等于s，则输出任意一对即可。
+
+ 
+
+#### （2）思路
+
+* 双指针
+* 遍历数组
+  * 初始化：left = 0， right = nums.length - 1
+  * 循环条件：left < right
+  * nums[left] + nums[right] = target，记录并跳出循环
+  * nums[left] + nums[right] < target，left++
+  * nums[left] + nums[right] > target，right--
+
+
+
+#### （3）实现
+
+```
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        int[] res = new int[2];
+        int left = 0, right = nums.length-1;
+        while (left < right){
+            if (nums[left] + nums[right] == target){
+                res[0] = nums[left];
+                res[1] = nums[right];
+                break;
+            }else if (nums[left] + nums[right] < target){
+                left++;
+            }else{
+                right--;
+            }
+        }
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
