@@ -13697,3 +13697,638 @@ class Solution {
 //leetcode submit region end(Prohibit modification and deletion)
 ```
 
+
+
+
+
+### 186/58-I. 翻转单词顺序
+
+
+
+#### （1）题目
+
+输入一个英文句子，翻转句子中单词的顺序，但单词内字符的顺序不变。为简单起见，标点符号和普通字母一样处理。例如输入字符串"I am a student. "，则输出"student. a am I"
+
+
+
+#### （2.1）思路
+
+* 双指针
+* left指向每个单词的第一个字符，right指向每个单词后的第一个空格
+  * 先找到left，即**第一个不是 " " 的字符**
+  * right = left，再找到**第一个 " "**
+  * res = s.subString(left, right) + " " + res
+  * 更新left：**left = right + 1** 
+  * 循环条件：left < n && right < n
+
+
+
+#### （3.1）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public String reverseWords(String s) {
+        String res = "";
+        int left = 0, right = 0, n = s.length();
+        while (left < n && right < n){
+            while (left < n && s.charAt(left) == ' '){//left指向不是空格的第一个字符
+                left++;
+            }
+            right = left;
+            while (right < n && s.charAt(right) != ' '){//right指向left后第一个空格
+                right++;
+            }
+
+            res = s.substring(left, right) + " " + res;
+            left = right + 1;
+        }
+        return res.trim();
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+#### （2.2）思路
+
+* 库函数
+
+
+
+#### （3.2）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public String reverseWords(String s) {
+        String[] words = s.trim().split(" ");
+        StringBuilder sb = new StringBuilder();
+        for (int i = words.length-1; i >= 0; i--){
+            if (!"".equals(words[i])){
+                sb.append(words[i]+" ");
+            }
+        }
+        return sb.toString().trim();
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+## 九、搜索与回溯算法（中等）
+
+
+
+### 187/12. 矩阵中的路径（看题解）
+
+
+
+#### （1）题目
+
+给定一个 m x n 二维字符网格 board 和一个字符串单词 word 。如果 word 存在于网格中，返回 true ；否则，返回 false 。
+
+单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。同一个单元格内的字母不允许被重复使用。
+
+
+
+
+
+#### （2）思路
+
+* 回溯
+* BFS搜索从当前网格能去到的单元格，visited记录当前访问了哪些网格
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    String words = "";
+    int length = 0;
+    boolean flag = false;
+    int[] x = {-1, 1, 0, 0};
+    int[] y = {0, 0, -1, 1};
+
+    public boolean exist(char[][] board, String word) {
+        words = word;
+        length = words.length();
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                if (flag == true){
+                    return flag;
+                }
+                if (board[i][j] == word.charAt(0)){
+                    bfs(board, i, j, new boolean[board.length][board[0].length], 0);
+                }
+            }
+        }
+        return flag;
+    }
+    void bfs(char[][] board,int i, int j, boolean[][] visited, int index){
+        if (flag == true || index == words.length()-1){
+            flag = true;
+            return;
+        }
+
+        visited[i][j] = true;
+        for (int k = 0; k < 4; k++) {
+            int X = i + x[k], Y = j + y[k];
+            if (X >= 0 && X < board.length && Y >= 0 && Y < board[0].length){
+                if (visited[X][Y] == false && words.charAt(index+1) == board[X][Y]){
+                    bfs(board, X, Y, visited, index+1);
+                }
+            }
+        }
+        visited[i][j] = false;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 188/13. 机器人的运动范围
+
+
+
+#### （1）题目
+
+地上有一个m行n列的方格，从坐标 [0,0] 到坐标 [m-1,n-1] 。一个机器人从坐标 [0, 0] 的格子开始移动，它每次可以向左、右、上、下移动一格（不能移动到方格外），也不能进入行坐标和列坐标的数位之和大于k的格子。例如，当k为18时，机器人能够进入方格 [35, 37] ，因为3+5+3+7=18。但它不能进入方格 [35, 38]，因为3+5+3+8=19。请问该机器人能够到达多少个格子？
+
+
+
+#### （2）思路
+
+* dfs( i, j )返回从当前网格( i, j )开始可以到达的网格数，visited记录有哪些网格被访问
+* 若当前网格不可到达，返回0
+* 若当前网格可以到达，返回 **1 + dfs( i-1, j ) + dfs( i+1, j ) + dfs( i, j-1 ) + dfs( i, j+1 )**
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+
+    public int movingCount(int m, int n, int k) {
+        return dfs(0, 0, m, n, k, new boolean[m][n]);
+    }
+    int dfs(int i, int j, int m, int n, int k, boolean[][] visited){
+        if (i < 0 || i == m || j < 0 || j == n || visited[i][j] == true || !judge(i, j, k)){
+            return 0;
+        }
+        visited[i][j] = true;
+        return 1 + dfs(i-1, j, m, n, k, visited) + dfs(i+1, j, m, n, k, visited) + dfs(i, j-1, m, n, k, visited) + dfs(i, j+1, m, n, k, visited);
+
+    }
+    boolean judge(int m, int n, int k){
+        return (m % 10 + m/10%10 + n %10 + n/10%10) <= k;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 189/34. 二叉树中和为某一值的路径
+
+
+
+#### （1）题目
+
+给你二叉树的根节点 root 和一个整数目标和 targetSum ，找出所有 从根节点到叶子节点 路径总和等于给定目标和的路径。
+
+叶子节点 是指没有子节点的节点。
+
+
+
+#### （2）思路
+
+* 回溯
+* 按先序遍历的顺序遍历二叉树，List<Integer> temp记录**从根节点到当前节点的路径上的节点的val**，sum记录该路径和
+  * 当前节点为叶节点，若 sum = target，该路径符合要求，记录temp
+  * 当前节点不是叶节点，依次遍历其左右孩子节点
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    List<List<Integer>> res = new ArrayList();
+    List<Integer> temp = new ArrayList<>();
+    public List<List<Integer>> pathSum(TreeNode root, int target) {
+        dfs(root, 0, target);
+        return res;
+    }
+
+    void dfs(TreeNode root, int sum, int target){
+        if(root == null){
+            return;
+        }
+        temp.add(root.val);
+        sum += root.val;
+        if (root.left == null && root.right == null && sum == target){
+            res.add(new ArrayList<>(temp));
+        }
+
+        dfs(root.left, sum, target);
+        dfs(root.right, sum, target);
+
+        temp.remove(temp.size()-1);
+    }
+
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 190/36. 二叉搜索树与双向链表
+
+
+
+#### （1）题目
+
+输入一棵二叉搜索树，将该二叉搜索树转换成一个排序的循环双向链表。要求不能创建任何新的节点，只能调整树中节点指针的指向。
+
+
+
+#### （2）思路
+
+* 二叉搜索树的中序遍历序列为**递增序列**
+* 中序遍历二叉搜索树，当前节点为now，队列中最后一个节点为last
+  * **last.right = now**
+  * **now.left = last**
+  * 注意队列中没有节点的情况
+* 遍历结束后，头节点为队列中的第一个节点head，尾节点为队列中的最后一个节点tail
+  * **head.left = tail**
+  * **tail.right = head**
+
+
+
+#### （3）实现
+
+```java
+import java.util.ArrayList;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public Node left;
+    public Node right;
+
+    public Node() {}
+
+    public Node(int _val) {
+        val = _val;
+    }
+
+    public Node(int _val,Node _left,Node _right) {
+        val = _val;
+        left = _left;
+        right = _right;
+    }
+};
+*/
+class Solution {
+    ArrayList<Node> ins = new ArrayList();
+    public Node treeToDoublyList(Node root) {
+        if (root == null){
+            return root;
+        }
+        inOrder(root);
+
+        //处理头节点的left，尾节点的right
+        Node head = ins.get(0);
+        Node tail = ins.get(ins.size()-1);
+        head.left = tail;
+        tail.right = head;
+
+        return head;
+    }
+
+    void inOrder(Node root){
+        if (root == null){
+            return;
+        }
+
+        inOrder(root.left);
+
+        if (ins.size() != 0){//不是头节点
+            Node last = ins.get(ins.size()-1);
+            root.left = last;
+            last.right = root;
+        }
+        ins.add(root);
+
+        inOrder(root.right);
+
+    }
+
+}
+//leetcode submit region end(Prohibit modification and deletion)
+
+```
+
+
+
+
+
+### 191/54. 二叉搜索树的第k大节点
+
+
+
+#### （1）题目
+
+给定一棵二叉搜索树，请找出其中第k大的节点。
+
+
+
+#### （2）思路
+
+* 按照**右、根、左**的顺序遍历二叉搜索树，其遍历序列为递减序列
+* index记录当前遍历节点是否为第 k 个节点
+  * 终止条件：root = null
+  * 递归右子树：dfs(root.right)
+  * 处理当前节点：
+    * 提前返回，若index = 0，则在其**右子树中找到第 k 个节点**，返回
+    * index--：从 k 减至 0
+    * 若**index = 0**，则当前节点即为第 k 个节点；**记录当前节点的val**
+  * 递归左子树：dfs(root.left)
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    int res = -1, index = 0;
+    public int kthLargest(TreeNode root, int k) {
+        index = k;
+        dfs(root);
+        return res;
+    }
+
+    void dfs(TreeNode root){
+        if (root == null){
+            return;
+        }
+
+        dfs(root.right);
+
+        if (index == 0){
+            return;
+        }
+
+        index--;
+        if (index == 0){
+            res = root.val;
+            System.out.println(root.val);
+            return;
+        }
+
+        dfs(root.left);
+
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+## 十、排序
+
+
+
+### 192/45. 把数组排成最小的数
+
+
+
+#### （1）题目
+
+输入一个非负整数数组，把数组里所有数字拼接起来排成一个数，打印能拼接出的所有数字中最小的一个。
+
+
+
+#### （2）思路
+
+* 排序规则，对于任意两个数字的**字符串为 a 和 b**
+  * 若 a + b < b + a，则 a < b
+  * 若 a + b > b + a，则 a > b
+* Arrays.sort()
+
+
+
+#### （3）实现
+
+```java
+import java.util.Arrays;
+import java.util.Comparator;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public String minNumber(int[] nums) {
+        String[] strs = new String[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            strs[i] = String.valueOf(nums[i]);
+        }
+
+        Arrays.sort(strs, new Comparator<String>(){
+            @Override
+            public int compare(String str1, String str2){
+                return (str1+str2).compareTo(str2+str1);
+            }
+        });
+
+        StringBuilder sb = new StringBuilder();
+        for (String str : strs){
+            sb.append(str);
+        }
+        return sb.toString();
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 193/61. 扑克牌中的顺子
+
+
+
+#### （1）题目
+
+从若干副扑克牌中随机抽 5 张牌，判断是不是一个顺子，即这5张牌是不是连续的。2～10为数字本身，A为1，J为11，Q为12，K为13，而大、小王为 0 ，可以看成任意数字。A 不能视为 14。
+
+
+
+#### （2）思路
+
+* 组成顺子的条件：
+  * 无**重复的卡牌**
+  * 最大牌 - 最小牌 < 5（大小王除外）
+* 使用HashSet存储**除大小王以外**的卡牌，num记录**大小王个数**，max, min 记录除大小王外最大最小的牌
+  * set.size() = 5 - num（无重复卡牌）
+  * max - min <  5
+
+
+
+#### （3）实现
+
+```java
+import java.util.Arrays;
+import java.util.HashSet;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public boolean isStraight(int[] nums) {
+        Arrays.sort(nums);
+        HashSet<Integer> set = new HashSet<>();
+        int num = 0;//记录大小王的个数
+        int min = 20, max = 0;//记录大小王以外的最小和最大的数
+        for(int temp : nums){
+            if (temp == 0){
+                num++;
+            }else{
+                set.add(temp);
+                min = Math.min(min, temp);
+                max = Math.max(max, temp);
+            }
+        }
+
+        //有重复卡牌
+        if (set.size() != 5-num){
+            return false;
+        }
+
+        //无法组成顺子
+        if (max - min > 4){
+            return false;
+        }
+
+        return true;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 194/40. 最小的k个数
+
+
+
+#### （1）题目
+
+输入整数数组 `arr` ，找出其中最小的 `k` 个数。例如，输入4、5、1、6、2、7、3、8这8个数字，则最小的4个数字是1、2、3、4。
+
+
+
+#### （2）思路
+
+* 一般排序
+* **堆排序**
+  * 使用**PriorityQueue**实现大根堆
+    * 堆的大小**小于**k，将数字放入堆中
+    * 堆的大小**等于**k，比较堆顶元素与当前元素的大小
+      * 当前元素比堆顶元素大，跳过
+      * 当前元素比堆顶元素小，poll堆顶元素，将该数字放入堆中
+* 快排
+
+
+
+#### （3）实现
+
+```java
+import java.util.Comparator;
+import java.util.PriorityQueue;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int[] getLeastNumbers(int[] arr, int k) {
+        if (k == 0){
+            return new int[0];
+        }
+        PriorityQueue<Integer> queue = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer integer, Integer t1) {
+                return t1-integer;
+            }
+        });
+
+        for (int temp : arr){
+            if (queue.size() < k){
+                queue.offer(temp);
+            }else if (queue.size() == k && temp < queue.peek()){
+                queue.poll();
+                queue.offer(temp);
+            }
+
+        }
+
+        int[] res = new int[k];
+        int index = 0;
+        for (int temp : queue){
+            res[index++] = temp;
+        }
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
