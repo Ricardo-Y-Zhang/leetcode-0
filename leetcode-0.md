@@ -1781,6 +1781,63 @@ class Solution {
 
 
 
+
+
+### 198/318. 最大单词长度乘积
+
+
+
+#### （1）题目
+
+给定一个字符串数组 words，找到 length(word[i]) * length(word[j]) 的最大值，并且这两个单词不含有公共字母。你可以认为每个单词只包含小写字母。如果不存在这样的两个单词，返回 0。
+
+
+
+#### （2）思路
+
+* 用一个 int 来代替某个 word[i]：使用**低26位**来代指字母** a-z 是否出现过**
+* 然后对每两个单词对应的两个 int 值**执行 & 操作**
+  * **若两单词无重复字符，则结果为 0**
+  * 若两单词有重复字符，则结果不为 0
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int maxProduct(String[] words) {
+        int n = words.length, index = 0;
+        int[] hash = new int[n];
+        for (String word : words){
+            int temp = 0;
+            for (int i = 0; i < word.length(); i++) {
+                temp |= 1<<(word.charAt(i)-'a');
+            }
+            hash[index++] = temp;
+        }
+
+        int res = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = i+1; j < n; j++) {
+                if ((hash[i] & hash[j]) == 0){//不含公共字母
+                    res = Math.max(res, words[i].length()*words[j].length());
+                }
+            }
+        }
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
 ## 四、树
 
 
@@ -14331,4 +14388,279 @@ class Solution {
 }
 //leetcode submit region end(Prohibit modification and deletion)
 ```
+
+
+
+
+
+### 195/41. 数据流中的中位数
+
+
+
+#### （1）题目
+
+如何得到一个数据流中的中位数？如果从数据流中读出奇数个数值，那么中位数就是所有数值排序之后位于中间的数值。如果从数据流中读出偶数个数值，那么中位数就是所有数值排序之后中间两个数的平均值。
+
+例如，
+
+[2,3,4] 的中位数是 3
+
+[2,3] 的中位数是 (2 + 3) / 2 = 2.5
+
+设计一个支持以下两种操作的数据结构：
+
+* void addNum(int num) - 从数据流中添加一个整数到数据结构中。
+* double findMedian() - 返回目前所有元素的中位数。
+
+
+
+#### （2）思路
+
+* 大根堆+小根堆
+* 使用大根堆big记录**前半元素**，小根堆small记录**后半元素**；保证**大根堆中元素个数 = 小根堆中元素个数**，或**= 小根堆元素个数+1**
+  * findMedian() ：
+    * 大根堆中元素个数 = 小根堆中元素个数，即为中间两个数的平均值，即**大根堆与小根堆的堆顶元素的平均值**
+    * 大根堆中元素个数 = 小根堆中元素个数 + 1，即为**大根堆的堆顶元素**
+  * addNum() ：
+    * 大根堆中元素个数 = 小根堆中元素个数，**与小根堆堆顶元素比较**
+      * num <= small.peek()，**当前元素属于前半元素**，添加到大根堆中
+      * num > small.peek()，**当前元素属于后半元素**，将小根堆堆顶元素压入大根堆，当前元素压入小根堆
+    * 大根堆中元素个数 = 小根堆中元素个数 + 1，**与大根堆堆顶元素比较**
+      * num <= big.peek()，**当前元素属于前半元素**，将大根堆堆顶元素压入小根堆，当前元素压入大根堆
+      * num > big.peek()，**当前元素属于后半元素**，压入小根堆
+
+
+
+#### （3）实现
+
+```java
+import java.util.Comparator;
+import java.util.PriorityQueue;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class MedianFinder {
+
+    PriorityQueue<Integer> small ;//小根堆
+    PriorityQueue<Integer> big ;//大根堆
+
+    /** initialize your data structure here. */
+    public MedianFinder() {
+        small = new PriorityQueue<Integer>();
+        big = new PriorityQueue<Integer>(new Comparator<Integer>(){
+            public int compare(Integer t1, Integer t2){
+                return t2-t1;
+            }
+        }) ;
+    }
+    
+    public void addNum(int num) {
+        if (big.size() == 0){
+            big.offer(num);
+            return;
+        }
+
+        if (big.size() == small.size()){
+            if (num <= small.peek()){
+                big.offer(num);
+            }else{
+                big.offer(small.poll());
+                small.offer(num);
+            }
+        }else{
+            if (num >= big.peek()){
+                small.offer(num);
+            }else{
+                small.offer(big.poll());
+                big.offer(num);
+            }
+        }
+    }
+    
+    public double findMedian() {
+        if (big.size() == small.size()){
+            return ((double)big.peek()+small.peek())/2;
+        }else{
+            return (double)big.peek();
+        }
+    }
+}
+
+/**
+ * Your MedianFinder object will be instantiated and called as such:
+ * MedianFinder obj = new MedianFinder();
+ * obj.addNum(num);
+ * double param_2 = obj.findMedian();
+ */
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
+
+
+## 十一、搜索与回溯算法
+
+
+
+### 196/55-I. 二叉树的深度（imp）
+
+
+
+#### （1）题目
+
+输入一棵二叉树的根节点，求该树的深度。从根节点到叶节点依次经过的节点（含根、叶节点）形成树的一条路径，最长路径的长度为树的深度。
+
+
+
+#### （2）思路
+
+* 递归
+* 当前节点的深度 = **1 + max(左孩子节点深度， 右孩子节点深度)**
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public int maxDepth(TreeNode root) {
+        if (root == null){
+            return 0;
+        }
+        return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 197/55-II. 平衡二叉树
+
+
+
+#### （1）题目
+
+输入一棵二叉树的根节点，判断该树是不是平衡二叉树。如果某二叉树中任意节点的左右子树的深度相差不超过1，那么它就是一棵平衡二叉树。
+
+
+
+#### （2.1）思路
+
+* 自顶至底
+* 构造获取**当前子树的深度**的函数 dfs(root) ，比较**该子树的左右子树的深度差** abs( dfs(root.left), dfs(root.right) ) <= 1是否成立，来判断该子树是否为平衡二叉树。若**所有子树都是平衡二叉树**，则此树平衡
+* isBalanced(root)：判断该树是否平衡
+  * 特例：若根节点root为空，返回true
+  * 返回值：所有子树都需要满足平衡二叉树的性质，则满足以下三点
+    * abs( dfs(root.left), dfs(root.right) ) <= 1：判断当前子树是否是平衡二叉树
+    * isBalanced(root.left)：判断**当前子树的左子树是否平衡**
+    * isBalanced(root.right)：判断**当前子树的右子树是否平衡**
+* 获取当前子树深度的函数 **dfs(root) 与198保持一致**
+* **注意事项：需要重复获取子树的深度，时间复杂度较高**
+
+
+
+#### （3.1）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public boolean isBalanced(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+
+        int left = dfs(root.left);
+        int right = dfs(root.right);
+        return Math.abs(left-right) <= 1 && isBalanced(root.left) && isBalanced(root.right);
+    }
+
+    public int dfs(TreeNode root) {
+        if (root == null){
+            return 0;
+        }
+
+        return 1 + Math.max(dfs(root.left), dfs(root.right));
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+### （2.2）思路
+
+* 自底至顶
+* 对二叉树做后序遍历，自底至顶返回子树深度，若判断该子树不是平衡树则剪枝，直接向上返回
+* recur(root)函数：
+  * ​	返回值：
+    * root节点的左右子树的深度差 <= 1，**返回当前子树的深度，max(left, right) + 1**
+    * root节点的左右子树的深度差 > 1，**返回 -1，表示该子树不是平衡树**
+  * 终止条件：
+    * root 为空，返回深度 0
+    * **左右子树的深度为 -1**，代表此树的左右子树不是平衡树，剪枝，返回 -1
+
+
+
+#### （3.2）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public boolean isBalanced(TreeNode root) {
+        return recur(root) != -1;
+    }
+    public int recur(TreeNode root) {
+        if (root == null){
+            return 0;
+        }
+        int left = recur(root.left);
+        if (left == -1){
+            return -1;
+        }
+        int right = recur(root.right);
+        if (right == -1){
+            return -1;
+        }
+        return Math.abs(left-right) <= 1 ? Math.max(left, right)+1 : -1;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
 
