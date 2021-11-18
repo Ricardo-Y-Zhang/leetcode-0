@@ -13,7 +13,54 @@ public class Test {
 
     @org.junit.Test
     public void test(){
-        System.out.println(0x3f3f3f3f);
+        double feiM = 8.06, yuanM = 10.4, yanM = 11.20;
+        double sumM = feiM + yuanM + yanM;
+        double sumZ = 12460 + 13350 + 13350;
+        double feiZ = feiM/sumM * sumZ;
+        double yuanZ = yuanM/sumM * sumZ;
+        double yanZ = yanM/sumM * sumZ;
+        System.out.println("feiZ = " + feiZ);
+        System.out.println("yuanZ = " + yuanZ);
+        System.out.println("yanZ = " + yanZ);
+
+        double avg = sumZ/3;
+        double feiGet = avg - feiZ;
+        double yuanGet = avg - yuanZ;
+        double yanGet = avg - yanZ;
+        System.out.println("feiGet = " + feiGet);
+        System.out.println("yuanGet = " + yuanGet);
+        System.out.println("yanGet = " + yanGet);
+
+        double water = 14.5, elec = 44.52, qi = 15.19, room = 75;
+        yanGet -= elec;
+        yuanGet += (elec)/2;
+        feiGet += (elec)/2;
+
+        System.out.println("feiGet = " + feiGet);
+        System.out.println("yuanGet = " + yuanGet);
+        System.out.println("yanGet = " + yanGet);
+
+
+        double allget = 6525.79/3;
+        double yan = allget + yanGet;
+        double fei = allget + feiGet;
+        double yuan = allget + yuanGet;
+        System.out.println("yan = " + yan);
+        System.out.println("fei = " + fei);
+        System.out.println("yuan = " + yuan);
+
+        System.out.println("(yan+fei+yuan) = " + (yan + fei + yuan));
+
+        double allPay = (water+qi+room)/3;
+//        feiGet-=allPay;
+//        yuanGet -= allPay;
+//        yanGet -= allPay;
+//
+//        System.out.println("feiGet = " + feiGet);
+//        System.out.println("yuanGet = " + yuanGet);
+//        System.out.println("yanGet = " + yanGet);
+//
+
     }
 }
 

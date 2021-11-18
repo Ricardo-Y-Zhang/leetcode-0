@@ -14664,3 +14664,90 @@ class Solution {
 
 
 
+
+
+### 199/64. 求1+2+…+n
+
+#### （1）题目
+
+求 `1+2+...+n` ，要求不能使用乘除法、for、while、if、else、switch、case等关键字及条件判断语句（A?B:C）
+
+
+
+#### （2）思路
+
+* 使用**逻辑运算符的短路效应**，来实现递归终止的条件判断
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    int res = 0;
+    public int sumNums(int n) {
+        boolean x = n >=1 && sumNums(n-1) > 0;
+        res += n;
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 200/68-I. 二叉搜索树的最近公共祖先
+
+
+
+#### （1）题目
+
+给定一个二叉搜索树, 找到该树中两个指定节点的最近公共祖先。
+
+百度百科中最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q，最近公共祖先表示为一个结点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。”
+
+
+
+#### （2）思路
+
+* 利用二叉搜索树的特性：**左 < 根 < 右**
+  * 当 **p.val < root.val && q.val < root.val**时，p和q的公共祖先在root的**左子树**中，递归在其左子树中查询
+  * 当 **p.val > root.val && q.val > root.val**时，p和q的公共祖先在root的**右子树**中，递归在其右子树中查询
+  * 当p和q分别在root的左右子树中时，和q的公共祖先为**root**
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if(root == p || root == q){
+            return root;
+        }
+        if (p.val < root.val && q.val < root.val){
+            return lowestCommonAncestor(root.left, p, q);
+        }
+        if (p.val > root.val && q.val > root.val){
+            return lowestCommonAncestor(root.right, p, q);
+        }
+
+        return root;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
