@@ -659,6 +659,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[397]integer-replacement.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[397]integer-replacement.java" />
+              <option name="questionId" value="397" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[399]evaluate-division.java">
           <value>
             <LeetcodeEditor>
@@ -1267,6 +1275,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 07]zhong-jian-er-cha-shu-lcof.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 07]zhong-jian-er-cha-shu-lcof.java" />
+              <option name="questionId" value="100283" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 09]yong-liang-ge-zhan-shi-xian-dui-lie-lcof.java">
           <value>
             <LeetcodeEditor>
@@ -1312,6 +1328,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 13]ji-qi-ren-de-yun-dong-fan-wei-lcof.java" />
               <option name="questionId" value="100281" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 16]shu-zhi-de-zheng-shu-ci-fang-lcof.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 16]shu-zhi-de-zheng-shu-ci-fang-lcof.java" />
+              <option name="questionId" value="100295" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1408,6 +1432,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 32 - I]cong-shang-dao-xia-da-yin-er-cha-shu-lcof.java" />
               <option name="questionId" value="100311" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 33]er-cha-sou-suo-shu-de-hou-xu-bian-li-xu-lie-lcof.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 33]er-cha-sou-suo-shu-de-hou-xu-bian-li-xu-lie-lcof.java" />
+              <option name="questionId" value="100315" />
             </LeetcodeEditor>
           </value>
         </entry>

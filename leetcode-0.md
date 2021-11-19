@@ -11596,6 +11596,48 @@ class Solution {
 
 
 
+### 205/397. 整数替换
+
+
+
+#### （1）题目
+
+给定一个正整数 n ，你可以做如下操作：
+
+如果 n 是偶数，则用 n / 2替换 n 。
+如果 n 是奇数，则可以用 n + 1或n - 1替换 n 。
+n 变为 1 所需的最小替换次数是多少
+
+
+
+#### （2）思路
+
+* 利用递归枚举所有将n变为1的替换序列
+  * n为偶数时，将 n 替换为 n/2
+  * n为奇数时，可以选择将 n 增加 1 或减少 1。这两种方法都会将 n 变为偶数，那么下一步操作就是除以 2，因此我们可以将其**看成两次操作**，先增加 1 或减少 1，然后除以 2，将 n 变为 **(n+1)/2 或 (n-1)/2**
+
+
+
+#### （3）实现
+
+```
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int integerReplacement(int n) {
+        if (n == 1){
+            return 0;
+        }
+        if ((n & 1) == 0){
+            return 1+integerReplacement(n/2);
+        }
+        return 2+Math.min(integerReplacement(n/2+1), integerReplacement(n/2));
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
 
 
 ## 十四、数据库
@@ -14746,6 +14788,270 @@ class Solution {
         }
 
         return root;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 201/68-II. 二叉树的最近公共祖先
+
+
+
+#### （1）题目
+
+给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。
+
+百度百科中最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q，最近公共祖先表示为一个结点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。”
+
+
+
+#### （2.1）思路
+
+* 对二叉树进行先序遍历，当**遇到节点p、q时返回**
+
+* 函数lowestCommonAncestor：
+
+  * ```markdown
+    1. 若树里面存在p，也存在q，则返回他们的公共祖先。
+    2. 若树里面只存在p，或只存在q，则返回存在的那一个。
+    3. 若树里面既不存在p，也不存在q，则返回null。
+    ```
+
+* 递归：
+
+  * 终止条件：
+    * 当root为叶节点，直接返回null
+    * 当遇到节点p、q，即root等于p、q，直接返回root
+  * 递推：
+    * 递归左孩子节点，返回值为left
+    * 递归右孩子节点，返回值为right
+  * 返回值：
+    * left和right**均为空**：root的左右子树中均不包含p、q，返回null
+    * left和right**均不为空**：p、q节点在root的异侧，即root为最近公共祖先，返回root
+    * left为空，right不为空：p、q均不在root的左子树中，返回right
+    * left不为空，right为空：p、q均不在root的右子树中，返回left
+
+
+
+#### （3.1）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == p || root == q){//遇到p, q返回
+            return root;
+        }
+        if (root == null){
+            return null;
+        }
+
+        TreeNode left = lowestCommonAncestor(root.left, p, q);
+        TreeNode right = lowestCommonAncestor(root.right, p, q);
+
+        if (left == null) return right;
+        if (right == null) return left;
+        return root;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+#### （2.2）思路
+
+* 官方题解
+
+
+
+
+
+## 十二、分治算法
+
+
+
+### 202/07. 重建二叉树
+
+
+
+#### （1）题目
+
+输入某二叉树的前序遍历和中序遍历的结果，请构建该二叉树并返回其根节点。
+
+假设输入的前序遍历和中序遍历的结果中都不含重复的数字。
+
+
+
+#### （2）思路
+
+* 前序遍历：根左右；中序遍历：左根右
+* 对于任意子树，前序遍历为[preorder_left, preorder_right]，中序遍历为[inorder_left, inorder_right]
+* 其根节点为前序遍历的第一个节点**preorder_left**，在中序遍历中找到**根节点的下标** : inorder_root
+* 中序遍历中：左子树节点为**[inorder_left, inorder_root-1]**，右子树节点为**[inorder_root+1, inorder_right]**
+* 计算出**左子树节点数**num = inorder_root - inorder_left
+* 前序遍历中：左子树节点为**[preorder_left+1, preorder_left+num]**，右子树节点为**[preorder_left+num+1, preorder_right]**
+* 递归构建其左右子树
+* 优化：可创建**inorder[i]和下标 i 的映射**，方便在中序遍历中查找根节点的下标
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        TreeNode root = build( preorder, inorder, 0, preorder.length-1, 0, inorder.length-1);
+        return root;
+    }
+    public TreeNode build(int[] preorder, int[] inorder, int left1, int right1, int left2, int right2){
+        if (left1 > right1){
+            return null;
+        }
+        int k = 0;//记录中序遍历中当前子树根节点的下标
+        for (k = left2; k <= right2; k++){
+            if (inorder[k] == preorder[left1]){
+                break;
+            }
+        }
+        int length = k-left2;//左子树节点数
+
+        TreeNode root = new TreeNode(preorder[left1]);
+        root.left = build(preorder, inorder, left1+1, left1+length, left2, k-1);//递归创建左子树
+        root.right = build(preorder, inorder, left1+length+1, right1, k+1, right2);//递归创建右子树
+        return root;
+    }
+
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 203/16. 数值的整数次方
+
+
+
+#### （1）题目
+
+实现 [pow(*x*, *n*)](https://www.cplusplus.com/reference/valarray/pow/) ，即计算 x 的 n 次幂函数（即，xn）。不得使用库函数，同时不需要考虑大数问题。
+
+
+
+#### （2）思路
+
+* 快速幂
+* 二进制转十进制：n = 1 i<sub>1</sub> + 2 i<sub>2</sub> + 4 i<sub>3</sub> + ... + 2<sup>m-1</sup> i<sub>m</sub> （i = 0, 1）
+* 幂的二进制展开：x<sup>n</sup> = x<sup>i<sub>1</sub></sup> * x<sup> 2 i<sub>2</sub></sup>* ... * x<sup>2<sup>m-1</sup> i<sub>m</sub></sup> 
+* 从x开始不断平方，得到x<sup>2</sup>，x<sup>4</sup>, x<sup>8</sup>...，如果n的第k个二进制位为1（从右向左），就将x<sup>2<sup>k</sup></sup>计入答案
+* 注意处理负数的问题，及负数转换为正数越界
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public double myPow(double x, int n) {
+        long absn = Math.abs((long)n);
+        double tempx = x, res = 1.0;
+        while (absn != 0){
+            if ((absn & 1) != 0){
+                res *= tempx;
+            }
+            absn >>= 1;
+            tempx *= tempx;
+        }
+        if (n < 0) res = 1/res;
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 204/33. 二叉搜索树的后序遍历序列
+
+
+
+#### （1）题目
+
+输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历结果。如果是则返回 `true`，否则返回 `false`。假设输入的数组的任意两个数字都互不相同。
+
+
+
+#### （2）思路
+
+* 二叉搜索树：左 < 根 < 右
+* 递归判断序列是否为二叉搜索树的后序遍历序列：左右根；对于其任意子树的后序遍历序列**postorder[left, right]**
+  * 当前子树的根节点**root为postorder[right]**
+  * 对于当前子树，判断**左子树节点，即前半节点均 < root，右子树节点，即后半节点均 > root**
+  * **递归判断其左右子树是否为二叉搜索树**
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public boolean verifyPostorder(int[] postorder) {
+        return judge(postorder, 0, postorder.length-1);
+    }
+
+    public boolean judge(int[] postorder, int left ,int right){
+        if (left >= right){
+            return true;
+        }
+
+        int root = postorder[right];//根节点
+
+
+        int rightChild = left;//第一个比root大的节点位置
+        for (rightChild = left; rightChild < right; rightChild++){
+            if (postorder[rightChild] > root){
+                break;
+            }
+        }
+
+        for (int i = rightChild; i < right; i++) {//判断该节点后是否有比root小的节点
+            if (postorder[i] < root){
+                return false;
+            }
+        }
+
+        boolean flag1 = judge(postorder, left, rightChild-1);
+        boolean flag2 = judge(postorder, rightChild, right-1);
+        return flag1 && flag2;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
