@@ -15057,3 +15057,134 @@ class Solution {
 //leetcode submit region end(Prohibit modification and deletion)
 ```
 
+
+
+
+
+
+
+## 十三、位运算
+
+
+
+### 206/15. 二进制中1的个数
+
+
+
+#### （1）题目
+
+编写一个函数，输入是一个无符号整数（以二进制串的形式），返回其二进制表达式中数字位数为 '1' 的个数（也被称为 汉明重量).）。
+
+ 
+
+提示：
+
+请注意，在某些语言（如 Java）中，没有无符号整数类型。在这种情况下，输入和输出都将被指定为有符号整数类型，并且不应影响您的实现，因为无论整数是有符号的还是无符号的，其内部的二进制表示形式都是相同的。
+在 Java 中，编译器使用 二进制补码 记法来表示有符号整数。因此，在上面的 示例 3 中，输入表示有符号整数 -3。
+
+
+
+#### （2）思路
+
+* n & 1 = 1：n二进制的最右位为 1
+* n & 1 = 0：n二进制的最右位为 0
+* 右移
+  * java中无符号右移 **>>>**
+* 左移
+  * 将1不断左移32位，并与n按位取与，结果不为0时，既是n当前位不为0
+* n & n-1
+  * **n & (n-1)**：n二进制的**最右边的1**变为0，其余不变
+
+
+
+#### （3）实现
+
+* 左移
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+public class Solution {
+    // you need to treat n as an unsigned value
+    public int hammingWeight(int n) {
+        int res = 0;
+        int temp = 1;
+        for (int i = 0; i < 32; i++) {
+            if ((temp & n) != 0){
+                res++;
+            }
+            temp <<= 1;
+        }
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+* n & n-1
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+public class Solution {
+    // you need to treat n as an unsigned value
+    public int hammingWeight(int n) {
+        int res = 0;
+        while (n != 0){
+            n &= n-1;
+            res++;
+        }
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 207/65. 不用加减乘除做加法
+
+
+
+#### （1）题目
+
+写一个函数，求两个整数之和，要求在函数体内不得使用 “+”、“-”、“*”、“/” 四则运算符号。
+
+
+
+#### （2）思路
+
+* 对于 a + b 来说，二进制加法的结果可分为两部分，**不进位的加法**，**进位**
+  * 不进位的加法：x =  **a ^ b**
+  * 进位：y = **(a & b) << 1**
+  * 则 a + b = x + y
+  * 递归，当**进位 y 为0**时，不进位的结果 **x 即为结果**
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int add(int a, int b) {
+        int x = a ^ b, y = (a & b)<<1;
+        while (y != 0){
+            int temp = x^y;
+            y = (x&y) << 1;
+            x = temp;
+        }
+        return x;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
