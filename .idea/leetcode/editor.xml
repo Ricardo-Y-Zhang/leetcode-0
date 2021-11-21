@@ -899,6 +899,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[559]maximum-depth-of-n-ary-tree.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[559]maximum-depth-of-n-ary-tree.java" />
+              <option name="questionId" value="774" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[55]jump-game.java">
           <value>
             <LeetcodeEditor>
@@ -1592,6 +1600,22 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 55 - I]er-cha-shu-de-shen-du-lcof.java" />
               <option name="questionId" value="100319" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 56 - II]shu-zu-zhong-shu-zi-chu-xian-de-ci-shu-ii-lcof.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 56 - II]shu-zu-zhong-shu-zi-chu-xian-de-ci-shu-ii-lcof.java" />
+              <option name="questionId" value="100321" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 56 - I]shu-zu-zhong-shu-zi-chu-xian-de-ci-shu-lcof.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 56 - I]shu-zu-zhong-shu-zi-chu-xian-de-ci-shu-lcof.java" />
+              <option name="questionId" value="100320" />
             </LeetcodeEditor>
           </value>
         </entry>

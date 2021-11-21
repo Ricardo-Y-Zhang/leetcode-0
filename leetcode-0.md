@@ -3349,6 +3349,59 @@ class Solution {
 
 
 
+### 211/559. N叉树的最大深度
+
+
+
+#### （1）题目
+
+给定一个 N 叉树，找到其最大深度。
+
+最大深度是指从根节点到最远叶子节点的最长路径上的节点总数。
+
+N 叉树输入按层序遍历序列化表示，每组子节点由空值分隔（请参见示例）。
+
+
+
+#### （2）思路
+
+* dfs(Node root, int deepth)：
+  * deepth记录当前节点的深度
+  * 终止条件：root = null
+  * 当前递归操作：更新N叉树的最大深度
+  * 递归遍历root节点的子节点
+
+
+
+#### （3）实现
+
+```java
+class Solution {
+    int res = 0;
+    public int maxDepth(Node root) {
+        dfs(root, 1);
+        return res;
+    }
+    public void dfs(Node root, int deepth){
+        if (root == null){
+            return;
+        }
+        res = Math.max(res, deepth);
+        for (Node child : root.children){
+            dfs(child, deepth+1);
+        }
+    }
+
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
 ## 五、深度优先搜索
 
 
@@ -15234,6 +15287,105 @@ class Solution {
 ```
 
 
+
+
+
+### 209/56-I. 数组中数字出现的次数
+
+
+
+#### （1）题目
+
+一个整型数组 `nums` 里除两个数字之外，其他数字都出现了两次。请写程序找出这两个只出现一次的数字。要求时间复杂度是O(n)，空间复杂度是O(1)。
+
+
+
+#### （2）思路
+
+* x ^ x = 0，对数组中的数字按位取异或，可将出现两次的数字消除，结果为 **x ^ y（x,y 为只出现一次的数字）**，且结果不为0
+* 分析 x^y的二进制表达 ，找出**任意为1 的位index**，则表示 **x和y 的二进制表达中在index位上不同**，一个为1，一个为 0
+* 以此作为分类依据，可将数组中数字分为两类：**index位上为 1， index位上为 0**，x和y分别属于一类
+* 对两类数字分别按位取异或，最终结果为x和y
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int[] singleNumbers(int[] nums) {
+        int target = 0;
+        for (int temp : nums){//target = a^b
+            target ^= temp;
+        }
+        int diff = 1;
+        while ((diff & target) == 0){
+            diff <<= 1;
+        }
+        int[] res = new int[2];
+        for (int temp : nums){
+            if ((temp & diff) == 0){
+                res[0] ^= temp;
+            }else{
+                res[1] ^= temp;
+            }
+        }
+        return res;
+
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 210/56-I. 数组中数字出现的次数
+
+
+
+#### （1）题目
+
+在一个数组 `nums` 中除一个数字只出现一次之外，其他数字都出现了三次。请找出那个只出现一次的数字。
+
+
+
+#### （2）思路
+
+* 遍历数组，记录其二进制表达中每位为 1 的个数，记录在 int[32] bit中
+* 对 bit 数组中每个元素，对3取余，即为只出现一次的数字的二进制表达中每一位
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int singleNumber(int[] nums) {
+        int[] bit = new int[32];
+        for (int temp : nums){
+            int index = 0;
+            while (temp != 0){
+                bit[index++] += temp & 1;
+                temp >>= 1;
+            }
+        }
+        for (int i = 0; i < 32; i++) {
+            bit[i] %= 3;
+        }
+        int res = 0, temp = 1;
+        for (int i = 0; i < 32; i++) {
+            res |= temp * bit[i];
+            temp <<= 1;
+        }
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
 
 
 
