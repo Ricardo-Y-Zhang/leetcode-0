@@ -11744,6 +11744,86 @@ class Solution {
 
 
 
+### 213/384. 打乱数组
+
+
+
+#### （1）题目
+
+给你一个整数数组 nums ，设计算法来打乱一个没有重复元素的数组。
+
+实现 Solution class:
+
+Solution(int[] nums) 使用整数数组 nums 初始化对象
+int[] reset() 重设数组到它的初始状态并返回
+int[] shuffle() 返回数组随机打乱后的结果
+
+
+
+#### （2）思路
+
+* **Knuth洗牌算法**
+* 公平的洗牌算法：对于 n 个元素，生成所有的 n! 个排列，然后，随机抽一个
+* Knuth洗牌算法：，i 从后向前，每次随机一个 [0...i] 之间的下标，然后将 arr[i] 和这个随机的下标元素，也就是 arr[rand() % (i + 1)] 交换位置
+
+```
+for(int i = n-1; i >= 0; i--){
+	swap(arr[i], arr[rand()%(i+1)]);
+}
+```
+
+
+
+
+
+#### （3）实现
+
+```java
+import java.util.Random;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    int[] nums;
+    int n;
+    Random random = new Random();
+
+    public Solution(int[] nums) {
+        this.nums = nums;
+        n = nums.length;
+    }
+    
+    public int[] reset() {
+        return nums;
+    }
+    
+    public int[] shuffle() {
+        int[] temp = nums.clone();
+        for (int i = 0; i < n; i++) {
+            swap(temp, i, i+random.nextInt(n-i));
+        }
+        return temp;
+    }
+
+    private void swap(int[] temp, int i, int j){
+        int c = temp[i];
+        temp[i] = temp[j];
+        temp[j] = c;
+    }
+}
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution obj = new Solution(nums);
+ * int[] param_1 = obj.reset();
+ * int[] param_2 = obj.shuffle();
+ */
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
 ## 十四、数据库
 
 
@@ -15390,4 +15470,109 @@ class Solution {
 
 
 
+
+## 十四、数学
+
+
+
+### 212/39. 数组中出现次数超过一半的数字
+
+
+
+#### （1）题目
+
+数组中有一个数字出现的次数超过数组长度的一半，请找出这个数字。
+
+ 
+
+你可以假设数组是非空的，并且给定的数组总是存在多数元素。
+
+
+
+#### （2）思路
+
+* 摩尔投票法
+* num记录当前当选的数字，count记录num当前的个数
+  * 若 nums[i] = num，count++
+  * 若 nums[i] != num
+    * count = 0，更换候选数字 num = nums[i]，更新票数 count = 1
+    * count > 0，count--
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int majorityElement(int[] nums) {
+        int num = 0, count = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (num == nums[i]){
+                count++;
+            }else{
+                if (count > 0){
+                    count--;
+                }else{
+                    num = nums[i];
+                    count = 1;
+                }
+            }
+        }
+        return num;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 213/66. 构建乘积数组
+
+
+
+#### （1）题目
+
+给定一个数组 A[0,1,…,n-1]，请构建一个数组 B[0,1,…,n-1]，其中 B[i] 的值是数组 A 中除了下标 i 以外的元素的积, 即 B[i]=A[0]×A[1]×…×A[i-1]×A[i+1]×…×A[n-1]。不能使用除法。
+
+
+
+#### （2）思路
+
+* 前缀和
+* pre[i] 记录数组A中，A[0] ~ A[i-1]的乘积；post[i] 记录数组A中，A[i+1] ~ A[n]的乘积
+* B[i] = pre[i] * post[i]
+
+
+
+#### （3）实现 
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int[] constructArr(int[] a) {
+        if (a.length == 0){
+            return new int[0];
+        }
+        int[] pre = new int[a.length];
+        int[] post = new int[a.length];
+        pre[0] = 1;
+        post[post.length-1] = 1;
+        for (int i = 1; i < pre.length; i++) {
+            pre[i] = pre[i-1] * a[i-1];
+        }
+        for (int i = post.length-2; i >= 0; i--){
+            post[i] = post[i+1] * a[i+1];
+        }
+        int[] res = new int[a.length];
+        for (int i = 0; i < res.length; i++) {
+            res[i] = pre[i] * post[i];
+        }
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
 

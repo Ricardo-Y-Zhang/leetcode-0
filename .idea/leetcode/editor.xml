@@ -643,6 +643,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[384]shuffle-an-array.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[384]shuffle-an-array.java" />
+              <option name="questionId" value="384" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[38]count-and-say.java">
           <value>
             <LeetcodeEditor>
@@ -1491,6 +1499,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 39]shu-zu-zhong-chu-xian-ci-shu-chao-guo-yi-ban-de-shu-zi-lcof.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 39]shu-zu-zhong-chu-xian-ci-shu-chao-guo-yi-ban-de-shu-zi-lcof.java" />
+              <option name="questionId" value="100310" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 40]zui-xiao-de-kge-shu-lcof.java">
           <value>
             <LeetcodeEditor>
@@ -1672,6 +1688,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 65]bu-yong-jia-jian-cheng-chu-zuo-jia-fa-lcof.java" />
               <option name="questionId" value="100335" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 66]gou-jian-cheng-ji-shu-zu-lcof.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 66]gou-jian-cheng-ji-shu-zu-lcof.java" />
+              <option name="questionId" value="100338" />
             </LeetcodeEditor>
           </value>
         </entry>
