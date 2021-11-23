@@ -11411,6 +11411,88 @@ class Solution {
 
 
 
+### 217/859. 亲密字符串
+
+
+
+#### （1）题目
+
+给你两个字符串 s 和 goal ，只要我们可以通过交换 s 中的两个字母得到与 goal 相等的结果，就返回 true ；否则返回 false 。
+
+交换字母的定义是：取两个下标 i 和 j （下标从 0 开始）且满足 i != j ，接着交换 s[i] 和 s[j] 处的字符。
+
+例如，在 "abcd" 中交换下标 0 和下标 2 的元素可以生成 "cbad" 。
+
+
+
+#### （2）思路
+
+* s.length() != goal.length()：长度不相等，直接返回false
+
+* 遍历字符串，比较每个字符，ch1,ch2记录字符串 s 和 goal中第一对不相等的字符，num记录不相等的字符对数，并使用set记录字符串s中的字符
+  * 两字符不相等：num++
+    * num = 1：第一对不相等字符，分别使用ch1和ch2记录
+    * num = 2：第二对不相等字符，比较当前字符是否与ch1，ch2相等
+      * 不相等：返回false
+    * num = 3：第三对不相等字符，不满足要求，返回false
+* 遍历结束后
+  * num = 1：只有一对不相等字符，不满足要求，返回false
+  * num = 0
+    * set.size() == s.length()：字符串 s 中无重复字符，无法交换，返回false
+    * set.size() != s.length()：字符串 s 中有重复字符，可交换重复字符，返回true
+  * 其他情况，返回true
+
+
+
+#### （3）实现
+
+```java
+import java.util.HashSet;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public boolean buddyStrings(String s, String goal) {
+        if (s.length() != goal.length()){
+            return false;
+        }
+        int num = 0;
+        char ch1 = ' ', ch2 = ' ';
+        boolean flag = false;
+        HashSet<Character> set = new HashSet<>();
+        for (int i = 0; i < s.length(); i++) {
+            set.add(s.charAt(i));
+            if (s.charAt(i) != goal.charAt(i)){
+                num++;
+                if (num == 1){
+                    ch1 = s.charAt(i);
+                    ch2 = goal.charAt(i);
+                }else if (num == 2){
+                    if (s.charAt(i) != ch2 || goal.charAt(i) != ch1){
+                        return false;
+                    }
+                }else if (num == 3){
+                    return false;
+                }
+            }
+        }
+
+        if (num == 0 && set.size() == s.length()){
+            return false;
+        }
+        if (num == 1){
+            return false;
+        }
+        return true;
+
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
 
 
 ## 十三、数学
@@ -15575,4 +15657,163 @@ class Solution {
 }
 //leetcode submit region end(Prohibit modification and deletion)
 ```
+
+
+
+
+
+### 214/14-I. 减绳子
+
+
+
+#### （1）题目
+
+给你一根长度为 n 的绳子，请把绳子剪成整数长度的 m 段（m、n都是整数，n>1并且m>1），每段绳子的长度记为 k[0],k[1]...k[m-1] 。请问 k[0]*k[1]*...*k[m-1] 可能的最大乘积是多少？例如，当绳子的长度是8时，我们把它剪成长度分别为2、3、3的三段，此时得到的最大乘积是18。
+
+
+
+#### （2）思路
+
+* 当所有**绳段长度相等**时，乘积最大
+* **最优的绳段长度为3**
+* 将绳段切割为长度3，考虑最后一段绳段长度
+  * 0：均切割为长度为3的绳段
+  * 1：将最后一份 3+1 的绳段切割为 2+2的绳段，2 * 2 > 3 * 1
+  * 2：保留
+* 特殊情况：n <= 3时，必须剪出一段长度为 1 的绳段，返回 n-1
+* 绳段：n = 3a + b
+  * b = 0，返回 **3<sup>a</sup>**
+  * b = 1，返回 **3<sup>a-1</sup> * 4**
+  * b = 2，返回 **3<sup>a</sup> * 2**
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int cuttingRope(int n) {
+        if (n == 2){
+            return 1;
+        }
+        if (n == 3){
+            return 2;
+        }
+        int x = n % 3;//余下的最后一段长度
+        int num = n / 3;//长度为3的片段数
+        int res = 1;
+        if (x == 0){
+            res *= Math.pow(3, num);
+        }else if (x == 1){
+            res *= Math.pow(3, num-1) * 2 * 2;
+        }else{
+            res *= Math.pow(3, num) * 2;
+        }
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 215/57-II. 和为s的连续正数序列
+
+
+
+#### （1）题目
+
+输入一个正整数 target ，输出所有和为 target 的连续正整数序列（至少含有两个数）。
+
+序列内的数字由小到大排列，不同序列按照首个数字从小到大排列。
+
+
+
+#### （2）思路
+
+* 滑动窗口
+* 初始化：左边界 i = 1, 有边界 j = 2, 元素和 sum = 3, 结果列表res
+* 循环：当 i >= j时跳出
+  * sum = target时：记录从 i 到 j 的连续整数序列，右移左边界 i++，并更新元素和 sum
+  * sum < target时：右移右边界，j++，更新元素和 sum
+  * sum > target时：右移左边界，i++，更新元素和 sum
+
+
+
+#### （3）实现
+
+```java
+import java.util.ArrayList;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int[][] findContinuousSequence(int target) {
+        ArrayList<int[]> list = new ArrayList();
+        int i = 1, j = 2, sum = 3;
+        while (i < j){
+            if (sum == target){
+                int[] temp = new int[j-i+1];
+                for(int k = i; k <= j; k++){
+                    temp[k-i] = k;
+                }
+                list.add(temp);
+                sum -= i;
+                i++;
+            }else if (sum < target){
+                j++;
+                sum += j;
+            }else{
+                sum -= i;
+                i++;
+            }
+        }
+        return list.toArray(new int[0][]);
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 216/62. 圆圈中最后剩下的数字
+
+
+
+#### （1）题目
+
+0,1,···,n-1这n个数字排成一个圆圈，从数字0开始，每次从这个圆圈里删除第m个数字（删除后从下一个数字开始计数）。求出这个圆圈里剩下的最后一个数字。
+
+例如，0、1、2、3、4这5个数字组成一个圆圈，从数字0开始每次删除第3个数字，则删除的前4个数字依次是2、0、4、1，因此最后剩下的数字是3。
+
+
+
+#### （2）思路
+
+* 约瑟夫环
+* f(n ,m) = ( f(n-1, m) + m ) % n
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int lastRemaining(int n, int m) {
+        int x = 0;
+        for (int i = 2; i <= n; i++) {
+            x = (x+m)%i;
+        }
+        return x;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
 
