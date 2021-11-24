@@ -7479,6 +7479,110 @@ class Solution {
 
 
 
+### 220/423. 从英文中重建数字
+
+
+
+#### （1）题目
+
+给你一个字符串 `s` ，其中包含字母顺序打乱的用英文单词表示的若干数字（`0-9`）。按 **升序** 返回原始的数字。
+
+
+
+#### （2）思路
+
+* 统计0~9 英文中的字母个数，从而统计 0~9 出现的此树
+
+
+
+#### （3）实现
+
+```java
+import java.util.HashMap;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public String originalDigits(String s) {
+        HashMap<Character, Integer> map = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            map.put(ch, map.getOrDefault(ch, 0)+1);
+        }
+        int zero = map.getOrDefault('z', 0);
+        if (zero > 0){
+            map.put('o', map.get('o')-zero);
+        }
+        int four = map.getOrDefault('u', 0);
+        if (four > 0){
+            map.put('f', map.get('f')-four);
+            map.put('o', map.get('o')-four);
+        }
+        int two = map.getOrDefault('w', 0);
+        if (two > 0){
+            map.put('t', map.get('t')-two);
+            map.put('o', map.get('o')-two);
+        }
+        int eight = map.getOrDefault('g', 0);
+        if (eight > 0){
+            map.put('i', map.get('i')-eight);
+            map.put('t', map.get('t')-eight);
+        }
+        int six = map.getOrDefault('x', 0);
+        if (six > 0){
+            map.put('i', map.get('i')-six);
+            map.put('s', map.get('s')-six);
+        }
+        int five = map.getOrDefault('f', 0);
+        if (five > 0){
+            map.put('i', map.get('i')-five);
+        }
+        int nine = map.getOrDefault('i', 0);
+        int three = map.getOrDefault('t', 0);
+        int one = map.getOrDefault('o', 0);
+        int seven = map.getOrDefault('s', 0);
+        String res = "";
+        for (int i = 0; i < zero; i++) {
+            res += "0";
+        }
+        for (int i = 0; i < one; i++) {
+            res += "1";
+        }
+        for (int i = 0; i < two; i++) {
+            res += "2";
+        }
+        for (int i = 0; i < three; i++) {
+            res += "3";
+        }
+        for (int i = 0; i < four; i++) {
+            res += "4";
+        }
+        for (int i = 0; i < five; i++) {
+            res += "5";
+        }
+        for (int i = 0; i < six; i++) {
+            res += "6";
+        }
+        for (int i = 0; i < seven; i++) {
+            res += "7";
+        }
+        for (int i = 0; i < eight; i++) {
+            res += "8";
+        }
+        for (int i = 0; i < nine; i++) {
+            res += "9";
+        }
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
 ## 十、数组
 
 
@@ -15816,4 +15920,129 @@ class Solution {
 ```
 
 
+
+
+
+## 十五、模拟
+
+
+
+### 218/29.顺时针打印矩阵
+
+
+
+#### （1）题目
+
+输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字。
+
+
+
+#### （2）思路
+
+* 模拟
+* 注意内层元素只有一行或一列的情况
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int[] spiralOrder(int[][] matrix) {
+        if (matrix.length == 0 || matrix[0].length == 0){
+            return new int[0];
+        }
+        int n = matrix.length, m = matrix[0].length;
+        int left = 0, right = m-1, up = 0, down = n-1, num = 0;
+        int[] res = new int[m*n];
+        while (num != m*n){
+            for (int i = left; i <= right; i++) {
+                res[num++] = matrix[up][i];
+            }
+
+            for (int i = up+1; i <= down; i++) {
+               res[num++] = matrix[i][right];
+            }
+            if (num == m*n){
+                break;
+            }
+
+            for (int i = right-1; i > left; i--) {
+                res[num++] = matrix[down][i];
+            }
+
+            for (int i = down; i> up; i--){
+                res[num++] = matrix[i][left];
+            }
+            up++;
+            down--;
+            left++;
+            right--;
+        }
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 219/31. 栈的压入、弹出序列
+
+
+
+#### （1）题目
+
+输入两个整数序列，第一个序列表示栈的压入顺序，请判断第二个序列是否为该栈的弹出顺序。假设压入栈的所有数字均不相等。例如，序列 {1,2,3,4,5} 是某栈的压栈序列，序列 {4,5,3,2,1} 是该压栈序列对应的一个弹出序列，但 {4,3,5,1,2} 就不可能是该压栈序列的弹出序列。
+
+
+
+#### （2）思路
+
+* 模拟栈的压入和弹出
+* 先模拟栈的压入，将栈的压入序列**pushed[i]**依次压入栈中，num记录当前弹出序列的元素下标
+  * 栈为空时：直接将**pushed[i]**压入栈中
+  * 栈不为空时，比较栈顶元素和弹出序列的当前元素 **popped[num]**
+    * 若栈顶元素和**poped[num]**相同，则将栈顶元素弹出，num++，并**继续比较栈顶元素**
+    * 若栈顶元素和**poped[num]**不相同，则将**pushed[i]**压入栈中
+* 遍历完压入序列后，循环比较**栈顶元素和弹出序列poped[num]**，若不相等，返回false
+
+
+
+#### （3）实现
+
+```java
+import java.util.Stack;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public boolean validateStackSequences(int[] pushed, int[] popped) {
+        Stack<Integer> stack = new Stack<>();
+        int num = 0;
+        for (int i = 0; i < pushed.length; i++) {
+            if (stack.isEmpty()){
+                stack.push(pushed[i]);
+            }else{
+                while (!stack.isEmpty() && stack.peek() == popped[num]){
+                    stack.pop();
+                    num++;
+                }
+                stack.push(pushed[i]);
+            }
+        }
+        for (int i = num; i < popped.length; i++) {
+            if (stack.peek() != popped[i]){
+                return false;
+            }else{
+                stack.pop();
+            }
+        }
+        return true;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
 
