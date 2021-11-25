@@ -16046,3 +16046,180 @@ class Solution {
 //leetcode submit region end(Prohibit modification and deletion)
 ```
 
+
+
+
+
+## 十六、字符串
+
+
+
+### 221/67. 把字符串转换成整数
+
+
+
+#### （1）题目
+
+写一个函数 StrToInt，实现把字符串转换成整数这个功能。不能使用 atoi 或者其他类似的库函数。
+
+ 
+
+首先，该函数会根据需要丢弃无用的开头空格字符，直到寻找到第一个非空格的字符为止。
+
+当我们寻找到的第一个非空字符为正或者负号时，则将该符号与之后面尽可能多的连续数字组合起来，作为该整数的正负号；假如第一个非空字符是数字，则直接将其与之后连续的数字字符组合起来，形成整数。
+
+该字符串除了有效的整数部分之后也可能会存在多余的字符，这些字符可以被忽略，它们对于函数不应该造成影响。
+
+注意：假如该字符串中的第一个非空格字符不是一个有效整数字符、字符串为空或字符串仅包含空白字符时，则你的函数不需要进行转换。
+
+在任何情况下，若函数不能进行有效的转换时，请返回 0。
+
+说明：
+
+假设我们的环境只能存储 32 位大小的有符号整数，那么其数值范围为 [−231,  231 − 1]。如果数值超过这个范围，请返回  INT_MAX (231 − 1) 或 INT_MIN (−231) 。
+
+
+
+#### （2）思路
+
+* 同113/8
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int strToInt(String str) {
+        int int_max = (1<<31)-1, int_min = -(1<<31);
+        str = str.trim();//去除空格
+        long res = 0;
+        boolean flag = false;
+        if (str.length() == 0){
+            return 0;
+        }
+        if (str.charAt(0) == '-'){//正负
+            flag = true;
+        }
+        if (str.charAt(0) == '+' || str.charAt(0) == '-'){//去除正负号
+            str = str.substring(1);
+        }
+        for (int i = 0; i < str.length(); i++) {
+            char ch = str.charAt(i);
+            if (ch >= '0' && ch <= '9'){
+                res = res * 10 + ch-'0';
+            }else {//不是数字
+                break;
+            }
+            if (res > (long)int_max + 1){//越界
+                break;
+            }
+        }
+        if (flag == true){
+            res *= -1;
+        }
+        if (res > int_max){
+            return int_max;
+        }
+        if (res < int_min){
+            return int_min;
+        }
+        return (int)res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 222/20. 表示数值的字符串
+
+
+
+#### （1）题目
+
+请实现一个函数用来判断字符串是否表示数值（包括整数和小数）。
+
+数值（按顺序）可以分成以下几个部分：
+
+* 若干空格
+* 一个 小数 或者 整数
+* （可选）一个 'e' 或 'E' ，后面跟着一个 整数
+* 若干空格
+
+
+
+小数（按顺序）可以分成以下几个部分：
+
+* （可选）一个符号字符（'+' 或 '-'）
+
+* 下述格式之一：
+
+  * 至少一位数字，后面跟着一个点 '.'
+  * 至少一位数字，后面跟着一个点 '.' ，后面再跟着至少一位数字
+  * 一个点 '.' ，后面跟着至少一位数字
+
+  
+
+整数（按顺序）可以分成以下几个部分：
+
+* （可选）一个符号字符（'+' 或 '-'）
+
+* 至少一位数字
+
+  
+
+部分数值列举如下：
+
+* ["+100", "5e2", "-123", "3.1416", "-1E-16", "0123"]
+
+
+
+部分非数值列举如下：
+
+* ["12e", "1a3.14", "1.2.3", "+-5", "12e+5.4"]
+
+
+
+#### （2）思路
+
+* 如代码
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public boolean isNumber(String s) {
+        if(s == null || s.length() == 0) return false; // s为空对象或 s长度为0(空字符串)时, 不能表示数值
+        boolean isNum = false, isDot = false, ise_or_E = false; // 标记是否遇到数位、小数点、‘e’或'E'
+        char[] str = s.trim().toCharArray();  // 删除字符串头尾的空格，转为字符数组，方便遍历判断每个字符
+        for(int i=0; i<str.length; i++) {
+            if(str[i] >= '0' && str[i] <= '9') isNum = true; // 判断当前字符是否为 0~9 的数位
+            else if(str[i] == '.') { // 遇到小数点
+                if(isDot || ise_or_E) return false; // 小数点之前可以没有整数，但是不能重复出现小数点、或出现‘e’、'E'
+                isDot = true; // 标记已经遇到小数点
+            }
+            else if(str[i] == 'e' || str[i] == 'E') { // 遇到‘e’或'E'
+                if(!isNum || ise_or_E) return false; // ‘e’或'E'前面必须有整数，且前面不能重复出现‘e’或'E'
+                ise_or_E = true; // 标记已经遇到‘e’或'E'
+                isNum = false; // 重置isNum，因为‘e’或'E'之后也必须接上整数，防止出现 123e或者123e+的非法情况
+            }
+            else if(str[i] == '-' ||str[i] == '+') {
+                if(i!=0 && str[i-1] != 'e' && str[i-1] != 'E') return false; // 正负号只可能出现在第一个位置，或者出现在‘e’或'E'的后面一个位置
+            }
+            else return false; // 其它情况均为不合法字符
+        }
+        return isNum;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
