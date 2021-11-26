@@ -16223,3 +16223,146 @@ class Solution {
 
 
 
+
+
+## 十七、栈与队列
+
+
+
+### 223/59-II. 队列的最大值(imp)
+
+
+
+#### （1）题目
+
+请定义一个队列并实现函数 max_value 得到队列里的最大值，要求函数max_value、push_back 和 pop_front 的均摊时间复杂度都是O(1)。
+
+若队列为空，pop_front 和 max_value 需要返回 -1
+
+
+
+#### （2）思路
+
+* 当一个元素入队时，它前面所有比它小的元素都不会对答案产生影响
+* 从队列尾部插入元素时，我们可以提前取出队列中所有比这个元素小的元素，使得队列中只保留对结果有影响的数字
+  * 当执行入队 push_back() 时： 若入队一个比队列某些元素更大的数字 xx ，则为了保持此列表递减，需要将双向队列 尾部所有小于 xx 的元素 弹出。
+  * 当执行出队 pop_front() 时： 若出队的元素是最大元素，则 双向队列 需要同时 将首元素出队 ，以保持队列和双向队列的元素一致性。
+
+
+
+#### （3）实现
+
+```java
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.Queue;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class MaxQueue {
+    Queue<Integer> q1;
+    Deque<Integer> q2;
+    public MaxQueue() {
+        q1 = new LinkedList<>();
+        q2 = new LinkedList<>();
+    }
+    
+    public int max_value() {
+        if (q2.isEmpty()){
+            return -1;
+        }
+        return q2.peekFirst();
+    }
+    
+    public void push_back(int value) {
+        q1.add(value);
+        while (!q2.isEmpty() && q2.peekLast() < value){
+            q2.pollLast();
+        }
+        q2.addLast(value);
+    }
+    
+    public int pop_front() {
+        if (q1.isEmpty()){
+            return -1;
+        }
+        if (q1.peek().equals(q2.getFirst())){
+            q2.pollFirst();
+        }
+        return q1.poll();
+    }
+}
+
+/**
+ * Your MaxQueue object will be instantiated and called as such:
+ * MaxQueue obj = new MaxQueue();
+ * int param_1 = obj.max_value();
+ * obj.push_back(value);
+ * int param_3 = obj.pop_front();
+ */
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+### 224/59-I. 滑动窗口的最大值
+
+
+
+#### （1）题目
+
+给定一个数组 `nums` 和滑动窗口的大小 `k`，请找出所有滑动窗口里的最大值。
+
+
+
+#### （2）思路
+
+* 单调队列
+* 使用双端队列 deque
+  * deque 内 仅包含窗口内的元素⇒ 每轮窗口滑动移除了元素 nums[i - 1]，需将deque 内的对应元素一起删除。
+  * deque 内的元素 非严格递减⇒ 每轮窗口滑动添加了元素 nums[j + 1]，需将 deque 内所有 < nums[j + 1] 的元素删除。
+
+
+
+#### （3）实现
+
+```java
+import java.util.Deque;
+import java.util.LinkedList;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        if (k == 0 || nums.length == 0){
+            return new int[0];
+        }
+
+        int[] res = new int[nums.length-k+1];
+        Deque<Integer> queue = new LinkedList<>();
+        int left = 0, right = 0, index = 0;
+        queue.addLast(nums[0]);
+        while (right != nums.length){
+            if (right - left == k-1){
+                res[index++] = queue.peekFirst();
+                if (queue.peekFirst() == nums[left]){
+                    queue.pollFirst();
+                }
+                left++;
+            }else if (right - left < k-1){
+                right++;
+                if (right == nums.length){
+                    break;
+                }else{
+                    int value = nums[right];
+                    while (!queue.isEmpty() && queue.peekLast() < value){
+                        queue.pollLast();
+                    }
+                    queue.addLast(value);
+                }
+            }
+        }
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
