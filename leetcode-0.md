@@ -12010,6 +12010,70 @@ class Solution {
 
 
 
+### 227/519. 随机翻转矩阵
+
+#### （1）题目
+
+给你一个 m x n 的二元矩阵 matrix ，且所有值被初始化为 0 。请你设计一个算法，随机选取一个满足 matrix[i][j] == 0 的下标 (i, j) ，并将它的值变为 1 。所有满足 matrix[i][j] == 0 的下标 (i, j) 被选取的概率应当均等。
+
+尽量最少调用内置的随机函数，并且优化时间和空间复杂度。
+
+实现 Solution 类：
+
+Solution(int m, int n) 使用二元矩阵的大小 m 和 n 初始化该对象
+int[] flip() 返回一个满足 matrix[i][j] == 0 的随机下标 [i, j] ，并将其对应格子中的值变为 1
+void reset() 将矩阵中所有的值重置为 0
+
+
+
+#### （3）实现
+
+```java
+import java.util.HashMap;
+import java.util.Random;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    Random random = new Random();
+    int m = 0, n = 0, total = 0;
+    HashMap<Integer, Integer> map = new HashMap<>();
+    public Solution(int m, int n) {
+        this.m = m;
+        this.n = n;
+        total = m * n;
+    }
+    
+    public int[] flip() {
+        int x = random.nextInt(total);
+        total--;
+        // 查找位置 x 对应的映射
+        int idx = map.getOrDefault(x, x);
+        // 将位置 x 对应的映射设置为位置 total 对应的映射
+        map.put(x, map.getOrDefault(total, total));
+        return new int[]{idx / n, idx % n};
+
+    }
+    
+    public void reset() {
+        total = m*n;
+        map.clear();
+    }
+}
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution obj = new Solution(m, n);
+ * int[] param_1 = obj.flip();
+ * obj.reset();
+ */
+//leetcode submit region end(Prohibit modification and deletion)
+
+```
+
+
+
+
+
 ## 十四、数据库
 
 
@@ -16364,5 +16428,193 @@ class Solution {
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+## 十八、搜索与回溯算法
+
+
+
+### 225/38. 字符串的排列
+
+#### （1）题目
+
+输入一个字符串，打印出该字符串中字符的所有排列。
+
+ 
+
+你可以以任意顺序返回这个字符串数组，但里面不能有重复元素。
+
+
+
+#### （2）思路
+
+* 回溯算法
+* 先对字符串 s **按字典序排序**，boolean[] visited 记录字符串 s 中字符是否被访问过
+  * 遍历字符串 s，当前下标为 i
+  * 若当前字符未被访问过，**visited[i] = false**；还应去除重复排列，**i == 0 || !(s.charAt(i) == s.charAt(i-1) && visited[i-1] == false)**
+    * 将当前字符添加到字符串 temp 末尾，并更新 visited
+      * temp.length() = s.length()：遍历完了所有字符，记录temp
+      * 未遍历完，则进入下一层递归
+    * 状态回溯：去除temp末尾字符，更新 visited
+
+
+
+#### （3）实现
+
+```java
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    List<String> res = new ArrayList<>();
+    public String[] permutation(String s) {
+
+        //字符串按字典序排序
+        char[] chs = s.toCharArray();
+        Arrays.sort(chs);
+        s = new String(chs);
+
+        dfs("", s, new boolean[s.length()]);
+
+        return res.toArray(new String[0]);
+    }
+    public void dfs(String temp, String s, boolean[] visited){
+        for (int i = 0; i < s.length(); i++) {
+            if (visited[i] == false){//未被访问
+                if (i == 0 || !(s.charAt(i) == s.charAt(i-1) && visited[i-1] == false)){//去除重复字符串
+                    temp += s.substring(i, i+1);
+                    visited[i] = true;
+                    if (temp.length() == s.length()){//s中所有字符均遍历完，temp为目标字符串
+                        res.add(temp);
+                    }else{//进入下一层递归
+                        dfs(temp, s, visited);
+                    }
+                    //状态回溯
+                    temp = temp.substring(0, temp.length()-1);
+                    visited[i] = false;
+                }
+            }
+        }
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 226/37. 序列化二叉树
+
+#### （1）题目
+
+请实现两个函数，分别用来序列化和反序列化二叉树。
+
+你需要设计一个算法来实现二叉树的序列化与反序列化。这里不限定你的序列 / 反序列化算法执行逻辑，你只需要保证一个二叉树可以被序列化为一个字符串并且将这个字符串反序列化为原始的树结构。
+
+提示：输入输出格式与 LeetCode 目前使用的方式一致，详情请参阅 LeetCode 序列化二叉树的格式。你并非必须采取这种方式，你也可以采用其他的方法解决这个问题。
+
+
+
+#### （2）思路
+
+* 按照leetcode序列化二叉树，按层序遍历序列化节点，中间以 "," 分隔，空节点用 "null" 表示，其他节点使用 val 表示
+* 题中示例可序列化为 **"1,2,3,null,null,4,5,null,null,null,null"**
+* 反序列化
+  * 先将字符串转换为节点数组
+  * 按层序遍历，补全节点的左右孩子节点
+
+
+
+#### （3）实现
+
+```java
+
+//leetcode submit region begin(Prohibit modification and deletion)
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Codec {
+
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        Queue<TreeNode> q = new LinkedList<TreeNode>();
+        q.add(root);
+        String res = "";
+        while (!q.isEmpty()){
+            TreeNode first = q.poll();
+            if (!"".equals(res)){
+                res += ",";
+            }
+            if (first == null){
+                res += "null";
+            }else{
+                res += first.val;
+                q.add(first.left);
+                q.add(first.right);
+            }
+        }
+        return res;
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        String[] nodes = data.split(",");//以 "," 分隔
+        ArrayList<TreeNode> list = new ArrayList<TreeNode>();//从string数组转换为节点数组
+        for (int i = 0; i < nodes.length; i++) {
+            if (nodes[i].equals("null")){
+                list.add(null);
+            }else{
+                list.add(new TreeNode(Integer.parseInt(nodes[i])));
+            }
+        }
+        ArrayList<TreeNode> temp = new ArrayList<TreeNode>();//记录当前层次的节点
+        TreeNode root = list.get(0);
+        list.remove(0);
+        temp.add(root);
+        while (!list.isEmpty()){
+            TreeNode left = list.get(0);//左孩子节点
+            list.remove(0);
+            TreeNode right = list.get(0);//右孩子节点
+            list.remove(0);
+            TreeNode node = temp.get(0);//父节点
+            temp.remove(0);
+            //更新父节点的左右孩子节点
+            node.left = left;
+            node.right = right;
+            //左右孩子节点不为null时，加入temp中
+            if (left != null){
+                temp.add(left);
+            }
+            if (right != null){
+                temp.add(right);
+            }
+        }
+        return root;
+    }
+}
+
+// Your Codec object will be instantiated and called as such:
+// Codec codec = new Codec();
+// codec.deserialize(codec.serialize(root));
+//leetcode submit region end(Prohibit modification and deletion)
+
 ```
 
