@@ -16618,3 +16618,119 @@ public class Codec {
 
 ```
 
+
+
+
+
+## 十九、动态规划
+
+### 228/49. 丑数（小根堆更简便）
+
+#### （1）题目
+
+我们把只包含质因子 2、3 和 5 的数称作丑数（Ugly Number）。求按从小到大的顺序的第 n 个丑数。
+
+
+
+#### （2）思路
+
+* 使用 dp[i] 记录第 i 个丑数（从下标为0开始），其中dp[i] 必定由**某一个丑数与2,3,5相乘得到**，且是**其中大于dp[i-1]的最小值**
+  * 初始化dp[0] = 1
+  * 对于任意dp[i]，初始化为 **2*dp[i-1]**，依次向前遍历：对于任意dp[j]
+    * 找出dp[j] 与2,3,5乘积中**第一个大于dp[i-1]**的值temp，**dp[i] = min(dp[i], temp)**
+    * 若不存在大于dp[i-1]的值，则跳出循环
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+
+    public int nthUglyNumber(int n) {
+        long[] dp = new long[n];
+        dp[0] = 1;
+        for (int i = 1; i < n; i++) {
+            dp[i] = 2*dp[i-1];
+            for (int j = i-2; j >= 0; j--) {
+                long temp = find(dp[j], dp[i-1]);
+                if (temp == -1){
+                    break;
+                }
+                dp[i] = Math.min(temp, dp[i]);
+            }
+        }
+        return (int)dp[n-1];
+    }
+    public long find(long x, long y){
+        if (x*2 > y){
+            return 2*x;
+        }
+        if (3*x > y){
+            return 3*x;
+        }
+        if (5*x > y){
+            return 5*x;
+        }
+        return -1;
+    }
+
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
+### 229/60. n个骰子的点数
+
+
+
+#### （1）题目
+
+把n个骰子扔在地上，所有骰子朝上一面的点数之和为s。输入n，打印出s的所有可能的值出现的概率。
+
+ 
+
+你需要用一个浮点数数组返回答案，其中第 i 个元素代表这 n 个骰子所能掷出的点数集合中第 i 小的那个的概率。
+
+
+
+#### （2）思路
+
+* f(n, x)表示n个骰子中掷出x的概率
+* f(n, x) = [ f(n-1, x-1) + f(n-1, x-2) + …… + f(n-1, x-6) ] / 6
+
+
+
+#### （3）实现
+
+```java
+import java.util.Arrays;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public double[] dicesProbability(int n) {
+        double[] dp = new double[6];
+        Arrays.fill(dp, (double)1/6);
+        for (int i = 2; i <= n; i++) {
+            double[] temp = new double[5*i+1];
+            for (int j = 0; j < dp.length; j++) {
+                for (int k = 0; k < 6; k++) {
+                    temp[j+k] += dp[j]/6;
+                }
+            }
+            dp = temp;
+        }
+        return dp;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+ 
+
