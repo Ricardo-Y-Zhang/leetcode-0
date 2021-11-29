@@ -16734,3 +16734,115 @@ class Solution {
 
  
 
+
+
+## 二十、分治算法
+
+
+
+### 230/17. 打印从1到最大的n位数
+
+
+
+#### （1）题目
+
+输入数字 `n`，按顺序打印出从 1 到最大的 n 位十进制数。比如输入 3，则打印出 1、2、3 一直到最大的 3 位数 999。
+
+
+
+#### （2）思路
+
+* 计算数组容量：10<sup>n</sup> -1
+* 填充数组
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int[] printNumbers(int n) {
+        int max = (int)Math.pow(10, n);
+        int[] res = new int[max-1];
+        for (int i = 0; i < res.length; i++) {
+            res[i] = i+1;
+        }
+        return res;
+
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 231/51.数组中的逆序对
+
+
+
+#### （1）题目
+
+在数组中的两个数字，如果前面一个数字大于后面的数字，则这两个数字组成一个逆序对。输入一个数组，求出这个数组中的逆序对的总数。
+
+
+
+#### （2）思路
+
+* 归并排序
+* 合并阶段 本质上是 合并两个排序数组 的过程，而每当遇到 **左子数组当前元素 > 右子数组当前元素 **时，意味着 **「左子数组当前元素 至 末尾元素」** 与 「右子数组当前元素」 构成了**若干 「逆序对」** 
+* 归并阶段，当遇到左子数组当前元素 > 右子数组当前元素时，**左子数组的剩余元素个数** 即为右子数组当前元素所构成的**逆序对个数**
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int reversePairs(int[] nums) {
+        int[] temp = new int[nums.length];
+        return sort(nums, 0, nums.length-1, temp);
+    }
+
+    public int sort(int[] arr, int left, int right, int[] temp){
+        if (left >= right){//单个元素
+            return 0;
+        }
+        int mid = (left+right)/2;
+        int lres = sort(arr, left, mid, temp);//继续划分左半数组
+        int rres = sort(arr, mid+1, right, temp);//划分右半数组
+
+        //合并
+        int index = left, i = left, j = mid+1, res = 0;
+        while (i <= mid && j <= right){
+            if (arr[i] <= arr[j]){
+                temp[index++] = arr[i++];
+            }else{
+                temp[index++] = arr[j++];
+                //记录逆序对
+                res += mid-i+1;//mid-i+1即为左子数组当前剩余元素个数
+            }
+        }
+        while (i <= mid){
+            temp[index++] = arr[i++];
+        }
+        while (j <= right){
+            temp[index++] = arr[j++];
+        }
+
+        //元素拷贝到原数组中
+        while (left<=right){
+            arr[left] = temp[left];
+            left++;
+        }
+
+        return lres+rres+res;
+    }
+
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+

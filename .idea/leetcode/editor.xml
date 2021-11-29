@@ -1403,11 +1403,27 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 17]da-yin-cong-1dao-zui-da-de-nwei-shu-lcof.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 17]da-yin-cong-1dao-zui-da-de-nwei-shu-lcof.java" />
+              <option name="questionId" value="100296" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 18]shan-chu-lian-biao-de-jie-dian-lcof.java">
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 18]shan-chu-lian-biao-de-jie-dian-lcof.java" />
               <option name="questionId" value="100299" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 19]zheng-ze-biao-da-shi-pi-pei-lcof.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 19]zheng-ze-biao-da-shi-pi-pei-lcof.java" />
+              <option name="questionId" value="100297" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1648,6 +1664,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 50]di-yi-ge-zhi-chu-xian-yi-ci-de-zi-fu-lcof.java" />
               <option name="questionId" value="100316" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 51]shu-zu-zhong-de-ni-xu-dui-lcof.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer 51]shu-zu-zhong-de-ni-xu-dui-lcof.java" />
+              <option name="questionId" value="100318" />
             </LeetcodeEditor>
           </value>
         </entry>
