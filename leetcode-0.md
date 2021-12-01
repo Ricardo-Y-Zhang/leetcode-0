@@ -16846,3 +16846,204 @@ class Solution {
 //leetcode submit region end(Prohibit modification and deletion)
 ```
 
+
+
+
+
+## 二十一、数学
+
+
+
+### 232/14-II. 剪绳子 II
+
+#### （1）题目
+
+给你一根长度为 n 的绳子，请把绳子剪成整数长度的 m 段（m、n都是整数，n>1并且m>1），每段绳子的长度记为 k[0],k[1]...k[m - 1] 。请问 k[0]*k[1]*...*k[m - 1] 可能的最大乘积是多少？例如，当绳子的长度是8时，我们把它剪成长度分别为2、3、3的三段，此时得到的最大乘积是18。
+
+答案需要取模 1e9+7（1000000007），如计算初始结果为：1000000008，请返回 1。
+
+
+
+#### （2）思路
+
+* 与214相同，取余即可
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    int max = (int)1e9+7;
+    public int cuttingRope(int n) {
+        if (n <= 3){
+            return n-1;
+        }
+        int m = n/3, k = n%3;
+
+        if (k == 0){
+            return (int)(cal(m)%max);
+        }
+
+        if (k == 1){
+            return (int)(cal(m-1)*4%max);
+        }
+
+        return (int)(cal(m)*2%max);
+
+    }
+    public long cal(long m){
+        long res = 1L;
+        for (int i = 0; i < m; i++) {
+            res *= 3L;
+
+            res = res % max;
+
+        }
+        return res;
+    }
+
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 233/43. 1~n整数中 1 出现的此树
+
+
+
+#### （1）题目
+
+输入一个整数 n ，求1～n这n个整数的十进制表示中1出现的次数。
+
+例如，输入12，1～12这些整数中包含1 的数字有1、10、11和12，1一共出现了5次。
+
+
+
+#### （2）思路
+
+* digit 为当前位因子（即十位为10，百位为100），cur 为当前位，high 为高位，low 为低位
+* 对于 2314 的十位来说：digit = 10，cur = 1，high = 23，low = 4
+  * **cur = 0**时：此位 1 的出现次数为 **high * digit**
+    * **此位取 1**时，高位可从 **1 取到 high**，共 high 种可能，低位可以从 **0 取到 digit-1**，共 digit 种可能：即为 **high * digit**
+  * **cur = 1**时：此位 1 的出现次数为 **high * digit + low + 1**
+    * **此位取1**时
+      * 高位从 **1 取到 high**，共 high 种可能，低位可以从 **0 取到 digit-1**，共 digit 种可能：即为 **high * digit**
+      * 高位**取 0 时**，低位可以从 **0 取到 low**，共 low+1 种可能：即为 **low+1** 
+  * **cur = 2~9**时：此位 1 的出现次数为 **( high+1 ) * digit**
+    * **此位取1**时：高位从 **0 取到 high**，共 high+1 种可能，低位可以从 **0 取到 digit-1**，共 digit 种可能：即为 **( high+1 ) * digit**
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int countDigitOne(int n) {
+        int res = 0, tempn = n;
+        int digit = 1;
+        int high = n/10, cur = n%10, low=0;
+        while (high != 0 || cur != 0){
+            if (cur == 0){//当前位 = 0
+                res += high * digit;
+            }else if (cur == 1){//当前位 = 1
+                res += high * digit + low + 1;
+            }else{// 2~9
+                res += (high+1) * digit;
+            }
+
+            low += cur * digit;
+            cur = high % 10;
+            high /= 10;
+            digit *= 10;
+        }
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+
+```
+
+
+
+
+
+### 234/44. 数字序列中某一位的数字
+
+#### （1）题目
+
+数字以0123456789101112131415…的格式序列化到一个字符序列中。在这个序列中，第5位（从下标0开始计数）是5，第13位是1，第19位是4，等等。
+
+请写一个函数，求任意第n位对应的数字。
+
+
+
+#### （2）思路
+
+* 数字的位数记为 digit，每 digit 位数的起始数字记为 start，digit 位数的数字的数位记为 count
+* 递推：
+  * digit = digit + 1
+  * start = start * 10
+  * count = 9 * start * digit
+
+|  数字范围   | 位数  | 数字数量  |     数位数量      |
+| :---------: | :---: | :-------: | :---------------: |
+|    1 ~ 9    |   1   |     9     |         9         |
+|   10 ~ 99   |   2   |    90     |        180        |
+|  100 ~ 999  |   3   |    900    |       2700        |
+|     ……      |  ……   |    ……     |        ……         |
+| start ~ end | digit | 9 * start | 9 * start * digit |
+
+* 求解方法：
+  * 确定 n 所在数字的**位数**，记为 digit
+  * 确定 n 所在的数字，记为 num
+  * 确定 n 是 num 中的哪一位数
+* 确定所求数位的所在数字的位数
+  * 循环执行 n **减去**一位数、两位数……的数位数量  count，直至 **n <= count时跳出**
+* 确定所求数位所在的数字：
+  * 所求数位在**从数字 start 开始**的第 **(n-1)/digit** 个数字中
+
+```java
+num = start + (n-1)/digit;
+```
+
+* 确定所求数位在 num 中的哪一数位
+  * 所求数位为数字 num 的第 **(n-1)%digit**位
+
+```java
+String str = String.valueOf(num);
+return str.charAt((n-1)%digit)-'0';
+```
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int findNthDigit(int n) {
+        int digit = 1;
+        long start = 1;
+        long count = 9;
+        while (n > count){
+            n -= count;
+            start *= 10;
+            digit++;
+            count = start*digit*9;
+        }
+
+        //确定数位所在的数字
+        long num = start + (n-1)/digit;
+        String str = String.valueOf(num);
+        return str.charAt((n-1)%digit)-'0';
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
