@@ -9704,6 +9704,59 @@ class Solution {
 
 
 
+### 235/1446. 连续字符
+
+#### （1）题目
+
+给你一个字符串 `s` ，字符串的「能量」定义为：只包含一种字符的最长非空子字符串的长度。
+
+请你返回字符串的能量。
+
+
+
+#### （2）思路
+
+* ch记录当前重复的字符，length记录当前重复字符串的长度，res记录最长的长度，遍历字符串，当前字符为temp
+  * temp = ch
+    * length++
+    * 更新res = max(res, length)
+  * temp != ch
+    * 更新 ch = temp
+    * 更新 length = 1
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int maxPower(String s) {
+
+        int res = 1, length = 1;
+        char ch = s.charAt(0);
+        for (int i = 1; i < s.length(); i++) {
+            char temp = s.charAt(i);
+            if (temp == ch){
+                length++;
+                res = Math.max(res, length);
+            }else if (temp != ch){
+                length = 1;
+                ch = temp;
+            }
+        }
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
 
 
 ## 十一、链表
