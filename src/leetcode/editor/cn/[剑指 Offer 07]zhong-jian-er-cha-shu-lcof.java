@@ -29,7 +29,7 @@
 // 注意：本题与主站 105 题重复：https://leetcode-cn.com/problems/construct-binary-tree-from-
 //preorder-and-inorder-traversal/ 
 // Related Topics 树 数组 哈希表 分治 二叉树 
-// 👍 618 👎 0
+// 👍 632 👎 0
 
 
 package leetcode.editor.cn;
@@ -46,27 +46,22 @@ package leetcode.editor.cn;
  */
 class Solution {
     public TreeNode buildTree(int[] preorder, int[] inorder) {
-        TreeNode root = build( preorder, inorder, 0, preorder.length-1, 0, inorder.length-1);
-        return root;
+        return build(preorder, inorder, 0, preorder.length-1, 0, inorder.length-1);
     }
-    public TreeNode build(int[] preorder, int[] inorder, int left1, int right1, int left2, int right2){
-        if (left1 > right1){
+    public TreeNode build(int[] preorder, int[] inorder, int prel, int prer, int inl, int inr){
+        if (prel > prer){
             return null;
         }
-        int k = 0;//记录中序遍历中当前子树根节点的下标
-        for (k = left2; k <= right2; k++){
-            if (inorder[k] == preorder[left1]){
-                break;
-            }
+        TreeNode root = new TreeNode(preorder[prel]);
+        int index = inl;//记录中序遍历中根节点位置
+        for (; index <= inr; index++){
+            if (inorder[index]==root.val) break;
         }
-        int length = k-left2;//左子树节点数
-
-        TreeNode root = new TreeNode(preorder[left1]);
-        root.left = build(preorder, inorder, left1+1, left1+length, left2, k-1);//递归创建左子树
-        root.right = build(preorder, inorder, left1+length+1, right1, k+1, right2);//递归创建右子树
+        int num = index-inl;//左子树节点数
+        root.left = build(preorder, inorder, prel+1,prel+num, inl, index-1);
+        root.right = build(preorder, inorder, prel+num+1, prer, index+1, inr);
         return root;
     }
-
 }
 //leetcode submit region end(Prohibit modification and deletion)
 

@@ -11,7 +11,7 @@
 //
 //返回链表 4->5. 
 // Related Topics 链表 双指针 
-// 👍 293 👎 0
+// 👍 300 👎 0
 
 
 package leetcode.editor.cn;
@@ -27,19 +27,15 @@ package leetcode.editor.cn;
  */
 class Solution {
     public ListNode getKthFromEnd(ListNode head, int k) {
-        ListNode slow = head, fast = head;
-        for (int i = 0; i < k; i++) {
-            if (fast == null){
-                return head;
-            }
-            fast = fast.next;
+        ListNode fast = head, slow = head;
+        while (k !=0){
+            fast=fast.next;
+            k--;
         }
-
         while (fast != null){
-            slow = slow.next;
             fast = fast.next;
+            slow = slow.next;
         }
-
         return slow;
     }
 }

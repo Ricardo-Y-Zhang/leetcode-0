@@ -22,42 +22,23 @@
 // 0 <= arr[i] <= 10000 
 // 
 // Related Topics 数组 分治 快速选择 排序 堆（优先队列） 
-// 👍 326 👎 0
+// 👍 335 👎 0
 
 
 package leetcode.editor.cn;
 
-
-import java.util.Comparator;
 import java.util.PriorityQueue;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int[] getLeastNumbers(int[] arr, int k) {
-        if (k == 0){
-            return new int[0];
-        }
-        PriorityQueue<Integer> queue = new PriorityQueue<>(new Comparator<Integer>() {
-            @Override
-            public int compare(Integer integer, Integer t1) {
-                return t1-integer;
-            }
-        });
-
+        PriorityQueue<Integer> queue = new PriorityQueue<>();
         for (int temp : arr){
-            if (queue.size() < k){
-                queue.offer(temp);
-            }else if (queue.size() == k && temp < queue.peek()){
-                queue.poll();
-                queue.offer(temp);
-            }
-
+            queue.offer(temp);
         }
-
         int[] res = new int[k];
-        int index = 0;
-        for (int temp : queue){
-            res[index++] = temp;
+        for (int i = 0; i < k; i++) {
+            res[i] = queue.poll();
         }
         return res;
     }

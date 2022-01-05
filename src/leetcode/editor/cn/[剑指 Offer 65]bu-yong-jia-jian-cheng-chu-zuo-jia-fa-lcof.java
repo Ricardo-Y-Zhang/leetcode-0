@@ -16,19 +16,23 @@
 // 结果不会溢出 32 位整数 
 // 
 // Related Topics 位运算 数学 
-// 👍 233 👎 0
+// 👍 242 👎 0
 
+
+package leetcode.editor.cn;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int add(int a, int b) {
-        int x = a ^ b, y = (a & b)<<1;
-        while (y != 0){
-            int temp = x^y;
-            y = (x&y) << 1;
-            x = temp;
+        while (b != 0){
+            int temp = a ^ b;//不进位
+            b = a & b;//进位
+            b <<= 1;//进位左移
+            a = temp;
         }
-        return x;
+        return a;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
+
+

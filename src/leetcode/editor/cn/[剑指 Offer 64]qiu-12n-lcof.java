@@ -22,7 +22,7 @@
 // 1 <= n <= 10000 
 // 
 // Related Topics 位运算 递归 脑筋急转弯 
-// 👍 402 👎 0
+// 👍 416 👎 0
 
 
 package leetcode.editor.cn;
@@ -31,9 +31,12 @@ package leetcode.editor.cn;
 class Solution {
     int res = 0;
     public int sumNums(int n) {
-        boolean x = n >=1 && sumNums(n-1) > 0;
-        res += n;
+        cal(n);
         return res;
+    }
+    public boolean cal(int n){
+        res += n;
+        return n>0 && cal(n-1);//短路
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

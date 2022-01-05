@@ -13,7 +13,7 @@
 //
 // 0 <= s 的长度 <= 10000 
 // Related Topics 字符串 
-// 👍 168 👎 0
+// 👍 180 👎 0
 
 
 package leetcode.editor.cn;
@@ -21,31 +21,16 @@ package leetcode.editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public String replaceSpace(String s) {
-//        StringBuilder stringBuilder = new StringBuilder();
-//        for (int i = 0; i < s.length(); i++) {
-//            char ch = s.charAt(i);
-//            if (ch == ' '){
-//                stringBuilder.append("%20");
-//            }else{
-//                stringBuilder.append(ch);
-//            }
-//        }
-//        return stringBuilder.toString();
-
-        char[] bts = new char[s.length()*3];
-        int index = 0;
-        for (int i = 0; i < s.length(); i++){
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
             char ch = s.charAt(i);
             if (ch == ' '){
-                bts[index++] = '%';
-                bts[index++] = '2';
-                bts[index++] = '0';
+                sb.append("%20");
             }else{
-                bts[index++] = ch;
+                sb.append(ch);
             }
         }
-        String res = new String(bts, 0, index);
-        return res;
+        return sb.toString();
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

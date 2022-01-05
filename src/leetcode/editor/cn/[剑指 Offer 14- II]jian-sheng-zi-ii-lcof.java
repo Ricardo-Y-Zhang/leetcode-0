@@ -28,42 +28,36 @@
 //
 // 注意：本题与主站 343 题相同：https://leetcode-cn.com/problems/integer-break/ 
 // Related Topics 数学 动态规划 
-// 👍 144 👎 0
+// 👍 149 👎 0
 
 
 package leetcode.editor.cn;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-    int max = (int)1e9+7;
+    int max = 1000000007;
     public int cuttingRope(int n) {
         if (n <= 3){
             return n-1;
         }
-        int m = n/3, k = n%3;
-
-        if (k == 0){
-            return (int)(cal(m)%max);
+        int m = n/3, remain = n%3;
+        if (remain == 0){
+            return (int)cal(m);
         }
-
-        if (k == 1){
+        if (remain == 1){
             return (int)(cal(m-1)*4%max);
         }
 
         return (int)(cal(m)*2%max);
 
     }
-    public long cal(long m){
-        long res = 1L;
+    public long cal(int m){
+        long res = 1;
         for (int i = 0; i < m; i++) {
-            res *= 3L;
-
-            res = res % max;
-
+            res = res * 3 % max;
         }
         return res;
     }
-
 }
 //leetcode submit region end(Prohibit modification and deletion)
 

@@ -31,37 +31,27 @@
 //
 // 注意：本题与主站 946 题相同：https://leetcode-cn.com/problems/validate-stack-sequences/ 
 // Related Topics 栈 数组 模拟 
-// 👍 255 👎 0
+// 👍 262 👎 0
 
 
 package leetcode.editor.cn;
 
-import java.util.Stack;
+import java.util.LinkedList;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public boolean validateStackSequences(int[] pushed, int[] popped) {
-        Stack<Integer> stack = new Stack<>();
-        int num = 0;
-        for (int i = 0; i < pushed.length; i++) {
-            if (stack.isEmpty()){
-                stack.push(pushed[i]);
-            }else{
-                while (!stack.isEmpty() && stack.peek() == popped[num]){
-                    stack.pop();
-                    num++;
-                }
-                stack.push(pushed[i]);
+        LinkedList<Integer> list = new LinkedList<>();
+        int pop = 0;
+        for (int temp : pushed){
+            list.offerLast(temp);
+            while ((!list.isEmpty()) && list.peekLast() == popped[pop]){
+                list.pollLast();
+                pop++;
             }
+
         }
-        for (int i = num; i < popped.length; i++) {
-            if (stack.peek() != popped[i]){
-                return false;
-            }else{
-                stack.pop();
-            }
-        }
-        return true;
+        return list.isEmpty();
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

@@ -51,13 +51,12 @@
 //
 // 
 // Related Topics 哈希表 链表 
-// 👍 331 👎 0
+// 👍 353 👎 0
 
 
 package leetcode.editor.cn;
 
 import java.util.HashMap;
-import java.util.Map;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 /*
@@ -76,26 +75,19 @@ class Node {
 */
 class Solution {
     public Node copyRandomList(Node head) {
-        if (head == null) {
-            return head;
+        HashMap<Node, Node> map = new HashMap<Node, Node>();
+        Node temp = head;
+        while (temp != null){
+            map.put(temp, new Node(temp.val));
+            temp = temp.next;
         }
-        Map<Node, Node> map = new HashMap();
-
-        Node now = head;
-        while (now != null) {
-            Node temp = new Node(now.val);
-            map.put(now, temp);
-            now = now.next;
+        temp = head;
+        while (temp != null){
+            Node copy = map.get(temp);
+            copy.next = map.get(temp.next);
+            copy.random = map.get(temp.random);
+            temp = temp.next;
         }
-
-        now = head;
-        while (now != null) {
-            Node temp = map.get(now);
-            temp.next = map.get(now.next);
-            temp.random = map.get(now.random);
-            now = now.next;
-        }
-
         return map.get(head);
     }
 }

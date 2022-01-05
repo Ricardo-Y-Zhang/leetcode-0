@@ -62,7 +62,37 @@ public class Test {
 //
 
     }
+
+    @org.junit.Test
+    public void test1(){
+        String[] temp = {"V", "C", "6", "T", "E0", "A", "P", "Y", "E6"};
+        int num = 0;
+        for (int i = 0; i < 9; i++) {
+            for (int j = i+1; j < 9; j++) {
+                for (int k = j+1; k < 9; k++) {
+                    for (int l = k+1; l < 9; l++) {
+                        for (int m = l+1; m < 9; m++) {
+                            num++;
+                            System.out.print(temp[i] + temp[j] + temp[k] + temp[l] + temp[m] + " , ");
+                        }
+                    }
+                }
+            }
+        }
+        System.out.println("num = " + num);
+
+    }
+
+
+    @org.junit.Test
+    public void test3(){
+        int res = -5;
+        res >>>= 2;
+        System.out.println("res" + res);
+    }
 }
+
+
 
 class Solution {
     public boolean placeWordInCrossword(char[][] board, String word) {

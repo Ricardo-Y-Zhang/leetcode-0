@@ -30,7 +30,7 @@
 //
 // 注意：此题对比原题有改动。 
 // Related Topics 栈 树 深度优先搜索 二叉搜索树 链表 二叉树 双向链表 
-// 👍 349 👎 0
+// 👍 360 👎 0
 
 
 package leetcode.editor.cn;
@@ -59,40 +59,31 @@ class Node {
 };
 */
 class Solution {
-    ArrayList<Node> ins = new ArrayList();
+    ArrayList<Node> list;
     public Node treeToDoublyList(Node root) {
         if (root == null){
             return root;
         }
-        inOrder(root);
-
-        //处理头节点的left，尾节点的right
-        Node head = ins.get(0);
-        Node tail = ins.get(ins.size()-1);
+        list = new ArrayList<Node>();
+        inorder(root);
+        Node head = list.get(0), tail = list.get(list.size()-1);
         head.left = tail;
         tail.right = head;
-
         return head;
     }
-
-    void inOrder(Node root){
+    public void inorder(Node root) {
         if (root == null){
             return;
         }
-
-        inOrder(root.left);
-
-        if (ins.size() != 0){//不是头节点
-            Node last = ins.get(ins.size()-1);
-            root.left = last;
-            last.right = root;
+        inorder(root.left);
+        if (list.size()!=0){
+            Node tail = list.get(list.size()-1);
+            tail.right=root;
+            root.left=tail;
         }
-        ins.add(root);
-
-        inOrder(root.right);
-
+        list.add(root);
+        inorder(root.right);
     }
-
 }
 //leetcode submit region end(Prohibit modification and deletion)
 

@@ -17,27 +17,23 @@
 //
 // 2 <= n <= 100000 
 // Related Topics 数组 哈希表 排序 
-// 👍 592 👎 0
+// 👍 622 👎 0
 
 
 package leetcode.editor.cn;
 
 import java.util.HashSet;
-import java.util.Set;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int findRepeatNumber(int[] nums) {
-        Set<Integer> set = new HashSet<>();
-        int temp = -1;
-        for (int i = 0; i < nums.length; i++) {
-            temp = nums[i];
-            if (set.contains(temp)){
-                break;
+        HashSet<Integer> set = new HashSet<>();
+        for (int temp : nums){
+            if (!set.add(temp)){
+                return temp;
             }
-            set.add(temp);
         }
-        return temp;
+        return 0;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

@@ -41,7 +41,7 @@
 //
 // 注意：本题与主站 113 题相同：https://leetcode-cn.com/problems/path-sum-ii/ 
 // Related Topics 树 深度优先搜索 回溯 二叉树 
-// 👍 263 👎 0
+// 👍 267 👎 0
 
 
 package leetcode.editor.cn;
@@ -67,27 +67,33 @@ import java.util.List;
  * }
  */
 class Solution {
-    List<List<Integer>> res = new ArrayList();
-    List<Integer> temp = new ArrayList<>();
+    List<List<Integer>> res;
+    ArrayList<Integer> temp;
+    int target;
     public List<List<Integer>> pathSum(TreeNode root, int target) {
-        dfs(root, 0, target);
+        res = new ArrayList<>();
+        temp = new ArrayList<>();
+        this.target=target;
+        dfs(root, 0);
         return res;
     }
-
-    void dfs(TreeNode root, int sum, int target){
-        if(root == null){
+    public void dfs(TreeNode root, int sum){
+        if (root == null){
             return;
+        }else{
+            temp.add(root.val);
+            sum+=root.val;
+            if (root.left == null && root.right == null && sum == target){
+                res.add(new ArrayList<>(temp));
+            }
+            if (root.left != null){
+                dfs(root.left, sum);
+            }
+            if (root.right != null){
+                dfs(root.right, sum);
+            }
+            temp.remove(temp.size()-1);
         }
-        temp.add(root.val);
-        sum += root.val;
-        if (root.left == null && root.right == null && sum == target){
-            res.add(new ArrayList<>(temp));
-        }
-
-        dfs(root.left, sum, target);
-        dfs(root.right, sum, target);
-
-        temp.remove(temp.size()-1);
     }
 
 }

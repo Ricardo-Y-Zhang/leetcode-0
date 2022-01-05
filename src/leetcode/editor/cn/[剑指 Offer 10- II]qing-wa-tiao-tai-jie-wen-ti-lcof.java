@@ -29,7 +29,7 @@
 //
 // 
 // Related Topics 记忆化搜索 数学 动态规划 
-// 👍 214 👎 0
+// 👍 218 👎 0
 
 
 package leetcode.editor.cn;
@@ -43,9 +43,8 @@ class Solution {
         int[] dp = new int[n+1];
         dp[0]=1;
         dp[1]=1;
-        int temp = 1000000007;
         for (int i = 2; i < n+1; i++) {
-            dp[i] = (dp[i-1]%temp + dp[i-2]%temp)%temp;
+            dp[i] = (dp[i-1]+dp[i-2])%(int)(1e9+7);
         }
         return dp[n];
     }

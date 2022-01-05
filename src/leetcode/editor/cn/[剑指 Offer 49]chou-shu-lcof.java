@@ -17,41 +17,29 @@
 //
 // 注意：本题与主站 264 题相同：https://leetcode-cn.com/problems/ugly-number-ii/ 
 // Related Topics 哈希表 数学 动态规划 堆（优先队列） 
-// 👍 246 👎 0
+// 👍 255 👎 0
 
 
+package leetcode.editor.cn;
 
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-
     public int nthUglyNumber(int n) {
-        long[] dp = new long[n];
-        dp[0] = 1;
+        int[] dp = new int[n];
+        dp[0]=1;
+        int a = 0, b = 0, c = 0;
         for (int i = 1; i < n; i++) {
-            dp[i] = 2*dp[i-1];
-            for (int j = i-2; j >= 0; j--) {
-                long temp = find(dp[j], dp[i-1]);
-                if (temp == -1){
-                    break;
-                }
-                dp[i] = Math.min(temp, dp[i]);
-            }
+            int x = dp[a]*2, y = dp[b]*3, z = dp[c]*5;
+            int temp = Math.min(Math.min(x, y), z);
+            dp[i]=temp;
+            if (temp == x) a++;
+            if (temp == y) b++;
+            if (temp == z) c++;
         }
-        return (int)dp[n-1];
+        return dp[n-1];
     }
-    public long find(long x, long y){
-        if (x*2 > y){
-            return 2*x;
-        }
-        if (3*x > y){
-            return 3*x;
-        }
-        if (5*x > y){
-            return 5*x;
-        }
-        return -1;
-    }
-
 }
 //leetcode submit region end(Prohibit modification and deletion)
+
+

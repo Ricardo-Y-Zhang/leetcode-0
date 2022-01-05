@@ -30,7 +30,7 @@
 //
 // 1 ≤ k ≤ 二叉搜索树元素个数 
 // Related Topics 树 深度优先搜索 二叉搜索树 二叉树 
-// 👍 219 👎 0
+// 👍 224 👎 0
 
 
 package leetcode.editor.cn;
@@ -46,34 +46,23 @@ package leetcode.editor.cn;
  * }
  */
 class Solution {
-    int res = -1, index = 0;
+    int k,res;
     public int kthLargest(TreeNode root, int k) {
-        index = k;
-        dfs(root);
+        inorder(root, k);
         return res;
     }
-
-    void dfs(TreeNode root){
-        if (root == null){
+    public void inorder(TreeNode root, int k){
+        if (root == null || this.k > k){
             return;
         }
-
-        dfs(root.right);
-
-        if (index == 0){
-            return;
-        }
-
-        index--;
-        if (index == 0){
+        inorder(root.right, k);
+        this.k++;
+        if (this.k == k){
             res = root.val;
-            System.out.println(root.val);
-            return;
         }
-
-        dfs(root.left);
-
+        inorder(root.left, k);
     }
+
 }
 //leetcode submit region end(Prohibit modification and deletion)
 

@@ -27,24 +27,25 @@
 // 注意：本题与主站 121 题相同：https://leetcode-cn.com/problems/best-time-to-buy-and-sell-s
 //tock/ 
 // Related Topics 数组 动态规划 
-// 👍 178 👎 0
+// 👍 192 👎 0
 
 
 package leetcode.editor.cn;
 
+
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int maxProfit(int[] prices) {
-        int res = 0;
-        if (prices.length == 0){
-            return res;
+        if (prices.length == 0||prices.length == 1){
+            return 0;
         }
-        int dp = prices[0];
+        int max = 0;
+        int min = prices[0];
         for (int i = 1; i < prices.length; i++) {
-            dp = Math.min(dp, prices[i]);
-            res = Math.max(res, prices[i]-dp);
+            max = Math.max(max, prices[i]-min);
+            min = Math.min(min, prices[i]);
         }
-        return res;
+        return max;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

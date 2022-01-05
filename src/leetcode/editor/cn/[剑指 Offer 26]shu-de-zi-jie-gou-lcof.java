@@ -32,7 +32,7 @@
 //
 // 0 <= 节点个数 <= 10000 
 // Related Topics 树 深度优先搜索 二叉树 
-// 👍 386 👎 0
+// 👍 405 👎 0
 
 
 package leetcode.editor.cn;
@@ -48,35 +48,34 @@ package leetcode.editor.cn;
  * }
  */
 class Solution {
+    boolean flag = false;
     public boolean isSubStructure(TreeNode A, TreeNode B) {
-        if (B == null){
+        if (B==null){
             return false;
         }
-        return preorder(A, B);
+        dfs(A, B);
+        return flag;
     }
-
-    public boolean preorder(TreeNode root1, TreeNode root2){//先序遍历
+    public void dfs(TreeNode A, TreeNode B){
+        if (flag || A == null){
+            return;
+        }
+       if (judge(A, B)){
+           flag = true;
+       }
+        if (!flag){//剪枝
+            dfs(A.left, B);
+            dfs(A.right, B);
+        }
+    }
+    public boolean judge(TreeNode root1, TreeNode root2){
+        if (root2 == null){
+            return true;
+        }
         if (root1 == null){
             return false;
         }
-        if (judge(root1, root2)){
-            return true;
-        }
-
-        return preorder(root1.left, root2) || preorder(root1.right, root2);
-
-    }
-
-    public boolean judge(TreeNode root1, TreeNode root2) {
-        if (root1 == root2 || root2 == null){//两节点相同或root2为空
-            return true;
-        }
-        if (root1 == null || root1.val != root2.val){
-            return false;
-        }
-
-        return judge(root1.left, root2.left) && judge(root1.right, root2.right);
-
+        return root1.val==root2.val&&judge(root1.left, root2.left)&&judge(root1.right, root2.right);
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

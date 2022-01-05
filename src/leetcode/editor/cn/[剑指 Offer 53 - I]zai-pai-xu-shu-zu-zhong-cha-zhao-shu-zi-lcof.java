@@ -30,7 +30,7 @@
 // 注意：本题与主站 34 题相同（仅返回值不同）：https://leetcode-cn.com/problems/find-first-and-last-
 //position-of-element-in-sorted-array/ 
 // Related Topics 数组 二分查找 
-// 👍 219 👎 0
+// 👍 225 👎 0
 
 
 package leetcode.editor.cn;
@@ -38,36 +38,32 @@ package leetcode.editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int search(int[] nums, int target) {
-        int res = 0;
-        int left = 0, right = nums.length-1;
-        while (left <= right){
-            int mid = (left + right)/2;
-            if (nums[mid] == target) {
+        int res = 0, left = -1, right = -2, i = 0, j = nums.length-1;
+        while (i <= j){
+            int mid = i + (j-i)/2;
+            if (nums[mid] == target){
                 left = mid;
-                while (left >= 0){
-                    if (nums[left--] == target){
-                        res++;
-                    }else{
-                        break;
-                    }
-                }
-                right = mid + 1;
-                while (right < nums.length){
-                    if (nums[right++] == target){
-                        res++;
-                    }else{
-                        break;
-                    }
-                }
-                break;
-            }
-            if (nums[mid] < target){
-                left = mid + 1;
+                j = mid-1;
+            }else if (nums[mid] < target){
+                i = mid+1;
             }else{
-                right = mid - 1;
+                j = mid-1;
             }
         }
-        return res;
+
+        i = 0; j = nums.length-1;
+        while (i <= j){
+            int mid = i + (j-i)/2;
+            if (nums[mid] == target){
+                right = mid;
+                i = mid+1;
+            }else if (nums[mid] < target){
+                i = mid+1;
+            }else{
+                j = mid-1;
+            }
+        }
+        return right-left+1;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

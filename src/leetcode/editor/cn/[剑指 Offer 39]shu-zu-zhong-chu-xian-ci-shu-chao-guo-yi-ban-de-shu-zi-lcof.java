@@ -23,7 +23,7 @@
 //
 // 
 // Related Topics 数组 哈希表 分治 计数 排序 
-// 👍 218 👎 0
+// 👍 227 👎 0
 
 
 package leetcode.editor.cn;
@@ -31,20 +31,20 @@ package leetcode.editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int majorityElement(int[] nums) {
-        int num = 0, count = 0;
-        for (int i = 0; i < nums.length; i++) {
-            if (num == nums[i]){
-                count++;
+        int cand = 0, num = 0;
+        for (int temp : nums){
+            if (cand == temp){
+                num++;
             }else{
-                if (count > 0){
-                    count--;
+                if (num == 0){
+                    cand = temp;
+                    num = 1;
                 }else{
-                    num = nums[i];
-                    count = 1;
+                    num--;
                 }
             }
         }
-        return num;
+        return cand;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

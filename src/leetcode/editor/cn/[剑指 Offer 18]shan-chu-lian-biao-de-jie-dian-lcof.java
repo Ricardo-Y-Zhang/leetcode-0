@@ -27,7 +27,7 @@
 // 若使用 C 或 C++ 语言，你不需要 free 或 delete 被删除的节点 
 // 
 // Related Topics 链表 
-// 👍 166 👎 0
+// 👍 171 👎 0
 
 
 package leetcode.editor.cn;
@@ -43,17 +43,17 @@ package leetcode.editor.cn;
  */
 class Solution {
     public ListNode deleteNode(ListNode head, int val) {
-        ListNode vhead =  new ListNode();
+        ListNode vhead = new ListNode();
         vhead.next = head;
-        ListNode node = vhead;
-        while (node != null){
-            if (node.next.val == val){
-                node.next = node.next.next;
+        ListNode pre = vhead, temp = head;
+        while (temp != null){
+            if (temp.val == val){
+                pre.next = temp.next;
                 break;
             }
-            node = node.next;
+            pre = pre.next;
+            temp = temp.next;
         }
-
         return vhead.next;
     }
 }

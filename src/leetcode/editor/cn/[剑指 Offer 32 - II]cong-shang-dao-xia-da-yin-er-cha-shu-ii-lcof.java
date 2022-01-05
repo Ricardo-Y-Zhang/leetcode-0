@@ -32,7 +32,7 @@
 // 注意：本题与主站 102 题相同：https://leetcode-cn.com/problems/binary-tree-level-order-tra
 //versal/ 
 // Related Topics 树 广度优先搜索 二叉树 
-// 👍 156 👎 0
+// 👍 160 👎 0
 
 
 package leetcode.editor.cn;
@@ -54,29 +54,27 @@ import java.util.List;
  */
 class Solution {
     public List<List<Integer>> levelOrder(TreeNode root) {
-        List<List<Integer>> res = new ArrayList<>();
         if (root == null){
-            return res;
+            return new ArrayList<List<Integer>>();
         }
-        LinkedList<TreeNode> list = new LinkedList<TreeNode>();
-        list.add(root);
-        TreeNode tail = root, tempTail = root;
-        List<Integer> temp = new ArrayList<>();
-        while (!list.isEmpty()) {
-            TreeNode first = list.poll();
+        ArrayList<List<Integer>> res = new ArrayList<>();//记录结果
+        ArrayList<Integer> temp = new ArrayList<>();//记录当前层的节点值
+        LinkedList<TreeNode> list = new LinkedList<TreeNode>();//队列
+        list.offerLast(root);
+        TreeNode last = root;
+        while (!list.isEmpty()){
+            TreeNode first = list.pollFirst();
             temp.add(first.val);
-            if (first.left != null) {
-                list.add(first.left);
-                tempTail = first.left;
+            if (first.left != null){
+                list.offerLast(first.left);
             }
-            if (first.right != null) {
-                list.add(first.right);
-                tempTail = first.right;
+            if (first.right != null){
+                list.offerLast(first.right);
             }
-            if (first == tail) {//当前节点为该层的最右节点
-                tail = tempTail;
+            if (first == last){//当前节点为该层的最后一个节点
                 res.add(new ArrayList<>(temp));
                 temp.clear();
+                last = list.peekLast();//更新last节点
             }
         }
         return res;

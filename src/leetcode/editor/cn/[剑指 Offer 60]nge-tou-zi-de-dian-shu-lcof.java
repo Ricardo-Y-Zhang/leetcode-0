@@ -24,22 +24,24 @@
 //
 // 1 <= n <= 11 
 // Related Topics 数学 动态规划 概率与统计 
-// 👍 317 👎 0
+// 👍 326 👎 0
 
 
+package leetcode.editor.cn;
 
 import java.util.Arrays;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public double[] dicesProbability(int n) {
+        double init = (double)1/6;
         double[] dp = new double[6];
-        Arrays.fill(dp, (double)1/6);
-        for (int i = 2; i <= n; i++) {
-            double[] temp = new double[5*i+1];
+        Arrays.fill(dp, init);
+        for (int i = 1; i < n; i++) {
+            double[] temp = new double[5*i+6];
             for (int j = 0; j < dp.length; j++) {
                 for (int k = 0; k < 6; k++) {
-                    temp[j+k] += dp[j]/6;
+                    temp[j+k] += dp[j]*init;
                 }
             }
             dp = temp;
@@ -48,3 +50,5 @@ class Solution {
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
+
+

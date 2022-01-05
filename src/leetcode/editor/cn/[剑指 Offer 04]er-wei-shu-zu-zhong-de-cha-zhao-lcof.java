@@ -33,7 +33,7 @@
 //
 // 注意：本题与主站 240 题相同：https://leetcode-cn.com/problems/search-a-2d-matrix-ii/ 
 // Related Topics 数组 二分查找 分治 矩阵 
-// 👍 479 👎 0
+// 👍 508 👎 0
 
 
 package leetcode.editor.cn;
@@ -41,24 +41,20 @@ package leetcode.editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public boolean findNumberIn2DArray(int[][] matrix, int target) {
-        int n = matrix.length;
-        if (n == 0){
+        if (matrix.length == 0 || matrix[0].length == 0){
             return false;
         }
-        int m = matrix[0].length;
-
-        int x = 0, y = m-1;
-        while (x >= 0 && x < n && y >= 0 && y < m){
-            if (matrix[x][y] == target){
+        int n = matrix.length, m = matrix[0].length, i = 0, j = m-1;
+        while (i < n && j >= 0){
+            if (matrix[i][j] == target){
                 return true;
             }
-            if (matrix[x][y] > target){
-                y--;
-            }else if (matrix[x][y] < target){
-                x++;
+            if (matrix[i][j] < target){
+                i++;
+            }else {
+                j--;
             }
         }
-
         return false;
     }
 }

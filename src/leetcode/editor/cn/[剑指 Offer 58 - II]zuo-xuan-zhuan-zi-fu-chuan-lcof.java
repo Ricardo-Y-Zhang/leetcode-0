@@ -23,7 +23,7 @@
 // 1 <= k < s.length <= 10000 
 // 
 // Related Topics 数学 双指针 字符串 
-// 👍 159 👎 0
+// 👍 170 👎 0
 
 
 package leetcode.editor.cn;
@@ -31,15 +31,10 @@ package leetcode.editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public String reverseLeftWords(String s, int n) {
-        char[] chars = new char[s.length()];
-        int num = 0;
-        for (int i = n; i < s.length(); i++) {
-            chars[num++] = s.charAt(i);
-        }
-        for (int i = 0; i < n; i++) {
-            chars[num++] = s.charAt(i);
-        }
-        return new String(chars);
+        StringBuilder sb = new StringBuilder();
+        sb.append(s.substring(n));
+        sb.append(s.substring(0, n));
+        return sb.toString();
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

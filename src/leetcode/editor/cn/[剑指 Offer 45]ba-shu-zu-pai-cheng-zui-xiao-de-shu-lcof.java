@@ -27,7 +27,7 @@
 // 拼接起来的数字可能会有前导 0，最后结果不需要去掉前导 0 
 // 
 // Related Topics 贪心 字符串 排序 
-// 👍 320 👎 0
+// 👍 336 👎 0
 
 
 package leetcode.editor.cn;
@@ -38,21 +38,18 @@ import java.util.Comparator;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public String minNumber(int[] nums) {
-        String[] strs = new String[nums.length];
+        String[] str = new String[nums.length];
         for (int i = 0; i < nums.length; i++) {
-            strs[i] = String.valueOf(nums[i]);
+            str[i]=String.valueOf(nums[i]);
         }
-
-        Arrays.sort(strs, new Comparator<String>(){
-            @Override
-            public int compare(String str1, String str2){
-                return (str1+str2).compareTo(str2+str1);
+        Arrays.sort(str, new Comparator<String>(){
+            public int compare(String s1, String s2){
+                return (s1+s2).compareTo(s2+s1);
             }
         });
-
         StringBuilder sb = new StringBuilder();
-        for (String str : strs){
-            sb.append(str);
+        for (String temp : str){
+            sb.append(temp);
         }
         return sb.toString();
     }

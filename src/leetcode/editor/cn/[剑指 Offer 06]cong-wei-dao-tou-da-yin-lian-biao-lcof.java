@@ -13,14 +13,14 @@
 //
 // 0 <= 链表长度 <= 10000 
 // Related Topics 栈 递归 链表 双指针 
-// 👍 197 👎 0
+// 👍 210 👎 0
 
 
 package leetcode.editor.cn;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 
-import java.util.Stack;
+import java.util.LinkedList;
 
 /**
  * Definition for singly-linked list.
@@ -32,16 +32,17 @@ import java.util.Stack;
  */
 class Solution {
     public int[] reversePrint(ListNode head) {
-        Stack<Integer> stack = new Stack<>();
-
-        while (head != null) {
-            stack.push(head.val);
+        if (head == null){
+            return new int[0];
+        }
+        LinkedList<Integer> linkedList = new LinkedList<>();
+        while (head != null){
+            linkedList.offerLast(head.val);
             head = head.next;
         }
-
-        int[] res = new int[stack.size()];
+        int[] res = new int[linkedList.size()];
         for (int i = 0; i < res.length; i++) {
-            res[i] = stack.pop();
+            res[i] = linkedList.pollLast();
         }
         return res;
     }

@@ -20,7 +20,7 @@
 //
 // 1 <= 数组长度 <= 10000 
 // Related Topics 位运算 数组 哈希表 数学 二分查找 
-// 👍 185 👎 0
+// 👍 188 👎 0
 
 
 package leetcode.editor.cn;
@@ -28,15 +28,19 @@ package leetcode.editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int missingNumber(int[] nums) {
+        if (nums[0] != 0){
+            return 0;
+        }
+        if (nums[nums.length-1] == nums.length-1){
+            return nums.length;
+        }
         int left = 0, right = nums.length-1;
-
-        while (left <= right){
-            int mid = (left + right) / 2;
+        while (left < right){
+            int mid = left + (right-left)/2;
             if (nums[mid] == mid){
-                left = mid + 1;
-            }else if (nums[mid] > mid){
-                right = mid - 1;
-
+                left = mid+1;
+            }else{
+                right = mid;
             }
         }
         return left;

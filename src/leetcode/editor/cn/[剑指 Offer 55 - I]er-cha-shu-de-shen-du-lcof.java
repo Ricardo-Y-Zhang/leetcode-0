@@ -23,7 +23,7 @@
 // 注意：本题与主站 104 题相同：https://leetcode-cn.com/problems/maximum-depth-of-binary-tre
 //e/ 
 // Related Topics 树 深度优先搜索 广度优先搜索 二叉树 
-// 👍 152 👎 0
+// 👍 156 👎 0
 
 
 package leetcode.editor.cn;

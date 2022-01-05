@@ -18,47 +18,46 @@
 //
 // 1 <= s 的长度 <= 8 
 // Related Topics 字符串 回溯 
-// 👍 455 👎 0
+// 👍 469 👎 0
 
 
 package leetcode.editor.cn;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-    List<String> res = new ArrayList<>();
+    ArrayList<String> list = new ArrayList<>();
+    StringBuilder sb = new StringBuilder();
+    boolean[] isvisit;
     public String[] permutation(String s) {
-
-        //字符串按字典序排序
-        char[] chs = s.toCharArray();
-        Arrays.sort(chs);
-        s = new String(chs);
-
-        dfs("", s, new boolean[s.length()]);
-
-        return res.toArray(new String[0]);
+        char[] chars = s.toCharArray();
+        Arrays.sort(chars);
+        s = new String(chars);
+        isvisit = new boolean[s.length()];
+        salute(s, 0);
+        return list.toArray(new String[0]);
     }
-    public void dfs(String temp, String s, boolean[] visited){
+    public void salute(String s, int index){
+        if (index == s.length()){
+            list.add(sb.toString());
+            return;
+        }
         for (int i = 0; i < s.length(); i++) {
-            if (visited[i] == false){//未被访问
-                if (i == 0 || !(s.charAt(i) == s.charAt(i-1) && visited[i-1] == false)){//去除重复字符串
-                    temp += s.substring(i, i+1);
-                    visited[i] = true;
-                    if (temp.length() == s.length()){//s中所有字符均遍历完，temp为目标字符串
-                        res.add(temp);
-                    }else{//进入下一层递归
-                        dfs(temp, s, visited);
-                    }
+            if (isvisit[i]==false){
+                if (i == 0||isvisit[i-1]==true||s.charAt(i)!=s.charAt(i-1)){//确保该轮不会选择相同的字符
+                    sb.append(s.charAt(i));
+                    isvisit[i]=true;
+                    salute(s, index+1);
                     //状态回溯
-                    temp = temp.substring(0, temp.length()-1);
-                    visited[i] = false;
+                    sb.deleteCharAt(sb.length()-1);
+                    isvisit[i]=false;
                 }
             }
         }
     }
+
 }
 //leetcode submit region end(Prohibit modification and deletion)
 

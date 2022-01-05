@@ -31,7 +31,7 @@
 //
 // 注意：本题与主站 226 题相同：https://leetcode-cn.com/problems/invert-binary-tree/ 
 // Related Topics 树 深度优先搜索 广度优先搜索 二叉树 
-// 👍 187 👎 0
+// 👍 192 👎 0
 
 
 package leetcode.editor.cn;
@@ -51,15 +51,13 @@ class Solution {
         if (root == null){
             return root;
         }
-
+        mirrorTree(root.left);
+        mirrorTree(root.right);
         TreeNode temp = root.left;
         root.left = root.right;
         root.right = temp;
-        mirrorTree(root.left);
-        mirrorTree(root.right);
         return root;
     }
-
 }
 //leetcode submit region end(Prohibit modification and deletion)
 

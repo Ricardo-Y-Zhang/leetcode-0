@@ -17,7 +17,7 @@
 // 0 <= num < 231 
 // 
 // Related Topics 字符串 动态规划 
-// 👍 322 👎 0
+// 👍 332 👎 0
 
 
 package leetcode.editor.cn;
@@ -25,19 +25,19 @@ package leetcode.editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int translateNum(int num) {
-        String nums = String.valueOf(num);
-        int[] dp = new int[nums.length()+1];
+        String str = String.valueOf(num);
+        int[] dp = new int[str.length()+1];
         dp[0]=1;
         dp[1]=1;
-        for (int i = 1; i < nums.length(); i++) {
-            int temp = Integer.parseInt(nums.substring(i-1, i+1));
+        for (int i = 2; i < dp.length; i++) {
+            int temp = Integer.parseInt(str.substring(i-2, i));
             if (temp >= 10 && temp <= 25){
-                dp[i+1] = dp[i] + dp[i-1];
+                dp[i]=dp[i-1]+dp[i-2];
             }else{
-                dp[i+1] = dp[i];
+                dp[i]=dp[i-1];
             }
         }
-        return dp[nums.length()];
+        return dp[str.length()];
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

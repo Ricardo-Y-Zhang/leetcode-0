@@ -26,45 +26,42 @@
 //
 // 注意：本题与主站 155 题相同：https://leetcode-cn.com/problems/min-stack/ 
 // Related Topics 栈 设计 
-// 👍 214 👎 0
+// 👍 233 👎 0
 
 
 package leetcode.editor.cn;
 
-import java.util.Stack;
+import java.util.LinkedList;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class MinStack {
-    Stack<Integer> stack1, stack2;
-
+    LinkedList<Integer> stack1, stack2;
     /** initialize your data structure here. */
     public MinStack() {
-        stack1 = new Stack<>();
-        stack2 = new Stack<>();
+        stack1 = new LinkedList<>();
+        stack2 = new LinkedList<>();
     }
     
     public void push(int x) {
-        stack1.push(x);
-        if (stack2.isEmpty()) {
-            stack2.push(x);
+        stack1.offer(x);
+        if (stack2.isEmpty()){
+            stack2.offer(x);
         }else{
-            stack2.push(Math.min(x, stack2.peek()));
+            stack2.offer(Math.min(x, stack2.peekLast()));
         }
     }
     
     public void pop() {
-       if (!stack1.isEmpty()){
-           stack1.pop();
-           stack2.pop();
-       }
+        stack1.pollLast();
+        stack2.pollLast();
     }
     
     public int top() {
-        return stack1.peek();
+        return stack1.peekLast();
     }
     
     public int min() {
-        return stack2.peek();
+        return stack2.peekLast();
     }
 }
 

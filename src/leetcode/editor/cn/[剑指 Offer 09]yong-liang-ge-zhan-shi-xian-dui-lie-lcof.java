@@ -26,37 +26,36 @@
 // 最多会对 appendTail、deleteHead 进行 10000 次调用 
 // 
 // Related Topics 栈 设计 队列 
-// 👍 343 👎 0
+// 👍 365 👎 0
 
 
 package leetcode.editor.cn;
 
-import java.util.Stack;
+import java.util.LinkedList;
+
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class CQueue {
-    Stack<Integer> stack1, stack2;
+    LinkedList<Integer> stack1, stack2;
     public CQueue() {
-        stack1 = new Stack<>();
-        stack2 = new Stack<>();
+        stack1 = new LinkedList<>();
+        stack2 = new LinkedList<>();
     }
     
     public void appendTail(int value) {
-        stack1.add(value);
+        stack1.offer(value);
     }
     
     public int deleteHead() {
-        if (stack1.isEmpty() && stack2.isEmpty()) {
-            return -1;
-        }
-
-        if (stack2.isEmpty()) {
-            while (!stack1.isEmpty()) {
-                stack2.push(stack1.pop());
+        if (stack2.isEmpty()){
+            while (!stack1.isEmpty()){
+                stack2.offer(stack1.pollLast());
             }
         }
-
-        return stack2.pop();
+        if (stack2.isEmpty()){
+            return -1;
+        }
+        return stack2.pollLast();
     }
 }
 

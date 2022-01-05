@@ -17,7 +17,7 @@
 //
 // 注意：本题与主站 206 题相同：https://leetcode-cn.com/problems/reverse-linked-list/ 
 // Related Topics 递归 链表 
-// 👍 323 👎 0
+// 👍 336 👎 0
 
 
 package leetcode.editor.cn;
@@ -33,17 +33,21 @@ package leetcode.editor.cn;
  */
 class Solution {
     public ListNode reverseList(ListNode head) {
+        if (head == null || head.next == null){
+            return head;
+        }
+        //虚拟头节点
         ListNode vhead = new ListNode();
         vhead.next = null;
 
-        while (head != null) {
-            ListNode temp = head;
-            head = head.next;
-
+        //头插法
+        ListNode temp = head;
+        while (temp != null){
+            ListNode next = temp.next;
             temp.next = vhead.next;
             vhead.next = temp;
+            temp = next;
         }
-
         return vhead.next;
     }
 }

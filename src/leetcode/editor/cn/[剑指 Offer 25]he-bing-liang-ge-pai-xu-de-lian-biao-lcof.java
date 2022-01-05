@@ -11,7 +11,7 @@
 //
 // 注意：本题与主站 21 题相同：https://leetcode-cn.com/problems/merge-two-sorted-lists/ 
 // Related Topics 递归 链表 
-// 👍 182 👎 0
+// 👍 189 👎 0
 
 
 package leetcode.editor.cn;
@@ -27,27 +27,23 @@ package leetcode.editor.cn;
  */
 class Solution {
     public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
-        ListNode vhead;
-        vhead = new ListNode();
-        vhead.next = null;
-        ListNode tail = vhead;
-        while (l1 != null && l2 != null){
-            if (l1.val < l2.val){
-                tail.next = l1;
-                tail = tail.next;
-                l1 = l1.next;
+        ListNode temp1 = l1, temp2 = l2, vhead = new ListNode(), tail = vhead;
+        while (temp1 != null && temp2 != null){
+            if (temp1.val <= temp2.val){
+                tail.next=temp1;
+                tail=tail.next;
+                temp1=temp1.next;
             }else{
-                tail.next = l2;
-                tail = tail.next;
-                l2 = l2.next;
+                tail.next=temp2;
+                tail=tail.next;
+                temp2=temp2.next;
             }
         }
-        if (l1 != null){
-            tail.next = l1;
-        }else if (l2 != null){
-            tail.next = l2;
-        }else{
-            tail.next = null;
+        if (temp1 != null){
+            tail.next=temp1;
+        }
+        if (temp2 != null){
+            tail.next=temp2;
         }
         return vhead.next;
     }

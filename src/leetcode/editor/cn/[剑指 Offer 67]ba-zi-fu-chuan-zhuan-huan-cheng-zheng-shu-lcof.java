@@ -58,7 +58,7 @@
 //
 // 注意：本题与主站 8 题相同：https://leetcode-cn.com/problems/string-to-integer-atoi/ 
 // Related Topics 字符串 
-// 👍 120 👎 0
+// 👍 125 👎 0
 
 
 package leetcode.editor.cn;
@@ -66,38 +66,34 @@ package leetcode.editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int strToInt(String str) {
-        int int_max = (1<<31)-1, int_min = -(1<<31);
-        str = str.trim();//去除空格
-        long res = 0;
-        boolean flag = false;
+        int int_max = (1 << 31)-1, int_min = (-1<<31);
+        str = str.trim();
         if (str.length() == 0){
             return 0;
         }
-        if (str.charAt(0) == '-'){//正负
-            flag = true;
-        }
-        if (str.charAt(0) == '+' || str.charAt(0) == '-'){//去除正负号
-            str = str.substring(1);
-        }
-        for (int i = 0; i < str.length(); i++) {
-            char ch = str.charAt(i);
-            if (ch >= '0' && ch <= '9'){
-                res = res * 10 + ch-'0';
-            }else {//不是数字
+        //判断正负，并去除符号
+        boolean isPos = true;
+        if (str.charAt(0) == '-') isPos = false;
+        if (str.charAt(0) == '+' || str.charAt(0) == '-') str = str.substring(1);
+
+        int i = 0;
+        long res = 0;
+        while (i<str.length()){
+            if (str.charAt(i)>= '0' && str.charAt(i)<='9'){
+                res = res * 10 + str.charAt(i)-'0';
+                if (isPos && res > int_max){
+                    return int_max;
+                }
+                if (!isPos &&(-res) < int_min){
+                    return int_min;
+                }
+                i++;
+            }else{
                 break;
             }
-            if (res > (long)int_max + 1){//越界
-                break;
-            }
         }
-        if (flag == true){
+        if (!isPos){
             res *= -1;
-        }
-        if (res > int_max){
-            return int_max;
-        }
-        if (res < int_min){
-            return int_min;
         }
         return (int)res;
     }

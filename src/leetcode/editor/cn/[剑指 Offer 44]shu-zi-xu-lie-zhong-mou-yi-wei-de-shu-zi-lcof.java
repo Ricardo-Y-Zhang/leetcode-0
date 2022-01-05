@@ -26,7 +26,7 @@
 //
 // 注意：本题与主站 400 题相同：https://leetcode-cn.com/problems/nth-digit/ 
 // Related Topics 数学 二分查找 
-// 👍 182 👎 0
+// 👍 187 👎 0
 
 
 package leetcode.editor.cn;
@@ -35,18 +35,15 @@ package leetcode.editor.cn;
 class Solution {
     public int findNthDigit(int n) {
         int digit = 1;
-        long start = 1;
-        long count = 9;
+        long start = 1, count = 9;
         while (n > count){
-            n -= count;
-            start *= 10;
+            n-=count;
             digit++;
-            count = start*digit*9;
+            start *= 10;
+            count = digit * start * 9;
         }
-
-        //确定数位所在的数字
-        long num = start + (n-1)/digit;
-        String str = String.valueOf(num);
+        long target = (n-1)/digit+start;
+        String str = String.valueOf(target);
         return str.charAt((n-1)%digit)-'0';
     }
 }

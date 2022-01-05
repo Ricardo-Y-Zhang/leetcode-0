@@ -18,7 +18,7 @@
 // 0 <= nums[i] <= 10000 
 // 
 // Related Topics 数组 双指针 排序 
-// 👍 173 👎 0
+// 👍 176 👎 0
 
 
 package leetcode.editor.cn;
@@ -26,23 +26,18 @@ package leetcode.editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int[] exchange(int[] nums) {
-        int even = 0, odd = 0, n = nums.length;
-        while (even < n && odd < n){
-            while (even < n && nums[even] % 2 == 1){
-                even++;
+        int left = 0, right = nums.length-1;
+        while (left < right){
+            while (left < right && nums[left]%2!=0){//找到第一个偶数
+                left++;
             }
-            while (odd < n && nums[odd] % 2 == 0){
-                odd++;
+            while (left < right && nums[right]%2 == 0){//找到第一个奇数
+                right--;
             }
-            if (odd == n || even == n){
-                break;
-            }
-            if (even < odd){
-                int temp = nums[even];
-                nums[even] = nums[odd];
-                nums[odd] = temp;
-            }else{
-                odd = even + 1;
+            if (left < right){//交换奇偶数
+                int temp = nums[left];
+                nums[left] = nums[right];
+                nums[right] = temp;
             }
         }
         return nums;

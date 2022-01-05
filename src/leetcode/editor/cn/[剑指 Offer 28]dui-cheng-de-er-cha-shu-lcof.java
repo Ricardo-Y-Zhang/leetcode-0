@@ -36,7 +36,7 @@
 //
 // 注意：本题与主站 101 题相同：https://leetcode-cn.com/problems/symmetric-tree/ 
 // Related Topics 树 深度优先搜索 广度优先搜索 二叉树 
-// 👍 254 👎 0
+// 👍 265 👎 0
 
 
 package leetcode.editor.cn;
@@ -58,16 +58,14 @@ class Solution {
         }
         return judge(root.left, root.right);
     }
-
     public boolean judge(TreeNode root1, TreeNode root2){
-        if (root1 == null && root2 == null){
+        if (root1 == root2){//均为null
             return true;
         }
-        if (root1 == null || root2 == null){
+        if (root1 == null || root2 == null){//只有一个为null
             return false;
         }
-
-        return root1.val == root2.val && judge(root1.left, root2.right) && judge(root1.right, root2.left);
+        return root1.val == root2.val&&judge(root1.left, root2.right)&&judge(root1.right, root2.left);
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

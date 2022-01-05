@@ -13,53 +13,47 @@
 //
 // 0 <= 数组长度 <= 50000 
 // Related Topics 树状数组 线段树 数组 二分查找 分治 有序集合 归并排序 
-// 👍 559 👎 0
+// 👍 579 👎 0
 
 
 package leetcode.editor.cn;
 
+
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
+    int[] temp;
+    int res = 0;
     public int reversePairs(int[] nums) {
-        int[] temp = new int[nums.length];
-        return sort(nums, 0, nums.length-1, temp);
+        temp = new int[nums.length];
+        sort(nums, 0, nums.length-1);
+        return res;
     }
-
-    public int sort(int[] arr, int left, int right, int[] temp){
-        if (left >= right){//单个元素
-            return 0;
+    public void sort(int[] nums, int left, int right){
+        if (left >= right){
+            return;
         }
-        int mid = (left+right)/2;
-        int lres = sort(arr, left, mid, temp);//继续划分左半数组
-        int rres = sort(arr, mid+1, right, temp);//划分右半数组
-
-        //合并
-        int index = left, i = left, j = mid+1, res = 0;
+        int mid = left +(right-left)/2;
+        sort(nums, left, mid);
+        sort(nums, mid+1, right);
+        int i = left, j = mid + 1, index = left;
         while (i <= mid && j <= right){
-            if (arr[i] <= arr[j]){
-                temp[index++] = arr[i++];
+            if (nums[i] <= nums[j]){
+                temp[index++]=nums[i++];
             }else{
-                temp[index++] = arr[j++];
-                //记录逆序对
-                res += mid-i+1;//mid-i+1即为左子数组当前剩余元素个数
+                res += mid-i+1;
+                temp[index++]=nums[j++];
             }
         }
         while (i <= mid){
-            temp[index++] = arr[i++];
+            temp[index++]=nums[i++];
         }
         while (j <= right){
-            temp[index++] = arr[j++];
+            temp[index++]=nums[j++];
         }
-
-        //元素拷贝到原数组中
-        while (left<=right){
-            arr[left] = temp[left];
-            left++;
+        for (int k = left; k <= right; k++) {
+            nums[k]=temp[k];
         }
-
-        return lres+rres+res;
     }
-
 }
 //leetcode submit region end(Prohibit modification and deletion)
 

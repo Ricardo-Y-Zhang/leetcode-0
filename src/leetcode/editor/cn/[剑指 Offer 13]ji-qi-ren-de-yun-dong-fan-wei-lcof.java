@@ -23,28 +23,50 @@
 // 0 <= k <= 20 
 // 
 // Related Topics 深度优先搜索 广度优先搜索 动态规划 
-// 👍 380 👎 0
+// 👍 396 👎 0
 
 
 package leetcode.editor.cn;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-
+    int m, n, k, res;
+    boolean[][] visited;
     public int movingCount(int m, int n, int k) {
-        return dfs(0, 0, m, n, k, new boolean[m][n]);
+        this.m = m;
+        this.n = n;
+        this.k = k;
+        visited = new boolean[m][n];
+        dfs(0, 0);
+        return res;
     }
-    int dfs(int i, int j, int m, int n, int k, boolean[][] visited){
-        if (i < 0 || i == m || j < 0 || j == n || visited[i][j] == true || !judge(i, j, k)){
-            return 0;
+    public void dfs(int i, int j){
+        if (i<0||i>=m||j<0||j>=n||visited[i][j]==true){
+            return;
         }
-        visited[i][j] = true;
-        return 1 + dfs(i-1, j, m, n, k, visited) + dfs(i+1, j, m, n, k, visited) + dfs(i, j-1, m, n, k, visited) + dfs(i, j+1, m, n, k, visited);
+        if (!judge(i, j)){
+            return;
+        }
+        res++;
+        visited[i][j]=true;
+        dfs(i-1, j);
+        dfs(i+1, j);
+        dfs(i, j-1);
+        dfs(i, j+1);
+    }
+    public boolean judge(int i, int j){
+        int res = 0;
+        while (i != 0){
+            res += i%10;
+            i/=10;
+        }
+        while (j != 0){
+            res += j%10;
+            j/=10;
+        }
+        return res<=k;
+    }
 
-    }
-    boolean judge(int m, int n, int k){
-        return (m % 10 + m/10%10 + n %10 + n/10%10) <= k;
-    }
 }
 //leetcode submit region end(Prohibit modification and deletion)
 

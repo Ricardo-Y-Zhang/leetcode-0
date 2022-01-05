@@ -38,7 +38,7 @@
 //
 // 注意：此题对比原题有改动 
 // Related Topics 双指针 字符串 
-// 👍 141 👎 0
+// 👍 146 👎 0
 
 
 package leetcode.editor.cn;
@@ -46,14 +46,17 @@ package leetcode.editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public String reverseWords(String s) {
-        String[] words = s.trim().split(" ");
         StringBuilder sb = new StringBuilder();
-        for (int i = words.length-1; i >= 0; i--){
-            if (!"".equals(words[i])){
-                sb.append(words[i]+" ");
+        String[] strs = s.split(" ");
+        for (int i = strs.length-1; i >= 0; i--) {
+            if (!"".equals(strs[i])){//空字符
+                if (sb.length()!=0){
+                    sb.append(" ");
+                }
+                sb.append(strs[i]);
             }
         }
-        return sb.toString().trim();
+        return sb.toString();
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

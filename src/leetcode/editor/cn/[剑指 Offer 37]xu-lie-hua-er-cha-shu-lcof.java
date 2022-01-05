@@ -20,17 +20,17 @@
 // 注意：本题与主站 297 题相同：https://leetcode-cn.com/problems/serialize-and-deserialize-b
 //inary-tree/ 
 // Related Topics 树 深度优先搜索 广度优先搜索 设计 字符串 二叉树 
-// 👍 247 👎 0
+// 👍 251 👎 0
 
 
 package leetcode.editor.cn;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 
-import java.util.ArrayList;
-import java.util.Arrays;
+
+
+
 import java.util.LinkedList;
-import java.util.Queue;
 
 /**
  * Definition for a binary tree node.
@@ -45,56 +45,59 @@ public class Codec {
 
     // Encodes a tree to a single string.
     public String serialize(TreeNode root) {
-        Queue<TreeNode> q = new LinkedList<TreeNode>();
-        q.add(root);
-        String res = "";
-        while (!q.isEmpty()){
-            TreeNode first = q.poll();
-            if (!"".equals(res)){
-                res += ",";
+        StringBuilder sb = new StringBuilder();
+        LinkedList<TreeNode> list = new LinkedList<TreeNode>();
+        list.offerLast(root);
+        while (!list.isEmpty()){
+            if (sb.length() != 0){
+                sb.append(",");
             }
-            if (first == null){
-                res += "null";
+            TreeNode first = list.pollFirst();
+            if (first==null){
+                sb.append("null");
             }else{
-                res += first.val;
-                q.add(first.left);
-                q.add(first.right);
+                sb.append(String.valueOf(first.val));
+                list.offerLast(first.left);
+                list.offerLast(first.right);
             }
         }
-        return res;
+        return sb.toString();
     }
 
     // Decodes your encoded data to tree.
     public TreeNode deserialize(String data) {
         String[] nodes = data.split(",");
-        ArrayList<TreeNode> list = new ArrayList<TreeNode>();
-        for (int i = 0; i < nodes.length; i++) {
-            if (nodes[i].equals("null")){
-                list.add(null);
-            }else{
-                list.add(new TreeNode(Integer.parseInt(nodes[i])));
-            }
+        if (nodes.length == 1){
+            return null;
         }
-        ArrayList<TreeNode> temp = new ArrayList<TreeNode>();
-        TreeNode root = list.get(0);
-        list.remove(0);
-        temp.add(root);
+        LinkedList<TreeNode> list = new LinkedList<TreeNode>();
+        TreeNode root = new TreeNode(Integer.parseInt(nodes[0]));
+        list.add(root);
+        int i = 1;
         while (!list.isEmpty()){
-            TreeNode left = list.get(0);
-            list.remove(0);
-            TreeNode right = list.get(0);
-            list.remove(0);
-            TreeNode node = temp.get(0);
-            temp.remove(0);
-            node.left = left;
-            node.right = right;
-            if (left != null){
-                temp.add(left);
-            }
-            if (right != null){
-                temp.add(right);
+            TreeNode first = list.pollFirst();
+            if (first != null){
+                if ("null".equals(nodes[i])){
+                    first.left = null;
+                    i++;
+                } else {
+                    first.left = new TreeNode(Integer.parseInt(nodes[i++]));
+                }
+                if ("null".equals(nodes[i])){
+                    first.right = null;
+                    i++;
+                }else{
+                    first.right = new TreeNode(Integer.parseInt(nodes[i++]));
+                }
+                if (first.left != null){
+                    list.offerLast(first.left);
+                }
+                if (first.right != null){
+                    list.offerLast(first.right);
+                }
             }
         }
+
         return root;
     }
 

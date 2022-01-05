@@ -23,30 +23,34 @@
 //
 // 
 // Related Topics 位运算 数组 
-// 👍 497 👎 0
+// 👍 508 👎 0
 
+
+package leetcode.editor.cn;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int[] singleNumbers(int[] nums) {
-        int target = 0;
-        for (int temp : nums){//target = a^b
-            target ^= temp;
-        }
-        int diff = 1;
-        while ((diff & target) == 0){
-            diff <<= 1;
-        }
-        int[] res = new int[2];
+        int res = 0;
         for (int temp : nums){
-            if ((temp & diff) == 0){
-                res[0] ^= temp;
+            res ^= temp;
+        }
+        int diff = 1;//记录两个数的二进制表达式中该位上的值不同
+        while ((diff&res) == 0){
+            diff<<=1;
+        }
+        int num1 = 0, num2 = 0;
+        for (int temp : nums){
+            if ((temp&diff)==0){
+                num1 ^= temp;
             }else{
-                res[1] ^= temp;
+                num2 ^= temp;
             }
         }
-        return res;
-
+        int[] number = {num1,num2};
+        return number;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
+
+

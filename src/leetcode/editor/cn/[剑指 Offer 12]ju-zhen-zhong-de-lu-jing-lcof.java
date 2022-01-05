@@ -39,51 +39,48 @@
 //
 // 注意：本题与主站 79 题相同：https://leetcode-cn.com/problems/word-search/ 
 // Related Topics 数组 回溯 矩阵 
-// 👍 454 👎 0
+// 👍 465 👎 0
 
 
 package leetcode.editor.cn;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-    String words = "";
-    int length = 0;
-    boolean flag = false;
-    int[] x = {-1, 1, 0, 0};
-    int[] y = {0, 0, -1, 1};
-
+    int[][] plus = {{-1,1,0,0},{0,0,-1,1}};
+    boolean[][] visited;
     public boolean exist(char[][] board, String word) {
-        words = word;
-        length = words.length();
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[0].length; j++) {
-                if (flag == true){
-                    return flag;
-                }
-                if (board[i][j] == word.charAt(0)){
-                    bfs(board, i, j, new boolean[board.length][board[0].length], 0);
+        int n = board.length, m = board[0].length;
+        visited = new boolean[n][m];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (find(board, i, j, word, 0)){
+                    return true;
                 }
             }
         }
-        return flag;
+        return false;
     }
-    void bfs(char[][] board,int i, int j, boolean[][] visited, int index){
-        if (flag == true || index == words.length()-1){
-            flag = true;
-            return;
-        }
 
-        visited[i][j] = true;
-        for (int k = 0; k < 4; k++) {
-            int X = i + x[k], Y = j + y[k];
-            if (X >= 0 && X < board.length && Y >= 0 && Y < board[0].length){
-                if (visited[X][Y] == false && words.charAt(index+1) == board[X][Y]){
-                    bfs(board, X, Y, visited, index+1);
-                }
-            }
+    public boolean find(char[][] board , int i , int j, String word, int index){
+        //不满足要求的情况
+        if (i < 0 || i >= board.length || j < 0 || j >= board[0].length
+                || board[i][j] != word.charAt(index) || visited[i][j]==true){
+            return false;
         }
-        visited[i][j] = false;
+        //字符串匹配完毕
+        if (index == word.length()-1){
+            return true;
+        }
+        //搜索下一单元格
+        visited[i][j] = true;
+        boolean res = find(board, i-1, j, word, index+1)
+                || find(board, i+1, j, word, index+1)
+                || find(board, i, j-1, word, index+1)
+                || find(board, i, j+1, word, index+1);
+        visited[i][j]=false;
+        return res;
     }
+
 }
 //leetcode submit region end(Prohibit modification and deletion)
 

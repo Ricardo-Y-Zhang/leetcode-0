@@ -28,7 +28,7 @@
 // 1 <= m <= 10^6 
 // 
 // Related Topics 递归 数学 
-// 👍 483 👎 0
+// 👍 500 👎 0
 
 
 package leetcode.editor.cn;
@@ -36,11 +36,11 @@ package leetcode.editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int lastRemaining(int n, int m) {
-        int x = 0;
+        int res = 0;
         for (int i = 2; i <= n; i++) {
-            x = (x+m)%i;
+            res = (res + m)%i;//每次向前移动 m 个位置
         }
-        return x;
+        return res;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

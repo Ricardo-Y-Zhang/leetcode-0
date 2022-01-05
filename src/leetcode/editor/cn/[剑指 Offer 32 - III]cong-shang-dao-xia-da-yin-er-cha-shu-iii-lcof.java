@@ -29,7 +29,7 @@
 // 节点总数 <= 1000 
 // 
 // Related Topics 树 广度优先搜索 二叉树 
-// 👍 152 👎 0
+// 👍 156 👎 0
 
 
 package leetcode.editor.cn;
@@ -51,36 +51,37 @@ import java.util.List;
  */
 class Solution {
     public List<List<Integer>> levelOrder(TreeNode root) {
-        List<List<Integer>> res = new ArrayList<>();
+        List<List<Integer>> res = new ArrayList();
         if (root == null){
             return res;
         }
-        LinkedList<TreeNode> linkedList = new LinkedList<TreeNode>();
-        linkedList.add(root);
-        LinkedList<Integer> temp = new LinkedList<>();
-        TreeNode tail = root, nextTail = root;
-        int index = 0;
-        while (!linkedList.isEmpty()) {
-            TreeNode head = linkedList.poll();
-            if (index % 2 == 0){
-                temp.addLast(head.val);
-            }else{
-                temp.addFirst(head.val);
+        List<Integer> temp = new ArrayList<Integer>();
+        LinkedList<TreeNode> list = new LinkedList<TreeNode>();
+        list.offerLast(root);
+        TreeNode last = root;
+        int deepth = 0;
+        while (!list.isEmpty()){
+            TreeNode first = list.pollFirst();
+            temp.add(first.val);
+            if (first.left != null){
+                list.offerLast(first.left);
             }
-            if (head.left != null) {
-                linkedList.add(head.left);
-                nextTail = head.left;
+            if (first.right != null){
+                list.offerLast(first.right);
             }
-            if (head.right != null) {
-                linkedList.add(head.right);
-                nextTail = head.right;
-            }
-
-            if (tail == head) {
-                tail = nextTail;
-                res.add(new ArrayList<>(temp));
+            if (first == last){
+                if (deepth%2 == 0){
+                    res.add(new ArrayList<>(temp));
+                }else{
+                    ArrayList<Integer> rever = new ArrayList<>();
+                    for (int i = 0; i < temp.size(); i++) {
+                        rever.add(temp.get(temp.size()-i-1));
+                    }
+                    res.add(new ArrayList<>(rever));
+                }
                 temp.clear();
-                index++;
+                deepth++;
+                last = list.peekLast();
             }
         }
         return res;

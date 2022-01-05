@@ -20,24 +20,22 @@
 //
 // 0 <= s 的长度 <= 50000 
 // Related Topics 队列 哈希表 字符串 计数 
-// 👍 149 👎 0
+// 👍 157 👎 0
 
 
 package leetcode.editor.cn;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedHashMap;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public char firstUniqChar(String s) {
-        Map<Character, Integer> map = new HashMap<>();
-        for (int i = 0; i < s.length(); i++) {
-            char ch = s.charAt(i);
-            map.put(ch, map.getOrDefault(ch, 0) + 1);
+        LinkedHashMap<Character, Integer> map = new LinkedHashMap();
+        char[] chs = s.toCharArray();
+        for (char ch : chs){
+            map.put(ch, map.getOrDefault(ch, 0)+1);
         }
-        for (int i = 0; i < s.length(); i++) {
-            char ch = s.charAt(i);
+        for (char ch : map.keySet()){
             if (map.get(ch) == 1){
                 return ch;
             }

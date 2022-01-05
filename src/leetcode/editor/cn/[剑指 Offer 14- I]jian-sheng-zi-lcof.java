@@ -22,7 +22,7 @@
 //
 // 注意：本题与主站 343 题相同：https://leetcode-cn.com/problems/integer-break/ 
 // Related Topics 数学 动态规划 
-// 👍 322 👎 0
+// 👍 335 👎 0
 
 
 package leetcode.editor.cn;
@@ -30,21 +30,17 @@ package leetcode.editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int cuttingRope(int n) {
-        if (n == 2){
-            return 1;
+        //每一段剪成 3 时，乘积取得最大值
+        if (n <= 3){//特殊情况：2，3
+            return n-1;
         }
-        if (n == 3){
-            return 2;
-        }
-        int x = n % 3;//余下的最后一段长度
-        int num = n / 3;//长度为3的片段数
-        int res = 1;
-        if (x == 0){
-            res *= Math.pow(3, num);
-        }else if (x == 1){
-            res *= Math.pow(3, num-1) * 2 * 2;
+        int num = n/3, remain=n%3, res = 0;
+        if (remain == 0){
+            res = (int) Math.pow(3, num) ;
+        }else if (remain == 1){
+            res = (int) Math.pow(3, num-1) * 4;
         }else{
-            res *= Math.pow(3, num) * 2;
+            res = (int) Math.pow(3, num) * 2;
         }
         return res;
     }

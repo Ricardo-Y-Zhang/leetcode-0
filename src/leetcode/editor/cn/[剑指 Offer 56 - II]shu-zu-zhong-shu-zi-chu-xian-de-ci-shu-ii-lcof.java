@@ -24,29 +24,35 @@
 //
 // 
 // Related Topics 位运算 数组 
-// 👍 252 👎 0
+// 👍 259 👎 0
 
+
+package leetcode.editor.cn;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int singleNumber(int[] nums) {
-        int[] bit = new int[32];
+        int[] bits = new int[32];
         for (int temp : nums){
             int index = 0;
             while (temp != 0){
-                bit[index++] += temp & 1;
+                bits[index++] += temp & 1;
                 temp >>= 1;
             }
         }
-        for (int i = 0; i < 32; i++) {
-            bit[i] %= 3;
+        for (int i = 0; i < bits.length; i++) {
+            bits[i] %= 3;
         }
         int res = 0, temp = 1;
-        for (int i = 0; i < 32; i++) {
-            res |= temp * bit[i];
+        for (int i = 0; i < bits.length; i++) {
+            if (bits[i]!=0){
+                res += temp;
+            }
             temp <<= 1;
         }
         return res;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
+
+

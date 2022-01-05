@@ -43,7 +43,7 @@
 //
 // 
 // Related Topics 树 深度优先搜索 二叉树 
-// 👍 202 👎 0
+// 👍 211 👎 0
 
 
 package leetcode.editor.cn;
@@ -60,21 +60,22 @@ package leetcode.editor.cn;
  */
 class Solution {
     public boolean isBalanced(TreeNode root) {
-        return recur(root) != -1;
+        if (root == null){
+            return true;
+        }
+        int left = dfs(root.left);//左子树深度
+        int right = dfs(root.right);//右子树深度
+        return left!=-1&&right!=-1&&Math.abs(left-right)<=1;
     }
-    public int recur(TreeNode root) {
+    public int dfs(TreeNode root){//当前子树不是平衡树，返回-1；是平衡树，返回子树深度
         if (root == null){
             return 0;
         }
-        int left = recur(root.left);
-        if (left == -1){
+        int left = dfs(root.left), right = dfs(root.right);
+        if (left==-1||right==-1||Math.abs(left-right)>1){
             return -1;
         }
-        int right = recur(root.right);
-        if (right == -1){
-            return -1;
-        }
-        return Math.abs(left-right) <= 1 ? Math.max(left, right)+1 : -1;
+        return 1+Math.max(left, right);
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

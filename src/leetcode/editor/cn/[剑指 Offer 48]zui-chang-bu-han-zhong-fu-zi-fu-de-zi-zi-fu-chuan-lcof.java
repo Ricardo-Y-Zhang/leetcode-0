@@ -35,33 +35,29 @@
 // 注意：本题与主站 3 题相同：https://leetcode-cn.com/problems/longest-substring-without-rep
 //eating-characters/ 
 // Related Topics 哈希表 字符串 滑动窗口 
-// 👍 310 👎 0
+// 👍 324 👎 0
 
 
 package leetcode.editor.cn;
+
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int lengthOfLongestSubstring(String s) {
-        if (s.length() == 0){
-            return 0 ;
+        if (s.length()==0){
+            return 0;
         }
-        int[] dp = new int[s.length()];
-        dp[0] = 1;
+        int length = s.length();
+        int[] dp = new int[length];
+        dp[0]=1;
         int res = 1;
-        for (int i = 1; i < s.length(); i++) {
-            String sub = s.substring(i-dp[i-1], i);
-            int index = sub.indexOf(s.substring(i, i+1));
-            if (index == -1){
-                dp[i] = dp[i-1] + 1;
-            }else{
-                dp[i] = dp[i-1] - index;
-            }
-            res = Math.max(dp[i], res);
+        for (int i = 1; i < length; i++) {
+            String str = s.substring(i-dp[i-1],i);
+            dp[i]=dp[i-1]-str.indexOf(s.substring(i,i+1));
+            res = Math.max(dp[i],res);
         }
         return res;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
-
 
 

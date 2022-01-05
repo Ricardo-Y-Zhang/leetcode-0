@@ -25,7 +25,7 @@
 // 节点总数 <= 1000 
 // 
 // Related Topics 树 广度优先搜索 二叉树 
-// 👍 141 👎 0
+// 👍 143 👎 0
 
 
 package leetcode.editor.cn;
@@ -34,7 +34,6 @@ package leetcode.editor.cn;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Definition for a binary tree node.
@@ -50,17 +49,17 @@ class Solution {
         if (root == null){
             return new int[0];
         }
-        List<Integer> list = new ArrayList<>();
-        LinkedList<TreeNode> linkedList = new LinkedList<TreeNode>();
-        linkedList.add(root);
-        while (!linkedList.isEmpty()) {
-            TreeNode first = linkedList.pollFirst();
+        ArrayList<Integer> list = new ArrayList<>();
+        LinkedList<TreeNode> queue = new LinkedList<TreeNode>();
+        queue.offerLast(root);
+        while (!queue.isEmpty()){
+            TreeNode first = queue.pollFirst();
             list.add(first.val);
             if (first.left != null){
-                linkedList.add(first.left);
+                queue.offerLast(first.left);
             }
-            if (first.right != null) {
-                linkedList.add(first.right);
+            if (first.right != null){
+                queue.offerLast(first.right);
             }
         }
         int[] res = new int[list.size()];

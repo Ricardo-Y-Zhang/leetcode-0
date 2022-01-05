@@ -40,7 +40,7 @@
 // 注意：本题与主站 295 题相同：https://leetcode-cn.com/problems/find-median-from-data-strea
 //m/ 
 // Related Topics 设计 双指针 数据流 排序 堆（优先队列） 
-// 👍 205 👎 0
+// 👍 217 👎 0
 
 
 package leetcode.editor.cn;
@@ -50,49 +50,40 @@ import java.util.PriorityQueue;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class MedianFinder {
-
-    PriorityQueue<Integer> small ;//小根堆
-    PriorityQueue<Integer> big ;//大根堆
-
+    PriorityQueue<Integer> q1, q2;
     /** initialize your data structure here. */
     public MedianFinder() {
-        small = new PriorityQueue<Integer>();
-        big = new PriorityQueue<Integer>(new Comparator<Integer>(){
-            public int compare(Integer t1, Integer t2){
-                return t2-t1;
+        q1 = new PriorityQueue<>(new Comparator<Integer>() {//q1大根堆
+            @Override
+            public int compare(Integer integer, Integer t1) {
+                return t1-integer;
             }
-        }) ;
+        });
+        q2 = new PriorityQueue<>();//q1小根堆
     }
     
     public void addNum(int num) {
-        if (big.size() == 0){
-            big.offer(num);
-            return;
-        }
-
-        if (big.size() == small.size()){
-            if (num <= small.peek()){
-                big.offer(num);
-            }else{
-                big.offer(small.poll());
-                small.offer(num);
-            }
+        if (q1.size() == 0){
+            q1.offer(num);
         }else{
-            if (num >= big.peek()){
-                small.offer(num);
+            if (num<=q1.peek()){
+                q1.offer(num);
             }else{
-                small.offer(big.poll());
-                big.offer(num);
+                q2.offer(num);
+            }
+            if (q1.size() > q2.size()+1){
+                q2.offer(q1.poll());
+            }else if (q2.size() > q1.size()){
+                q1.offer(q2.poll());
             }
         }
     }
     
     public double findMedian() {
-        if (big.size() == small.size()){
-            return ((double)big.peek()+small.peek())/2;
-        }else{
-            return (double)big.peek();
+        if (q1.size() == q2.size()){
+            return ((double) q1.peek()+q2.peek())/2;
         }
+        return q1.peek();
     }
 }
 

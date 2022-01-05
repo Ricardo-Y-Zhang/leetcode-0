@@ -47,8 +47,10 @@
 //
 // 注意：本题与主站 191 题相同：https://leetcode-cn.com/problems/number-of-1-bits/ 
 // Related Topics 位运算 
-// 👍 196 👎 0
+// 👍 203 👎 0
 
+
+package leetcode.editor.cn;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 public class Solution {
@@ -56,10 +58,12 @@ public class Solution {
     public int hammingWeight(int n) {
         int res = 0;
         while (n != 0){
-            n &= n-1;
-            res++;
+            res += n & 1;
+            n >>>= 1;
         }
         return res;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
+
+

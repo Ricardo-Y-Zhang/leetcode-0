@@ -58,7 +58,7 @@
 //ts/ 
 // 
 // Related Topics 哈希表 链表 双指针 
-// 👍 383 👎 0
+// 👍 397 👎 0
 
 
 package leetcode.editor.cn;
@@ -77,23 +77,20 @@ package leetcode.editor.cn;
  */
 public class Solution {
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-        if (headA == null || headB == null){
-            return null;
-        }
-        ListNode node1 = headA, node2 = headB;
-        while (node1 != node2){
-            if (node1 == null){
-                node1 = headB;
+        ListNode temp1 = headA, temp2 = headB;
+        while (temp1 != temp2){
+            if (temp1 == null){
+                temp1 = headB;
             }else{
-                node1 = node1.next;
+                temp1 = temp1.next;
             }
-            if (node2 == null){
-                node2 = headA;
+            if (temp2 == null){
+                temp2 = headA;
             }else{
-                node2 = node2.next;
+                temp2 = temp2.next;
             }
         }
-        return node1;
+        return temp1;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

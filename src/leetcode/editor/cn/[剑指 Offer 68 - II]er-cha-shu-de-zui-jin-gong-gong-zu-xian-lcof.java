@@ -35,7 +35,7 @@
 // 注意：本题与主站 236 题相同：https://leetcode-cn.com/problems/lowest-common-ancestor-of-a
 //-binary-tree/ 
 // Related Topics 树 深度优先搜索 二叉树 
-// 👍 342 👎 0
+// 👍 354 👎 0
 
 
 package leetcode.editor.cn;
@@ -52,19 +52,18 @@ package leetcode.editor.cn;
  */
 class Solution {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if (root == p || root == q){//遇到p, q返回
-            return root;
-        }
         if (root == null){
             return null;
         }
-
+        if (root == p || root == q){
+            return root;
+        }
         TreeNode left = lowestCommonAncestor(root.left, p, q);
         TreeNode right = lowestCommonAncestor(root.right, p, q);
-
-        if (left == null) return right;
-        if (right == null) return left;
-        return root;
+        if (left != null && right != null){
+            return root;
+        }
+        return left != null? left : right;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

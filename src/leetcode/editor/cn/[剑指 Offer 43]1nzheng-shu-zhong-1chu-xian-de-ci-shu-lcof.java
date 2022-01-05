@@ -27,7 +27,7 @@
 //
 // 注意：本题与主站 233 题相同：https://leetcode-cn.com/problems/number-of-digit-one/ 
 // Related Topics 递归 数学 动态规划 
-// 👍 250 👎 0
+// 👍 260 👎 0
 
 
 package leetcode.editor.cn;
@@ -35,24 +35,15 @@ package leetcode.editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int countDigitOne(int n) {
-        int res = 0, tempn = n;
-        int digit = 1;
-        int high = n/10, cur = n%10, low=0;
-        while (high != 0 || cur != 0){
-            if (cur == 0){//当前位 = 0
-                res += high * digit;
-            }else if (cur == 1){//当前位 = 1
-                res += high * digit + low + 1;
-            }else{// 2~9
-                res += (high+1) * digit;
+        int start = 1, part = 1, res = 0;
+        while (n >= start){
+            if (n >= 10 * start){
+                res = res * 9 + part;
+            }else if (n >= start){
+                res += part;
+                res += n / ;
             }
-
-            low += cur * digit;
-            cur = high % 10;
-            high /= 10;
-            digit *= 10;
         }
-        return res;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

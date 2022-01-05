@@ -26,36 +26,40 @@
 //
 // 
 // Related Topics 数学 双指针 枚举 
-// 👍 343 👎 0
+// 👍 353 👎 0
 
 
 package leetcode.editor.cn;
 
 import java.util.ArrayList;
 
+
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int[][] findContinuousSequence(int target) {
-        ArrayList<int[]> list = new ArrayList();
-        int i = 1, j = 2, sum = 3;
-        while (i < j){
+        ArrayList<int[]> res = new ArrayList();
+
+        int left = 1, right = 2;
+
+        int sum = left + right;
+        while (left < target && right < target){
             if (sum == target){
-                int[] temp = new int[j-i+1];
-                for(int k = i; k <= j; k++){
-                    temp[k-i] = k;
+                int[] temp = new int[right-left+1];
+                for (int i = left; i <= right; i++) {
+                    temp[i-left]=i;
                 }
-                list.add(temp);
-                sum -= i;
-                i++;
-            }else if (sum < target){
-                j++;
-                sum += j;
-            }else{
-                sum -= i;
-                i++;
+                res.add(temp);
+                right++;
+                sum += right;
+            }else if (sum < target){//右指针右移
+                right++;
+                sum += right;
+            }else{//左指针右移
+                sum -= left;
+                left++;
             }
         }
-        return list.toArray(new int[0][]);
+        return res.toArray(new int[0][]);
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

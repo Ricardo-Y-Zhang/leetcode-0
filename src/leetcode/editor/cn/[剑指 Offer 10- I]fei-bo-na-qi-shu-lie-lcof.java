@@ -32,7 +32,7 @@
 // 0 <= n <= 100 
 // 
 // Related Topics 记忆化搜索 数学 动态规划 
-// 👍 255 👎 0
+// 👍 266 👎 0
 
 
 package leetcode.editor.cn;
@@ -40,16 +40,15 @@ package leetcode.editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int fib(int n) {
-        if (n == 0){
-            return 0;
+        if (n < 2){
+            return n;
         }
-        int temp = (int)(1e9 + 7);
         int[] dp = new int[n+1];
-        dp[0]=0;
-        dp[1]=1;
-        for (int i = 2; i <= n; i++) {
-            dp[i] = (dp[i-1]%temp + dp[i-2]%temp)%temp;
-        }9
+        dp[0] = 0;
+        dp[1] = 1;
+        for (int i = 2; i < n+1; i++) {
+            dp[i] =(dp[i-1]+dp[i-2])%(int)(1e9+7);
+        }
         return dp[n];
     }
 }

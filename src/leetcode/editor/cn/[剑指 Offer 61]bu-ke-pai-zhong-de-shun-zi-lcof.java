@@ -25,41 +25,29 @@
 //
 // 数组的数取值为 [0, 13] . 
 // Related Topics 数组 排序 
-// 👍 176 👎 0
+// 👍 183 👎 0
 
 
 package leetcode.editor.cn;
 
 import java.util.Arrays;
-import java.util.HashSet;
+
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public boolean isStraight(int[] nums) {
-        HashSet<Integer> set = new HashSet<>();
-        int num = 0;//记录大小王的个数
-        int min = 20, max = 0;//记录大小王以外的最小和最大的数
-        for(int temp : nums){
-            if (temp == 0){
-                num++;
-            }else{
-                set.add(temp);
-                min = Math.min(min, temp);
-                max = Math.max(max, temp);
+        int min = 20;
+        Arrays.sort(nums);
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] != 0){
+                min = Math.min(nums[i],min);
+                if (i!=0&&nums[i]==nums[i-1]){
+                    return false;
+                }
             }
         }
 
-        //有重复卡牌
-        if (set.size() != 5-num){
-            return false;
-        }
-
-        //无法组成顺子
-        if (max - min > 4){
-            return false;
-        }
-
-        return true;
+        return nums[4]-min<=4;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

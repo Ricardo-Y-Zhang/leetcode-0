@@ -15,7 +15,7 @@
 // n 为正整数 
 // 
 // Related Topics 数组 数学 
-// 👍 163 👎 0
+// 👍 170 👎 0
 
 
 package leetcode.editor.cn;
@@ -23,13 +23,12 @@ package leetcode.editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int[] printNumbers(int n) {
-        int max = (int)Math.pow(10, n);
-        int[] res = new int[max-1];
+        int num = (int)Math.pow(10, n);
+        int[] res = new int[num-1];
         for (int i = 0; i < res.length; i++) {
-            res[i] = i+1;
+            res[i]=i+1;
         }
         return res;
-
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

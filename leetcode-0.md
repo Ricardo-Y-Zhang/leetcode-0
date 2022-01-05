@@ -1135,6 +1135,74 @@ class Solution {
 
 
 
+### 246/630. 课程表 III
+
+#### （1）题目
+
+这里有 n 门不同的在线课程，按从 1 到 n 编号。给你一个数组 courses ，其中 courses[i] = [durationi, lastDayi] 表示第 i 门课将会 持续 上 durationi 天课，并且必须在不晚于 lastDayi 的时候完成。
+
+你的学期从第 1 天开始。且不能同时修读两门及两门以上的课程。
+
+返回你最多可以修读的课程数目。
+
+
+
+#### （2）思路
+
+* 根据课程的最晚结束时间即 courses[i] [1] 从小到大对 courses 排序，维护一个总时长 sum
+* 贪心策略：
+  * 学习该课程后，满足最晚结束时间要求，即 `sum+courses[i][0] <= courses[i][1]`，则学习该课程
+  * 学习该课程后，不满足最晚结束时间要求，即`sum+courses[i][0] > courses[i][1]`，从过往学习课程中，找出**持续时间最长的课程（可能是当前课程）**，进行**回退操作**
+
+
+
+#### （3）实现
+
+```java
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.PriorityQueue;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int scheduleCourse(int[][] courses) {
+        //courses按课程结束时间升序排列
+        Arrays.sort(courses, new Comparator<int[]>(){
+            public int compare(int[] ints1, int[] ints2){
+                return Integer.compare(ints1[1], ints2[1]);
+            }
+        });
+
+        //优先队列，大根堆，记录课程持续时间
+        PriorityQueue<Integer> queue = new PriorityQueue<>(new Comparator<Integer>(){
+
+            @Override
+            public int compare(Integer integer, Integer t1) {
+                return t1-integer;
+            }
+        });
+        int sum = 0;
+        for (int i = 0; i < courses.length; i++) {
+            sum += courses[i][0];
+            queue.offer(courses[i][0]);
+            if (sum>courses[i][1]){
+                sum -= queue.poll();//回退操作
+            }
+        }
+
+        return queue.size();
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+
+```
+
+
+
+
+
+
+
 ## 三、位运算
 
 
@@ -3400,6 +3468,123 @@ class Solution {
 
 
 
+### 253/1609. 奇偶树
+
+#### （1）题目
+
+如果一棵二叉树满足下述几个条件，则可以称为 奇偶树 ：
+
+二叉树根节点所在层下标为 0 ，根的子节点所在层下标为 1 ，根的孙节点所在层下标为 2 ，依此类推。
+偶数下标 层上的所有节点的值都是 奇 整数，从左到右按顺序 严格递增
+奇数下标 层上的所有节点的值都是 偶 整数，从左到右按顺序 严格递减
+给你二叉树的根节点，如果二叉树为 奇偶树 ，则返回 true ，否则返回 false 。
+
+
+
+#### （2）思路
+
+* 层序遍历，判断每层节点是否满足要求
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+
+
+import java.util.LinkedList;
+import java.util.List;
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public boolean isEvenOddTree(TreeNode root) {
+        if (root == null){
+            return true;
+        }
+        if (root.val % 2 == 0){
+            return false;
+        }
+        LinkedList<TreeNode> list = new LinkedList<>();
+        list.add(root);
+        TreeNode tail = root;
+        int deepth = 0;
+        while (!list.isEmpty()){
+            TreeNode first = list.pollFirst();
+            if (first.left != null){
+                list.offerLast(first.left);
+            }
+            if (first.right != null){
+                list.offerLast(first.right);
+            }
+            if (first==tail){
+                deepth++;
+                if (deepth%2==0){
+
+                    if (!judgeEven(list)) return false;
+                }else{
+                    if (!judgeOdd(list)) return false;
+                }
+                tail = list.peekLast();
+
+            }
+        }
+        return true;
+    }
+    public boolean judgeEven(List<TreeNode> list){
+        if (list.size()==0){
+            return true;
+        }
+        for (int i = 0; i < list.size(); i++) {//奇数，且严格递增
+            if (list.get(i).val % 2 == 0){
+                return false;
+            }
+            if (i > 0 && list.get(i).val <= list.get(i-1).val){
+                return false;
+            }
+
+        }
+        return true;
+    }
+    public boolean judgeOdd(List<TreeNode> list){
+        if (list.size()==0){
+            return true;
+        }
+
+        for (int i = 0; i < list.size() ; i++) {//偶数，且严格递减
+           if (list.get(i).val % 2 == 1){
+               return false;
+           }
+           if (i > 0 && list.get(i).val >= list.get(i-1).val){
+               return false;
+           }
+        }
+        return true;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
 
 
 ## 五、深度优先搜索
@@ -3525,6 +3710,87 @@ class Solution {
 * 将A<sub>i</sub> / B<sub>i</sub>看成 节点A<sub>i</sub>指向节点B<sub>i</sub>的有向边，值看为有向边的值，则其逆向边为值的倒数
 * C<sub>j</sub> / D<sub>j</sub> = C<sub>j</sub> → D<sub>j</sub>的路径中边的乘积，若两节点不连通，即答案无法确定
 * A<sub>i</sub> , B<sub>i</sub>由小写英文字母和数字组成，将a~z转化为0~25；edge [25] [25]存储有向边，同时将其逆向边也存储
+
+
+
+
+
+### 242/1034. 边界着色
+
+#### （1）题目
+
+给你一个大小为 m x n 的整数矩阵 grid ，表示一个网格。另给你三个整数 row、col 和 color 。网格中的每个值表示该位置处的网格块的颜色。
+
+两个网格块属于同一 连通分量 需满足下述全部条件：
+
+两个网格块颜色相同
+在上、下、左、右任意一个方向上相邻
+连通分量的边界 是指连通分量中满足下述条件之一的所有网格块：
+
+在上、下、左、右四个方向上与不属于同一连通分量的网格块相邻
+在网格的边界上（第一行/列或最后一行/列）
+请你使用指定颜色 color 为所有包含网格块 grid[row][col] 的 连通分量的边界 进行着色，并返回最终的网格 grid 。
+
+
+
+#### （2）思路
+
+* 即将grid[row] [col]的**连通分量内**，**与其他颜色相邻**的格子或在**矩阵边界**上的格子修改为color颜色
+* 深度优先搜索
+* 使用boolean[] [] visited记录当前单元格是否访问过
+* 对于当前单元格grid[i] [j]
+  * 修改visited[i] [j]
+  * 判断当前单元格是否需要修改颜色
+    * 矩阵边界
+    * 上下左右的4个单元格存在其他颜色
+  * 进入下一轮递归
+    * 递归访问**未访问过的颜色相同的上下左右4个单元格**
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    int[][] plus = {{-1,0,0,1},{0,-1,1,0}};
+    public int[][] colorBorder(int[][] grid, int row, int col, int color) {
+        boolean[][] visited = new boolean[grid.length][grid[0].length];//记录当前单元格是否访问过
+        dfs(visited, grid,row, col, grid[row][col], color);
+
+        return grid;
+    }
+
+    public void dfs(boolean[][] visited, int[][] grid, int i, int j,int target, int color){
+        visited[i][j] = true;
+
+        //判断是否需要修改grid[i][j]的颜色
+        if(i == 0 || i == grid.length-1 || j ==0 || j==grid[0].length-1){//矩阵边界
+            grid[i][j] = color;
+        }else{//判断是否与其他颜色相邻
+            for (int k = 0; k < 4; k++) {
+                int tempi = i+plus[0][k], tempj = j+plus[1][k];
+                if (tempi>=0&&tempi<grid.length&&tempj>=0&&tempj<grid[0].length&&!visited[tempi][tempj]&&grid[tempi][tempj]!=target){
+                    grid[i][j]=color;
+                    break;
+                }
+            }
+        }
+
+        //下一轮递归
+        for (int k = 0; k < 4; k++) {
+
+            int tempi = i+plus[0][k], tempj = j+plus[1][k];
+            if (tempi>=0&&tempi<grid.length&&tempj>=0&&tempj<grid[0].length&&!visited[tempi][tempj]&&grid[tempi][tempj]==target){
+
+                dfs(visited,grid, tempi, tempj, target, color);
+            }
+
+        }
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
 
 
 
@@ -9755,9 +10021,682 @@ class Solution {
 
 
 
+### 236/506. 相对名次
+
+#### （1）题目
+
+给你一个长度为 n 的整数数组 score ，其中 score[i] 是第 i 位运动员在比赛中的得分。所有得分都 互不相同 。
+
+运动员将根据得分 决定名次 ，其中名次第 1 的运动员得分最高，名次第 2 的运动员得分第 2 高，依此类推。运动员的名次决定了他们的获奖情况：
+
+* 名次第 1 的运动员获金牌 "Gold Medal" 。
+* 名次第 2 的运动员获银牌 "Silver Medal" 。
+* 名次第 3 的运动员获铜牌 "Bronze Medal" 。
+
+* 从名次第 4 到第 n 的运动员，只能获得他们的名次编号（即，名次第 x 的运动员获得编号 "x"）。
+
+使用长度为 n 的数组 answer 返回获奖，其中 answer[i] 是第 i 位运动员的获奖情况。
 
 
 
+#### （2）思路
+
+* 储存score数组的拷贝，并对其进行排序，存储**成绩与排名的映射**
+* 遍历score数组，从**映射中取得该成绩的排名** ：rank
+  * rank = 1~3，进行特殊处理
+  * rank > 3，将rank值转换为字符串进行储存
+
+
+
+#### （3）实现
+
+```java
+import java.util.Arrays;
+import java.util.HashMap;
+
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public String[] findRelativeRanks(int[] score) {
+        int[] clone = score.clone();
+        Arrays.sort(clone);
+        HashMap<Integer, String> map = new HashMap<>();
+        for (int i = 0; i < clone.length; i++) {
+            map.put(clone[i], String.valueOf(clone.length-i));
+        }
+        String[] res = new String[score.length];
+        for (int i = 0; i < score.length; i++) {
+            String rank = map.get(score[i]);
+            if (rank.equals("1")){
+                res[i] = "Gold Medal";
+            }else if (rank.equals("2")){
+                res[i] = "Silver Medal";
+            }else if (rank.equals("3")){
+                res[i] = "Bronze Medal";
+            }else res[i] = rank;
+
+        }
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 237/1005. K次取反后最大化的数组和
+
+#### （1）题目
+
+给你一个整数数组 nums 和一个整数 k ，按以下方法修改该数组：
+
+选择某个下标 i 并将 nums[i] 替换为 -nums[i] 。
+重复这个过程恰好 k 次。可以多次选择同一个下标 i 。
+
+以这种方式修改数组后，返回数组 可能的最大和 。
+
+
+
+#### （2）思路
+
+* 使用PriorityQueue构建小顶堆
+* 循环k次，每次将堆顶元素取出，并取反，将取反后的元素再加入堆中
+* 遍历堆，求取元素和
+
+
+
+#### （3）实现
+
+```java
+import java.util.PriorityQueue;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int largestSumAfterKNegations(int[] nums, int k) {
+        PriorityQueue<Integer> queue = new PriorityQueue<>();//默认小顶堆
+
+        int res = 0;
+        for (int temp : nums) {
+            queue.offer(temp);
+            res += temp;
+        }
+        for (int i = 0; i < k; i++) {
+            int temp = queue.poll();
+            queue.offer(-temp);
+            res -= 2*temp;
+        }
+
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 243/794. 有效的井字游戏
+
+#### （1）题目
+
+给你一个字符串数组 board 表示井字游戏的棋盘。当且仅当在井字游戏过程中，棋盘有可能达到 board 所显示的状态时，才返回 true 。
+
+井字游戏的棋盘是一个 3 x 3 数组，由字符 ' '，'X' 和 'O' 组成。字符 ' ' 代表一个空位。
+
+以下是井字游戏的规则：
+
+* 玩家轮流将字符放入空位（' '）中。
+* 玩家 1 总是放字符 'X' ，而玩家 2 总是放字符 'O' 。
+* 'X' 和 'O' 只允许放置在空位中，不允许对已放有字符的位置进行填充。
+* 当有 3 个相同（且非空）的字符填充任何行、列或对角线时，游戏结束。
+* 当所有位置非空时，也算为游戏结束。
+* 如果游戏结束，玩家不允许再放置字符。
+
+
+
+#### （2）思路
+
+* 按照游戏规则，以下情况不能出现
+  * 棋子数量不对：
+    * 玩家 1 的棋子数量少于玩家 2
+    * 玩家 1 的棋子数量 - 玩家 2 的棋子数量 >= 2
+  * 输赢状态不对：
+    * 玩家 1 和玩家 2 同时胜出
+    * 玩家 1 胜出，但玩家 1 和玩家 2 的棋子数量相同（玩家 1 胜出后，玩家 2 仍放置字符）
+    * 玩家 2 胜出，但玩家 1 和玩家 2 的棋子数量不同（玩家 2 胜出后，玩家 1 仍放置字符）
+* 算法流程：
+  * 将字符串数组转化为二维数组，并记录玩家 1 和玩家 2的棋子数量，即 "O" 和 "X"的数量num1, num2
+  * 判断num1, num2的数量是否满足规则
+  * 判断棋盘中玩家 1 和玩家 2 的胜出情况是否满足规则
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    int[][] game = new int[3][3];
+    public boolean validTicTacToe(String[] board) {
+        int num1 = 0, num2 = 0;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (board[i].charAt(j) == 'X'){
+                    game[i][j] = 1;//一号玩家
+                    num1++;
+                }else if (board[i].charAt(j) == 'O'){
+                    game[i][j] = 2;//二号玩家
+                    num2++;
+                }else{
+                    game[i][j] = 0;//空格子
+                }
+            }
+        }
+        if (num1 < num2 || num1 > num2+1){//一号玩家的棋子少或比二号玩家多下两次
+            return false;
+        }
+        boolean win1 = judge(1), win2 = judge(2);
+        if (win1&&win2){//一号玩家和二号玩家均赢
+            return false;
+        }
+        if (win2&&(num1!=num2)){//二号玩家赢但棋子数量不等
+            return false;
+        }
+        if (win1&&num1==num2){//一号玩家赢但棋子数量相等
+            return false;
+        }
+        return true;
+    }
+    public boolean judge(int x){//判断胜出情况
+        for (int i = 0; i < 3; i++) {
+            if (game[i][0] == x && game[i][1] == x && game[i][2] == x){
+                return true;
+            }
+            if (game[0][i] == x && game[1][i]==x && game[2][i]==x){
+                return true;
+            }
+        }
+        if (game[0][0]==x&&game[1][1]==x&&game[2][2]==x){
+            return true;
+        }
+        if (game[0][2]==x&&game[1][1]==x&&game[2][0]==x){
+            return true;
+        }
+        return false;
+    }
+
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 244/911. 在线选举
+
+#### （1）题目
+
+给你两个整数数组 persons 和 times 。在选举中，第 i 张票是在时刻为 times[i] 时投给候选人 persons[i] 的。
+
+对于发生在时刻 t 的每个查询，需要找出在 t 时刻在选举中领先的候选人的编号。
+
+在 t 时刻投出的选票也将被计入我们的查询之中。在平局的情况下，最近获得投票的候选人将会获胜。
+
+实现 TopVotedCandidate 类：
+
+* TopVotedCandidate(int[] persons, int[] times) 使用 persons 和 times 数组初始化对象。
+* int q(int t) 根据前面描述的规则，返回在时刻 t 在选举中领先的候选人的编号。
+
+
+
+#### （2）思路
+
+* 遍历persons数组和times数组，使用 max 记录**当前时间的得票最高的候选人的选票**
+* 使用LinkedHashMap<Integer, Integer> map **记录times数组内每个时间下得票最高的候选人**
+* int q(int t)：
+  * 二分法查找在 times 数组中最接近时间 t 且小于或等于 t 的元素数组 target
+  * 返回 map.get(target)
+
+
+
+#### （3）实现
+
+```java
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class TopVotedCandidate {
+
+    LinkedHashMap<Integer, Integer> cand;
+    Integer[] time;
+    public TopVotedCandidate(int[] persons, int[] times) {
+        HashMap<Integer, Integer> map = new HashMap<>();//记录每个候选者的得票数
+        cand = new LinkedHashMap<>();
+        int max = 0;//记录当前时间的最高票数
+        for (int i = 0; i < persons.length; i++) {
+            map.put(persons[i], map.getOrDefault(persons[i],0)+1);//更新得票数
+            int count = map.get(persons[i]);
+            if (count >= max){//当前时间下的最高票数变更
+                cand.put(times[i], persons[i]);//更新当前时间的得票最高的候选人
+                max = count;
+            }
+        }
+
+         time = cand.keySet().toArray(new Integer[0]);//获取变更了候选人的时间数组
+
+    }
+    
+    public int q(int t) {
+        int left = 0, right = time.length-1;
+        while (left < right){//二分法查找
+            int mid = (left+right+1)/2;//向上取整
+            if (time[mid]==t){
+                left=mid;
+                break;
+            }
+            if (time[mid]<t){
+                left=mid;
+            }else{
+                right=mid-1;
+            }
+        }
+        return cand.get(time[left]);
+    }
+}
+
+/**
+ * Your TopVotedCandidate object will be instantiated and called as such:
+ * TopVotedCandidate obj = new TopVotedCandidate(persons, times);
+ * int param_1 = obj.q(t);
+ */
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+### 245/807. 保持城市天际线
+
+#### （1）题目
+
+给你一座由 n x n 个街区组成的城市，每个街区都包含一座立方体建筑。给你一个下标从 0 开始的 n x n 整数矩阵 grid ，其中 grid[r][c] 表示坐落于 r 行 c 列的建筑物的 高度 。
+
+城市的 天际线 是从远处观察城市时，所有建筑物形成的外部轮廓。从东、南、西、北四个主要方向观测到的 天际线 可能不同。
+
+我们被允许为 任意数量的建筑物 的高度增加 任意增量（不同建筑物的增量可能不同） 。 高度为 0 的建筑物的高度也可以增加。然而，增加的建筑物高度 不能影响 从任何主要方向观察城市得到的 天际线 。
+
+在 不改变 从任何主要方向观测到的城市 天际线 的前提下，返回建筑物可以增加的 最大高度增量总和 。
+
+
+
+#### （2）思路
+
+* 题意即为对于二维数组中任意位置 **grid[i] [j]** ，其建筑高度**不能高于第 i 行的最高建筑和第 j 列的最高建筑**
+* 算法流程：
+  * 遍历二维数组，使用 row[i] 和  col[i] 分别记录第 i 行和第 i 列的**最高建筑高度**
+  * 再遍历二维数组，对于任意位置 grid[i] [j]，其能够增加的高度为：**min(row[i], col[j]) - grid[i] [j]**
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int maxIncreaseKeepingSkyline(int[][] grid) {
+        int n = grid.length;
+        int[] row = new int[n], col = new int[n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                row[i]=Math.max(row[i], grid[i][j]);//第 i 行中最高的建筑高度
+                col[i]=Math.max(col[i], grid[j][i]);//第 i 列中最高的建筑高度
+            }
+        }
+        int res = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                res += Math.min(row[i], col[j])-grid[i][j];
+            }
+        }
+        return res;
+    }
+
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 250/419. 甲板上的战舰
+
+#### （1）题目
+
+给你一个大小为 m x n 的矩阵 board 表示甲板，其中，每个单元格可以是一艘战舰 'X' 或者是一个空位 '.' ，返回在甲板 board 上放置的 战舰 的数量。
+
+战舰 只能水平或者垂直放置在 board 上。换句话说，战舰只能按 1 x k（1 行，k 列）或 k x 1（k 行，1 列）的形状建造，其中 k 可以是任意大小。两艘战舰之间至少有一个水平或垂直的空位分隔 （即没有相邻的战舰）。
+
+
+
+#### （2）思路
+
+* 从上至下从左至右遍历矩阵，res记录战舰数量
+  * 若单元格不为 'X'，跳过
+  * 若单元格为 'X'，判断其是不是战舰的第一个单元格
+    * 若是 (0, 0)，则必为该战舰的第一个单元格，res++
+    * 若是第一行的单元格，则判断其**左边**单元格是否为 'X'
+      * 左边单元格为 'X'，不是该战舰的第一个单元格
+      * 左边单元格不为 'X'，是该战舰的第一个单元格，res++
+    * 若是第一列的单元格，则判断其**上方**单元格是否为 'X'
+      * 上方单元格为 'X'，不是该战舰的第一个单元格
+      * 上方单元格不为 'X'，是该战舰的第一个单元格，res++
+    * 若是中间单元格，则判断其**左方和上方**的单元格是否为 'X'
+      * 左方和上方单元格**均不为 'X'**，是该战舰的第一个单元格，res++
+* 返回 res
+
+
+
+#### （3）实现
+
+```java
+class Solution {
+    public int countBattleships(char[][] board) {
+        int res = 0;
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                if (board[i][j]=='X'){
+                    if (i==0&&j==0){
+                        res++;
+                    }else if (i == 0 && board[i][j-1]!='X'){
+                        res++;
+                    }else if (j==0&&board[i-1][j]!='X'){
+                        res++;
+                    }else if (i!=0&&j!=0&&board[i-1][j]!='X'&&board[i][j-1]!='X'){
+                        res++;
+                    }
+                }
+            }
+        }
+        return res;
+    }
+}
+```
+
+
+
+
+
+### 251/997. 找到小镇的法官
+
+#### （1）题目
+
+在一个小镇里，按从 1 到 n 为 n 个人进行编号。传言称，这些人中有一个是小镇上的秘密法官。
+
+如果小镇的法官真的存在，那么：
+
+小镇的法官不相信任何人。
+每个人（除了小镇法官外）都信任小镇的法官。
+只有一个人同时满足条件 1 和条件 2 。
+给定数组 trust，该数组由信任对 trust[i] = [a, b] 组成，表示编号为 a 的人信任编号为 b 的人。
+
+如果小镇存在秘密法官并且可以确定他的身份，请返回该法官的编号。否则，返回 -1。
+
+
+
+#### （2）思路
+
+* 将 A 信任 B 记为 A 的出度为 1，B 的入度为 1
+* 遍历 trust 数组，统计每个人的入度 in 和出度 out
+* 法官的充分必要条件：
+  * 入度 in 为 n-1，即除自己外的人都信任他
+  * 出度 out 为 0，即自己不信任任何人
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int findJudge(int n, int[][] trust) {
+        int[] in = new int[n+1];
+        int[] out = new int[n+1];
+        for (int i = 0; i < trust.length; i++) {
+            int left = trust[i][0], right = trust[i][1];
+            in[right]++;
+            out[left]++;
+        }
+        for (int i = 1; i <= n; i++) {
+            if (in[i]==n-1&&out[i]==0){
+                return i;
+            }
+        }
+        return -1;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 254/475. 供暖器
+
+#### （1）题目
+
+冬季已经来临。 你的任务是设计一个有固定加热半径的供暖器向所有房屋供暖。
+
+在加热器的加热半径范围内的每个房屋都可以获得供暖。
+
+现在，给出位于一条水平线上的房屋 houses 和供暖器 heaters 的位置，请你找出并返回可以覆盖所有房屋的最小加热半径。
+
+说明：所有供暖器都遵循你的半径标准，加热的半径也一样。
+
+
+
+#### （2）思路
+
+* 二分查找
+* 将 houses 和 heaters 数组从小到大排序，求出最大的供暖器半径，即两个数组的最小值和最大值的差值
+* 二分查找最小的加热半径，即判断该加热半径是否能覆盖全部房屋
+  * 能覆盖所有房屋，记录当前加热半径，缩小加热半径，right = mid-1
+  * 不能覆盖所有房屋，增大加热半径，left = mid+1
+
+
+
+#### （3）实现
+
+```java
+import java.util.Arrays;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int findRadius(int[] houses, int[] heaters) {
+        Arrays.sort(houses);
+        Arrays.sort(heaters);
+        int max_length = Math.max(Math.abs(heaters[heaters.length-1]-houses[0]), Math.abs(houses[houses.length-1]-heaters[0]));
+        int res = max_length;
+        int left = 0, right = max_length;
+        while (left <= right){
+            int mid = left + (right-left)/2;
+            if (judge(houses, heaters, mid)){
+
+                res = mid;
+                right = mid-1;
+            }else{
+
+                left = mid + 1;
+            }
+        }
+        return res;
+
+    }
+    public boolean judge(int[] houses, int[] heaters, int length){//判断该加热半径能否覆盖所有房屋
+        int i = 0, j = 0;
+        while (i < houses.length){
+
+            int left = heaters[j]-length, right = heaters[j]+length;
+
+            if (houses[i]<left){
+                return false;
+            }else if (houses[i]>=left && houses[i]<=right){
+                i++;
+            }else {
+                j++;
+            }
+            if (j == heaters.length){
+                return false;
+            }
+        }
+        return true;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 256/825. 适龄的朋友
+
+#### （1）题目
+
+在社交媒体网站上有 n 个用户。给你一个整数数组 ages ，其中 ages[i] 是第 i 个用户的年龄。
+
+如果下述任意一个条件为真，那么用户 x 将不会向用户 y（x != y）发送好友请求：
+
+* age[y] <= 0.5 * age[x] + 7
+* age[y] > age[x]
+* age[y] > 100 && age[x] < 100
+  否则，x 将会向 y 发送一条好友请求。
+
+注意，如果 x 向 y 发送一条好友请求，y 不必也向 x 发送一条好友请求。另外，用户不会向自己发送好友请求。
+
+返回在该社交媒体网站上产生的好友请求总数。
+
+
+
+#### （2）思路
+
+* 对用户 x 和用户 y，需要满足以下全部条件
+  * age[y] > 0.5*age[x] + 7
+  * age[y] <= age[x]
+  * age[y] <= 100 || age[x] >= 100
+* 即满足 `(age[y] > 0.5*age[x] + 7) && (age[y] <= age[x]) && (age[y] <= 100 || age[x] >= 100)`
+* 双指针
+  * left 指向第一个 > 0.5*age[x] + 7 的 age[y] 的下标
+  * right 指向最后一个 <= age[x] 的 age[y] 的下标
+  * 每次循环，对于新的 age[x]，left和right指针右移，找到新的边界
+* 又 age[x] < 100时，由age[y] < = age[x]得，age[y] <= 100成立；故第三个条件恒成立
+* 对于 age[x]，找到其对应 age[y] 的左右边界，left 和 right
+  * left >= right时，存在对应 age[y]，元素个数为 **right-left**（因为该范围内**包含 age[x] 自身**）
+
+
+
+#### （3）实现
+
+```java
+import java.util.Arrays;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int numFriendRequests(int[] ages) {
+        Arrays.sort(ages);
+        int n = ages.length;
+        int left = 0, right = 0, res= 0;
+        for (int i = 0; i < n; i++) {
+            while (left < n && ages[left] <= 0.5*ages[i]+7){
+                left++;
+            }
+            while (right < n){
+                if (right < n-1 && ages[right+1] <= ages[i]){
+                    right++;
+                }else{
+                    break;
+                }
+            }
+
+            if (left <= right){
+                res += right-left;
+            }
+        }
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 257/846. 一手顺子
+
+#### （1）题目
+
+Alice 手中有一把牌，她想要重新排列这些牌，分成若干组，使每一组的牌数都是 groupSize ，并且由 groupSize 张连续的牌组成。
+
+给你一个整数数组 hand 其中 hand[i] 是写在第 i 张牌，和一个整数 groupSize 。如果她可能重新排列这些牌，返回 true ；否则，返回 false 。
+
+
+
+#### （2）思路
+
+* 若数组 hand 不能分为多个 groupSize，则返回false
+  * `hand.length % groupSize != 0`
+* 使用 HashMap<Integer, Integer> map 记录数组种元素出现的次数
+* 遍历数组 hand，当前下标为 i
+  * 若当前序列仍存在 hand[i]，则将 hand[i] 作为顺子的起点，移除该顺子中的元素，`map.getOrDefault(hand[i], 0) != 0`
+  * 将以 hand[i] 为起点的顺子元素移除序列
+    * 若 hand[i] + k 不存在，`map.getOrDefault(hand[i]+k, 0) == 0`，返回 false
+    * 若 **hand[i] +k** 存在，`map.getOrDefault(hand[i]+k, 0) != 0`，则移除出当前序列，`map.put(hand[i]+k, map.get(hand[i]+k)-1)`
+
+
+
+#### （3）实现
+
+```java
+import java.util.Arrays;
+import java.util.HashMap;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public boolean isNStraightHand(int[] hand, int groupSize) {
+        if (hand.length%groupSize != 0){
+            return false;
+        }
+        Arrays.sort(hand);
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int temp : hand){
+            map.put(temp, map.getOrDefault(temp, 0)+1);
+        }
+        for (int i = 0; i < hand.length; i++) {
+            if (map.get(hand[i]) != 0){
+                int start = hand[i];
+                for (int j = 0; j < groupSize; j++) {
+                    if (map.getOrDefault(start+j, 0)==0){
+                        return false;
+                    }
+                    map.put(start+j, map.get(start+j)-1);
+                }
+            }
+        }
+        return true;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+ 
 
 ## 十一、链表
 
@@ -10474,6 +11413,69 @@ class Solution {
 
 
 
+### 238/328. 奇偶链表
+
+#### （1）题目
+
+给定一个单链表，把所有的奇数节点和偶数节点分别排在一起。请注意，这里的奇数节点和偶数节点指的是节点编号的奇偶性，而不是节点的值的奇偶性。
+
+请尝试使用原地算法完成。你的算法的空间复杂度应为 O(1)，时间复杂度应为 O(nodes)，nodes 为节点总数。
+
+
+
+#### （2）思路
+
+* 维护奇偶两条链表，分别记录其头节点head1和head2，使用尾插法将奇偶节点分别插入两条链表尾部；并同时更新两链表的尾节点tail1和tail2
+* 合并链表，tail1.next = head2
+* 将偶链表的尾节点的next置为null，tail2.next = null
+* 返回头节点head1
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode oddEvenList(ListNode head) {
+        if (head == null || head.next == null){
+            return head;
+        }
+        ListNode head1 = head, head2 = head.next, temp = head.next.next;
+        head1.next = null;
+        head2.next = null;
+        ListNode tail1 = head1, tail2 = head2;
+        while (temp != null){
+            tail1.next = temp;
+            tail1 = temp;
+            if (temp.next != null){
+                tail2.next = temp.next;
+                tail2 = temp.next;
+            }else{
+                break;
+            }
+            temp = temp.next.next;
+        }
+        tail2.next = null;
+        tail1.next = head2;
+        return head;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
 
 
 ## 十二、字符串
@@ -10702,6 +11704,8 @@ class Solution {
 }
 //leetcode submit region end(Prohibit modification and deletion)
 ```
+
+
 
 
 
@@ -11650,6 +12654,310 @@ class Solution {
 
 
 
+### 239/383. 赎金信
+
+#### （1）题目
+
+为了不在赎金信中暴露字迹，从杂志上搜索各个需要的字母，组成单词来表达意思。
+
+给你一个赎金信 (ransomNote) 字符串和一个杂志(magazine)字符串，判断 ransomNote 能不能由 magazines 里面的字符构成。
+
+如果可以构成，返回 true ；否则返回 false 。
+
+magazine 中的每个字符只能在 ransomNote 中使用一次。
+
+
+
+#### （2）思路
+
+* 使用哈希表或HashMap记录magazine字符串中每个字符及其数量
+* 遍历ransomNote字符串，查看字符是否符合
+
+
+
+#### （3）实现
+
+```java
+import java.util.HashMap;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public boolean canConstruct(String ransomNote, String magazine) {
+        if (ransomNote.length() > magazine.length()){
+            return false;
+        }
+        HashMap<Character, Integer> map = new HashMap<>();
+        for (int i = 0; i < magazine.length(); i++){
+            char ch = magazine.charAt(i);
+            map.put(ch, map.getOrDefault(ch, 0)+1);
+        }
+        for (int i = 0; i < ransomNote.length(); i++) {
+            char ch = ransomNote.charAt(i);
+            if (map.getOrDefault(ch, 0) == 0){
+                return false;
+            }
+            map.put(ch, map.get(ch)-1);
+        }
+        return true;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 241/1816. 截断句子
+
+#### （1）题目
+
+句子 是一个单词列表，列表中的单词之间用单个空格隔开，且不存在前导或尾随空格。每个单词仅由大小写英文字母组成（不含标点符号）。
+
+例如，"Hello World"、"HELLO" 和 "hello world hello world" 都是句子。
+给你一个句子 s 和一个整数 k ，请你将 s 截断 ，使截断后的句子仅含 前 k 个单词。返回 截断 s 后得到的句子。
+
+
+
+#### （2）思路
+
+* 使用StringBuilder，s.split(" ")或记录空格的数量
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public String truncateSentence(String s, int k) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < s.length()&&k>0; i++) {
+            if (s.charAt(i) == ' '){
+                k--;
+            }
+            if (k!=0){
+                sb.append(s.charAt(i));
+            }
+        }
+        return sb.toString();
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 243/748. 最短补全词
+
+#### （1）题目
+
+给你一个字符串 licensePlate 和一个字符串数组 words ，请你找出并返回 words 中的 最短补全词 。
+
+补全词 是一个包含 licensePlate 中所有的字母的单词。在所有补全词中，最短的那个就是 最短补全词 。
+
+在匹配 licensePlate 中的字母时：
+
+* 忽略 licensePlate 中的 数字和空格 。
+* 不区分大小写。
+* 如果某个字母在 licensePlate 中出现不止一次，那么该字母在补全词中的出现次数应当一致或者更多。
+
+例如：licensePlate = "aBc 12c"，那么它的补全词应当包含字母 'a'、'b' （忽略大写）和两个 'c' 。可能的 补全词 有 "abccdef"、"caaacab" 以及 "cbca" 。
+
+请你找出并返回 words 中的 最短补全词 。题目数据保证一定存在一个最短补全词。当有多个单词都符合最短补全词的匹配条件时取 words 中 最靠前的 那个。
+
+
+
+#### （2）思路
+
+* 将字符串数组 words **按照字符串的长度排序**
+* 对 licensePlate 进行词频统计，先将 licensePlate 转换成小写字母，使用数组进行词频统计
+* 遍历字符串数组 words，进行词频统计，返回符合规则的字符串
+
+
+
+#### （3）实现
+
+```java
+import java.util.Arrays;
+import java.util.Comparator;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    int[] target = new int[26];
+    public String shortestCompletingWord(String licensePlate, String[] words) {
+        Arrays.sort(words, new Comparator<String>(){
+            public int compare(String s1, String s2){
+                return Integer.compare(s1.length(), s2.length());
+            }
+        });
+        licensePlate = licensePlate.toLowerCase();
+        for (int i = 0; i < licensePlate.length(); i++) {
+            char ch = licensePlate.charAt(i);
+            if (ch >= 'a' && ch <= 'z'){
+                target[ch-'a']++;
+            }
+        }
+        for (int i = 0; i < words.length; i++) {
+            if (judge(words[i])){
+                return words[i];
+            }
+        }
+        return "";
+    }
+    public boolean judge(String word){
+        int[] temp = new int[26];
+        for (int i = 0; i < word.length(); i++) {
+            char ch = word.charAt(i);
+            temp[ch-'a']++;
+        }
+        for (int i = 0; i < temp.length; i++) {
+            if (temp[i]<target[i]){
+                return false;
+            }
+        }
+        return true;
+    }
+
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 245/709. 转换成小写字母
+
+#### （1）题目
+
+给你一个字符串 `s` ，将该字符串中的大写字母转换成相同的小写字母，返回新的字符串。
+
+
+
+#### （2）思路
+
+* 使用库函数或StringBuilder
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public String toLowerCase(String s) {
+        StringBuilder sb = new StringBuilder();
+        char[] chs = s.toCharArray();
+        for (char ch : chs){
+            if (ch>='A'&&ch<='Z'){
+                sb.append((char)(ch-'A'+'a'));
+            }else{
+                sb.append(ch);
+            }
+        }
+        return sb.toString();
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 252/1152. 一年中的第几天
+
+#### （1）题目
+
+给你一个字符串 date ，按 YYYY-MM-DD 格式表示一个 现行公元纪年法 日期。请你计算并返回该日期是当年的第几天。
+
+通常情况下，我们认为 1 月 1 日是每年的第 1 天，1 月 2 日是每年的第 2 天，依此类推。每个月的天数与现行公元纪年法（格里高利历）一致。
+
+
+
+#### （2）思路
+
+* 闰年 2 月 29 天，平年 2 月 28 天
+  * 若为 100 的整数倍，则需要为 400 的整数倍
+  * 若不是 100 的整数倍，则需要为 4 的整数倍
+* 算法流程：
+  * 将字符串以 "-" 分割，`String[] strs = date.split("-");`
+  * 将年月日字符串分别转换为整数
+  * 遍历每个月，添加对应的天数
+
+
+
+#### （3）实现
+
+```java
+class Solution {
+    public int dayOfYear(String date) {
+        int[] days = {31,28,31,30,31,30,31,31,30,31,30,31};
+        String[] strs = date.split("-");
+        int year = Integer.parseInt(strs[0]), month = Integer.parseInt(strs[1]), day = Integer.parseInt(strs[2]);
+        if((year%400==0)||(year%100!=0&&year%4==0)){
+            days[1]=29;
+        }
+        int res = 0;
+        for(int i = 0; i < month-1; i++){
+            res += days[i];
+        }
+        res += day;
+        return res;
+    }
+}
+```
+
+
+
+
+
+### 255/1078. Bigram分词
+
+#### （1）题目
+
+给出第一个词 first 和第二个词 second，考虑在某些文本 text 中可能以 "first second third" 形式出现的情况，其中 second 紧随 first 出现，third 紧随 second 出现。
+
+对于每种这样的情况，将第三个词 "third" 添加到答案中，并返回答案。
+
+
+
+#### （2）思路
+
+* 将字符串以空格 " " 划分为字符串数组，`string.split(" ")`
+* 遍历字符串数组，将符合要求的字符串添加到答案中
+
+
+
+#### （3）实现
+
+```java
+import java.util.ArrayList;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public String[] findOcurrences(String text, String first, String second) {
+        String[] strs = text.split(" ");
+        ArrayList<String> res = new ArrayList<>();
+        for (int i = 0; i < strs.length-2; i++){
+            if (strs[i].equals(first) && strs[i+1].equals(second)){
+                res.add(strs[i+2]);
+            }
+        }
+        return res.toArray(new String[0]);
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+
+```
+
+
+
+
+
 
 
 ## 十三、数学
@@ -12127,6 +13435,146 @@ class Solution {
 
 
 
+### 240/372. 超级次方
+
+#### （1）题目
+
+你的任务是计算 a<sup>b</sup> 对 `1337` 取模，`a` 是一个正整数，`b` 是一个非常大的正整数且会以数组形式给出。
+
+
+
+#### （2）思路
+
+* **x<sup>ab</sup> = (x<sup>a</sup>)<sup>10</sup> * x<sup>b</sup>**
+
+* 遍历数组，当前下标为 i，数组元素为 x，res记录到下标 i-1 的结果
+  * **res = res<sup>10</sup> * a<sup>x</sup>**
+
+* 计算过程中注意**对 1337 取模**
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    int max = 1337;
+    public int superPow(int a, int[] b) {
+        int res = 1;
+        for (int i = 0; i < b.length; i++) {
+            res = powa(res, 10);
+            int temp = powa(a, b[i]);
+            res = res * temp % max;
+        }
+        return res;
+    }
+
+    public int powa(int a, int x){
+        int res = 1;
+        while (x != 0){
+            res = (res % max) * (a % max) % max;
+            x--;
+        }
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 249/1518. 换酒问题
+
+#### （1）题目
+
+小区便利店正在促销，用 numExchange 个空酒瓶可以兑换一瓶新酒。你购入了 numBottles 瓶酒。
+
+如果喝掉了酒瓶中的酒，那么酒瓶就会变成空的。
+
+请你计算 最多 能喝到多少瓶酒。
+
+
+
+#### （2）思路
+
+* 对于当前空瓶 numBottles
+  * 可以兑换的新酒：numBottles/numExchange
+  * 兑换后的空酒瓶数：numBottles/numExchange + numBottles%Exchange
+* 循环兑换空酒瓶
+  * 跳出条件，当前空瓶数量无法兑换新酒：numBottles < numExchange
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int numWaterBottles(int numBottles, int numExchange) {
+        int res = numBottles;//剩余numBottles个空瓶
+        while (numBottles>=numExchange){
+            res += numBottles/numExchange;//空瓶可以换 nB/nE 瓶饮料
+            numBottles=numBottles/numExchange+numBottles%numExchange;//剩余空瓶
+        }
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 258/507. 完美数
+
+#### （1）题目
+
+对于一个 正整数，如果它和除了它自身以外的所有 正因子 之和相等，我们称它为 「完美数」。
+
+给定一个 整数 n， 如果是完美数，返回 true，否则返回 false
+
+
+
+#### （2）思路
+
+* 模拟
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public boolean checkPerfectNumber(int num) {
+        int sum = 0;
+        for (int i = 1; i <= (int)Math.sqrt(num); i++) {
+            if (num % i == 0){
+                int j = num/i;
+                if (i != num){
+                    sum += i;
+                }
+                if (j != num && j != i){
+                    sum += j;
+                }
+            }
+        }
+        return sum == num;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
 ## 十四、数据库
 
 
@@ -12237,6 +13685,185 @@ FirstName, LastName, City, State
 SELECT p.FirstName, p.LastName, A.City, A.State
 FROM Person p LEFT JOIN Address a
 ON p.PersonId = a.PersonId;
+```
+
+
+
+
+
+## 十五、图
+
+### 247/851. 喧闹与富有
+
+#### （1）题目
+
+有一组 n 个人作为实验对象，从 0 到 n - 1 编号，其中每个人都有不同数目的钱，以及不同程度的安静值（quietness）。为了方便起见，我们将编号为 x 的人简称为 "person x "。
+
+给你一个数组 richer ，其中 richer[i] = [ai, bi] 表示 person ai 比 person bi 更有钱。另给你一个整数数组 quiet ，其中 quiet[i] 是 person i 的安静值。richer 中所给出的数据 逻辑自洽（也就是说，在 person x 比 person y 更有钱的同时，不会出现 person y 比 person x 更有钱的情况 ）。
+
+现在，返回一个整数数组 answer 作为答案，其中 answer[x] = y 的前提是，在所有拥有的钱肯定不少于 person x 的人中，person y 是最安静的人（也就是安静值 quiet[y] 最小的人）。
+
+
+
+#### （2）思路
+
+* 邻接矩阵，Floyd算法
+* 邻接矩阵 matrix 中**边 (i, j) 表示 j 比 i 更富有**
+  * matrix[i] [j] = 极大值，无法判断 i，j 之间的关系
+  * **matrix[i] [j] != 极大值，j 比 i 更富有**
+* 以 n 个节点为中间节点，遍历任意两组节点，修改其最短路径
+
+```java
+		for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                for (int k = 0; k < n; k++) {
+                    if (matrix[j][i]!=0x3f3f3f3f&&matrix[i][k]!=0x3f3f3f3f&&matrix[j][i]+matrix[i][k]<matrix[j][k]){
+                        matrix[j][k]=matrix[j][i]+matrix[i][k];
+                    }
+                }
+            }
+        }	
+```
+
+* 再次遍历邻接矩阵，对于任意节点 i
+  * 遍历所有 matrix[i] [j] 不为极大值的节点 j，找出其中最安静的人，**即 quiet[j] 最小的节点 j**
+
+
+
+#### （3）实现
+
+```java
+import java.util.Arrays;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int[] loudAndRich(int[][] richer, int[] quiet) {
+        int n = quiet.length;
+        int[][] matrix = new int[n][n];//matrix[i][j]!=0代表j比i更有钱
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(matrix[i],0x3f3f3f3f);
+        }
+        for (int i = 0; i < richer.length; i++) {
+            int x = richer[i][0], y = richer[i][1];//x比y更有钱
+            matrix[y][x]=1;
+        }
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                for (int k = 0; k < n; k++) {
+                    if (matrix[j][i]!=0x3f3f3f3f&&matrix[i][k]!=0x3f3f3f3f&&matrix[j][i]+matrix[i][k]<matrix[j][k]){
+                        matrix[j][k]=matrix[j][i]+matrix[i][k];
+                    }
+                }
+            }
+        }
+        int[] res = new int[n];
+        for (int i = 0; i < n; i++) {
+            res[i]=i;
+            for (int j = 0; j < n; j++) {
+                if (matrix[i][j]!=0x3f3f3f3f){//j比i更有钱
+                    int temp = res[i];
+                    if (temp == n){
+                        res[i] = j;
+                    }else if (quiet[j]<quiet[temp]){
+                        res[i]=j;
+                    }
+                }
+            }
+        }
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+## 十六、滑动窗口
+
+### 248/160. 可见点的最大数目
+
+#### （1）题目
+
+给你一个点数组 points 和一个表示角度的整数 angle ，你的位置是 location ，其中 location = [posx, posy] 且 points[i] = [xi, yi] 都表示 X-Y 平面上的整数坐标。
+
+最开始，你面向东方进行观测。你 不能 进行移动改变位置，但可以通过 自转 调整观测角度。换句话说，posx 和 posy 不能改变。你的视野范围的角度用 angle 表示， 这决定了你观测任意方向时可以多宽。设 d 为你逆时针自转旋转的度数，那么你的视野就是角度范围 [d - angle/2, d + angle/2] 所指示的那片区域。
+
+
+
+#### （2）思路
+
+* 观测点为(x, y)，遍历点数组 points ，记录**所有非 (x, y) 点 (x<sub>0</sub>, y<sub>0</sub>) **到观测点的角度在列表 temp 中，即 `Math.atan2(y0-y, x0-x)`，并记录**所有与观测点 (x, y) 重复的点数量 self**
+* 对 temp 排序，`Collections.sort(temp)`
+* **滑动窗口，将队列首尾连接**
+  * 角度差：`double minus = temp.get(j)-temp.get(i);`
+    * minus < 0 时，`minus += 2 * Math.PI;`
+  * 角度差minus <= ang时
+    * j >= i，记录当前能观察点数：**j-i+1**
+    * j < i，记录当前能观察点数：**j+temp.size()-i+1**
+    * 记录最大的观察点数 res
+    * 窗口右移，j++
+    * 若右指针 j 移到队尾，则移至队首
+  * 角度差minus > ang时
+    * 左指针右移，i++
+* 返回能观察的最大点数 **res+self**
+
+
+
+#### （3）实现
+
+```java
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int visiblePoints(List<List<Integer>> points, int angle, List<Integer> location) {
+        int self = 0;
+        int n = points.size();
+        ArrayList<Double> temp = new ArrayList<>();
+        for (int i = 0; i < points.size(); i++) {
+            int x = points.get(i).get(0), y = points.get(i).get(1);
+
+            if (x == location.get(0) && y == location.get(1)){
+                self++;
+            }else{
+                temp.add(Math.atan2(y-location.get(1), x-location.get(0)));
+            }
+        }
+        Collections.sort(temp);
+
+        double ang = angle*Math.PI/180;
+        int res = 0, i = 0, j = 0;
+        while (i < temp.size()&&res<temp.size()){//滑动窗口，首位连接
+            double minus = temp.get(j)-temp.get(i);
+            if (minus<0){
+                minus+=2*Math.PI;
+            }
+            if (minus <= ang){
+                int num = 0;
+                if (j>=i){
+                    num = j-i+1;
+                }else{
+                    num = j+temp.size()-i+1;
+                }
+                res = Math.max(res, num);
+                j++;
+                if (j == temp.size()){
+                    j=0;
+                }
+            }else{
+                i++;
+            }
+
+        }
+
+        return res+self;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
 ```
 
 

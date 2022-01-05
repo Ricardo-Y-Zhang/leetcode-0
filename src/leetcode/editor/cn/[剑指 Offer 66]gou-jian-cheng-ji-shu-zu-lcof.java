@@ -18,7 +18,7 @@
 // a.length <= 100000 
 // 
 // Related Topics 数组 前缀和 
-// 👍 168 👎 0
+// 👍 175 👎 0
 
 
 package leetcode.editor.cn;
@@ -31,13 +31,13 @@ class Solution {
         }
         int[] pre = new int[a.length];
         int[] post = new int[a.length];
-        pre[0] = 1;
-        post[post.length-1] = 1;
-        for (int i = 1; i < pre.length; i++) {
-            pre[i] = pre[i-1] * a[i-1];
+        pre[0]=1;
+        post[a.length-1]=1;
+        for (int i = 1; i < pre.length; i++) {//a 中 [0, i)的元素乘积
+            pre[i] = pre[i-1]*a[i-1];
         }
-        for (int i = post.length-2; i >= 0; i--){
-            post[i] = post[i+1] * a[i+1];
+        for (int i = post.length-2; i >= 0; i--) {//a 中 (i,n]的元素乘积
+            post[i] = post[i+1]*a[i+1];
         }
         int[] res = new int[a.length];
         for (int i = 0; i < res.length; i++) {

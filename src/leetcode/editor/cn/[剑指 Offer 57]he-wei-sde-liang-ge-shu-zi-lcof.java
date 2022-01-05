@@ -23,12 +23,10 @@
 // 1 <= nums[i] <= 10^6 
 // 
 // Related Topics 数组 双指针 二分查找 
-// 👍 140 👎 0
+// 👍 141 👎 0
 
 
 package leetcode.editor.cn;
-
-import java.util.HashSet;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
@@ -36,11 +34,12 @@ class Solution {
         int[] res = new int[2];
         int left = 0, right = nums.length-1;
         while (left < right){
-            if (nums[left] + nums[right] == target){
-                res[0] = nums[left];
-                res[1] = nums[right];
+            if (nums[left]+nums[right]==target){
+                res[0]=nums[left];
+                res[1]=nums[right];
                 break;
-            }else if (nums[left] + nums[right] < target){
+            }
+            if (nums[left]+nums[right]<target){
                 left++;
             }else{
                 right--;
