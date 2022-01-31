@@ -1,0 +1,108 @@
+//给定两个字符串 s 和 t 。返回 s 中包含 t 的所有字符的最短子字符串。如果 s 中不存在符合条件的子字符串，则返回空字符串 "" 。 
+//
+// 如果 s 中存在多个符合条件的子字符串，返回任意一个。 
+//
+// 
+//
+// 注意： 对于 t 中重复字符，我们寻找的子字符串中该字符数量必须不少于 t 中该字符数量。 
+//
+// 
+//
+// 示例 1： 
+//
+// 
+//输入：s = "ADOBECODEBANC", t = "ABC"
+//输出："BANC" 
+//解释：最短子字符串 "BANC" 包含了字符串 t 的所有字符 'A'、'B'、'C' 
+//
+// 示例 2： 
+//
+// 
+//输入：s = "a", t = "a"
+//输出："a"
+// 
+//
+// 示例 3： 
+//
+// 
+//输入：s = "a", t = "aa"
+//输出：""
+//解释：t 中两个字符 'a' 均应包含在 s 的子串中，因此没有符合条件的子字符串，返回空字符串。 
+//
+// 
+//
+// 提示： 
+//
+// 
+// 1 <= s.length, t.length <= 105 
+// s 和 t 由英文字母组成 
+// 
+//
+// 
+//
+// 进阶：你能设计一个在 o(n) 时间内解决此问题的算法吗？ 
+//
+// 
+//
+// 注意：本题与主站 76 题相似（本题答案不唯一）：https://leetcode-cn.com/problems/minimum-window-subs
+//tring/ 
+// Related Topics 哈希表 字符串 滑动窗口 
+// 👍 18 👎 0
+
+
+package leetcode.editor.cn;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public String minWindow(String s, String t) {
+        int[] chs = new int[52];
+        for (int i = 0; i < t.length(); i++) {
+            char ch = t.charAt(i);
+            if (ch >= 'a' && ch <= 'z'){
+                chs[ch-'a']--;
+            }else{
+                chs[ch-'A'+26]--;
+            }
+        }
+        int diff = 0;
+        for (int i = 0; i < chs.length; i++) {
+            if (chs[i]<0){
+                diff++;
+            }
+        }
+        int left = 0, right = 0, len = s.length()+1;
+        String str = "";
+        while (right < s.length()){
+            char ch = s.charAt(right);
+            if (ch >= 'a' && ch <= 'z'){
+                chs[ch-'a']++;
+                if (chs[ch-'a']==0) diff--;
+            }else{
+                chs[ch-'A'+26]++;
+                if (chs[ch-'A'+26]==0) diff--;
+            }
+            right++;
+            if (diff==0){
+                while (diff==0){
+                    ch = s.charAt(left);
+                    if (ch>='a' && ch<='z'){
+                        chs[ch-'a']--;
+                        if (chs[ch-'a']<0) diff++;
+                    }else{
+                        chs[ch-'A'+26]--;
+                        if (chs[ch-'A'+26]<0) diff++;
+                    }
+                    left++;
+                }
+                if (right-left+1<len){
+                    len = right-left+1;
+                    str = s.substring(left-1, right);
+                }
+            }
+        }
+        return str;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+
+
