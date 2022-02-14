@@ -3982,6 +3982,8 @@ class Solution {
 
 
 
+## 八、前缀树
+
 
 
 ### 062. 实现前缀树
@@ -4268,6 +4270,702 @@ class MagicDictionary {
  * obj.buildDict(dictionary);
  * boolean param_2 = obj.search(searchWord);
  */
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 065. 最短的单词编码
+
+#### （1）题目
+
+单词数组 words 的 有效编码 由任意助记字符串 s 和下标数组 indices 组成，且满足：
+
+* words.length == indices.length
+* 助记字符串 s 以 '#' 字符结尾
+* 对于每个下标 indices[i] ，s 的一个从 indices[i] 开始、到下一个 '#' 字符结束（但不包括 '#'）的 子字符串 恰好与 words[i] 相等
+
+给定一个单词数组 words ，返回成功对 words 进行编码的最小助记字符串 s 的长度 。
+
+
+
+#### （2）思路
+
+* 字典树
+
+* length 记录最小助记字符串 s 的长度
+
+* **按长度递减对单词排序**，遍历 words，对于任意单词 word
+
+  * 若字典树中**不存在以 word 为后缀**的单词，则需要将 "word#" 添加到 s 中，**length += word.length**
+
+  * 若字典树中**存在以 word 为后缀**的单词，则 word 已被辅助记录，不需要添加到 s 中
+
+  * 建树时，将单词**逆序插入**
+
+    
+
+#### （3）实现
+
+```java
+
+import java.util.Arrays;
+import java.util.Comparator;
+
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int minimumLengthEncoding(String[] words) {
+        //字符串按长度降序排序
+        Arrays.sort(words, new Comparator<String>(){
+            @Override
+            public int compare(String str1,String str2){
+                return str2.length()-str1.length();
+            }
+        });
+        Trie tree = new Trie();
+        int res = 0;
+        for (String str : words){
+            if (!tree.endWith(str)){//是否存在以 str 为后缀的单词
+                res += str.length()+1;
+            }
+            tree.insert(str);//将 str 插入字典树
+        }
+        return res;
+    }
+    class Trie {
+        class TreeNode{
+            boolean isEnd;
+            TreeNode[] next;
+            TreeNode(){
+                isEnd = false;
+                next = new TreeNode[26];
+            }
+        }
+        TreeNode root;
+        public Trie(){
+            root = new TreeNode();
+        }
+        public void insert(String word){
+            TreeNode node = root;
+            int len = word.length();
+            for (int i = 0; i < len; i++) {//倒序插入单词
+                int index = word.charAt(len-1-i)-'a';
+                if (node.next[index] == null){
+                    node.next[index] = new TreeNode();
+                }
+                node = node.next[index];
+            }
+            node.isEnd = true;
+        }
+
+        public boolean search(String word){
+            TreeNode node = root;
+            int len = word.length();
+            for (int i = 0; i < len; i++) {
+                int index = word.charAt(len-1-i)-'a';
+                if (node.next[index] == null){
+                    return false;
+                }
+                node = node.next[index];
+            }
+            return node.isEnd;
+        }
+
+        public boolean endWith(String prefix){//是否存在以 prefix 为后缀的单词
+            TreeNode node = root;
+            int len = prefix.length();
+            for (int i = 0; i < len; i++) {
+                int index = prefix.charAt(len-1-i)-'a';
+                if (node.next[index] == null){
+                    return false;
+                }
+                node = node.next[index];
+            }
+            return true;
+        }
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 066. 单词之和
+
+#### （1）题目
+
+实现一个 MapSum 类，支持两个方法，insert 和 sum：
+
+* MapSum() 初始化 MapSum 对象
+* void insert(String key, int val) 插入 key-val 键值对，字符串表示键 key ，整数表示值 val 。如果键 key 已经存在，那么原来的键值对将被替代成新的键值对。
+* int sum(string prefix) 返回所有以该前缀 prefix 开头的键 key 的值的总和。
+
+
+
+#### （2）思路
+
+* 前缀树
+* 使用前缀树节点中 isEnd 代表该 key 对应的 val 值
+*  int sum(string prefix)：遍历字符串 prefix 对应节点的所有子节点，返回所有叶节点的 val 之和
+
+
+
+#### （3）实现
+
+```java
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class MapSum {
+    class TreeNode{
+        int val;// 0 代表当前节点不是 key 单词的结尾，若不为 0 ，则代表 val
+        TreeNode[] next;
+        TreeNode(){
+            val = 0;
+            next = new TreeNode[26];
+        }
+    }
+    TreeNode root;
+
+    /** Initialize your data structure here. */
+    public MapSum() {
+        root = new TreeNode();
+    }
+    
+    public void insert(String key, int val) {
+        TreeNode node = root;
+        for (int i = 0; i < key.length(); i++) {
+            int index = key.charAt(i)-'a';
+            if (node.next[index] == null){
+                node.next[index] = new TreeNode();
+            }
+            node = node.next[index];
+        }
+        node.val = val;
+    }
+    
+    public int sum(String prefix) {
+        TreeNode node = root;
+        int res = 0;
+        for (int i = 0; i < prefix.length(); i++) {
+            int index = prefix.charAt(i)-'a';
+            if (node.next[index] == null){
+                return 0;
+            }
+            node = node.next[index];
+        }
+        return getSum(node);
+    }
+
+    public int getSum(TreeNode node){
+        if (node == null){
+            return 0;
+        }
+        int res = node.val;
+        for (int i = 0; i < 26; i++) {
+            res += getSum(node.next[i]);
+        }
+        return res;
+    }
+}
+
+/**
+ * Your MapSum object will be instantiated and called as such:
+ * MapSum obj = new MapSum();
+ * obj.insert(key,val);
+ * int param_2 = obj.sum(prefix);
+ */
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 067. 最大的异或
+
+#### （1）题目
+
+给定一个整数数组 `nums` ，返回 `nums[i] XOR nums[j]` 的最大运算结果，其中 `0 ≤ i ≤ j < n` 。
+
+
+
+#### （2）思路
+
+* 将每个数的**二进制表达式从高位到低位，共 31 位（首位为符号位，不计算）**存储在字典树中
+* 对于每个数，在字典树中查询其最大的异或
+  * 遍历其二进制表达式的后 31 位
+    * 当前位为 0，访问**当前节点的 next[1]**，若不存在，则访问 **next[0]**
+    * 当前位为 1，访问**当前节点的 next[0]**，若不存在，则访问 **next[1]**
+
+
+
+#### （3）实现
+
+```java
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int findMaximumXOR(int[] nums) {
+        Trie tree = new Trie();
+        int max = Integer.MIN_VALUE;
+        for (int num : nums){
+            tree.insert(num);
+            max = Math.max(max, tree.searchMaxXOR(num));
+        }
+        return max;
+    }
+
+    class Trie{
+        class TreeNode{
+            TreeNode[] next;
+            public TreeNode(){
+                next = new TreeNode[2];
+            }
+        }
+        TreeNode root;
+        Trie(){
+            root = new TreeNode();
+        }
+        public void insert(int num){
+            TreeNode node = root;
+            for (int i = 30; i >= 0; i--){
+                int d = num >> i & 1;
+                if (node.next[d] == null){
+                    node.next[d] = new TreeNode();
+                }
+                node = node.next[d];
+            }
+        }
+
+        public int searchMaxXOR(int num){
+            TreeNode node = root;
+            int xorNum = 0;
+            for (int i = 30; i >= 0; i--){
+                int d = num >> i & 1;
+                int other = (d == 1 ? 0 : 1);
+                if (node.next[other] == null){//相反位为空
+                    node = node.next[d];
+                    xorNum = (xorNum << 1) + d;
+                }else{
+                    node = node.next[other];
+                    xorNum = (xorNum << 1) + other;
+                }
+            }
+            return xorNum ^ num;
+        }
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
+## 九、二分查找
+
+
+
+### 068. 查找插入位置
+
+#### （1）题目
+
+给定一个排序的整数数组 nums 和一个整数目标值 target ，请在数组中找到 target ，并返回其下标。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。
+
+请必须使用时间复杂度为 O(log n) 的算法。
+
+
+
+#### （2）思路
+
+* 二分查找**第一个比 target 大或等于的元素的下标**，即 **nums[pos-1] < target <= nums[pos]**
+
+
+
+
+
+## 十、排序
+
+
+
+## 十一、回溯法
+
+
+
+## 十二、动态规划
+
+
+
+### 088. 爬楼梯的最少成本
+
+#### （1）题目
+
+数组的每个下标作为一个阶梯，第 i 个阶梯对应着一个非负数的体力花费值 cost[i]（下标从 0 开始）。
+
+每当爬上一个阶梯都要花费对应的体力值，一旦支付了相应的体力值，就可以选择向上爬一个阶梯或者爬两个阶梯。
+
+请找出达到楼层顶部的最低花费。在开始时，你可以选择从下标为 0 或 1 的元素作为初始阶梯。
+
+
+
+#### （2）思路
+
+* dp[i] 记录爬到第 i 层台阶的最少成本
+* **dp.length = cost.length+1**，dp[length] 表示爬完阶梯，即爬到第 length 个阶梯的最少成本
+* 初始化：
+  * 可以爬一个或两个阶梯，因此爬到第 0 层和第 1 层的最少成本均为 0
+  * `dp[0] = 0; dp[1] = 0;`
+* 动态转移方程：
+  * 可以选择从第 i-1 层或第 i-2 层阶梯爬到第 i 层阶梯
+  * `dp[i] = Math.min(dp[i-1]+cost[i-1], dp[i-2]+cost[i-2]);`
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int minCostClimbingStairs(int[] cost) {
+        int length = cost.length;
+        int[] dp = new int[length+1];
+        dp[0] = 0;dp[1] = 0;
+        for (int i = 2; i < dp.length; i++) {
+            dp[i] = Math.min(dp[i-1]+cost[i-1], dp[i-2]+cost[i-2]);
+        }
+        return dp[length];
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 089. 房屋偷盗
+
+#### （1）题目
+
+一个专业的小偷，计划偷窃沿街的房屋。每间房内都藏有一定的现金，影响小偷偷窃的唯一制约因素就是相邻的房屋装有相互连通的防盗系统，如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警。
+
+给定一个代表每个房屋存放金额的非负整数数组 nums ，请计算 不触动警报装置的情况下 ，一夜之内能够偷窃到的最高金额。
+
+
+
+#### （2）思路
+
+* dp[i] 记录**前 i 个房间在满足条件下能偷窃到的最高金额**
+* 状态转移：对于第 n 个房间
+  * 不抢第 n 个房间，则等于前 n-1 个房间的最高金额，**dp[n] = dp[n-1]**
+  * 抢第 n 个房间，此时不能抢第 n-1 个房间，等于前 n-2 个房间的最高金额+当前房间的价值，**dp[n] = dp[n-2]+num**
+    * 前 n-1 个房间的最高金额不一定偷窃了第 n-1 个房间，则此时可以偷窃第 n 个房间
+      * 假设第 n-1 个房间没有被偷，则**dp[n] = dp[n-1]+num = dp[n-2]+num，合并考虑**
+  * **dp[n] = Math.max(dp[n-1], dp[n-2]+num)**
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int rob(int[] nums) {
+        int length = nums.length;
+        int[] dp = new int[length+1];
+        dp[0] = 0; dp[1] = nums[0];//初始化
+        for (int i = 2; i < dp.length; i++) {
+            dp[i] = Math.max(dp[i-1], dp[i-2] + nums[i-1]);
+        }
+        return dp[length];
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 090. 环形房屋偷盗
+
+#### （1）题目
+
+一个专业的小偷，计划偷窃一个环形街道上沿街的房屋，每间房内都藏有一定的现金。这个地方所有的房屋都 围成一圈 ，这意味着第一个房屋和最后一个房屋是紧挨着的。同时，相邻的房屋装有相互连通的防盗系统，如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警 。
+
+给定一个代表每个房屋存放金额的非负整数数组 nums ，请计算 在不触动警报装置的情况下 ，今晚能够偷窃到的最高金额。
+
+
+
+#### （2）思路
+
+* 思路与 89 相同，需要考虑两种情况
+  * 偷窃第 1 间房屋，此时不能偷窃最后一间房屋
+  * 不偷窃第一间房屋，此时可以偷窃最后一间房屋
+* 记录两种情况下能偷窃到的最高金额
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int rob(int[] nums) {
+        int length = nums.length;
+        int[][] dp = new int[length+1][2];//dp[0]记录未偷窃第 1 间房屋，dp[1]记录偷窃了第 1 间房屋
+        dp[0][0] = 0; dp[1][0] = 0;
+        dp[0][1] = 0; dp[1][1] = nums[0];
+        for (int i = 2; i < length+1; i++) {
+            dp[i][0] = Math.max(dp[i-1][0], dp[i-2][0]+nums[i-1]);
+            if (i != length){
+                dp[i][1] = Math.max(dp[i-1][1], dp[i-2][1]+nums[i-1]);
+            }else{
+                dp[i][1] = Math.max(dp[i-1][1], dp[i-2][1]);
+            }
+        }
+        return Math.max(dp[length][0], dp[length][1]);
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
+### 091. 粉刷房子
+
+#### （1）题目
+
+假如有一排房子，共 n 个，每个房子可以被粉刷成红色、蓝色或者绿色这三种颜色中的一种，你需要粉刷所有的房子并且使其相邻的两个房子颜色不能相同。
+
+当然，因为市场上不同颜色油漆的价格不同，所以房子粉刷成不同颜色的花费成本也是不同的。每个房子粉刷成不同颜色的花费是以一个 n x 3 的正整数矩阵 costs 来表示的。
+
+例如，costs[0][0] 表示第 0 号房子粉刷成红色的成本花费；costs[1][2] 表示第 1 号房子粉刷成绿色的花费，以此类推。
+
+请计算出粉刷完所有房子最少的花费成本。
+
+
+
+#### （2）思路
+
+* 数组 int[] dp 分别记录粉刷到当前房子，分别粉刷为红色、蓝色和绿色所需最少的成本
+* 状态转移方程：
+  * dp[0] = Math.min(dp[1], dp[2]) + cost(红色)
+  * dp[1] = Math.min(dp[0], dp[2]) + cost(蓝色)
+  * dp[2] = Math.min(dp[0], dp[1]) + cost(绿色)
+* 最终返回 dp 中的最小值即可
+
+
+
+#### （3）实现
+
+```java
+
+import java.util.Arrays;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int minCost(int[][] costs) {
+        int length = costs.length;
+        int[] dp = new int[3];
+        dp[0] = costs[0][0]; dp[1] = costs[0][1]; dp[2] = costs[0][2];
+        for (int i = 1; i < length; i++) {
+            int[] temp = new int[3];
+            temp[0] = Math.min(dp[1], dp[2])+costs[i][0];
+            temp[1] = Math.min(dp[0], dp[2])+costs[i][1];
+            temp[2] = Math.min(dp[0], dp[1])+costs[i][2];
+            dp = Arrays.copyOf(temp, 3);
+        }
+        return Math.min(Math.min(dp[0], dp[1]), dp[2]);
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
+### 092. 翻转字符
+
+#### （1）题目
+
+如果一个由 '0' 和 '1' 组成的字符串，是以一些 '0'（可能没有 '0'）后面跟着一些 '1'（也可能没有 '1'）的形式组成的，那么该字符串是 单调递增 的。
+
+我们给出一个由字符 '0' 和 '1' 组成的字符串 s，我们可以将任何 '0' 翻转为 '1' 或者将 '1' 翻转为 '0'。
+
+返回使 s 单调递增 的最小翻转次数。
+
+
+
+#### （2）思路
+
+* dp[i] 记录**使字符串中 [0, i] 子串单调递增的最小翻转次数**，one 记录字符串中 '1' 的个数
+
+* 当前字符为 '0'：
+
+  * '0' 不翻转，若要使 [0, i] 子串单调递增，则需要**将 [0, i] 子串中的 '1' 翻转为 '0'**，`dp[i] = one;`
+  * '0' 翻转为 '1'，若要使 [0, i] 子串单调递增，则只需要**保证 [0, i-1] 子串单调递增** ，`dp[i] = dp[i-1] + 1;`
+
+  * 状态转移方程：`dp[i] = Math.max(one, dp[i-1]+1);`
+
+* 当前字符为 '1'：
+
+  * '1' 翻转为 '0'，若要使 [0, i] 子串单调递增，则需要**将 [0, i] 子串中的 '1' 翻转为'0'**，`dp[i] = one+1;`
+  * '1' 不翻转，若要使 [0, i] 子串单调递增，则只需要**保证 [0, i-1] 子串单调递增**，`dp[i] = dp[i-1];`
+  * 状态转移方程：`dp[i] = Math.max(one+1, dp[i-1]);`
+
+
+
+#### （3）实现
+
+```java
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int minFlipsMonoIncr(String s) {
+        int length = s.length();
+        int[] dp = new int[length];
+        dp[0] = 0;
+        char[] chs = s.toCharArray();
+        int one = chs[0] == '1' ? 1 : 0;//记录 1 的个数
+        for (int i = 1; i < length; i++){
+            if (chs[i] == '0'){
+                //当前为 '0' 时，保持 '0'：需将之前所有 '1' 转为 '0'；转为 '1'：只需前序序列保持非递减即可
+                dp[i] = Math.min(one, dp[i-1]+1);
+            }else{
+                //当前为 '1' 时，转为 '0'：需将之前所有 '1' 转为 '0'；保持 '1'：只需前序序列保持非递减即可
+                dp[i] = Math.min(one+1, dp[i-1]);
+                one++;
+            }
+        }
+        return dp[length-1];
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 093. 最长斐波那契数列
+
+#### （1）题目
+
+如果序列 X_1, X_2, ..., X_n 满足下列条件，就说它是 斐波那契式 的：
+
+n >= 3
+对于所有 i + 2 <= n，都有 X_i + X_{i+1} = X_{i+2}
+给定一个严格递增的正整数数组形成序列 arr ，找到 arr 中最长的斐波那契式的子序列的长度。如果一个不存在，返回  0 。
+
+（回想一下，子序列是从原序列  arr 中派生出来的，它从 arr 中删掉任意数量的元素（也可以不删），而不改变其余元素的顺序。例如， [3, 5, 8] 是 [3, 4, 5, 6, 7, 8] 的一个子序列）
+
+
+
+#### （2.1）思路
+
+* 使用 set 暴力
+* 使用 set 可以快速确定下一项是否存在数组中
+* 对于每一个起始 A<sub>[i]</sub> 和 A<sub>[j]</sub> ，令 x = A<sub>[i]</sub> ，y = A<sub>[j]</sub> ，若 x+y 存在于 set 中，则将 (x, y) 更新为 (y, x+y)，并更新当前斐波那契数列长度
+
+
+
+#### （3.1）实现
+
+```java
+import java.util.HashSet;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int lenLongestFibSubseq(int[] arr) {
+        HashSet<Integer> set = new HashSet<>();
+        for (int temp : arr) set.add(temp);
+        int max = 0, length = arr.length;
+        for (int i = 0; i < length; i++) {
+            for (int j = i+1; j < length; j++) {
+                int templength = 2;
+                int x = arr[i], y = arr[j];
+                while (set.contains(x+y)){
+                    int temp = x+y;
+                    x = y;
+                    y = temp;
+                    templength++;
+                    max = Math.max(max, templength);
+                }
+            }
+        }
+        return max;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+#### （2.2）思路
+
+* 斐波那契数列可以**由其最后两个元素精准定位**
+* dp[i] [j] 表示**以 arr[i] 和 arr[j] 为最后两元素的斐波那契数列的长度**
+* 初始化：
+  * 将 dp[] [] 的元素初始化为 2
+  * 使用 HashMap 记录 arr 数组中**元素—下标**的映射
+* 动态转移方程：
+  * 若存在 **arr[k] + arr[i] = arr[j] 且 arr[k] < arr[i] **
+  * 则 **dp[i] [j] = max(dp[i] [j], dp[k] [i]+1)**
+
+* 记录最大的 dp[i] [j]
+
+
+
+#### （3.2）实现
+
+```java
+
+import java.util.Arrays;
+import java.util.HashMap;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int lenLongestFibSubseq(int[] arr) {
+        HashMap<Integer, Integer> map = new HashMap<>();//建立元素和下标的映射
+        int length = arr.length;
+        for (int i = 0; i < length; i++) {
+            map.put(arr[i], i);
+        }
+        int[][] dp = new int[length][length];
+        for (int i = 0; i < length; i++) {//初始化为 2
+            Arrays.fill(dp[i], 2);
+        }
+        int max = 0;
+        for (int i = 0; i < length; i++) {
+            for (int j = i+1; j < length; j++) {//保证 i < j
+                int arr1 = arr[i], arr2 = arr[j], arr0 = arr2-arr1;
+                if (arr0 < arr1 && map.containsKey(arr0)){
+                    int index0 = map.get(arr0);
+                    dp[i][j] = Math.max(dp[index0][i]+1, dp[i][j]);
+                    max = Math.max(max, dp[i][j]);
+                }
+            }
+        }
+        return max;
+    }
+}
 //leetcode submit region end(Prohibit modification and deletion)
 ```
 

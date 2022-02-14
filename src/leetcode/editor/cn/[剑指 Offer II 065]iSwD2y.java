@@ -66,10 +66,10 @@ class Solution {
         Trie tree = new Trie();
         int res = 0;
         for (String str : words){
-            if (!tree.endWith(str)){
+            if (!tree.endWith(str)){//是否存在以 str 为后缀的单词
                 res += str.length()+1;
             }
-            tree.insert(str);
+            tree.insert(str);//将 str 插入字典树
         }
         return res;
     }
@@ -112,7 +112,7 @@ class Solution {
             return node.isEnd;
         }
 
-        public boolean endWith(String prefix){
+        public boolean endWith(String prefix){//是否存在以 prefix 为后缀的单词
             TreeNode node = root;
             int len = prefix.length();
             for (int i = 0; i < len; i++) {

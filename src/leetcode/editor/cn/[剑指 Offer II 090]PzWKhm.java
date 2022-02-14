@@ -50,7 +50,7 @@ package leetcode.editor.cn;
 class Solution {
     public int rob(int[] nums) {
         int length = nums.length;
-        int[][] dp = new int[length+1][2];
+        int[][] dp = new int[length+1][2];//dp[0]记录未偷窃第 1 间房屋，dp[1]记录偷窃了第 1 间房屋
         dp[0][0] = 0; dp[1][0] = 0;
         dp[0][1] = 0; dp[1][1] = nums[0];
         for (int i = 2; i < length+1; i++) {
