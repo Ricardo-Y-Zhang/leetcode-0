@@ -3978,3 +3978,296 @@ class Solution {
 //leetcode submit region end(Prohibit modification and deletion)
 ```
 
+
+
+
+
+
+
+### 062. 实现前缀树
+
+#### （1）题目
+
+Trie（发音类似 "try"）或者说 前缀树 是一种树形数据结构，用于高效地存储和检索字符串数据集中的键。这一数据结构有相当多的应用情景，例如自动补完和拼写检查。
+
+请你实现 Trie 类：
+
+Trie() 初始化前缀树对象。
+void insert(String word) 向前缀树中插入字符串 word 。
+boolean search(String word) 如果字符串 word 在前缀树中，返回 true（即，在检索之前已经插入）；否则，返回 false 。
+boolean startsWith(String prefix) 如果之前已经插入的字符串 word 的前缀之一为 prefix ，返回 true ；否则，返回 false 。
+
+
+
+#### （2）思路
+
+* 使用 26 叉树实现前缀树
+* TreeNode 的成员变量：
+  * boolean isEnd：标识该节点是否是一个单词的结尾
+  * TreeNode[] next：长度为 26 的数组表示 26 个孩子节点即字母映射表
+*  insert：
+  * 从根节点 root 的 26 个子节点开始与 word 的第一个字符匹配，没有对应的节点时开辟新的节点，直到匹配完最后一个字符，同时将最后一个节点 isEnd 置为 true，表示它是一个单词的结尾
+* search：
+  * 从根节点 root 的子节点开始与 word 的第一个字符匹配，若出现空节点，返回 false；返回最后一个字符的 isEnd
+* startsWith：
+  * 从根节点 root 的子节点开始与 word 的第一个字符匹配，若出现空节点，返回 false；若匹配结束，返回 true
+
+
+
+#### （3）实现
+
+```java
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Trie {
+    class TreeNode {
+        boolean isEnd;
+        TreeNode[] next;//26个子树对应26个字母
+        TreeNode(){
+            isEnd = false;
+            next = new TreeNode[26];
+        }
+    }
+    TreeNode root;
+    /** Initialize your data structure here. */
+    public Trie() {
+        root = new TreeNode();
+    }
+    
+    /** Inserts a word into the trie. */
+    public void insert(String word) {
+        TreeNode node = root;
+        for (int i = 0; i < word.length(); i++) {
+            int index = word.charAt(i)-'a';//当前字母在字母表中的顺序
+            if (node.next[index] == null){
+                node.next[index] = new TreeNode();
+            }
+            node = node.next[index];
+        }
+        node.isEnd = true;//将该单词的最后一个字母的 isEnd 设为 true
+    }
+    
+    /** Returns if the word is in the trie. */
+    public boolean search(String word) {
+        TreeNode node = root;
+        for (int i = 0; i < word.length(); i++) {
+            int index = word.charAt(i) - 'a';
+            if (node.next[index] == null){
+                return false;
+            }
+            node = node.next[index];
+        }
+        return node.isEnd;//若最后一个字母是当前的单词的结尾，则返回true，反之返回false
+    }
+    
+    /** Returns if there is any word in the trie that starts with the given prefix. */
+    public boolean startsWith(String prefix) {
+        TreeNode node = root;
+        for (int i = 0; i < prefix.length(); i++) {
+            int index = prefix.charAt(i)-'a';
+            if (node.next[index] == null){
+                return false;
+            }
+            node = node.next[index];
+        }
+        return true;
+    }
+}
+
+/**
+ * Your Trie object will be instantiated and called as such:
+ * Trie obj = new Trie();
+ * obj.insert(word);
+ * boolean param_2 = obj.search(word);
+ * boolean param_3 = obj.startsWith(prefix);
+ */
+//leetcode submit region end(Prohibit modification and deletion)
+
+```
+
+
+
+
+
+### 063. 替换单词
+
+#### （1）题目
+
+在英语中，有一个叫做 词根(root) 的概念，它可以跟着其他一些词组成另一个较长的单词——我们称这个词为 继承词(successor)。例如，词根an，跟随着单词 other(其他)，可以形成新的单词 another(另一个)。
+
+现在，给定一个由许多词根组成的词典和一个句子，需要将句子中的所有继承词用词根替换掉。如果继承词有许多可以形成它的词根，则用最短的词根替换它。
+
+需要输出替换之后的句子。
+
+
+
+#### （2）思路
+
+* 前缀树
+* 在前缀树中存储所有的词根 `List<String> dictionary`
+* 实现方法 `public String replaceBy(String word)`：返回前缀树中 word 的最短前缀单词，若不存在，返回 word
+* 遍历句子中的单词，将其替换为其最短前缀单词
+
+
+
+#### （3）实现
+
+```java
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public String replaceWords(List<String> dictionary, String sentence) {
+        String[] words = sentence.split(" ");
+        Trie tree = new Trie();
+        for (String dict : dictionary){
+            tree.insert(dict);
+        }
+        StringBuilder sb = new StringBuilder();
+        for (String word : words){
+            String rep = tree.replaceBy(word);
+            if (sb.length() != 0){
+                sb.append(" ");
+            }
+            sb.append(rep);
+        }
+        return sb.toString();
+    }
+    class Trie{
+        class TreeNode{
+            boolean isEnd;
+            TreeNode[] next;
+            TreeNode(){
+                isEnd = false;
+                next = new TreeNode[26];
+            }
+        }
+        TreeNode root;
+        public Trie(){
+            root = new TreeNode();
+        }
+        public void insert(String word){
+            TreeNode node = root;
+            for (char ch : word.toCharArray()){
+                int index = ch-'a';
+                if (node.next[index] == null){
+                    node.next[index] = new TreeNode();
+                }
+                node = node.next[index];
+            }
+            node.isEnd = true;
+        }
+        public boolean search(String word){
+            TreeNode node = root;
+            for (char ch : word.toCharArray()){
+                int index = ch-'a';
+                if (node.next[index] == null){
+                    return false;
+                }
+                node = node.next[index];
+            }
+            return node.isEnd;
+        }
+        public String replaceBy(String word){
+            TreeNode node = root;
+            for (int i = 0; i < word.length(); i++){
+                int index = word.charAt(i)-'a';
+                if (node.next[index]==null){//不存在前缀单词
+                    return word;
+                }
+                if (node.next[index].isEnd){//最短的前缀单词
+                    return word.substring(0, i+1);
+                }
+                node = node.next[index];
+            }
+            return word;
+        }
+
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 064. 神奇的字典
+
+#### （1）题目
+
+设计一个使用单词列表进行初始化的数据结构，单词列表中的单词 互不相同 。 如果给出一个单词，请判定能否只将这个单词中一个字母换成另一个字母，使得所形成的新单词存在于已构建的神奇字典中。
+
+实现 MagicDictionary 类：
+
+MagicDictionary() 初始化对象
+void buildDict(String[] dictionary) 使用字符串数组 dictionary 设定该数据结构，dictionary 中的字符串互不相同
+bool search(String searchWord) 给定一个字符串 searchWord ，判定能否只将字符串中 一个 字母换成另一个字母，使得所形成的新字符串能够与字典中的任一字符串匹配。如果可以，返回 true ；否则，返回 false 。
+
+
+
+#### （2）思路
+
+* HashMap<Integer, HashSet<String>> 存储相同长度的字符串
+* 暴力比较
+
+
+
+#### （3）实现
+
+```java
+
+import java.util.HashMap;
+import java.util.HashSet;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class MagicDictionary {
+    HashMap<Integer, HashSet<String>> map;
+    /** Initialize your data structure here. */
+    public MagicDictionary() {
+        map = new HashMap<>();
+    }
+    
+    public void buildDict(String[] dictionary) {
+        for (String str : dictionary){
+            int len = str.length();
+            HashSet<String> set = map.getOrDefault(len, new HashSet<>());
+            set.add(str);
+            map.put(len, set);
+        }
+    }
+    
+    public boolean search(String searchWord) {
+        int len = searchWord.length();
+        if (!map.containsKey(len)){
+            return false;
+        }
+        HashSet<String> set = map.get(len);
+        char[] words = searchWord.toCharArray();
+        for (String str : set){
+            int diff = 0;
+            char[] strs = str.toCharArray();
+            for (int i = 0; i < strs.length; i++) {
+                if (words[i] != strs[i]){
+                    diff++;
+                }
+                if (diff > 1){
+                    break;
+                }
+            }
+            if (diff == 1){
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+/**
+ * Your MagicDictionary object will be instantiated and called as such:
+ * MagicDictionary obj = new MagicDictionary();
+ * obj.buildDict(dictionary);
+ * boolean param_2 = obj.search(searchWord);
+ */
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
