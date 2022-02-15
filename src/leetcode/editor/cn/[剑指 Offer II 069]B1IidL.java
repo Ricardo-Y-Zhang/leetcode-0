@@ -77,20 +77,16 @@ package leetcode.editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int peakIndexInMountainArray(int[] arr) {
-        int left = 0, right = arr.length - 1, res = 0;
-
-        while (left <= right) {
-            int mid = (left + right) / 2;
-
-            if (arr[mid] > arr[mid+1]) {
-                res = mid;
+        int left = 1, right = arr.length - 1;
+        while (left<right){
+            int mid = left + (right-left+1)/2;
+            if (arr[mid-1] < arr[mid]){
+                left = mid;
+            }else{
                 right = mid - 1;
-            }else {
-                left = mid + 1;
             }
         }
-
-        return res;
+        return left;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

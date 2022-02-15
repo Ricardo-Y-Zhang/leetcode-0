@@ -4573,7 +4573,7 @@ class Solution {
 
 
 
-### 068. 查找插入位置
+### 068. 查找插入位置(imp)
 
 #### （1）题目
 
@@ -4586,10 +4586,221 @@ class Solution {
 #### （2）思路
 
 * 二分查找**第一个比 target 大或等于的元素的下标**，即 **nums[pos-1] < target <= nums[pos]**
+* 初始化：
+  * 元素的插入位置可能在数组的尾部，`left = 0, right = nums.length;`
+  * 跳出循环条件：`left < right`
+  * nums[mid] < target：**mid 及 mid 左边的所有元素不是插入元素的位置**
+    * `left = mid + 1;`
+  * nums[mid] >= target：**mid 右边的所有元素不是插入元素的位置**
+    * `right = mid;`
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int searchInsert(int[] nums, int target) {
+        int left = 0, right = nums.length;
+        while (left < right){
+            int mid = left + (right-left)/2;
+            if (nums[mid] < target){
+                left = mid + 1;
+            }else{
+                right = mid;
+            }
+        }
+        return left;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+#### （4）模板
+
+```java
+// 查找第一个值等于给定值的元素
+private int firstEquals(int[] arr, int target) {
+    int l = 0, r = arr.length - 1;
+    while (l < r) {
+        int mid = l + ((r - l) >> 1);
+        if (arr[mid] < target) l = mid + 1;
+        else r = mid; // 收缩右边界不影响 first equals
+    }
+    if (arr[l] == target && (l == 0 || arr[l - 1] < target)) return l;
+    return -1;
+}
+```
+
+
+
+```java
+// 查找最后一个值等于给定值的元素
+private int lastEquals(int[] arr, int target) {
+    int l = 0, r = arr.length - 1;
+    while (l < r) {
+        int mid = l + ((r - l + 1) >> 1);
+        if (arr[mid] > target) r = mid - 1;
+        else l = mid; // 收缩左边界不影响 last equals
+    }
+    if (arr[l] == target && (l == arr.length - 1 || arr[l + 1] > target)) return l;
+    return -1;
+}
+```
+
+
+
+```java
+// 查找第一个大于等于给定值的元素
+private int firstLargeOrEquals(int[] arr, int target) {
+    int l = 0, r = arr.length - 1;
+    while (l < r) {
+        int mid = l + ((r - l) >> 1);
+        if (arr[mid] < target) l = mid + 1;
+        else r = mid; // 收缩右边界不影响 first equals
+    }
+    if (arr[l] >= target && (l == 0 || arr[l - 1] < target)) return l; // >=
+    return -1;
+}
+```
 
 
 
 
+
+```java
+// 查找最后一个小于等于给定值的元素
+private int lastLessOrEquals(int[] arr, int target) {
+    int l = 0, r = arr.length - 1;
+    while (l < r) {
+        int mid = l + ((r - l + 1) >> 1);
+        if (arr[mid] > target) r = mid - 1;
+        else l = mid; // 收缩左边界不影响 last equals
+    }
+    if (arr[l] <= target && (l == arr.length - 1 || arr[l + 1] > target)) return l; // <=
+    return -1;
+}
+```
+
+
+
+
+
+### 069. 山峰数组的顶部
+
+#### （1）题目
+
+符合下列属性的数组 arr 称为 山峰数组（山脉数组） ：
+
+* arr.length >= 3
+* 存在 i（0 < i < arr.length - 1）使得：
+  * arr[0] < arr[1] < ... arr[i-1] < arr[i]
+  * arr[i] > arr[i+1] > ... > arr[arr.length - 1]
+
+给定由整数组成的山峰数组 arr ，返回任何满足 arr[0] < arr[1] < ... arr[i - 1] < arr[i] > arr[i + 1] > ... > arr[arr.length - 1] 的下标 i ，即山峰顶部。
+
+
+
+#### （2）思路
+
+* 峰顶元素**左侧满足 arr[i-1] < arr[i] **性质，**右侧不满足**
+* 根据 arr[i-1] < arr[i] **在 [1~n-1] 范围内**找值
+  * 初始化：`left = 1, right = n-1;`
+  * arr[mid-1] < arr[mid]：mid 左侧满足要求，峰顶在 mid 及右侧
+    * `left = mid`
+  * arr[mid-1] > arr[mid]：mid 右侧满足要求，峰顶在 mid 左侧
+    * `right = mid-1`
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int peakIndexInMountainArray(int[] arr) {
+        int left = 1, right = arr.length - 1;
+        while (left<right){
+            int mid = left + (right-left+1)/2;
+            if (arr[mid-1] < arr[mid]){
+                left = mid;
+            }else{
+                right = mid - 1;
+            }
+        }
+        return left;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+### 070. 排序数组中只出现一次的数字
+
+#### （1）题目
+
+给定一个只包含整数的有序数组 `nums` ，每个元素都会出现两次，唯有一个数只会出现一次，请找出这个唯一的数字。
+
+
+
+#### （2）思路
+
+* 二分法
+  * mid 为奇数，则 mid 之前共有奇数个元素，比较 mid 与 mid-1
+    * nums[mid-1] == nums[mid]：[0, mid] 满足要求，唯一的数字出现在 mid 右侧
+      * `left = mid+1;`
+    * nums[mid-1] != nums[mid]：[0, mid-1] 不满足要求，唯一的数字出现在 mid 左侧
+      * `right = mid-1;`
+  * mid 为偶数，则 mid 之前共有偶数个元素，比较 mid 与 mid+1
+    * nums[mid+1] == nums[mid]：[0, mid-1] 满足要求，唯一的数字出现在 mid+1 右侧
+      * `left = mid+2;`
+    * nums[mid+1] != nums[mid]：[0, mid] 不满足要求，唯一的数字出现在 mid 及其左侧
+      * `right = mid;`
+
+
+
+#### （3）实现
+
+```java
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int singleNonDuplicate(int[] nums) {
+        if (nums.length == 1){
+            return nums[0];
+        }
+        int left = 0, right = nums.length - 1;
+        while (left < right){
+            int mid = left + (right-left)/2;
+            if (mid%2 == 1){//下标为奇数，与前一个元素比较
+                if (nums[mid] == nums[mid-1]){
+                    left = mid + 1;
+                }else{
+                    right = mid - 1;
+                }
+            }else{//下标为偶数，与后一个元素比较
+                if (nums[mid] == nums[mid+1]){
+                    left = mid + 2;
+                }else{
+                    right = mid;
+                }
+            }
+        }
+        return nums[left];
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+
+```
+
+
+
+ 
 
 ## 十、排序
 
@@ -4964,6 +5175,302 @@ class Solution {
             }
         }
         return max;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 095. 最长公共子序列
+
+#### （1）题目
+
+给定两个字符串 text1 和 text2，返回这两个字符串的最长 公共子序列 的长度。如果不存在 公共子序列 ，返回 0 。
+
+一个字符串的 子序列 是指这样一个新的字符串：它是由原字符串在不改变字符的相对顺序的情况下删除某些字符（也可以不删除任何字符）后组成的新字符串。
+
+* 例如，"ace" 是 "abcde" 的子序列，但 "aec" 不是 "abcde" 的子序列。
+
+两个字符串的 公共子序列 是这两个字符串所共同拥有的子序列。
+
+
+
+#### （2）思路
+
+* 状态定义：dp[i] [j] 表示 **text1 [0 : i-1] 和 text2 [0 : j-1] 的最长公共子序列长度**
+  * 如此定义为了方便当 i=0 或者 j=0 时，dp[i] [j] 表示为空字符串和另外一个字符串的匹配，此时 dp[i] [j] 可初始化为 0
+* 状态转移方程：
+  * text1[i-1] == text2[j-1] 时，两个子字符串的最后一位相等，最长公共子序列增加  1
+    * `dp[i][j] = dp[i-1][j-1]+1;`
+  * text1[i-1] != text2[j-1] 时，两个子字符串的最后一位不相等，取**不使用 text1[i-1]** 形成最长公共子序列的长度和**不使用 text2[j-1]** 形成最长公共子序列的长度中的**最大值**
+    * `dp[i][j]=Math.max(dp[i-1][j], dp[i][j-1]);`
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int longestCommonSubsequence(String text1, String text2) {
+        int len1 = text1.length(), len2 = text2.length();
+        int[][] dp = new int[len1+1][len2+1];
+        char[] ch1 = text1.toCharArray(), ch2 = text2.toCharArray();
+        for (int i = 1; i < len1+1; i++) {
+            for (int j = 1; j < len2+1; j++) {
+                if (ch1[i-1] == ch2[j-1]){
+                    dp[i][j] = dp[i-1][j-1]+1;
+                }else{
+                    dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]);
+                }
+            }
+        }
+        return dp[len1][len2];
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 096. 字符串交织
+
+#### （1）题目
+
+给定三个字符串 s1、s2、s3，请判断 s3 能不能由 s1 和 s2 交织（交错） 组成。
+
+两个字符串 s 和 t 交织 的定义与过程如下，其中每个字符串都会被分割成若干 非空 子字符串：
+
+* s = s1 + s2 + ... + sn
+* t = t1 + t2 + ... + tm
+* |n - m| <= 1
+* 交织 是 s1 + t1 + s2 + t2 + s3 + t3 + ... 或者 t1 + s1 + t2 + s2 + t3 + s3 + ...
+
+提示：a + b 意味着字符串 a 和 b 连接。
+
+
+
+#### （2）思路
+
+
+
+
+
+### 098. 路径的数目
+
+#### （1）题目
+
+一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为 “Start” ）。
+
+机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为 “Finish” ）。
+
+问总共有多少条不同的路径？
+
+
+
+#### （2）思路
+
+* 动态规划
+* 每一网格可以从**左侧或上侧**移动到达
+* 状态定义：dp[i] [j] 表示从网格的左上角到达 [i, j] 的路径数目
+* 状态转移方程：
+  * `dp[i][j]=dp[i-1][j]+dp[i][j-1];` **( 0<i<m&&0<j<n )**
+  * i = 0 || j = 0 时需特殊考虑
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int uniquePaths(int m, int n) {
+        int[][] dp = new int[m][n];
+        //边界
+        for (int i = 0; i < m; i++) {
+            dp[i][0] = 1;
+        }
+        for (int i = 0; i < n; i++) {
+            dp[0][i] = 1;
+        }
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++){
+                dp[i][j] = dp[i-1][j]+dp[i][j-1];
+            }
+        }
+        return dp[m-1][n-1];
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 099. 最小路径之和
+
+#### （1）题目
+
+给定一个包含非负整数的 m x n 网格 grid ，请找出一条从左上角到右下角的路径，使得路径上的数字总和为最小。
+
+说明：一个机器人每次只能向下或者向右移动一步。
+
+
+
+#### （2）思路
+
+* 状态定义：dp[i] [j] 表示**从左上角到 [i, j] 的最小路径之和**
+* 状态转移方程：可以**从左侧或上侧**移动到达
+  * `dp[i][j] = Math.min(dp[i-1][j], dp[i][j-1])+grid[i][j];` **( 0 < i < m && 0 < j < n)**
+  * **i = 0 || j = 0** 需特殊考虑
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int minPathSum(int[][] grid) {
+        int m = grid.length, n = grid[0].length;
+        int[][] dp = new int[m][n];
+        int start = 0;
+        for (int i = 0; i < m; i++) {
+            start += grid[i][0];
+            dp[i][0] = start;
+        }
+        start = 0;
+        for (int i = 0; i < n; i++) {
+            start += grid[0][i];
+            dp[0][i] = start;
+        }
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                dp[i][j] = Math.min(dp[i-1][j], dp[i][j-1])+grid[i][j];
+            }
+        }
+        return dp[m-1][n-1];
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 100. 三角形中最小路径之和
+
+#### （1）题目
+
+给定一个三角形 triangle ，找出自顶向下的最小路径和。
+
+每一步只能移动到下一行中相邻的结点上。相邻的结点 在这里指的是 下标 与 上一层结点下标 相同或者等于 上一层结点下标 + 1 的两个结点。也就是说，如果正位于当前行的下标 i ，那么下一步可以移动到下一行的下标 i 或 i + 1 。
+
+
+
+#### （2）思路
+
+* 状态定义：dp[i] 表示到达该层下标为 i 的节点的最小路径和
+* 状态转移方程：下一层第 i 个节点
+  * `min = Math.min(dp[i], dp[i-1])+value;`
+  * 每一层的**第一个节点和最后一个节点**需特殊考虑
+* 返回代表最后一层节点 dp 数组中最小值
+
+
+
+#### （3）实现
+
+```java
+
+import java.util.ArrayList;
+import java.util.List;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int minimumTotal(List<List<Integer>> triangle) {
+        List<Integer> dp = new ArrayList<>();
+        dp.add(triangle.get(0).get(0));
+        for (int i = 1; i < triangle.size(); i++) {
+            List<Integer> tri = triangle.get(i);
+            List<Integer> temp = new ArrayList<>();
+            for (int j = 0; j < tri.size(); j++) {
+                if (j==0){
+                    temp.add(dp.get(j)+tri.get(j));
+                }else if (j == tri.size()-1){
+                    temp.add(dp.get(j-1)+tri.get(j));
+                }else{
+                    temp.add(Math.min(dp.get(j-1), dp.get(j))+tri.get(j));
+                }
+            }
+            dp = new ArrayList<>(temp);
+        }
+        int min = Integer.MAX_VALUE;
+        for (int val : dp){
+            min = Math.min(min, val);
+        }
+        return min;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 101. 分割等和子集
+
+#### （1）题目
+
+给定一个非空的正整数数组 `nums` ，请判断能否将这些数字分成元素和相等的两部分。
+
+
+
+#### （2）思路
+
+* 0-1背包问题，即是否能选取元素，使其和为元素总和的一半
+* 状态定义：dp[i] [j] 表示**从数组的 [0, i] 这个子区间内挑选一些正整数，每个数只能用一次，使得这些数的和恰好等于 j**
+* 状态转移方程：对于 dp[i] [j] 来说
+  * 不选择 nums[i]，`dp[i-1] [j] = true`时，表示 [0, i-1] 子区间内存在一部分元素，它们的和为 j，此时 `dp[i] [j] = true`
+  * 选择 nums[i]，若 [0, i-1] 子区间内存在一部分元素，它们的和为 **j-nums[i]**，即 `dp[i-1] [j-nums[i]]=true`时，`dp[i] [j] = true`
+  * 即 `dp[i][j] = dp[i-1][j] || ((j-nums[i])>=0 && dp[i-1][j-nums[i]]);`
+* 初始化：`dp[i] [0] = true`
+
+
+
+#### （3）实现
+
+```java
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public boolean canPartition(int[] nums) {
+        int length = nums.length;
+        int target = 0;
+        for (int temp : nums){
+            target += temp;
+        }
+        if (target % 2 == 1){//奇数，不满足条件
+            return false;
+        }
+        target /= 2;
+        boolean[][] dp = new boolean[length][target+1];
+        for (int i = 0; i < length; i++) {
+            dp[i][0]=true;
+        }
+        for (int i = 1; i < length; i++) {
+            for (int j = 1; j < target+1; j++) {
+                dp[i][j] = dp[i-1][j] || ((j-nums[i])>=0&&dp[i-1][j-nums[i]]);
+            }
+        }
+        return dp[length-1][target];
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
