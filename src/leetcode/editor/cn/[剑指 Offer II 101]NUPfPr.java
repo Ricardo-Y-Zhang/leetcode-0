@@ -50,16 +50,14 @@ class Solution {
             return false;
         }
         target /= 2;
-        boolean[][] dp = new boolean[length][target+1];
-        for (int i = 0; i < length; i++) {
-            dp[i][0]=true;
-        }
-        for (int i = 1; i < length; i++) {
-            for (int j = 1; j < target+1; j++) {
-                dp[i][j] = dp[i-1][j] || ((j-nums[i])>=0&&dp[i-1][j-nums[i]]);
+        boolean[][] dp = new boolean[length+1][target+1];
+        dp[0][0] = true;
+        for (int i = 1; i < length+1; i++) {
+            for (int j = 0; j < target+1; j++) {
+                dp[i][j] = dp[i-1][j] || ((j-nums[i-1])>=0&&dp[i-1][j-nums[i-1]]);
             }
         }
-        return dp[length-1][target];
+        return dp[length][target];
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

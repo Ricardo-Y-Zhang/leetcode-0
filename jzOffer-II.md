@@ -5257,6 +5257,42 @@ class Solution {
 
 #### （2）思路
 
+* 状态定义：dp[i] [j] 表示 **s1 的 [0,i-1]** 与 **s2 的 [0, j-1]**子串能否交织组成 **s3 的 [0, i+j-1]**
+* 初始化：dp[0] [0] = true
+* 状态转移方程：
+  * **i>0 && s1.charAt(i-1) == s3.charAt(i+j-1)**：`dp[i][j] = dp[i][j] || dp[i-1][j];`
+  * **j>0 && s2.charAt(j-1) == s3.charAt(i+j-1)**：`dp[i][j] = dp[i][j] || dp[i][j-1];`
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public boolean isInterleave(String s1, String s2, String s3) {
+        int m = s1.length(), n = s2.length();
+        if (m + n != s3.length()){
+            return false;
+        }
+        boolean[][] dp = new boolean[m+1][n+1];
+        dp[0][0] = true;
+        for (int i = 0; i < m + 1; i++) {
+            for (int j = 0; j < n + 1; j++) {
+                if (i>0){
+                    dp[i][j] = dp[i][j] || (dp[i-1][j]&& s1.charAt(i-1) == s3.charAt(i+j-1));
+                }
+                if (j>0){
+                    dp[i][j] = dp[i][j] || (dp[i][j-1]&& s2.charAt(j-1) == s3.charAt(i+j-1));
+                }
+            }
+        }
+        return dp[m][n];
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
 
 
 
@@ -5388,34 +5424,26 @@ class Solution {
 #### （3）实现
 
 ```java
-
-import java.util.ArrayList;
-import java.util.List;
-
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-    public int minimumTotal(List<List<Integer>> triangle) {
-        List<Integer> dp = new ArrayList<>();
-        dp.add(triangle.get(0).get(0));
-        for (int i = 1; i < triangle.size(); i++) {
-            List<Integer> tri = triangle.get(i);
-            List<Integer> temp = new ArrayList<>();
-            for (int j = 0; j < tri.size(); j++) {
-                if (j==0){
-                    temp.add(dp.get(j)+tri.get(j));
-                }else if (j == tri.size()-1){
-                    temp.add(dp.get(j-1)+tri.get(j));
-                }else{
-                    temp.add(Math.min(dp.get(j-1), dp.get(j))+tri.get(j));
-                }
+    public boolean canPartition(int[] nums) {
+        int length = nums.length;
+        int target = 0;
+        for (int temp : nums){
+            target += temp;
+        }
+        if (target % 2 == 1){//奇数，不满足条件
+            return false;
+        }
+        target /= 2;
+        boolean[][] dp = new boolean[length+1][target+1];
+        dp[0][0] = true;
+        for (int i = 1; i < length+1; i++) {
+            for (int j = 0; j < target+1; j++) {
+                dp[i][j] = dp[i-1][j] || ((j-nums[i-1])>=0&&dp[i-1][j-nums[i-1]]);
             }
-            dp = new ArrayList<>(temp);
         }
-        int min = Integer.MAX_VALUE;
-        for (int val : dp){
-            min = Math.min(min, val);
-        }
-        return min;
+        return dp[length][target];
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
@@ -5471,6 +5499,155 @@ class Solution {
             }
         }
         return dp[length-1][target];
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 102. 加减的目标值
+
+#### （1）题目
+
+给定一个正整数数组 nums 和一个整数 target 。
+
+向数组中的每个整数前添加 '+' 或 '-' ，然后串联起所有整数，可以构造一个 表达式 ：
+
+例如，nums = [2, 1] ，可以在 2 之前添加 '+' ，在 1 之前添加 '-' ，然后串联起来得到表达式 "+2-1" 。
+返回可以通过上述方法构造的、运算结果等于 target 的不同 表达式 的数目。
+
+
+
+#### （2）思路
+
+* 动态规划，可转化为0-1背包问题
+* 将 '+' 后整数之和设为 x，'-' 后整数之和设为 y；由x+y = sum, x-y = target，得 **x = (sum+target)/2**
+* **即从数组 nums 中找出部分元素，使其和为 (sum+target)/2**
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int findTargetSumWays(int[] nums, int target) {
+        for (int num : nums){
+            target += num;
+        }
+        if (target % 2 == 1){
+            return 0;
+        }
+        target /= 2;// 0-1 背包目标值
+        int length = nums.length;
+        int[][] dp = new int[length+1][target+1];
+        dp[0][0] = 1;
+        for (int i = 1; i < length+1; i++) {
+            for (int j = 0; j < target+1; j++) {
+                dp[i][j] += dp[i-1][j];
+                if (j-nums[i-1]>=0){
+                    dp[i][j] += dp[i-1][j-nums[i-1]];
+                }
+            }
+        }
+
+        return dp[length][target];
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 103. 最少得硬币数目
+
+#### （1）题目
+
+给定不同面额的硬币 coins 和一个总金额 amount。编写一个函数来计算可以凑成总金额所需的最少的硬币个数。如果没有任何一种硬币组合能组成总金额，返回 -1。
+
+你可以认为每种硬币的数量是无限的。
+
+
+
+#### （2）思路
+
+* 状态定义：**dp[i] 表示组成金额 i 所需最少的硬币数量**
+* 状态转移方程：
+  * `dp[i] = min(dp[i-coins[j]])+1;` 
+  * 0 <= j < n
+  * coins[j] 代表第 j 枚硬币得面值
+* 初始化：**dp[0] = 0** 代表组成金额 0 所需最少的硬币数量为 0
+
+
+
+#### （3）实现
+
+```java
+import java.util.Arrays;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int coinChange(int[] coins, int amount) {
+        int[] dp = new int[amount+1];
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        dp[0] = 0;
+        for (int i = 1; i < dp.length; i++) {
+            for(int coin : coins){
+                if (i-coin >= 0 && dp[i-coin] != Integer.MAX_VALUE){
+                    dp[i] = Math.min(dp[i], dp[i-coin]+1);
+                }
+            }
+        }
+        return dp[amount] == Integer.MAX_VALUE ? -1 : dp[amount];
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 104. 排列的数目
+
+#### （1）题目
+
+给定一个由 不同 正整数组成的数组 nums ，和一个目标整数 target 。请从 nums 中找出并返回总和为 target 的元素组合的个数。数组中的数字可以在一次排列中出现任意次，但是顺序不同的序列被视作不同的组合。
+
+题目数据保证答案符合 32 位整数范围。
+
+
+
+#### （2）思路
+
+* 状态定义：dp[i] 表示**从 nums 中找出总和为 i 的元素组合的个数**
+* 初始化：**dp[0] = 1**，当不选取任何元素时，元素之和才为 0，因此只有 1 种方案
+* 状态转移方程：
+  * **遍历数组 nums 中的每个元素 num**，当 num <= i 时，`dp[i] += dp[i-num];`
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int combinationSum4(int[] nums, int target) {
+        int[] dp = new int[target+1];
+        dp[0] = 1;
+        for (int i = 1; i < dp.length; i++) {
+            for (int num : nums){
+                if (i-num >= 0){
+                    dp[i] += dp[i-num];
+                }
+            }
+        }
+        return dp[target];
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
