@@ -4806,6 +4806,80 @@ class Solution {
 
 
 
+### 075. 数组相对排序
+
+#### （1）题目
+
+给定两个数组，arr1 和 arr2，
+
+* arr2 中的元素各不相同
+* arr2 中的每个元素都出现在 arr1 中
+
+对 arr1 中的元素进行排序，使 arr1 中项的相对顺序和 arr2 中的相对顺序相同。未在 arr2 中出现过的元素需要按照升序放在 arr1 的末尾。
+
+
+
+#### （2）思路
+
+* 建立 **arr2数组元素和下标**之间的映射 HashMap<Integer, Integer> map
+* 对 arr1 中元素 i, j 进行比较时：
+  * 若 i 和 j 均存在于 arr2 中，比较其下标值
+  * 若 map 中存在 i 的映射，不存在 j 的映射，则 j 大
+  * 若 map 中不存在 i 的映射，存在 j 的映射，则 i 大
+  * 若均不存在，则比较 i 和 j 的大小
+
+
+
+#### （3）实现
+
+```java
+
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int[] relativeSortArray(int[] arr1, int[] arr2) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < arr2.length; i++) {
+            map.put(arr2[i], i);
+        }
+        Integer[] temp = new Integer[arr1.length];
+        for (int i = 0; i < arr1.length; i++) {
+            temp[i] = arr1[i];
+        }
+        Arrays.sort(temp, new Comparator<Integer>(){
+            public int compare(Integer i1, Integer i2){
+                if (map.containsKey(i1)&&map.containsKey(i2)){
+                    return map.get(i1)-map.get(i2);
+                }
+                if (map.containsKey(i1)){
+                    return -1;
+                }
+                if (map.containsKey(i2)){
+                    return 1;
+                }
+                return i1-i2;
+            }
+        });
+        for (int i = 0; i < arr1.length; i++) {
+            arr1[i] = temp[i];
+        }
+        return arr1;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
+
+
 ## 十一、回溯法
 
 
