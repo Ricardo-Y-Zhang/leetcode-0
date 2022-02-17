@@ -4849,6 +4849,67 @@ class Solution {
 
 
 
+### 073. 狒狒吃香蕉
+
+#### （1）题目
+
+狒狒喜欢吃香蕉。这里有 N 堆香蕉，第 i 堆中有 piles[i] 根香蕉。警卫已经离开了，将在 H 小时后回来。
+
+狒狒可以决定她吃香蕉的速度 K （单位：根/小时）。每个小时，她将会选择一堆香蕉，从中吃掉 K 根。如果这堆香蕉少于 K 根，她将吃掉这堆的所有香蕉，然后这一小时内不会再吃更多的香蕉，下一个小时才会开始吃另一堆的香蕉。  
+
+狒狒喜欢慢慢吃，但仍然想在警卫回来前吃掉所有的香蕉。
+
+返回她可以在 H 小时内吃掉所有香蕉的最小速度 K（K 为整数）。
+
+
+
+#### （2）思路
+
+* 二分法查找满足要求的最小速度
+* piles 数组的元素和为 sum，最大值为max；二分查找的**下界left为 sum/h**，即每一堆香蕉都能刚好被吃完，**上界right为 max**
+* 循环条件：**left < right**
+* 计算以 **mid = left+(right-left)/2** 速度吃完香蕉的耗时 spend
+  * spend <= h：当前速度 mid 满足要求，找到满足要求的最小速度，**舍弃 mid 右侧 [mid+1, right] 区间**
+    * `right = mid;`
+  * spend > h：当前速度 mid 过慢，不满足要求，**舍弃 mid 及 mid 左侧 [left, mid] 区间**
+    * `left = mid+1;`
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int minEatingSpeed(int[] piles, int h) {
+        int sum = 0, max = 0;
+        for (int pile : piles){
+            sum += pile;
+            max = Math.max(max, pile);
+        }
+        int left = sum/h, right = max;
+        while (left < right){
+            int mid = left + (right-left)/2;
+            int spend = 0;
+            for (int pile : piles){
+                spend += Math.ceil((double)pile/mid);
+            }
+            if (spend > h){//速度过慢
+                left = mid+1;
+            }else{//速度刚好或过快
+                right = mid;
+            }
+        }
+        return left;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
  
 
 ## 十、排序
@@ -5138,7 +5199,7 @@ class Solution {
 
 #### （2）思路
 
-* 对数组中链表**两两合并**
+* 对数组中链表**两两合并**，直到只剩一个**链表**
 
 
 
