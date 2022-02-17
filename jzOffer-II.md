@@ -4800,9 +4800,120 @@ class Solution {
 
 
 
+
+
+
+
+### 072. 求平方根
+
+#### （1）题目
+
+给定一个非负整数 x ，计算并返回 x 的平方根，即实现 int sqrt(int x) 函数。
+
+正数的平方根有两个，只输出其中的正数平方根。
+
+如果平方根不是整数，输出只保留整数的部分，小数部分将被舍去。
+
+
+
+#### （2）思路
+
+* 二分法查询平方根
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int mySqrt(int x) {
+        int left = 0, right = x;
+        while (left < right){
+            long mid = ((long)left+right+1)/2;
+
+            long product = mid * mid;
+            if (product == x){
+                return (int)mid;
+            }else if (product < x){
+                left = (int)mid;
+            }else{
+                right = (int)mid-1;
+            }
+        }
+        return left;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
  
 
 ## 十、排序
+
+
+
+### 074. 合并区间
+
+#### （1）题目
+
+以数组 intervals 表示若干个区间的集合，其中单个区间为 intervals[i] = [starti, endi] 。请你合并所有重叠的区间，并返回一个不重叠的区间数组，该数组需恰好覆盖输入中的所有区间。
+
+
+
+#### （2）思路
+
+* 对 intervals 数组按 **intervals[i] [0]** 自然序排序
+* 依次将每个区间合并到数组中
+  * 若当前区间的左端点 > 数组中最后一个区间的右端点，则不会重合，将该区间插入数组
+  * 否则，合并两个区间，左端点为数组中最后一个区间的左端点，右端点为两个区间右端点的较大值
+
+
+
+#### （3）实现
+
+```java
+import java.util.*;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int[][] merge(int[][] intervals) {
+        Arrays.sort(intervals, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] ints, int[] t1) {
+                if (ints[0] != t1[0]){
+                    return ints[0]-t1[0];
+                }
+                return ints[1]-t1[1];
+            }
+        });
+        List<int[]> list = new ArrayList<>();
+        for (int[] interval : intervals){
+            if (list.size() == 0){
+                list.add(interval);
+            }else{
+                int[] temp = list.get(list.size()-1);
+                if (temp[1] < interval[0]){
+                    list.add(interval);
+                }else{
+                    list.remove(list.size()-1);
+                    temp[1] = Math.max(temp[1], interval[1]);
+                    list.add(temp);
+                }
+            }
+        }
+
+        return list.toArray(new int[list.size()][]);
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
 
 
 
@@ -4875,6 +4986,228 @@ class Solution {
 
 
 
+
+### 076. 数组中的第 k 大的数字
+
+#### （1）题目
+
+给定整数数组 `nums` 和整数 `k`，请返回数组中第 `**k**` 个最大的元素。
+
+请注意，你需要找的是数组排序后的第 `k` 个最大的元素，而不是第 `k` 个不同的元素。
+
+
+
+#### （2）思路
+
+* 堆排序
+* 使用 PriorityQueue<Integer> 对数组元素按自然序降序排序
+
+
+
+#### （3）实现
+
+```java
+import java.util.Comparator;
+import java.util.PriorityQueue;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        PriorityQueue<Integer> queue = new PriorityQueue<>(new Comparator<Integer>(){
+            public int compare(Integer i1, Integer i2){
+                return i2-i1;
+            }
+        });
+        for (int num : nums){
+            queue.offer(num);
+        }
+        for (int i = 0; i < k - 1; i++) {
+            queue.poll();
+        }
+        return queue.peek();
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 077. 链表排序
+
+#### （1）题目
+
+给定链表的头结点 `head` ，请将其按 **升序** 排列并返回 **排序后的链表** 。
+
+
+
+#### （2）思路
+
+* **自顶向下归并排序**
+* **快慢指针**找到**链表的中点**，将链表拆分为**两个子链表**
+* 递归对两个子链表分别排序
+* 将两个排序后的子链表合并，得到排序后的链表
+
+
+
+#### （3）实现
+
+```java
+
+//leetcode submit region begin(Prohibit modification and deletion)
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode sortList(ListNode head) {
+        return sortList(head, null);
+    }
+    public ListNode sortList(ListNode head, ListNode tail){
+        if (head == null){//该子链 0 个节点
+            return head;
+        }
+        if (head.next == tail){//该子链 1 个节点
+            head.next = null;
+            return head;
+        }
+        //快慢指针找中点
+        ListNode slow = head, fast = head;
+        while (fast != tail){
+            slow = slow.next;
+            fast = fast.next;
+            if (fast != tail){
+                fast = fast.next;
+            }
+        }
+        ListNode mid = slow;
+        //递归对两个子链表排序
+        ListNode node1 = sortList(head, mid);
+        ListNode node2 = sortList(mid, tail);
+        //两个子链表合并
+        ListNode node = merge(node1, node2);
+        return node;
+    }
+
+    public ListNode merge(ListNode node1, ListNode node2){
+        ListNode vhead = new ListNode();
+        ListNode node = vhead;
+        while (node1 != null && node2 != null){
+            if (node1.val < node2.val){
+                node.next = node1;
+                node1 = node1.next;
+                node = node.next;
+            }else{
+                node.next = node2;
+                node2 = node2.next;
+                node = node.next;
+            }
+        }
+        if (node1 != null){
+            node.next = node1;
+        }
+        if (node2 != null){
+            node.next = node2;
+        }
+        return vhead.next;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 078. 合并排序链表
+
+#### （1）题目
+
+给定一个链表数组，每个链表都已经按升序排列。
+
+请将所有链表合并到一个升序链表中，返回合并后的链表。
+
+
+
+#### （2）思路
+
+* 对数组中链表**两两合并**
+
+
+
+#### （3）实现
+
+```java
+
+//leetcode submit region begin(Prohibit modification and deletion)
+
+
+import java.util.LinkedList;
+
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        LinkedList<ListNode> list = new LinkedList<>();
+        for (ListNode node : lists){
+            list.add(node);
+        }
+        if (list.size() == 0){
+            return null;
+        }
+        LinkedList<ListNode> temp = new LinkedList<>();
+        while (list.size() != 1){
+            while (list.size() > 1){
+                temp.offer(merge(list.poll(), list.poll()));
+            }
+            if (!list.isEmpty()){
+                temp.offer(list.poll());
+            }
+            list = new LinkedList<>(temp);
+            temp.clear();
+        }
+        return list.peek();
+    }
+    public ListNode merge(ListNode node1, ListNode node2){
+        ListNode vhead = new ListNode();
+        ListNode node = vhead;
+        while (node1 != null && node2 != null){
+            if (node1.val < node2.val){
+                node.next = node1;
+                node1 = node1.next;
+            }else{
+                node.next = node2;
+                node2 = node2.next;
+            }
+            node = node.next;
+        }
+        if (node1 != null){
+            node.next = node1;
+        }
+        if (node2 != null){
+            node.next = node2;
+        }
+        return vhead.next;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
 
 
 
