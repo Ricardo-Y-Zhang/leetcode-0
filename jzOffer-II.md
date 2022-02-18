@@ -4800,6 +4800,60 @@ class Solution {
 
 
 
+### 071. 按权重生成随机数
+
+#### （1）题目
+
+给定一个正整数数组 w ，其中 w[i] 代表下标 i 的权重（下标从 0 开始），请写一个函数 pickIndex ，它可以随机地获取下标 i，选取下标 i 的概率与 w[i] 成正比。
+
+例如，对于 w = [1, 3]，挑选下标 0 的概率为 1 / (1 + 3) = 0.25 （即，25%），而选取下标 1 的概率为 3 / (1 + 3) = 0.75（即，75%）。
+
+也就是说，选取下标 i 的概率为 w[i] / sum(w) 。
+
+
+
+#### （2）思路
+
+* 设数组 ww 的权重之和为 \textit{total}total。根据题目的要求，我们可以看成将 [1, \textit{total}][1,total] 范围内的所有整数分成 nn 个部分（其中 nn 是数组 ww 的长度），第 ii 个部分恰好包含 w[i]w[i] 个整数，并且这 nn 个部分两两的交集为空。随后我们在 [1, \textit{total}][1,total] 范围内随机选择一个整数 xx，如果整数 xx 被包含在第 ii 个部分内，我们就返回 ii。
+
+* 使用 TreeMap 建立映射
+
+
+
+#### （3）实现
+
+```java
+import java.util.*;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    Random random;
+    TreeMap<Integer, Integer> map;
+    int sum;
+    public Solution(int[] w) {
+        random = new Random();
+        map = new TreeMap<>();
+        for (int i = 0; i < w.length; i++) {
+            map.put(sum, i);
+            sum += w[i];
+        }
+    }
+    
+    public int pickIndex() {
+        int next = random.nextInt(sum);
+        int key = map.floorKey(next);
+        return map.get(key);
+    }
+}
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution obj = new Solution(w);
+ * int param_1 = obj.pickIndex();
+ */
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
 
 
 
@@ -5275,6 +5329,118 @@ class Solution {
 
 
 ## 十一、回溯法
+
+
+
+### 079. 所有子集
+
+#### （1）题目
+
+给定一个整数数组 `nums` ，数组中的元素 **互不相同** 。返回该数组所有可能的子集（幂集）。
+
+解集 **不能** 包含重复的子集。你可以按 **任意顺序** 返回解集。
+
+
+
+#### （2）思路
+
+* 回溯
+
+
+
+#### （3）实现
+
+```java
+
+import java.util.ArrayList;
+import java.util.List;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    List<List<Integer>> res;
+    List<Integer> temp;
+    public List<List<Integer>> subsets(int[] nums) {
+        res = new ArrayList<>();
+        temp = new ArrayList<>();
+        res.add(new ArrayList<>(temp));
+        for (int i = 0; i < nums.length; i++) {
+            dfs(nums, i);
+        }
+        return res;
+    }
+    public void dfs(int[] nums, int index){
+        if (index == nums.length){
+            return;
+        }
+        temp.add(nums[index]);
+        res.add(new ArrayList<>(temp));
+        for (int i = index+1; i < nums.length; i++) {
+            dfs(nums, i);
+        }
+        temp.remove(temp.size()-1);
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 080. 含有 k 个元素的组合
+
+#### （1）题目
+
+给定两个整数 `n` 和 `k`，返回 `1 ... n` 中所有可能的 `k` 个数的组合。
+
+
+
+#### （2）思路
+
+* 回溯
+* `public void dfs(int n, int k, int index)`
+  * n：整数上界 n
+  * k：集合中**缺少的元素个数 k**
+  * index：当前递归的起始元素
+
+
+
+#### （3）实现
+
+```java
+
+import java.util.ArrayList;
+import java.util.List;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    List<List<Integer>> res;
+    List<Integer> temp;
+    public List<List<Integer>> combine(int n, int k) {
+        res = new ArrayList<>();
+        temp = new ArrayList<>();
+        dfs(n, k, 1);
+        return res;
+    }
+
+    public void dfs(int n, int k, int index){
+        if (k == 0){
+            res.add(new ArrayList<>(temp));
+            return;
+        }
+        for (int i = index; i <= n; i++) {
+            temp.add(i);
+            dfs(n, k-1, i+1);
+            temp.remove(temp.size()-1);
+        }
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
 
 
 
