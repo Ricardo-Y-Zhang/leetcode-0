@@ -5442,6 +5442,451 @@ class Solution {
 
 
 
+### 081. 允许重复选择元素的组合
+
+#### （1）题目
+
+给定一个无重复元素的正整数数组 candidates 和一个正整数 target ，找出 candidates 中所有可以使数字和为目标数 target 的唯一组合。
+
+candidates 中的数字可以无限制重复被选取。如果至少一个所选数字数量不同，则两种组合是不同的。 
+
+对于给定的输入，保证和为 target 的唯一组合数少于 150 个。
+
+
+
+#### （2）思路
+
+* 回溯算法
+* `public void dfs(int[] candidates, int target, int index)`：
+  * int[] candidates：正整数数组
+  * int target：当前组合的**元素之和**和目标数 **target** 的**差值**
+  * int index：当前**可以选择的元素的下标**
+* target = 0：
+  * 当前组合满足要求，记录当前组合 temp
+* target < 0 || index = candidates.length()：
+  * 当前组合元素之和超过目标 target 或选择的元素下标超过 candidates 数组的边界，不满足要求；结束此次递归
+* 遍历数组 [index, candidates.length()-1]，**选取当前元素并记录在组合temp中**
+  * `temp.add(candidates[i]) ;`
+  * 进入下一层递归，`dfs(candidates, target-candidates[i], i);`
+  * 状态回溯，`temp.remove(temp.size()-1);`
+
+
+
+#### （3）实现
+
+```java
+
+import java.util.ArrayList;
+import java.util.List;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    List<List<Integer>> res;
+    List<Integer> temp;
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        res = new ArrayList<>();
+        temp = new ArrayList<>();
+        dfs(candidates, target, 0);
+        return res;
+    }
+    public void dfs(int[] candidates, int target, int index){
+        if (target == 0){
+            res.add(new ArrayList<>(temp));
+            return;
+        }
+        if (target < 0 || index == candidates.length){
+            return;
+        }
+        for (int i = index; i < candidates.length; i++) {
+            temp.add(candidates[i]);
+            dfs(candidates, target-candidates[i], i);
+            temp.remove(temp.size()-1);
+        }
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 082. 含有重复元素集合的组合
+
+#### （1）题目
+
+给定一个可能有重复数字的整数数组 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。
+
+candidates 中的每个数字在每个组合中只能使用一次，解集不能包含重复的组合。 
+
+
+
+#### （2）思路
+
+* 思路同上
+
+* `public void dfs(int[] candidates, int target, int index)`：
+  * int[] candidates：正整数数组
+  * int target：当前组合的**元素之和**和目标数 **target** 的**差值**
+  * int index：当前**可以选择的元素的下标**
+* target = 0：
+  * 当前组合满足要求，记录当前组合 temp
+* target < 0 || index = candidates.length()：
+  * 当前组合元素之和超过目标 target 或选择的元素下标超过 candidates 数组的边界，不满足要求；结束此次递归
+* 遍历数组 [index, candidates.length()-1]，选取当前元素并记录在组合temp中，**且每次选取不同的元素**
+  * `if (i != index && candidates[i] == candidates[i-1])`：**避免选取相同元素**
+  * `temp.add(candidates[i]) ;`
+  * 进入下一层递归，`dfs(candidates, target-candidates[i], i);`
+  * 状态回溯，`temp.remove(temp.size()-1);`
+
+
+
+#### （3）实现
+
+```java
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    List<List<Integer>> res;
+    List<Integer> temp;
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        res = new ArrayList<>();
+        temp = new ArrayList<>();
+        Arrays.sort(candidates);
+        dfs(candidates, target, 0);
+        return res;
+    }
+    public void dfs(int[] candidates, int target, int index){
+        if (target == 0){
+            res.add(new ArrayList<>(temp));
+            return;
+        }
+        if (target < 0 || index == candidates.length){
+            return;
+        }
+        for (int i = index; i < candidates.length; i++) {
+            if (i != index && candidates[i] == candidates[i-1]){//每次递归选择不相同的元素
+                continue;
+            }
+            temp.add(candidates[i]);
+            dfs(candidates, target-candidates[i],i+1);
+            temp.remove(temp.size()-1);
+        }
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 083. 没有重复元素集合的全排列
+
+#### （1）题目
+
+给定一个不含重复数字的整数数组 `nums` ，返回其 **所有可能的全排列** 。可以 **按任意顺序** 返回答案。
+
+
+
+#### （2）思路
+
+* 回溯算法
+* 使用 boolean[] isvisit 记录数组 nums 中的元素是否在当前排列中
+  * **isvisit[i] = true**，nums 数组中下标为 i 的元素**在当前排列中**
+  * **isvisit[i] = false**，nums 数组中下标为 i 的元素**不在当前排列中**
+* `public void dfs(int[] nums, int remain)`：
+  * int[] nums：整数数组 nums
+  * int remain：nums 中**剩余没有记录在组合 temp 中的元素个数**
+* `if (remain == 0)`：
+  * 记录当前组合 temp
+* 遍历 nums 数组：
+  * `isvisit[i] = true`：nums[i] 在当前组合 temp 中
+  * `isvisit[i] = false`：nums[i] 不在组合 temp 中
+    * **将 nums[i] 记录在 temp 中，并更改 isvisit[i] 的状态**
+    * 进入下一层递归，不在组合 temp 中的元素个数-1，`dfs(nums, remain-1);`
+    * 状态回溯，**将 nums[i] 中从 temp 中移除，并修改 isvisit[i] 的状态**
+
+
+
+#### （3）实现
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    List<List<Integer>> res;
+    List<Integer> temp;
+    boolean[] isvisit;
+    public List<List<Integer>> permute(int[] nums) {
+        res = new ArrayList<>();
+        temp = new ArrayList<>();
+        isvisit = new boolean[nums.length];
+        dfs(nums, nums.length);
+        return res;
+    }
+    public void dfs(int[] nums, int remain){
+        if (remain == 0){
+            res.add(new ArrayList<>(temp));
+            return;
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if (isvisit[i] == false){
+                temp.add(nums[i]);
+                isvisit[i] = true;
+                dfs(nums, remain-1);
+                temp.remove(temp.size()-1);
+                isvisit[i] = false;
+            }
+        }
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 084. 含有重复元素集合的全排列
+
+#### （1）题目
+
+给定一个可包含重复数字的整数集合 `nums` ，**按任意顺序** 返回它所有不重复的全排列。
+
+
+
+#### （2）思路
+
+* 思路同上
+* **选取元素时需要剪枝，避免选取重复元素**
+
+
+
+#### （3）实现
+
+```java
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    List<List<Integer>> res;
+    List<Integer> temp;
+    boolean[] isvisit;
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        res = new ArrayList<>();
+        temp = new ArrayList<>();
+        isvisit = new boolean[nums.length];
+        Arrays.sort(nums);
+        dfs(nums, nums.length);
+        return res;
+    }
+
+    public void dfs(int[] nums, int remain){
+        if (remain == 0){
+            res.add(new ArrayList<>(temp));
+            return;
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if (isvisit[i] == false){
+                if (i > 0 && isvisit[i-1] == false && nums[i] == nums[i-1]){//剪枝，避免选取重复元素
+                    continue;
+                }
+                temp.add(nums[i]);
+                isvisit[i] = true;
+                dfs(nums, remain-1);
+                //状态回溯
+                temp.remove(temp.size()-1);
+                isvisit[i] = false;
+            }
+        }
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 085. 生成匹配的括号
+
+#### （1）题目
+
+正整数 `n` 代表生成括号的对数，请设计一个函数，用于能够生成所有可能的并且 **有效的** 括号组合。
+
+
+
+#### （2）思路
+
+* 有效的括号：**即在右括号之前，需存在未匹配的左括号**
+* `public void dfs(int remain1, int remain2)`：
+  * int remain1：剩余左括号数量
+  * int remain2：剩余右括号数量
+* remain1 = 0 && remain2 = 0：记录当前的括号组合
+* remain1 > 0：
+  * 将左括号加入当前组合内，`sb.append("(");`
+  * 进入下一次递归，`dfs(remain1-1, remain2);`
+  * 状态回溯，`sb.delete(sb.length()-1, sb.length());`
+* remain2 > 0 && remain1 < remain2：**当前组合内存在未被匹配的左括号**
+  * 将右括号加入当前组合内，`sb.append(")");`
+  * 进入下一次递归，`dfs(remain1, remain2-1);`
+  * 状态回溯，`sb.delete(sb.length()-1, sb.length());`
+
+
+
+#### （3）实现
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    List<String> res;
+    StringBuilder sb;
+    public List<String> generateParenthesis(int n) {
+        res =  new ArrayList<>();
+        sb = new StringBuilder();
+        dfs(n, n);
+        return res;
+
+    }
+
+    public void dfs(int remain1, int remain2){
+        if (remain1 == 0 && remain2 == 0){
+            res.add(sb.toString());
+            return;
+        }
+        if (remain1 != 0){
+            sb.append("(");
+            dfs(remain1-1, remain2);
+            sb.delete(sb.length()-1, sb.length());
+        }
+        if (remain2 != 0 && remain1 < remain2){
+            sb.append(")");
+            dfs(remain1, remain2-1);
+            sb.delete(sb.length()-1, sb.length());
+        }
+    }
+
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 087. 复原 ip
+
+#### （1）题目
+
+给定一个只包含数字的字符串 s ，用以表示一个 IP 地址，返回所有可能从 s 获得的 有效 IP 地址 。你可以按任何顺序返回答案。
+
+有效 IP 地址 正好由四个整数（每个整数位于 0 到 255 之间组成，且不能含有前导 0），整数之间用 '.' 分隔。
+
+例如："0.1.2.201" 和 "192.168.1.1" 是 有效 IP 地址，但是 "0.011.255.245"、"192.168.1.312" 和 "192.168@1.1" 是 无效 IP 地址。
+
+
+
+#### （2）思路
+
+* List<String> res 记录所有有效的 ip 地址，List<String> temp 记录已经转换的 ip 字段
+
+* `public void dfs(String s, int index, int count)`：
+  * String s：目标字符串
+  * int index：当前遍历字符串 s 的下标
+  * int count：当前转换的是第几个ip字段
+* **count = 4***：已经转换了 4 个字段
+  * **index = s.length()**：字符串 s 遍历完，是满足要求的ip地址
+  * 将 temp 中记录的 4 个字段组装成 ip 地址，并记录在 res 中
+  * 结束递归
+* **index = s.length()**：字符串 s 遍历完，未转换 4 个字段
+  * 结束递归
+* 其他情况：字符串 s 未遍历完，且未转换 4 个字段
+  * `s.charAt(index) == '0'`：当前起始的字符为 '0'，则此字段只能为 0
+    * `temp.add("0");`，记录该字段 0
+    * 进入下一层递归，`dfs(s, index+1, count+1);`
+    * 状态回溯，`temp.remove(temp.size()-1);`
+  * `s.charAt(index) != '0'`：起始的字符不为 '0'，考虑多种情况
+    * 遍历字符串 s [index, s.length()-1]，截取 s 的[index, i+1] 部分子串，并转换成整数 num
+      * num <= 255，满足该字段要求
+        * 记录该字段，`temp.add(String.valueOf(num));`
+        * 进入下一层递归，`dfs(s, i+1, count+1);`
+        * 状态回溯，`temp.remove(temp.size()-1);`
+      * num > 255，字段过大，不满足要求
+        * 跳出循环
+
+
+
+#### （3）实现
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    List<String> res;
+    List<String> temp;
+    public List<String> restoreIpAddresses(String s) {
+        res = new ArrayList<>();
+        temp = new ArrayList<>();
+        dfs(s, 0, 0);
+        return res;
+    }
+    public void dfs(String s, int index, int count){
+        if (count == 4){//找到4个ip字段
+            if (index == s.length()){//遍历完 s
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < temp.size(); i++) {//组合成 ip
+                    sb.append(temp.get(i));
+                    if (i != temp.size()-1){
+                        sb.append(".");
+                    }
+                }
+                res.add(sb.toString());
+            }
+            return;
+        }
+        if (s.length() == index){//遍历完 s
+            return;
+        }
+        if (s.charAt(index) == '0'){//第一个字符为 0
+            temp.add("0");
+            dfs(s, index+1, count+1);
+            temp.remove(temp.size()-1);
+        }else{
+            for (int i = index; i < s.length(); i++) {
+                int num = Integer.parseInt(s.substring(index, i+1));
+                if (num <= 255){
+                    temp.add(String.valueOf(num));
+                    dfs(s, i+1, count+1);
+                    temp.remove(temp.size()-1);
+                }else{
+                    break;
+                }
+            }
+        }
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
 
 
 ## 十二、动态规划
