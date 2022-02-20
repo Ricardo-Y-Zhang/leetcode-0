@@ -5785,6 +5785,98 @@ class Solution {
 
 
 
+### 086. 分割回文子字符串
+
+#### （1）题目
+
+给定一个字符串 `s` ，请将 `s` 分割成一些子串，使每个子串都是 **回文串** ，返回 s 所有可能的分割方案。
+
+**回文串** 是正着读和反着读都一样的字符串。
+
+ 
+
+#### （2）思路
+
+* 预处理：回溯中需要重复判断 s[i, j] 是否为回文串，预先使用动态规划判断 s[i, j] 是否为回文串
+  * 状态定义：dp[i] [j]表示子字符串 s[i, j] 是否为回文串
+  * 初始化：`dp[i] [i] = true`，每个字符本身就是回文串，0<i<n
+  * 状态转移：**i 从 [n-1, 0] ，j 从 [i+1, n-1] 遍历**，当 j < i 时无法构成子串
+    * j = i+1：
+      * `dp[i][j] = s.charAt(i) == s.charAt(j);`，两个字符相同即构成回文串
+    * j >  i+1：
+      * `dp[i][j] = (s.charAt(i) == s.charAt(j)) && dp[i+1][j-1]; `，两个字符相同且 s[i+1, j-1] 构成回文串
+* `public void dfs(String s, int index):`
+  * String s：原字符串
+  * int index：当前处理字符在 s 中的下标
+* index = s.length()：
+  * s 分割完成，记录当前分割方案，`res.add(new ArrayList<>(temp));`
+  * 结束此次递归
+* 遍历 s [index, s.length()-1]：
+  * `dp[index, i] = true`，即 s [index, i] 构成回文串
+    * `temp.add(s.subString(index, i+1));`将 s[index, i] 分割并记录
+    * `dfs(s, i+1);`，进入下一层递归
+    * 状态回溯，`temp.remove(temp.size()-1);`
+
+
+
+#### （3）实现
+
+```java
+
+import java.util.ArrayList;
+import java.util.List;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    boolean[][] dp;
+    List<List<String>> res;
+    List<String> temp;
+    public String[][] partition(String s) {
+        res = new ArrayList<>();
+        temp = new ArrayList<>();
+       int n = s.length();
+       dp = new boolean[n][n];
+        for (int i = n-1; i >= 0; i--) {
+            dp[i][i] = true;//字符本身就是回文串
+            for (int j = i+1; j < n; j++) {
+                if (s.charAt(i) == s.charAt(j)){
+                    if (j == i+1){
+                        dp[i][j] = true;
+                    }else{
+                        dp[i][j] = dp[i+1][j-1];
+                    }
+                }
+            }
+        }
+        dfs(s, 0);
+        String[][] ans = new String[res.size()][];
+        for (int i = 0; i < ans.length; i++) {
+            ans[i] = res.get(i).toArray(new String[0]);
+        }
+        return ans;
+    }
+    public void dfs(String s, int index){
+        if (index == s.length()){
+            res.add(new ArrayList<>(temp));
+            return;
+        }
+        for (int i = index; i < s.length(); i++) {
+            if (dp[index][i]){
+                temp.add(s.substring(index, i+1));
+                dfs(s, i+1);
+                temp.remove(temp.size()-1);
+            }
+        }
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+
+```
+
+
+
+
+
 ### 087. 复原 ip
 
 #### （1）题目
@@ -6727,6 +6819,164 @@ class Solution {
             }
         }
         return dp[target];
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
+## 十三、图
+
+### 105. 岛屿的最大面积
+
+#### （1）题目
+
+给定一个由 0 和 1 组成的非空二维数组 grid ，用来表示海洋岛屿地图。
+
+一个 岛屿 是由一些相邻的 1 (代表土地) 构成的组合，这里的「相邻」要求两个 1 必须在水平或者竖直方向上相邻。你可以假设 grid 的四个边缘都被 0（代表水）包围着。
+
+找到给定的二维数组中最大的岛屿面积。如果没有岛屿，则返回面积为 0 。
+
+
+
+#### （2）思路
+
+* 深度优先搜索
+* **使用 isvisit[i] [j] 记录 grid[i] [j] 网格是否被访问过** 
+* 遍历访问 grid 中**为 1 且未被访问过**的网格
+  * `public int dfs(int[][] grid, int i, int j)`：返回包含grid[i] [j] 且未被访问的岛屿面积
+  * `grid[i][j] == 0 || isvisit[i][j] == false`：当前网格已被访问过或为 0
+    * `return 0;`
+  * 访问当前岛屿，`isvisit[i][j]=true; int num = 1;`  
+  * 遍历 grid[i] [j] 的上下左右四个未被访问过的网格并**判断网格是否越界**，返回岛屿面积
+    * `0 <= x && x < grid.length && 0 <= y && y < grid[0].length && isvisit[x][y] == false && grid[x][y] == 1`：**grid[x] [y] 未越界，未被访问且为 1**
+      * `num += dfs(grid, x, y);`
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    int[][] change = {{-1, 1, 0, 0}, {0, 0, -1, 1}};
+    boolean[][] isvisit;
+    public int maxAreaOfIsland(int[][] grid) {
+        int m = grid.length, n = grid[0].length;
+        isvisit = new boolean[m][n];
+        int max = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (isvisit[i][j] == false && grid[i][j] == 1){
+                    int num = dfs(grid, i, j);
+                    max = Math.max(max, num);
+                }
+            }
+        }
+        return max;
+    }
+    public int dfs(int[][] grid, int i, int j){
+        if (grid[i][j] == 0 || isvisit[i][j] == true){
+            return 0;
+        }
+        isvisit[i][j] = true;
+        int num = 1;
+        for (int k = 0; k < 4; k++) {
+            int x = i + change[0][k], y = j + change[1][k];
+            if (0 <= x && x < grid.length && 0 <= y && y < grid[0].length && isvisit[x][y] == false && grid[x][y] == 1){
+                num += dfs(grid, x, y);
+            }
+        }
+        return num;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 106. 二分图
+
+#### （1）题目
+
+存在一个 无向图 ，图中有 n 个节点。其中每个节点都有一个介于 0 到 n - 1 之间的唯一编号。
+
+给定一个二维数组 graph ，表示图，其中 graph[u] 是一个节点数组，由节点 u 的邻接节点组成。形式上，对于 graph[u] 中的每个 v ，都存在一条位于节点 u 和节点 v 之间的无向边。该无向图同时具有以下属性：
+
+不存在自环（graph[u] 不包含 u）。
+不存在平行边（graph[u] 不包含重复值）。
+如果 v 在 graph[u] 内，那么 u 也应该在 graph[v] 内（该图是无向图）
+这个图可能不是连通图，也就是说两个节点 u 和 v 之间可能不存在一条连通彼此的路径。
+二分图 定义：如果能将一个图的节点集合分割成两个独立的子集 A 和 B ，并使图中的每一条边的两个节点一个来自 A 集合，一个来自 B 集合，就将这个图称为 二分图 。
+
+如果图是二分图，返回 true ；否则，返回 false 。
+
+
+
+#### （2）思路
+
+* 使用 int[] color 给节点划分阵营：
+  * color[i] = 0：节点 i 未被访问过
+  * color[i] = 1：节点 i 属于阵营 1
+  * color[i] = 2：节点 i 属于阵营 2
+* 该无向图可能不是连通图，因此需要**遍历所有未访问的节点才能遍历所有边**
+* 使用全局变量 boolean flag 表示该图是否为二分图，int[] color 表示节点的阵营
+* `public void dfs(int[][] graph, int index, int col)：`
+  * int index：当前遍历节点下标为 index
+  * int col：当前节点**应该属于的阵营编号**
+* `flag == false || color[index] != 0`：该图不是二分图或当前节点已经访问过
+  * 结束此次递归
+* `color[index]=col;`，给节点 index 划分阵营
+* 遍历节点 index 的邻接节点：
+  * `color[j] == col`，**邻接节点和节点 index 冲突**
+    * `flag=false;return;`，修改 flag 状态并结束此次递归
+  * `color[j] != col && color[j] == 0`，**邻接节点 j 不冲突且未访问过**
+    * `dfs(graph, next, col == 1 ? 2:1);`，递归访问邻接节点 j，并**划分为和节点 index 相反的阵营**
+
+
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    boolean flag;
+    int[] color;
+    public boolean isBipartite(int[][] graph) {
+        int n = graph.length;
+        flag = true;
+        color = new int[n];
+        for (int i = 0; i < n; i++) {
+            if (color[i] == 0){//未被访问过
+                dfs(graph, i, 1);
+            }
+        }
+
+        return flag;
+    }
+    public void dfs(int[][] graph, int index, int col){
+        if (flag == false || color[index] != 0){//当前图不是二分图，或当前节点已被访问过
+            return;
+        }
+        color[index] = col;
+        for (int i = 0; i < graph[index].length; i++) {
+            int next = graph[index][i];
+            if (color[next] == col){//邻接点不满足要求
+                flag = false;
+                return;
+            }else if (color[next] == 0){//临界点满足要求且未访问过
+                dfs(graph, next, col == 1 ? 2:1);
+            }
+        }
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

@@ -42,48 +42,49 @@
 
 package leetcode.editor.cn;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
+    boolean[][] dp;
     List<List<String>> res;
+    List<String> temp;
     public String[][] partition(String s) {
         res = new ArrayList<>();
-        List<String> temp = new ArrayList<>();
-        String[] strs = s.split("");
-        for (String str : strs){
-            temp.add(str);
+        temp = new ArrayList<>();
+       int n = s.length();
+       dp = new boolean[n][n];
+        for (int i = n-1; i >= 0; i--) {
+            dp[i][i] = true;//字符本身就是回文串
+            for (int j = i+1; j < n; j++) {
+                if (s.charAt(i) == s.charAt(j)){
+                    if (j == i+1){
+                        dp[i][j] = true;
+                    }else{
+                        dp[i][j] = dp[i+1][j-1];
+                    }
+                }
+            }
         }
-        dfs(temp);
+        dfs(s, 0);
         String[][] ans = new String[res.size()][];
-        for(int i = 0; i < ans.length; i++){
+        for (int i = 0; i < ans.length; i++) {
             ans[i] = res.get(i).toArray(new String[0]);
         }
         return ans;
     }
-    public void dfs(List<String> temp){
-        res.add(new ArrayList<>(temp));
-        if (temp.size() == 1){
+    public void dfs(String s, int index){
+        if (index == s.length()){
+            res.add(new ArrayList<>(temp));
             return;
         }
-        for (int i = 0; i < temp.size() - 1; i++) {
-            if (i != temp.size()-2){
-                if (temp.get(i).equals(temp.get(i+2))){
-                    String comb = temp.get(i) + temp.get(i+1) + temp.get(i+2);
-                    List<String> next = new ArrayList<>(temp);
-                    next.set(i, comb);
-                    next.remove(i+1);
-                    next.remove(i+1);
-                    dfs(next);
-                }
-            }
-            if (temp.get(i).equals(temp.get(i+1))){
-                String comb = temp.get(i) + temp.get(i+1);
-                List<String> next = new ArrayList<>(temp);
-                next.set(i, comb);
-                next.remove(i+1);
-                dfs(next);
+        for (int i = index; i < s.length(); i++) {
+            if (dp[index][i]){
+                temp.add(s.substring(index, i+1));
+                dfs(s, i+1);
+                temp.remove(temp.size()-1);
             }
         }
     }
