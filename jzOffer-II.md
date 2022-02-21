@@ -6982,3 +6982,395 @@ class Solution {
 //leetcode submit region end(Prohibit modification and deletion)
 ```
 
+
+
+
+
+### 107. 矩阵中的距离
+
+#### （1）题目
+
+给定一个由 0 和 1 组成的矩阵 mat ，请输出一个大小相同的矩阵，其中每一个格子是 mat 中对应位置元素到最近的 0 的距离。
+
+两个相邻元素间的距离为 1 。
+
+
+
+#### （2）思路
+
+* 图的广度优先搜索
+* 假设一个**超级源点**，每个 0 与超级源点的距离为 0，每个节点的邻接点即为上下左右四个节点，该题即求**每个节点到超级源点的距离**
+* isvisit[i] [j] 表示节点 mat[i] [j] 是否被访问过，dist[i] [j]表示节点 mat[i] [j] 和超级源点之间的距离，LinkedList<int[]> queue为队列
+* 广度优先搜索算法流程：
+  * 遍历矩阵，**将矩阵中 0 节点加入队列中**，isvisit 设为 true，dist 设为 0
+  * 队列 queue 非空时，弹出队首元素 [i, j]
+  * 访问节点 mat[i] [j] 的**邻接点中未访问过的节点**即上下左右四个节点
+    * **(x, y) = (i-1, j), (i+1, j), (i, j-1), (i, j+1)**，注意判断 (x,y) 是否**合法且 isvisit[x] [y]  == false**
+    * `dist[x][y]=dist[i][j]+1;` 修改 (x,y) 与超级源点的距离
+    * (x,y) 入队，并修改 isvisit[x] [y]
+
+
+
+#### （3）实现
+
+```java
+import java.util.LinkedList;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int[][] updateMatrix(int[][] mat) {
+        int m = mat.length, n = mat[0].length;
+        boolean[][] isvisit = new boolean[m][n];
+        int[][] dist = new int[m][n];
+        LinkedList<int[]> queue = new LinkedList<>();
+        for (int i = 0; i < m; i++) {//将 0 节点加入队列
+            for (int j = 0; j < n; j++) {
+                if (mat[i][j] == 0){
+                    int[] temp = {i, j};
+                    queue.add(temp);
+                    isvisit[i][j] = true;
+                    dist[i][j] = 0;
+                }
+            }
+        }
+        int[][] add = {{-1,1,0,0}, {0,0,-1,1}};
+        while (!queue.isEmpty()){
+            int[] first = queue.pollFirst();
+            for (int i = 0; i < 4; i++) {
+                int x = first[0]+add[0][i], y = first[1]+add[1][i];
+                if (0<=x&&x<m&&0<=y&&y<n&&isvisit[x][y]==false){
+                    int[] temp = {x,y};
+                    queue.add(temp);
+                    dist[x][y] = dist[first[0]][first[1]]+1;
+                    isvisit[x][y]=true;
+                }
+            }
+        }
+        return dist;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+#### （2.2）思路
+
+* **动态规划，待补充**
+
+
+
+
+
+
+
+### 109. 开密码锁
+
+#### （1）题目
+
+一个密码锁由 4 个环形拨轮组成，每个拨轮都有 10 个数字： '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' 。每个拨轮可以自由旋转：例如把 '9' 变为 '0'，'0' 变为 '9' 。每次旋转都只能旋转一个拨轮的一位数字。
+
+锁的初始数字为 '0000' ，一个代表四个拨轮的数字的字符串。
+
+列表 deadends 包含了一组死亡数字，一旦拨轮的数字和列表里的任何一个元素相同，这个锁将会被永久锁定，无法再被旋转。
+
+字符串 target 代表可以解锁的数字，请给出解锁需要的最小旋转次数，如果无论如何不能解锁，返回 -1 。
+
+
+
+#### （2）思路
+
+* 广度优先搜索
+
+* 具体地，我们在一开始将 (0000,0) 加入队列，并使用该队列进行广度优先搜索。在搜索的过程中，设当前搜索到的数字为 status，旋转的次数为 step，我们可以枚举status 通过一次旋转得到的数字。设其中的某个数字为next_status，如果其没有被搜索过，我们就将(next_status,step+1) 加入队列。如果搜索到了target，我们就返回其对应的旋转次数。
+* 每次获取当前数字**旋转一次**能得到的数字集合，并将**未访问过**的且**不是死亡数字**的数字加入队列
+
+
+
+#### （3）实现
+
+```java
+import java.util.*;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+
+    public int openLock(String[] deadends, String target) {
+        if (target.equals("0000")){
+            return 0;
+        }
+        List<String> dead = new ArrayList<>();
+        for (String temp : deadends){
+            dead.add(temp);
+        }
+        if (dead.contains("0000")){
+            return -1;
+        }
+        LinkedList<String> queue = new LinkedList<>();
+        queue.add("0000");
+        int step = 0;//记录得到当前数字所需最小旋转次数
+        Set<String> set = new HashSet<>();
+        set.add("0000");
+        while (!queue.isEmpty()){
+            int num = queue.size();//当前队列中的节点数目
+            for (int i = 0; i < num; i++) {
+                String first = queue.pollFirst();
+                if (first.equals(target)){
+                    return step;
+                }
+                for (String temp : get(first)){
+                    if (!set.contains(temp) &&  !dead.contains(temp)){//未访问过且不是死亡数字
+                        queue.add(temp);
+                        set.add(temp);
+                    }
+                }
+            }
+            step++;
+        }
+        return -1;
+    }
+    public List<String> get(String str){//str 所旋转一次能得到的密码集合
+        List<String> res = new ArrayList<>();
+        char[] chs = str.toCharArray();
+        for (int i = 0; i < chs.length; i++) {
+            char ch = chs[i];
+            if (ch == '0'){
+                chs[i] = '9';
+            }else{
+                chs[i] = (char) (ch-1);
+            }
+            res.add(new String(chs));
+            if (ch == '9'){
+                chs[i] = '0';
+            }else{
+                chs[i] = (char) (ch+1);
+            }
+            res.add(new String(chs));
+            chs[i] = ch;
+        }
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
+
+
+### 110. 所有路径
+
+#### （1）题目
+
+给定一个有 n 个节点的有向无环图，用二维数组 graph 表示，请找到所有从 0 到 n-1 的路径并输出（不要求按顺序）。
+
+graph 的第 i 个数组中的单元都表示有向图中 i 号节点所能到达的下一些结点（译者注：有向图是有方向的，即规定了 a→b 你就不能从 b→a ），若为空，就是没有下一个节点了。
+
+
+
+
+
+#### （2）思路
+
+* 从节点 0 开始进行 DFS
+
+
+
+#### （3）实现
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    List<List<Integer>> res;
+    List<Integer> temp;
+    int n;
+    public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
+        res = new ArrayList<>();
+        temp = new ArrayList<>();
+        n = graph.length;
+        temp.add(0);
+        dfs(graph,0);
+        return res;
+    }
+    public void dfs(int[][] graph, int index){
+        if (index == n-1){
+            res.add(new ArrayList<>(temp));
+            return;
+        }
+        for (int next : graph[index]){
+            temp.add(next);
+            dfs(graph, next);
+            temp.remove(temp.size()-1);
+        }
+    }
+
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 111. 计算除法
+
+#### （1）题目
+
+给定一个变量对数组 equations 和一个实数值数组 values 作为已知条件，其中 equations[i] = [Ai, Bi] 和 values[i] 共同表示等式 Ai / Bi = values[i] 。每个 Ai 或 Bi 是一个表示单个变量的字符串。
+
+另有一些以数组 queries 表示的问题，其中 queries[j] = [Cj, Dj] 表示第 j 个问题，请你根据已知条件找出 Cj / Dj = ? 的结果作为答案。
+
+返回 所有问题的答案 。如果存在某个无法确定的答案，则用 -1.0 替代这个答案。如果问题中出现了给定的已知条件中没有出现的字符串，也需要用 -1.0 替代这个答案。
+
+注意：输入总是有效的。可以假设除法运算中不会出现除数为 0 的情况，且不存在任何矛盾的结果。
+
+
+
+#### （2）思路
+
+* HashMap<String, Integer> map 记录**表示变量的字符串**和其**在图中对应节点编号**的映射
+* matrix[i] [j] 表示**映射为 i 的变量/映射为 j 的变量**
+* Floyd算法：遍历所有节点，**以该节点为中间节点，去计算 matrix[i] [j]**
+  * `matrix[j][k] = matrix[j][i]*matrix[i][k];`
+
+
+
+#### （3）实现
+
+```java
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+
+    public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
+        HashMap<String, Integer> map = new HashMap<>();
+        for (List<String> equation : equations){//给每个字符串创建映射值
+            for (String str : equation){
+                if (!map.containsKey(str)){
+                    map.put(str, map.size());
+                }
+            }
+        }
+        int n = map.size();
+        double[][] matrix = new double[n][n];
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(matrix[i], -1);
+            matrix[i][i] = 1;
+        }
+        for (int i = 0; i < equations.size(); i++) {
+            int start = map.get(equations.get(i).get(0)), end = map.get(equations.get(i).get(1));
+            matrix[start][end] = values[i];
+            matrix[end][start] = 1/values[i];
+        }
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                for (int k = 0; k < n; k++) {
+                    if (matrix[j][k] == -1 && matrix[j][i] !=-1 && matrix[i][k]!=-1){
+                        matrix[j][k] = matrix[j][i]*matrix[i][k];
+                    }
+                }
+            }
+        }
+        double[] res = new double[queries.size()];
+        for (int i = 0; i < queries.size(); i++) {
+            String start = queries.get(i).get(0), end = queries.get(i).get(1);
+            if (!map.containsKey(start) || !map.containsKey(end)){
+                res[i] = -1;
+            }else{
+                res[i] = matrix[map.get(start)][map.get(end)];
+            }
+        }
+        return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 113. 课程顺序
+
+#### （1）题目
+
+现在总共有 numCourses 门课需要选，记为 0 到 numCourses-1。
+
+给定一个数组 prerequisites ，它的每一个元素 prerequisites[i] 表示两门课程之间的先修顺序。 例如 prerequisites[i] = [ai, bi] 表示想要学习课程 ai ，需要先完成课程 bi 。
+
+请根据给出的总课程数  numCourses 和表示先修顺序的 prerequisites 得出一个可行的修课序列。
+
+可能会有多个正确的顺序，只要任意返回一种就可以了。如果不可能完成所有课程，返回一个空数组。
+
+ 
+
+#### （2）思路
+
+* 有向图 + 拓扑序列
+* 将**入度为 0** 的节点入队，队头节点出队时，将**其邻接边删除**，并**更新邻接点的入度**，若入度为 0 ，则入队
+* 判断**拓扑序列元素个数是否等于课程总数**
+
+
+
+#### （3）实现
+
+```java
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        int[] in = new int[numCourses];//入度
+        int[][] matrix = new int[numCourses][numCourses];//有向图
+        for (int[] temp : prerequisites){
+            int i = temp[0], j = temp[1];
+            in[i]++;
+            matrix[j][i] = 1;
+        }
+        LinkedList<Integer> list = new LinkedList<>();//拓扑序列
+        List<Integer> res = new ArrayList<>();//课程顺序
+        for (int i = 0; i < numCourses; i++) {//将入度为 0 的节点入队
+            if (in[i] == 0){
+                list.add(i);
+            }
+        }
+        while (!list.isEmpty()){
+            int first = list.pollFirst();
+            res.add(first);
+            for (int i = 0; i < numCourses; i++) {
+                if (matrix[first][i] == 1){//删掉first节点的邻接边
+                    in[i]--;
+                    if (in[i] == 0){
+                        list.add(i);
+                    }
+                }
+            }
+        }
+        if (res.size() == numCourses){
+            int[] ans = new int[numCourses];
+            for (int i = 0; i < numCourses; i++) {
+                ans[i] = res.get(i);
+            }
+            return ans;
+        }
+        return new int[0];
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
