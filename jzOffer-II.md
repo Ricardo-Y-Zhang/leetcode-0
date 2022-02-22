@@ -7374,3 +7374,156 @@ class Solution {
 //leetcode submit region end(Prohibit modification and deletion)
 ```
 
+
+
+
+
+### 115. 重建序列
+
+#### （1）题目
+
+请判断原始的序列 org 是否可以从序列集 seqs 中唯一地 重建 。
+
+序列 org 是 1 到 n 整数的排列，其中 1 ≤ n ≤ 104。重建 是指在序列集 seqs 中构建最短的公共超序列，即  seqs 中的任意序列都是该最短序列的子序列。
+
+
+
+#### （2）思路
+
+* 判断所给序列 org 是否是**唯一的拓扑序列**
+
+
+
+#### （3）实现
+
+```java
+import java.util.*;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public boolean sequenceReconstruction(int[] org, List<List<Integer>> seqs) {
+        int n = org.length;
+        List<List<Integer>> list = new ArrayList<>();
+        //初始化邻接表
+        for (int i = 0; i < n; i++) {
+            list.add(new ArrayList<>());
+        }
+        boolean[] isvisit = new boolean[n];//记录节点是否进入拓扑序列
+        int[] in = new int[n];
+        HashSet<Integer> set = new HashSet<>();//记录1~n是否均出现在seqs中
+        for (List<Integer> seq : seqs){
+            for (int i = 0; i < seq.size()-1; i++) {
+                int start = seq.get(i)-1, end = seq.get(i+1)-1;
+                if (start < 0 || start >= n || end < 0 || end >= n){//判断元素是否属于 1~n
+                    return false;
+                }
+                if (!list.get(start).contains(end)){//去除重复边
+                    list.get(start).add(end);
+                    in[end]++;//入度
+                }
+                set.add(start);
+            }
+            int last = seq.get(seq.size()-1)-1;//只有一个元素的情况
+            if (last < 0 || last >= n){
+                return false;
+            }
+            set.add(last);
+        }
+        if (set.size() != n){
+            return false;
+        }
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < n; i++) {
+            if (in[i] == 0){
+                queue.add(i);
+                isvisit[i] = true;
+            }
+        }
+
+        int index = 0;
+        while (!queue.isEmpty()){
+            if (queue.size() != 1){//保证队列中只有一个元素
+                return false;
+            }
+            int first = queue.poll();
+            if (first != org[index++]-1){
+                return false;
+            }
+            for (int i = 0; i < list.get(first).size(); i++) {
+                int next = list.get(first).get(i);
+                if (isvisit[next] == false){
+                    in[next]--;
+                    if (in[next] == 0){
+                        queue.add(next);
+                        isvisit[next] = true;
+                    }
+                }
+            }
+        }
+        return index == n;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
+### 116. 省份数量
+
+#### （1）题目
+
+有 n 个城市，其中一些彼此相连，另一些没有相连。如果城市 a 与城市 b 直接相连，且城市 b 与城市 c 直接相连，那么城市 a 与城市 c 间接相连。
+
+省份 是一组直接或间接相连的城市，组内不含其他没有相连的城市。
+
+给你一个 n x n 的矩阵 isConnected ，其中 isConnected[i][j] = 1 表示第 i 个城市和第 j 个城市直接相连，而 isConnected[i][j] = 0 表示二者不直接相连。
+
+返回矩阵中 省份 的数量。
+
+
+
+#### （2）思路
+
+* 求图的**连通分量数量**
+* 使用 isvisit 数组记录节点是否访问过，ans记录连通分量数量
+* 遍历所有节点，若当前节点**未访问**，则访问当前节点进行**DFS**，且**ans++**
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    boolean[] isvisit;
+    public int findCircleNum(int[][] isConnected) {
+        int n = isConnected.length;
+        isvisit = new boolean[n];
+        int ans = 0;
+        for (int i = 0; i < n; i++) {
+            if (isvisit[i] == false){
+                dfs(isConnected, i);
+                ans++;
+            }
+        }
+        return ans;
+    }
+    public void dfs(int[][] matrix, int index){
+        if (isvisit[index] == true){
+            return;
+        }
+        isvisit[index] = true;
+        for (int i = 0; i < matrix.length; i++) {
+            if (isvisit[i] == false && matrix[index][i] == 1){
+                dfs(matrix, i);
+            }
+        }
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
