@@ -2294,6 +2294,12 @@ class Solution {
 
 
 
+
+
+## 五、栈
+
+
+
 ### 036. 后缀表达式
 
 #### （1）题目
@@ -2474,11 +2480,77 @@ class Solution {
 
 
 
+### 039. 直方图最大矩形面积
+
+#### （1）题目
+
+给定非负整数数组 heights ，数组中的数字用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。
+
+求在该柱状图中，能够勾勒出来的矩形的最大面积。
+
+
+
+#### （2）思路
+
+* 枚举所有的高，即柱子的高度，找到其左右边界，求得宽，记录矩形的最大面积
+* **单调栈**获取**距离每个元素最近且小于该元素**的元素的下标，left 记录左侧，right 记录右侧；矩形面积：**i * (right[i]-left[i]-1)**
+* 单调栈维护**从栈顶向下单调递减的序列**，将元素压入栈顶时，**栈顶元素**即为距离最近且小于该元素的元素
+
+
+
+#### （3）实现
+
+```java
+import java.util.Stack;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int largestRectangleArea(int[] heights) {
+        int n  = heights.length;
+        int[] left = new int[n], right = new int[n];
+        Stack<Integer> stack = new Stack<>();//单调栈
+        for (int i = 0; i < n; i++) {
+            while (!stack.isEmpty() && heights[stack.peek()] >= heights[i]){
+                stack.pop();
+            }
+            if (stack.isEmpty()){
+                left[i] = -1;
+            }else{
+                left[i] = stack.peek();
+            }
+            stack.push(i);
+        }
+        stack.clear();
+        for (int i = n-1; i >= 0; i--) {
+            while (!stack.isEmpty() && heights[stack.peek()] >= heights[i]){
+                stack.pop();
+            }
+            if (stack.isEmpty()){
+                right[i] = n;
+            }else{
+                right[i] = stack.peek();
+            }
+            stack.push(i);
+        }
+        int ans = 0;
+        for (int i = 0; i < heights.length; i++) {
+            int product = heights[i] * (right[i]-left[i]-1);
+            ans = Math.max(product, ans);
+        }
+
+        return ans;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
 
 
 
 
-## 五、队列
+
+
+
+## 六、队列
 
 ### 041. 滑动窗口的平均值
 
@@ -2934,7 +3006,7 @@ class Solution {
 
 
 
-## 六、树
+## 七、树
 
 
 
@@ -3807,7 +3879,7 @@ class MyCalendar {
 
 
 
-## 七、堆
+## 八、堆
 
 ### 059. 数据流的第 k 大数值
 
@@ -3982,7 +4054,7 @@ class Solution {
 
 
 
-## 八、前缀树
+## 九、前缀树
 
 
 
@@ -4569,7 +4641,7 @@ class Solution {
 
 
 
-## 九、二分查找
+## 十、二分查找
 
 
 
@@ -4966,7 +5038,7 @@ class Solution {
 
  
 
-## 十、排序
+## 十一、排序
 
 
 
@@ -5328,7 +5400,7 @@ class Solution {
 
 
 
-## 十一、回溯法
+## 十二、回溯法
 
 
 
@@ -5981,7 +6053,7 @@ class Solution {
 
 
 
-## 十二、动态规划
+## 十三、动态规划
 
 
 
@@ -6830,7 +6902,7 @@ class Solution {
 
 
 
-## 十三、图
+## 十四、图
 
 ### 105. 岛屿的最大面积
 
@@ -7526,4 +7598,227 @@ class Solution {
 }
 //leetcode submit region end(Prohibit modification and deletion)
 ```
+
+
+
+
+
+### 118. 多余的边
+
+#### （1）题目
+
+树可以看成是一个连通且 无环 的 无向 图。
+
+给定往一棵 n 个节点 (节点值 1～n) 的树中添加一条边后的图。添加的边的两个顶点包含在 1 到 n 中间，且这条附加的边不属于树中已存在的边。图的信息记录于长度为 n 的二维数组 edges ，edges[i] = [ai, bi] 表示图中在 ai 和 bi 之间存在一条边。
+
+请找出一条可以删去的边，删除后可使得剩余部分是一个有着 n 个节点的树。如果有多个答案，则返回数组 edges 中最后出现的边。
+
+
+
+#### （2）思路
+
+* 即找到 edges 中**最后出现的在环中的边**
+* 找到**环中的节点** target
+  * 从任意节点开始 dfs 遍历该图，遍历一条边后，删除该边，若**重复访问某个节点**，则该节点是环中的节点
+* 从 target 开始 dfs 遍历该图，找到环中的所有节点
+* 遍历 edges，找到最后出现的环中的边
+
+
+
+#### （3）实现
+
+```java
+import java.util.ArrayList;
+import java.util.Arrays;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    ArrayList<Integer> path, temp;//记录路径
+    boolean[] isvisit;//记录节点是否访问
+    boolean[][] matrix;//无向图
+    boolean flag;
+    int target;
+    public int[] findRedundantConnection(int[][] edges) {
+        int n = edges.length;
+        temp = new ArrayList<>();
+        isvisit = new boolean[n];
+        matrix = new boolean[n][n];
+        boolean[][] matrix1 = new boolean[n][n];
+        for (int[] edge : edges){
+            int start = edge[0]-1, end = edge[1]-1;
+            matrix[start][end] = true;
+            matrix[end][start] = true;
+            matrix1[start][end] = true;
+            matrix1[end][start] = true;
+        }
+        dfs(0);//找环中的节点
+        temp.clear();
+        path.clear();
+        matrix = matrix1.clone();
+        Arrays.fill(isvisit, false);
+        flag = false;
+        dfs(target);//path 记录环中所有节点
+        int[] ans = new int[2];
+        for (int[] edge : edges){//找最后出现的边
+            if (path.contains(edge[0])&&path.contains(edge[1])){
+                ans = edge;
+            }
+        }
+        return ans;
+    }
+    public void dfs(int index){
+        if (flag == true){
+            return;
+        }
+        if (isvisit[index] == true){//出现环
+            target = index;
+            path = new ArrayList<>(temp);
+            flag = true;
+            return;
+        }
+        temp.add(index+1);
+        isvisit[index] = true;
+        for (int i = 0; i < matrix.length; i++) {
+            if (matrix[index][i] == true){
+                matrix[index][i] = false;
+                matrix[i][index] = false;
+                dfs(i);
+            }
+        }
+        temp.remove(temp.size()-1);
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+
+```
+
+
+
+
+
+### （2.2）思路(imp)
+
+* **并查集**
+* 可以通过并查集寻找附加的边。初始时，每个节点都属于不同的连通分量。遍历每一条边，判断这条边连接的两个顶点**是否属于相同的连通分量**。
+  * 如果两个顶点属于不同的连通分量，则说明在遍历到当前的边之前，这两个顶点之间不连通，因此当前的边不会导致环出现，**合并这两个顶点的连通分量**。
+  * 如果两个顶点属于相同的连通分量，则说明在遍历到当前的边之前，这两个顶点之间**已经连通**，因此当前的边导致环出现，为附加的边，将当前的边作为答案返回。
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    int[] father;
+    public int[] findRedundantConnection(int[][] edges) {
+        int n = edges.length;
+        father = new int[n];
+        for (int i = 0; i < n; i++) {
+            father[i] = i;
+        }
+        int[] ans = new int[2];
+        for (int[] edge : edges){
+            int e1 = edge[0]-1, e2 = edge[1]-1;
+            if (find(e1) == find(e2)){
+                ans[0] = edge[0];
+                ans[1] = edge[1];
+                break;
+            }
+            father[find(e2)] = find(e1);
+        }
+        return ans;
+    }
+    public int find(int x){
+        return father[x] == x ? x : find(father[x]);
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 119. 最长连续序列
+
+#### （1）题目
+
+给定一个未排序的整数数组 `nums` ，找出数字连续的最长序列（不要求序列元素在原数组中连续）的长度。
+
+ 
+
+#### （2）思路
+
+* 哈希表
+* 使用哈希表存储元素，使找寻元素时间复杂度为 O(1)
+* 使用 HashSet 存储所有元素，遍历 set 中所有元素
+  * `!set.contains(x-1)`：set 中不包含 x-1，即 **x 为连续序列的起始**，可以去除重复查询
+    * 找到以 x 为起始的最长序列的长度
+
+
+
+#### （3）实现
+
+```java
+import java.util.HashSet;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int longestConsecutive(int[] nums) {
+        HashSet<Integer> set = new HashSet<>();
+        for (int num : nums){
+            set.add(num);
+        }
+        int length = 0;
+        for (int start : set){
+            if (set.contains(start-1)){//不是连续子序列的起始点
+                continue;
+            }
+            int tempLength = 0;
+            while (set.contains(start)){
+                tempLength++;
+                start++;
+            }
+            length = Math.max(length, tempLength);
+        }
+        return length;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

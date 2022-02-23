@@ -48,55 +48,31 @@
 
 package leetcode.editor.cn;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
+    int[] father;
     public int[] findRedundantConnection(int[][] edges) {
         int n = edges.length;
-        int[] ans = new int[2];
-        int[][] matrix = new int[n][n];
-        boolean[] isvisit = new boolean[n];
+        father = new int[n];
         for (int i = 0; i < n; i++) {
-            int a = edges[i][0]-1, b = edges[i][1]-1;
-            matrix[a][b] = 1;
-            matrix[b][a] = 1;
+            father[i] = i;
         }
-        List<int[]> res = new ArrayList<>();
-        for (int j = 0; j < n; j++) {
-            Queue<Integer> queue = new LinkedList<>();
-            queue.add(j);
-            boolean[] isvisit1 = isvisit.clone();
-            isvisit1[j] = true;
-            int[][] matrix1 = matrix.clone();
-            lable : while (!queue.isEmpty()){
-                int first = queue.poll();
-                for (int i = 0; i < n; i++) {
-                    if (matrix1[first][i] == 1){
-                        if (isvisit1[i] == true){
-                            ans[0] = first+1;
-                            ans[1] = i+1;
-                            break lable;
-                        }else{
-                            queue.add(i);
-                            isvisit1[i] = true;
-                        }
-                        matrix1[first][i] = 0;
-                        matrix1[i][first] = 0;
-                    }
-                }
+        int[] ans = new int[2];
+        for (int[] edge : edges){
+            int e1 = edge[0]-1, e2 = edge[1]-1;
+            if (find(e1) == find(e2)){
+                ans[0] = edge[0];
+                ans[1] = edge[1];
+                break;
             }
-            res.add(ans);
-        }
-        for (int[] temp : edges){
-            if (res.contains(temp)){
-                ans = temp;
-            }
+            father[find(e2)] = find(e1);
         }
         return ans;
+    }
+    public int find(int x){
+        return father[x] == x ? x : find(father[x]);
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
