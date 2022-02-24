@@ -2548,6 +2548,99 @@ class Solution {
 
 
 
+### 040. 矩阵中最大的矩形
+
+#### （1）题目
+
+给定一个由 `0` 和 `1` 组成的矩阵 `matrix` ，找出只包含 `1` 的最大矩形，并返回其面积。
+
+**注意：**此题 `matrix` 输入格式为一维 `01` 字符串数组。
+
+
+
+#### （2）思路
+
+* 将每一层看成柱状图
+* 样例中：
+  * 第一层：[1,0,1,0,0]
+  * 第二层：[2,0,2,1,1]
+  * 第三层：[3,0,3,2,2]
+  * 第四层：[4,0,0,3,0]
+* 使用 **39 题**中的方法，依次求取**每一层柱状图的最大面积**，最后获取最大值
+
+
+
+#### （3）实现
+
+```java
+import java.util.Stack;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int maximalRectangle(String[] matrix) {
+        if (matrix.length == 0 || matrix[0].length()==0){
+            return 0;
+        }
+        int row = matrix.length, cols = matrix[0].length();
+        int[] heights = new int[cols];
+        int ans = 0;
+        for (int i = 0; i < row; i++) {
+            String str = matrix[i];
+            for (int j = 0; j < cols; j++) {
+                if (str.charAt(j) == '1'){
+                    heights[j] += 1;
+                }else{
+                    heights[j] = 0;
+                }
+            }
+            ans = Math.max(ans, largestRectangleArea(heights));
+        }
+        return ans;
+    }
+    public int largestRectangleArea(int[] heights){
+        int n = heights.length;
+        int[] left = new int[n], right = new int[n];
+        int ans = 0;
+        //确定每个height的左右边界
+        Stack<Integer> maxStack = new Stack<>();
+        for (int i = 0; i < n; i++) {
+            while (!maxStack.isEmpty() && heights[maxStack.peek()] >= heights[i]){
+                maxStack.pop();
+            }
+            if (maxStack.isEmpty()){
+                left[i] = -1;
+            }else{
+                left[i] = maxStack.peek();
+            }
+            maxStack.push(i);
+        }
+        maxStack.clear();
+        for (int i = n-1; i >= 0; i--) {
+            while (!maxStack.isEmpty() && heights[maxStack.peek()] >= heights[i]){
+                maxStack.pop();
+            }
+            if (maxStack.isEmpty()){
+                right[i] = n;
+            }else{
+                right[i] = maxStack.peek();
+            }
+            maxStack.push(i);
+        }
+        for (int i = 0; i < n; i++) {
+            int area = heights[i] * (right[i]-left[i]-1);
+            ans = Math.max(ans, area);
+        }
+        return ans;
+    }
+
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
 
 
 ## 六、队列
@@ -6427,6 +6520,74 @@ class Solution {
 
 
 
+### 094. 最少回文分割
+
+#### （1）题目
+
+给定一个字符串 `s`，请将 `s` 分割成一些子串，使每个子串都是回文串。
+
+返回符合要求的 **最少分割次数** 。
+
+
+
+#### （2）思路
+
+* 预处理：
+  * 状态定义：dp[i] [j]：**字符串 s 的 [i, j] 子串是否为回文串**
+  * 状态转移：
+    * `dp[i][j] = true;`，j = i+1，字符本身为回文串
+    * `dp[i][j] = s.charAt(i) == s.charAt(j);` ，j = i+1
+    * `dp[i][j] =  dp[i+1][j-1] && s.charAt(i)==s.charAt(j);`，j > i+1
+* 状态定义：dp[i] 表示**字符串 s 的 [0,i] 子串的最少分割次数**
+* 状态转移：
+  * s 的 [0, i] 子串能形成回文串，则最小分割次数为 0，dp[i] = 0
+  * s 的 [0, i] 子串不能形成回文串，则需要**枚举左端点 l**，如果 **[l, i] 子串是回文串**，则 **dp[i] = dp[l-1] + 1**
+
+
+
+#### （3）实现
+
+```java
+import java.util.Arrays;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int minCut(String s) {
+        int n = s.length();
+        boolean[][] dp = new boolean[n][n];//[i,j]是否为回文串
+        for (int i = n-1; i >= 0; i--){
+            dp[i][i] = true;//字符本身是回文串
+            for (int j = i+1; j < n; j++) {
+                if (j == i+1){
+                    dp[i][j] = s.charAt(i)==s.charAt(j);
+                }else{
+                    dp[i][j] = dp[i+1][j-1] && s.charAt(i)==s.charAt(j);
+                }
+            }
+        }
+        int[] count = new int[n];//[0,i]的最小分割数
+        Arrays.fill(count, n-1);
+        for (int i = 0; i < n; i++) {
+            if (dp[0][i] == true){
+                count[i] = 0;
+            }else{
+                for (int j = 0; j < i; j++) {
+                    if (dp[j+1][i] == true){
+                        count[i] = Math.min(count[i],count[j]+1);
+                    }
+                }
+            }
+        }
+        return count[n-1];
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
 ### 095. 最长公共子序列
 
 #### （1）题目
@@ -6531,6 +6692,67 @@ class Solution {
             }
         }
         return dp[m][n];
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 097. 子序列的数目
+
+#### （1）题目
+
+给定一个字符串 s 和一个字符串 t ，计算在 s 的子序列中 t 出现的个数。
+
+字符串的一个 子序列 是指，通过删除一些（也可以不删除）字符且不干扰剩余字符相对位置所组成的新字符串。（例如，"ACE" 是 "ABCDE" 的一个子序列，而 "AEC" 不是）
+
+题目数据保证答案符合 32 位带符号整数范围。
+
+
+
+#### （2）思路
+
+* 状态定义：dp[i] [j] 表示 s 的 [0, j]子串的子序列中 t 的[0, i]子串出现的个数
+* 状态转移方程：
+  * `dp[i][j]=dp[i][j-1];`，**s.charAt(j) != t.charAt(i)** 
+  * `dp[i][j]=dp[i][j-1]+dp[i-1][j-1];`，**s.charAt(j) == t.charAt(i)** 
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int numDistinct(String s, String t) {
+        int m = s.length(), n = t.length();
+        int[][] dp = new int[n][m];
+        for (int i = 0; i < n; i++) {
+            if (i == 0){
+                if (s.charAt(0) == t.charAt(0)){
+                    dp[0][0] = 1;
+                }
+                for (int j = 1; j < m; j++) {
+                    if (s.charAt(j) == t.charAt(i)){
+                        dp[i][j] = dp[i][j-1] + 1;
+                    }else{
+                        dp[i][j] = dp[i][j-1];
+                    }
+                }
+            }else{
+                for (int j = i; j < m; j++) {
+                    if (t.charAt(i) != s.charAt(j)){
+                        dp[i][j] = dp[i][j-1];
+                    }else{
+                        dp[i][j] = dp[i][j-1] + dp[i-1][j-1];
+                    }
+                }
+            }
+        }
+        return dp[n-1][m-1];
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
@@ -7138,6 +7360,104 @@ class Solution {
 
 
 
+### 108. 单词演变
+
+#### （1）题目
+
+在字典（单词列表） wordList 中，从单词 beginWord 和 endWord 的 转换序列 是一个按下述规格形成的序列：
+
+* 序列中第一个单词是 beginWord 。
+* 序列中最后一个单词是 endWord 。
+* 每次转换只能改变一个字母。
+* 转换过程中的中间单词必须是字典 wordList 中的单词。
+
+给定两个长度相同但内容不同的单词 beginWord 和 endWord 和一个字典 wordList ，找到从 beginWord 到 endWord 的 最短转换序列 中的 单词数目 。如果不存在这样的转换序列，返回 0。
+
+
+
+#### （2）思路
+
+* 广度优先搜索
+* 思路如 109 题中
+  * 将 beginword 加入队列中，step 记录从beginword 到 endword 的旋转次数
+  * 当队列非空时，取出队头单词first，将wordList 中未入队且可由 first 转换一次得到的单词加入队列
+  * 如果搜索到 endword，返回对应step
+
+
+
+#### （3）实现
+
+```java
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        if (!wordList.contains(endWord)){
+            return 0;
+        }
+        int n = wordList.size();
+        wordList.add(beginWord);
+        wordList.add(endWord);
+        boolean[][] matrix  = new boolean[n+2][n+2];
+        for (int i = 0; i < n+2; i++) {
+            for (int j = i+1; j < n+2; j++) {
+                boolean flag = convert(wordList.get(i),wordList.get(j));
+                matrix[i][j] = flag;
+                matrix[j][i] = flag;
+            }
+        }
+        Queue<String> queue = new LinkedList<>();
+        queue.add(beginWord);
+        int step = 1;
+        HashSet<String> set = new HashSet<>();
+        set.add(beginWord);
+        while (!queue.isEmpty()){
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                String first = queue.poll();
+                if (first.equals(endWord)){
+                    return step;
+                }
+                int index = wordList.indexOf(first);
+                for (int j = 0; j < n+2; j++) {
+                    String next = wordList.get(j);
+                    if (!set.contains(next) && matrix[index][j] == true){
+                        queue.add(next);
+                        set.add(next);
+                    }
+                }
+            }
+            step++;
+        }
+        return 0;
+    }
+
+    public boolean convert(String str1, String str2){
+        int diff = 0;
+        for (int i = 0; i < str1.length(); i++) {
+            if (str1.charAt(i) != str2.charAt(i)){
+                if (diff != 0){
+                    return false;
+                }
+                diff++;
+            }
+        }
+        return true;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
 ### 109. 开密码锁
 
 #### （1）题目
@@ -7366,6 +7686,64 @@ class Solution {
             }
         }
         return res;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+### 112. 最长递增路径
+
+#### （1）题目
+
+给定一个 m x n 整数矩阵 matrix ，找出其中 最长递增路径 的长度。
+
+对于每个单元格，你可以往上，下，左，右四个方向移动。 不能 在 对角线 方向上移动或移动到 边界外（即不允许环绕）。
+
+
+
+#### （2）思路
+
+* 记忆化搜索
+* dp[i] [j] 记录**以节点 (i, j) 为起始点**的最长递增路径的长度
+* **dp[i] [j] = max(dp[i-1] [j], dp[i+1] [j], dp[i] [j-1], dp[i] [j+1]) +1**
+
+
+
+#### （3）实现
+
+```java
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    int[][] dp;
+    public int longestIncreasingPath(int[][] matrix) {
+        int n = matrix.length, m = matrix[0].length;
+        dp = new int[n][m];
+        int ans = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                ans = Math.max(ans, dfs(i, j, matrix));
+            }
+        }
+        return ans;
+    }
+    public int dfs(int i, int j, int[][] matrix){//返回以 (i, j) 节点为起始点的最长递增序列长度
+        if (dp[i][j] != 0){//节点 (i,j) 已被搜索过，状态确定
+            return dp[i][j];
+        }
+        dp[i][j] = 1;//未被搜索，赋初值；上下左右没有比 (i,j) 大的元素时，即为 1
+        int[][] col = {{-1,1,0,0},{0,0,-1,1}};
+        for (int k = 0; k < 4; k++) {
+            int newi = i+col[0][k], newj = j+col[1][k];
+            if (0<=newi&&newi<matrix.length&&0<=newj&&newj<matrix[0].length&&matrix[i][j]<matrix[newi][newj]){
+                dp[i][j] = Math.max(dp[i][j], dfs(newi, newj, matrix)+1);
+            }
+        }
+        return dp[i][j];
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
