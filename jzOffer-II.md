@@ -7828,6 +7828,174 @@ class Solution {
 
 
 
+### 114. 外星文字典
+
+#### （1）题目
+
+现有一种使用英语字母的外星文语言，这门语言的字母顺序与英语顺序不同。
+
+给定一个字符串列表 words ，作为这门语言的词典，words 中的字符串已经 按这门新语言的字母顺序进行了排序 。
+
+请你根据该词典还原出此语言中已知的字母顺序，并 按字母递增顺序 排列。若不存在合法字母顺序，返回 "" 。若存在多种可能的合法字母顺序，返回其中 任意一种 顺序即可。
+
+字符串 s 字典顺序小于 字符串 t 有两种情况：
+
+* 在第一个不同字母处，如果 s 中的字母在这门外星语言的字母顺序中位于 t 中字母之前，那么 s 的字典顺序小于 t 。
+* 如果前面 min(s.length, t.length) 字母都相同，那么 s.length < t.length 时，s 的字典顺序也小于 t 。
+
+
+
+#### （2）思路
+
+* 遍历words数组，创建**字符—下标**和**下标—字符**的映射
+* 使用有向图 matrix[i] [j] 表示 **i 对应字符 < j 对应字符**
+* 遍历 words，比较单词 word1 和 word2，word1 < word2，**i 指向两单词中第一个不相同字符**
+  * 若 word1 是 word2 的前缀，肯定满足要求
+  * 若 word2 是 word1 的前缀，则 word1 > word2，必不满足要求，返回 ""
+  * index1 为 ch1 = word1.charAt(i) **对应的下标**，index2 为 ch2=word2.charAt(i) **对应的下标**
+    * 若 **matrix[index1] [index2] = false**，则将其**修改为 true**，代表 ch1 < ch2 ，并更新 index2 的入度
+* 拓扑排序找到符合要求的顺序
+  * 若拓扑序列不完全，则有向图中含有环，出现冲突，返回 ""
+
+
+
+#### （3）实现
+
+```java
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Queue;
+
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    boolean[][] matrix;//有向图
+    HashMap<Character, Integer> map;//字符和下标的映射
+    HashMap<Integer, Character> inToch;//下标和字符的映射
+    int[] in;//入度
+    public String alienOrder(String[] words) {
+        if (words.length == 1){
+            return words[0];
+        }
+        map = new HashMap<>();
+        inToch = new HashMap<>();
+        //创建字符和下标，下标和字符的映射
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i];
+            for (char ch : word.toCharArray()){
+                if (!map.containsKey(ch)){
+                    map.put(ch, map.size());
+                    inToch.put(inToch.size(), ch);
+                }
+            }
+        }
+        int n = map.size();
+        matrix = new boolean[n][n];
+        in = new int[n];
+        //创建有向图
+        for (int i = 0; i < words.length - 1; i++) {
+            String word1 = words[i], word2 = words[i+1];
+            if (!compare(word1, word2)){//word1 和 word2 的排序不合法
+                return "";
+            }
+        }
+
+        //拓扑排序
+        boolean[] isvisit = new boolean[n];
+        StringBuilder sb = new StringBuilder();
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < n; i++) {
+            if (in[i] == 0){
+                queue.add(i);
+                isvisit[i] = true;
+            }
+        }
+        while (!queue.isEmpty()){
+            int first = queue.poll();
+            sb.append(inToch.get(first));
+            for (int i = 0; i < n; i++) {
+                if (matrix[first][i] == true){
+                    in[i]--;
+                    if (isvisit[i] == false && in[i] == 0){
+                        queue.add(i);
+                        isvisit[i] = true;
+                    }
+                }
+            }
+        }
+        if (sb.length() != n){//拓扑序列不完全，存在环，不满足要求
+            return "";
+        }
+        return sb.toString();
+    }
+    public boolean compare(String str1, String str2){
+        if (str1.equals(str2)){//str1 == str2 时符合要求
+            return true;
+        }
+        int i = 0;//i 指向 str1 和 str2 第一个不相同的字符
+        while (i < str1.length() && i < str2.length() && str1.charAt(i) == str2.charAt(i)){
+            i++;
+        }
+        if (i == str1.length()){// str1是str2的前缀，符合要求
+            return true;
+        }
+        if (i == str2.length()){// str2是str1的前缀，不符合要求
+            return false;
+        }
+
+        //index1的映射字符 < index2的映射字符
+        int index1 = map.get(str1.charAt(i)), index2 = map.get(str2.charAt(i));
+        if (matrix[index1][index2] == false){//创建有向图
+            matrix[index1][index2] = true;
+            in[index2]++;
+        }
+        return true;
+    }
+
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ### 115. 重建序列
 
 #### （1）题目
@@ -7976,6 +8144,88 @@ class Solution {
 }
 //leetcode submit region end(Prohibit modification and deletion)
 ```
+
+
+
+
+
+
+
+### 117. 相似的字符串
+
+#### （1）题目
+
+如果交换字符串 X 中的两个不同位置的字母，使得它和字符串 Y 相等，那么称 X 和 Y 两个字符串相似。如果这两个字符串本身是相等的，那它们也是相似的。
+
+例如，"tars" 和 "rats" 是相似的 (交换 0 与 2 的位置)； "rats" 和 "arts" 也是相似的，但是 "star" 不与 "tars"，"rats"，或 "arts" 相似。
+
+总之，它们通过相似性形成了两个关联组：{"tars", "rats", "arts"} 和 {"star"}。注意，"tars" 和 "arts" 是在同一组中，即使它们并不相似。形式上，对每个组而言，要确定一个单词在组中，只需要这个词和该组中至少一个单词相似。
+
+给定一个字符串列表 strs。列表中的每个字符串都是 strs 中其它所有字符串的一个 字母异位词 。请问 strs 中有多少个相似字符串组？
+
+字母异位词（anagram），一种把某个字符串的字母的位置（顺序）加以改换所形成的新词。
+
+
+
+#### （2）思路
+
+* 并查集
+* 将相似的字符串节点联通
+
+
+
+#### （3）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class Solution {
+    int[] father;
+    public int numSimilarGroups(String[] strs) {
+        int n = strs.length;
+        father = new int[n];
+        for (int i = 0; i < n; i++) {
+            father[i] = i;
+        }
+        for (int i = 0; i < n; i++) {
+            for (int j = i+1; j < n; j++) {
+                int f1 = findFather(i), f2 = findFather(j);
+                if (f1 == f2){
+                    continue;
+                }
+                boolean flag = judge(strs[i], strs[j]);//判断str1和str2是否相似
+                if (flag){//相似，则union
+                    father[f2] = f1;
+                }
+            }
+        }
+        int ans = 0;
+        for (int i = 0; i < n; i++) {
+            if (father[i] == i){
+                ans++;
+            }
+        }
+        return ans;
+    }
+    public int findFather(int x){
+        return father[x] == x ? x : (father[x]=findFather(father[x]));//路径压缩
+    }
+    public boolean judge(String str1, String str2){//判断是否相似
+        int i = 0;
+        for (int j = 0; j < str1.length(); j++) {
+            if (str1.charAt(j) != str2.charAt(j)){
+                if (i == 2){
+                    return false;
+                }
+                i++;
+            }
+        }
+        return true;
+    }
+}
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
 
 
 
