@@ -235,6 +235,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[1601]maximum-number-of-achievable-transfer-requests.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[1601]maximum-number-of-achievable-transfer-requests.java" />
+              <option name="questionId" value="1723" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[1609]even-odd-tree.java">
           <value>
             <LeetcodeEditor>
@@ -1240,6 +1248,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[673]number-of-longest-increasing-subsequence.java" />
               <option name="questionId" value="673" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[67]add-binary.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[67]add-binary.java" />
+              <option name="questionId" value="67" />
             </LeetcodeEditor>
           </value>
         </entry>

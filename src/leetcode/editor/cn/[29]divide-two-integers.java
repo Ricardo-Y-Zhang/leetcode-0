@@ -35,44 +35,38 @@ package leetcode.editor.cn;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-    int res = 0;
-    long target = 0;
+    int MAX = Integer.MAX_VALUE, MIN = Integer.MIN_VALUE;
+    int LIMIT_MIN = (-1) << 30;
+    int res;
+    int target;
     public int divide(int dividend, int divisor) {
-        if (dividend == (-1) << 31 && divisor == -1){
-            return (1 << 31) - 1;
+        if (dividend == MIN && divisor == -1){
+            return MAX;
         }
-
-        if (divisor == 1){
-            return dividend;
-        }
-
-        if (divisor == -1){
-            return -dividend;
-        }
-
+        //将divide和divisor均转换成负数
         boolean flag = false;
-        if ((dividend < 0 && divisor > 0) || (dividend > 0 && divisor < 0)){
+        if ((dividend<0&&divisor>0)||(dividend>0&&divisor<0)){//最终结果为负数
             flag = true;
         }
-        target = Math.abs((long)dividend);
-        dfs(Math.abs((long) divisor), 1);
-        if (flag == true){
+        //dividend和divisor均转换为负数
+        target = dividend < 0 ? dividend : -dividend;
+        divisor = divisor < 0 ? divisor : -divisor;
+        dfs(divisor, 1);
+        if (flag){
             res = -res;
         }
-
         return res;
     }
-
-    public void dfs(long temp, int tempSum){
-        if (target > temp) {
-            dfs(temp << 1, tempSum << 1);
+    public void dfs(int divisor, int num){
+        if (divisor >= LIMIT_MIN && divisor > target){
+            dfs(divisor << 1, num << 1);
         }
-
-        if (target >= temp){
-            res += tempSum;
-            target -= temp;
+        if (target <= divisor){
+            target -= divisor;
+            res += num;
         }
     }
+
 }
 //leetcode submit region end(Prohibit modification and deletion)
 
