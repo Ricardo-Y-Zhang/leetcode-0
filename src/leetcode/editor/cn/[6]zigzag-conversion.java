@@ -56,41 +56,32 @@
 
 package leetcode.editor.cn;
 
+import java.util.ArrayList;
+import java.util.List;
+
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public String convert(String s, int numRows) {
-        String[] temp = new String[numRows];
+        if (numRows == 1){
+            return s;
+        }
+        List<StringBuilder> list = new ArrayList<>();
         for (int i = 0; i < numRows; i++) {
-            temp[i] = "";
+            list.add(new StringBuilder());
         }
-
-        int index = 0;
-        lable: while (true) {
-            for (int i = 0; i < numRows; i++) {
-                if (index != s.length()) {
-                    temp[i] += s.substring(index, index+1);
-                    index++;
-                }else{
-                    break lable;
-                }
+        int add = -1, i = 0;
+        for (char ch : s.toCharArray()){
+            list.get(i).append(ch);
+            if (i == 0 || i == numRows-1){//达到转折点，反向
+                add = -add;
             }
-
-            for (int i = numRows-2; i > 0; i--) {
-                if (index != s.length()){
-                    temp[i] += s.charAt(index);
-                    index++;
-                }else{
-                    break lable;
-                }
-            }
+            i += add;
         }
-
-        String res = "";
-        for (int i = 0; i < numRows; i++) {
-            res += temp[i];
+        StringBuilder ans = new StringBuilder();
+        for (StringBuilder sb : list){
+            ans.append(sb);
         }
-
-        return res;
+        return ans.toString();
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

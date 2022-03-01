@@ -26,32 +26,21 @@ package leetcode.editor.cn;
 import java.util.ArrayList;
 
 //leetcode submit region begin(Prohibit modification and deletion)
-//class Solution {
-//    public int[] countBits(int n){
-//        int[] res = new int[n+1];
-//        for (int i = 0; i <= n; i++) {
-//            int times = 0;
-//            int temp = i;
-//            while (temp != 0){
-//                times += temp & 1;
-//                temp >>= 1;
-//            }
-//            res[i] = times;
-//        }
-//        return res;
-//    }
-//}
 
 
 class Solution{
     public int[] countBits(int n){
-        int[] res = new int[n + 1];
+        int[] res = new int[n+1];
         res[0] = 0;
-        for (int i = 1; i <= n; i++) {
+//        for (int i = 1; i < n+1; i++) {
+//            int temp = i&(i-1);
+//            res[i] = res[temp]+1;
+//        }
+        for (int i = 1; i < n+1; i++) {
             if (i % 2 == 0){
                 res[i] = res[i/2];
             }else{
-                res[i] = res[i-1] + 1;
+                res[i] = res[i/2] + 1;
             }
         }
         return res;
