@@ -43,20 +43,19 @@ package leetcode.editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int maxProduct(String[] words) {
-        int n = words.length, index = 0;
-        int[] hash = new int[n];
-        for (String word : words){
-            int temp = 0;
-            for (int i = 0; i < word.length(); i++) {
-                temp |= 1<<(word.charAt(i)-'a');
+        int n = words.length;
+        int[] hashs = new int[n];//words的哈希表
+        for (int i = 0; i < n; i++) {
+            int hash = 0;
+            for (char ch : words[i].toCharArray()){
+                hash |= 1<<(ch-'a');
             }
-            hash[index++] = temp;
+            hashs[i] = hash;
         }
-
         int res = 0;
         for (int i = 0; i < n; i++) {
             for (int j = i+1; j < n; j++) {
-                if ((hash[i] & hash[j]) == 0){//不含公共字母
+                if ((hashs[i] & hashs[j]) == 0){
                     res = Math.max(res, words[i].length()*words[j].length());
                 }
             }
