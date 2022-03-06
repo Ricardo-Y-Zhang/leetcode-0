@@ -419,6 +419,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[2100]find-good-days-to-rob-the-bank.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[2100]find-good-days-to-rob-the-bank.java" />
+              <option name="questionId" value="2205" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[2104]sum-of-subarray-ranges.java">
           <value>
             <LeetcodeEditor>
@@ -1088,6 +1096,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[519]random-flip-matrix.java" />
               <option name="questionId" value="913" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[521]longest-uncommon-subsequence-i.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[521]longest-uncommon-subsequence-i.java" />
+              <option name="questionId" value="521" />
             </LeetcodeEditor>
           </value>
         </entry>
