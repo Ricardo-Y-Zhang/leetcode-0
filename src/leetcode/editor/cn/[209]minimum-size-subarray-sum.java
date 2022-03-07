@@ -53,32 +53,21 @@ package leetcode.editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int minSubArrayLen(int target, int[] nums) {
-        int[] prefix = new int[nums.length+1];
-
-        prefix[0] = 0;
-
-        for (int i = 0; i < nums.length; i++) {
-            prefix[i+1] = prefix[i] + nums[i];
-        }
-
-        if (prefix[nums.length] < target){
-            return 0 ;
-        }
-
-        int start = -1, res = nums.length;
-        for (int end = 0; end < nums.length; end++) {
-
-            while (start <= end){
-                if (prefix[end+1] - prefix[start+1] >= target){
-                    start++;
-                    res = res < (end+1-start) ? res : (end+1-start);
-                }else{
-                    break;
-                }
+        int i = 0, j = 0, sum = nums[0];
+        int n = nums.length;
+        int ans = Integer.MAX_VALUE;
+        while (i < n && j < n){
+            if (sum>=target){
+                ans = Math.min(ans, j-i+1);
+                sum -= nums[i];
+                i++;
+            }else {
+                j++;
+                if (j == n) break;
+                sum += nums[j];
             }
         }
-
-        return res;
+        return ans == Integer.MAX_VALUE ? 0 : ans;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

@@ -111,46 +111,37 @@ import java.util.List;
 
 class Solution {
     public List<List<Integer>> threeSum(int[] nums) {
-        ArrayList<List<Integer>> res = new ArrayList<>();
-
+        List<List<Integer>> ans = new ArrayList<>();
         Arrays.sort(nums);
-
-        for (int i = 0; i < nums.length; i++) {
-
-            //去重，不选择重复的a
+        int n = nums.length;
+        for (int i = 0; i < n-2; i++) {
             if (i != 0 && nums[i] == nums[i-1]){
                 continue;
             }
-
-            //第二轮和第三轮选择同时进行
-            int j = i + 1, k = nums.length - 1;
+            int j = i+1, k = n-1;
             while (j < k){
-                if (nums[i] + nums[j] + nums[k] == 0){
-                    ArrayList<Integer> list = new ArrayList<>();
-                    list.add(nums[i]);
-                    list.add(nums[j]);
-                    list.add(nums[k]);
-                    res.add(list);
-                    j++;
-                    k--;
-
-                    //去重，不选择重复的b,c
-                    while (j < k && nums[j] == nums[j-1]){
+                if (nums[j]+nums[k] == -nums[i]){
+                    ArrayList<Integer> temp = new ArrayList<>();
+                    temp.add(nums[i]);
+                    temp.add(nums[j]);
+                    temp.add(nums[k]);
+                    ans.add(temp);
+                    while (j < k) {
                         j++;
+                        if (nums[j] != nums[j-1]) break;
                     }
-
-                    while (j < k && nums[k] == nums[k+1]){
+                    while (j < k) {
                         k--;
+                        if (nums[k] != nums[k+1]) break;
                     }
-                }else if (nums[i] + nums[j] + nums[k] > 0){
-                    k--;
-                }else if (nums[i] + nums[j] + nums[k] < 0){
+                }else if (nums[j]+nums[k] < -nums[i]){
                     j++;
+                }else{
+                    k--;
                 }
             }
         }
-
-        return res;
+        return ans;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
