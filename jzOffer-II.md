@@ -428,7 +428,7 @@ class Solution {
 
 
 
-### 009. 乘积小于 k 的子数组
+### 009. 乘积小于 k 的子数组（滑动窗口）
 
 #### （1）题目
 
@@ -676,6 +676,48 @@ class NumMatrix {
             res += prefix[i][col2+1]-prefix[i][col1];
         }
         return res;
+    }
+}
+
+/**
+ * Your NumMatrix object will be instantiated and called as such:
+ * NumMatrix obj = new NumMatrix(matrix);
+ * int param_1 = obj.sumRegion(row1,col1,row2,col2);
+ */
+//leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+
+
+#### （2.2）思路
+
+* 二维前缀和
+* **pre[i] [j] 表示以 (i-1, j-1) 为右下角的矩阵元素和**
+  * 状态转移方程：`pre[i+1][j+1] = pre[i][j+1]+pre[i+1][j]-pre[i][j]+matrix[i][j];`
+* 面积为`pre[row2+1][col2+1]-pre[row1][col2+1]-pre[row2+1][col1]+pre[row1][col1];`
+
+
+
+#### （3.2）实现
+
+```java
+//leetcode submit region begin(Prohibit modification and deletion)
+class NumMatrix {
+    int[][] pre;//二维前缀和，以(i,j)为右下角的矩阵元素和
+    public NumMatrix(int[][] matrix) {
+        int m = matrix.length, n = matrix[0].length;
+        pre = new int[m+1][n+1];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                pre[i+1][j+1] = pre[i][j+1]+pre[i+1][j]-pre[i][j]+matrix[i][j];
+            }
+        }
+    }
+    
+    public int sumRegion(int row1, int col1, int row2, int col2) {
+        return pre[row2+1][col2+1]-pre[row1][col2+1]-pre[row2+1][col1]+pre[row1][col1];
     }
 }
 

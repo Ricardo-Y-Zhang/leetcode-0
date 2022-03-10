@@ -395,6 +395,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[2055]plates-between-candles.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[2055]plates-between-candles.java" />
+              <option name="questionId" value="2165" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[207]course-schedule.java">
           <value>
             <LeetcodeEditor>
@@ -664,6 +672,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[300]longest-increasing-subsequence.java" />
               <option name="questionId" value="300" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[304]range-sum-query-2d-immutable.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[304]range-sum-query-2d-immutable.java" />
+              <option name="questionId" value="304" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1115,6 +1131,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[525]contiguous-array.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[525]contiguous-array.java" />
+              <option name="questionId" value="525" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[538]convert-bst-to-greater-tree.java">
           <value>
             <LeetcodeEditor>
@@ -1179,6 +1203,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[567]permutation-in-string.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[567]permutation-in-string.java" />
+              <option name="questionId" value="567" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[575]distribute-candies.java">
           <value>
             <LeetcodeEditor>
@@ -1200,6 +1232,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[581]shortest-unsorted-continuous-subarray.java" />
               <option name="questionId" value="581" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[589]n-ary-tree-preorder-traversal.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[589]n-ary-tree-preorder-traversal.java" />
+              <option name="questionId" value="775" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1363,6 +1403,22 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[713]subarray-product-less-than-k.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[713]subarray-product-less-than-k.java" />
+              <option name="questionId" value="713" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[724]find-pivot-index.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[724]find-pivot-index.java" />
+              <option name="questionId" value="724" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[725]split-linked-list-in-parts.java">
           <value>
             <LeetcodeEditor>
@@ -1424,6 +1480,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[794]valid-tic-tac-toe-state.java" />
               <option name="questionId" value="810" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[798]smallest-rotation-with-highest-score.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[798]smallest-rotation-with-highest-score.java" />
+              <option name="questionId" value="814" />
             </LeetcodeEditor>
           </value>
         </entry>

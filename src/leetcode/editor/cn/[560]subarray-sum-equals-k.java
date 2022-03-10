@@ -37,23 +37,16 @@ import java.util.Map;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int subarraySum(int[] nums, int k) {
-        int res = 0;
-        int sum = 0;
-
-        Map<Integer, Integer> map = new HashMap<>();
+        int n = nums.length;
+        int pre = 0, ans = 0;
+        HashMap<Integer, Integer> map = new HashMap<>();
         map.put(0, 1);
-
-        for (int i = 0; i < nums.length; i++) {
-            sum += nums[i];
-
-            int key = sum - k;
-            res += map.getOrDefault(key, 0);
-
-            int value = map.getOrDefault(sum, 0);
-            map.put(sum, value+1);
+        for (int i = 0; i < n; i++) {
+            pre += nums[i];
+            ans += map.getOrDefault(pre-k, 0);
+            map.put(pre, map.getOrDefault(pre, 0)+1);
         }
-
-        return res;
+        return ans;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
