@@ -46,53 +46,35 @@ import java.util.List;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public List<Integer> findAnagrams(String s, String p) {
-
-        List<Integer> res = new ArrayList<>();
-
-        for (int i = 0; i <= s.length() - p.length(); i++) {
-            if (res.size() == 0){
-                String temp = s.substring(i, i+p.length());
-                if (Judge(temp, p)){
-                    res.add(i);
-                }
-            }else{
-                int left = res.get(res.size()-1);
-                int right = left + p.length();
-
-                if (i >= right){
-                    String temp = s.substring(i, i+p.length());
-                    if (Judge(temp, p)){
-                        res.add(i);
-                    }
-                }else{
-                    String temp1 = s.substring(left, i);
-                    String temp2 = s.substring(right, i + p.length());
-
-                    if (Judge(temp1, temp2)){
-                        res.add(i);
-                    }
-                }
+        List<Integer> ans = new ArrayList<>();
+        if (s.length() < p.length()) {
+            return ans;
+        }
+        int[] chs = new int[26];
+        for (int i = 0; i < p.length(); i++) {
+            chs[p.charAt(i)-'a']--;
+            chs[s.charAt(i)-'a']++;
+        }
+        int diff = 0;
+        for(int i = 0; i < 26; i++) {
+            if (chs[i] != 0) diff++;
+        }
+        if (diff == 0) {
+            ans.add(0);
+        }
+        for (int i = 1; i < s.length()-p.length()+1; i++) {
+            int out = s.charAt(i-1)-'a', in = s.charAt(i+p.length()-1)-'a';
+            if (chs[out] == 1) diff--;
+            else if (chs[out] == 0) diff++;
+            chs[out]--;
+            if (chs[in] == -1) diff--;
+            else if (chs[in] == 0) diff++;
+            chs[in]++;
+            if (diff == 0) {
+                ans.add(i);
             }
         }
-
-        return res;
-    }
-
-
-    public boolean Judge(String str1, String str2){
-        char[] char1 = str1.toCharArray();
-
-        Arrays.sort(char1);
-
-        str1 = new String(char1);
-
-        char[] char2 = str2.toCharArray();
-
-        Arrays.sort(char2);
-
-        str2 = new String(char2);
-
-        return str1.equals(str2);
+        return ans;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

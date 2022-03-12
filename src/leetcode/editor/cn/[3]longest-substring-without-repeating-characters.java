@@ -48,29 +48,28 @@
 
 package leetcode.editor.cn;
 
-import java.util.HashMap;
+
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int lengthOfLongestSubstring(String s) {
-        int length = 0;
-        HashMap<Character, Integer> map = new HashMap<>();
-        for (int i = 0, j = 0; j < s.length(); j++){
-            char c = s.charAt(j);
-            int time = map.getOrDefault(c, 0);
-            if (time == 0){
-                map.put(c, 1);
-                int tempLength = j + 1 - i;
-                length = (tempLength > length) ? tempLength : length;
-            }else {
-                while (s.charAt(i) != s.charAt(j)){
-                    map.put(s.charAt(i), 0);
-                    i++;
+        int[] count = new int[300];
+        int left = 0, right = 0, ans = 0;
+        while (right < s.length()) {
+            int index = s.charAt(right);
+            count[index]++;
+            if (count[index] == 2) {//存在重复字符
+                while (s.charAt(left) != s.charAt(right)) {//左指针右移
+                    count[s.charAt(left)]--;
+                    left++;
                 }
-                i++;
+                left++;
+                count[index]=1;
             }
+            ans = Math.max(ans, right-left+1);
+            right++;
         }
-        return length;
+        return ans;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

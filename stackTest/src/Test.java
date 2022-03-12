@@ -65,22 +65,38 @@ public class Test {
 
     @org.junit.Test
     public void test1(){
-        String[] temp = {"V", "C", "6", "T", "E0", "A", "P", "Y", "E6"};
-        int num = 0;
-        for (int i = 0; i < 9; i++) {
-            for (int j = i+1; j < 9; j++) {
-                for (int k = j+1; k < 9; k++) {
-                    for (int l = k+1; l < 9; l++) {
-                        for (int m = l+1; m < 9; m++) {
-                            num++;
-                            System.out.print(temp[i] + temp[j] + temp[k] + temp[l] + temp[m] + " , ");
-                        }
-                    }
-                }
+        String[] temp = {"CHIR",
+                "TTNPB",
+                "SAG",
+                "ABT",
+                "JNKin",
+                "5-aza",
+                "UNC",
+                "Ruxo",
+                "SGC",
+                "LiCl",
+                "Vc",
+                "NAM",
+                "VTP",
+                "DZnep",
+                "Doramap",
+                "Dorso",
+                "bFGF"};
+        for (int i = 0; i < 17; i++) {
+            for (int j = i+1; j < 17; j++) {
+                System.out.println(temp[i] + "，" + temp[j]);
             }
         }
-        System.out.println("num = " + num);
-
+        long res = 1;
+        for (int i = 0; i < 17; i++) {
+            res *= i+1;
+        }
+        res /= 2;
+        for (int i = 0; i < 15; i++) {
+            res /= i+1;
+        }
+        System.out.println("res = " + res);
+        return;
     }
 
 
