@@ -1020,7 +1020,8 @@ class Solution {
 #### （2）思路
 
 * 滑动窗口
-* 在 s 上滑动窗口，通过移动 right 指针不断扩张窗口。当窗口包含 t 所需的全部字符后，如果能收缩，就收缩窗口直到得到最小窗口
+* 在 s 上滑动窗口，通过移动 right 指针不断扩张窗口
+* **当窗口包含 t 所需的全部字符后**，如果能收缩，就**收缩窗口直到得到最小窗口**
 
 
 
@@ -1030,55 +1031,56 @@ class Solution {
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public String minWindow(String s, String t) {
-        int[] chs = new int[52];
-        for (int i = 0; i < t.length(); i++) {
+        int m = s.length(), n = t.length();
+        if (m < n) return "";
+        String ans = "";
+        int[] dict = new int[52];
+        for (int i = 0; i < n; i++) {
             char ch = t.charAt(i);
-            if (ch >= 'a' && ch <= 'z'){
-                chs[ch-'a']--;
-            }else{
-                chs[ch-'A'+26]--;
-            }
+            int index = dicttoindex(ch);
+            dict[index]--;
         }
-        int diff = 0;
-        for (int i = 0; i < chs.length; i++) {
-            if (chs[i]<0){
+        int diff = 0;//字母数量不同个数
+        for (int i = 0; i < dict.length; i++) {
+            if (dict[i] != 0) {
                 diff++;
             }
         }
-        int left = 0, right = 0, len = s.length()+1;
-        String str = "";
-        while (right < s.length()){
+        int left = 0, right = 0;
+        while (right < m) {
             char ch = s.charAt(right);
-            if (ch >= 'a' && ch <= 'z'){
-                chs[ch-'a']++;
-                if (chs[ch-'a']==0) diff--;
-            }else{
-                chs[ch-'A'+26]++;
-                if (chs[ch-'A'+26]==0) diff--;
+            int index = dicttoindex(ch);
+            dict[index]++;
+            if (dict[index] == 0) {
+                diff--;
+                if (diff == 0){//[left, right]包含所有元素
+                    //缩小窗口，求当前满足条件的最小窗口
+                    while (left < m && dict[dicttoindex(s.charAt(left))]>0) {
+                        dict[dicttoindex(s.charAt(left))]--;
+                        left++;
+                    }
+                    String temp = s.substring(left, right+1);
+                    if (ans.equals("")) {
+                        ans = temp;
+                    }else if (ans.length() > temp.length()) {
+                        ans = temp;
+                    }
+                    //再次右移左指针
+                    dict[dicttoindex(s.charAt(left++))]--;
+                    diff++;
+                }
             }
             right++;
-            //收缩窗口
-            if (diff==0){
-                while (diff==0){
-                    ch = s.charAt(left);
-                    if (ch>='a' && ch<='z'){
-                        chs[ch-'a']--;
-                        if (chs[ch-'a']<0) diff++;
-                    }else{
-                        chs[ch-'A'+26]--;
-                        if (chs[ch-'A'+26]<0) diff++;
-                    }
-                    left++;
-                }
-                //[left-1, right-1]为当前的最短字符串
-                if (right-left+1<len){
-                    len = right-left+1;
-                    str = s.substring(left-1, right);
-                }
-            }
         }
-        return str;
+        return ans;
     }
+    public int dicttoindex (char ch) {//字符映射
+        if (ch>='A'&&ch<='Z'){
+            return ch-'A'+26;
+        }
+        return ch-'a';
+    }
+
 }
 //leetcode submit region end(Prohibit modification and deletion)
 ```
