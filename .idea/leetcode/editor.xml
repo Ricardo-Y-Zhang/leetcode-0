@@ -115,6 +115,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[125]valid-palindrome.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[125]valid-palindrome.java" />
+              <option name="questionId" value="125" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[128]longest-consecutive-sequence.java">
           <value>
             <LeetcodeEditor>
@@ -851,6 +859,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[393]utf-8-validation.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[393]utf-8-validation.java" />
+              <option name="questionId" value="393" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[394]decode-string.java">
           <value>
             <LeetcodeEditor>
@@ -1464,6 +1480,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[74]search-a-2d-matrix.java" />
               <option name="questionId" value="74" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[76]minimum-window-substring.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[76]minimum-window-substring.java" />
+              <option name="questionId" value="76" />
             </LeetcodeEditor>
           </value>
         </entry>
