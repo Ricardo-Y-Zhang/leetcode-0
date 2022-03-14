@@ -40,29 +40,28 @@ package leetcode.editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int countSubstrings(String s) {
-        int res = 0;
-
-        for (int i = 0; i < s.length(); i++) {
-            res++;
-
-            for (int j = i, k = i+1; j >= 0 && k < s.length(); j--, k++) {
-                if (s.charAt(j) == s.charAt(k)){
-                    res++;
+        int n = s.length();
+        int ans = 0;
+        for (int i = 0; i < n; i++) {
+            ans++;
+            int l = i-1, r = i+1;
+            while (l >= 0 && r < n) {
+                if (s.charAt(l--) == s.charAt(r++)){
+                    ans++;
                 }else{
                     break;
                 }
             }
-
-            for (int j = i-1, k = i+1; j >= 0 && k < s.length() ; j--, k++) {
-                if (s.charAt(j) == s.charAt(k)){
-                    res++;
+            l = i; r= i+1;
+            while (l >= 0 && r < n) {
+                if (s.charAt(l--) == s.charAt(r++)) {
+                    ans++;
                 }else{
                     break;
                 }
             }
         }
-
-        return res;
+        return ans;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

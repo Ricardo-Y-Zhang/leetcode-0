@@ -1291,6 +1291,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[599]minimum-index-sum-of-two-lists.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[599]minimum-index-sum-of-two-lists.java" />
+              <option name="questionId" value="599" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[59]spiral-matrix-ii.java">
           <value>
             <LeetcodeEditor>
@@ -1400,6 +1408,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[67]add-binary.java" />
               <option name="questionId" value="67" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[680]valid-palindrome-ii.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[680]valid-palindrome-ii.java" />
+              <option name="questionId" value="680" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1576,6 +1592,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[846]hand-of-straights.java" />
               <option name="questionId" value="876" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[84]largest-rectangle-in-histogram.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[84]largest-rectangle-in-histogram.java" />
+              <option name="questionId" value="84" />
             </LeetcodeEditor>
           </value>
         </entry>
