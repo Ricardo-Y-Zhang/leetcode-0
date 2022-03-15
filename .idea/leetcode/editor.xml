@@ -267,6 +267,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[160]intersection-of-two-linked-lists.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[160]intersection-of-two-linked-lists.java" />
+              <option name="questionId" value="160" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[1610]maximum-number-of-visible-points.java">
           <value>
             <LeetcodeEditor>
@@ -403,6 +411,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[2044]count-number-of-maximum-bitwise-or-subsets.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[2044]count-number-of-maximum-bitwise-or-subsets.java" />
+              <option name="questionId" value="2170" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[2049]count-nodes-with-the-highest-score.java">
           <value>
             <LeetcodeEditor>
@@ -416,6 +432,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[2055]plates-between-candles.java" />
               <option name="questionId" value="2165" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[206]reverse-linked-list.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[206]reverse-linked-list.java" />
+              <option name="questionId" value="206" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1616,6 +1640,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[859]buddy-strings.java" />
               <option name="questionId" value="889" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[85]maximal-rectangle.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[85]maximal-rectangle.java" />
+              <option name="questionId" value="85" />
             </LeetcodeEditor>
           </value>
         </entry>

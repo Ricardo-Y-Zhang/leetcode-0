@@ -35,26 +35,43 @@ import java.util.ArrayList;
  */
 class Solution {
     public boolean isPalindrome(ListNode head) {
-        ArrayList<Integer> list = new ArrayList<>();
-        while (head != null){
-            list.add(head.val);
-            head = head.next;
+        if (head == null || head.next == null) {
+            return true;
         }
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i) != list.get(list.size()-1-i)){
-                return false;
+        ListNode mid = findMid(head);
+        ListNode temp = reverseList(mid.next);
+        ListNode node1 = head, node2 = temp;
+        boolean flag = true;
+        while (node1 != null && node2 != null) {
+            if (node1.val != node2.val) {
+                flag = false;
             }
+            node1 = node1.next;
+            node2 = node2.next;
         }
-        return true;
+        reverseList(temp);
+        return flag;
     }
+    public ListNode findMid(ListNode head) {//返回链表的中点，偶数返回靠左的中点
+        ListNode vhead = new ListNode(0, head);
+        ListNode fast = vhead, slow = vhead;
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        return slow;
+    }
+
+    public ListNode reverseList(ListNode head){
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode newhead = reverseList(head.next);
+        head.next.next = head;
+        head.next = null;
+        return newhead;
+    }
+
 }
 //leetcode submit region end(Prohibit modification and deletion)
 
-
-class ListNode{
-    int val;
-    ListNode next;
-    ListNode(){}
-    ListNode(int val){this.val = val;}
-    ListNode(int val, ListNode next){this.val = val; this.next = next;}
-}

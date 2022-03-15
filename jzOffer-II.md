@@ -1475,6 +1475,32 @@ class Solution {
 
 
 
+#### （2.2）思路
+
+* 递归写法
+
+
+
+#### （3）实现
+
+```java
+public ListNode reverseList(ListNode head){
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode newhead = reverseList(head.next);
+        head.next.next = head;
+        head.next= null;
+        return newhead;
+ }
+```
+
+
+
+
+
+
+
 ### 025. 链表中的两数相加
 
 #### （1）题目
