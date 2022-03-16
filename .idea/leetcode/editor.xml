@@ -603,6 +603,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[242]valid-anagram.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[242]valid-anagram.java" />
+              <option name="questionId" value="242" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[24]swap-nodes-in-pairs.java">
           <value>
             <LeetcodeEditor>
@@ -984,6 +992,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[42]trapping-rain-water.java" />
               <option name="questionId" value="42" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[432]all-oone-data-structure.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[432]all-oone-data-structure.java" />
+              <option name="questionId" value="432" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1728,6 +1744,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[94]binary-tree-inorder-traversal.java" />
               <option name="questionId" value="94" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[953]verifying-an-alien-dictionary.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[953]verifying-an-alien-dictionary.java" />
+              <option name="questionId" value="990" />
             </LeetcodeEditor>
           </value>
         </entry>

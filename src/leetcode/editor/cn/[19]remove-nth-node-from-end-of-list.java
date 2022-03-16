@@ -54,24 +54,17 @@ package leetcode.editor.cn;
  */
 class Solution {
     public ListNode removeNthFromEnd(ListNode head, int n) {
-        ListNode quick = head, slow = head;
-
-        for (int i = 0; i < n; i++) {
-            quick = quick.next;
+        ListNode vhead = new ListNode(-1, head);//虚拟头节点
+        ListNode fast = vhead, slow = vhead;
+        for (int i = 0; i < n+1; i++) {//fast先走 n+1 步
+            fast = fast.next;
         }
-
-        if (quick == null){
-            head = head.next;
-        }else{
-            while (quick.next != null){
-                quick = quick.next;
-                slow = slow.next;
-            }
-
-            slow.next = slow.next.next;
+        while (fast != null) {//slow指向倒数第 n+1 个节点
+            fast = fast.next;
+            slow = slow.next;
         }
-
-        return head;
+        slow.next = slow.next.next;
+        return vhead.next;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

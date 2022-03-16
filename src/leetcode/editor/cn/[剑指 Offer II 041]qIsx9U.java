@@ -48,26 +48,27 @@
 package leetcode.editor.cn;
 
 import java.util.LinkedList;
+import java.util.Queue;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class MovingAverage {
+
+    /** Initialize your data structure here. */
+    Queue<Integer> queue;
     int size;
     double sum;
-    LinkedList<Integer> list;
-    /** Initialize your data structure here. */
     public MovingAverage(int size) {
         this.size = size;
-        this.sum = 0;
-        list = new LinkedList<>();
+        queue = new LinkedList<>();
     }
-    
+
     public double next(int val) {
-        list.offer(val);
-        sum += val;
-        if (list.size() > size){
-            sum -= list.pollFirst();
+        if (queue.size() == size) {
+            sum -= queue.poll();
         }
-        return sum/list.size();
+        queue.add(val);
+        sum += val;
+        return sum/queue.size();
     }
 }
 
