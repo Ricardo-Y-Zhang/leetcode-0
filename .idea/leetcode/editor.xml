@@ -1491,6 +1491,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[720]longest-word-in-dictionary.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[720]longest-word-in-dictionary.java" />
+              <option name="questionId" value="720" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[724]find-pivot-index.java">
           <value>
             <LeetcodeEditor>
@@ -1683,6 +1691,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[897]increasing-order-search-tree.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[897]increasing-order-search-tree.java" />
+              <option name="questionId" value="933" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[89]gray-code.java">
           <value>
             <LeetcodeEditor>
@@ -1728,6 +1744,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[92]reverse-linked-list-ii.java" />
               <option name="questionId" value="92" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[933]number-of-recent-calls.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[933]number-of-recent-calls.java" />
+              <option name="questionId" value="969" />
             </LeetcodeEditor>
           </value>
         </entry>

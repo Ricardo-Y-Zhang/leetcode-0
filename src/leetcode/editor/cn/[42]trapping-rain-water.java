@@ -37,7 +37,20 @@ package leetcode.editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int trap(int[] height) {
-
+        int n = height.length;
+        int[] left = new int[n], right = new int[n];//left[i]记录[0,i]中最大值，right[i]记录[i,n-1]中最大值
+        int lmax = 0, rmax = 0;
+        for (int i = 0; i < n; i++) {
+            lmax = Math.max(lmax, height[i]);
+            left[i] = lmax;
+            rmax = Math.max(rmax, height[n-i-1]);
+            right[n-i-1] = rmax;
+        }
+        int ans = 0;
+        for (int i = 0; i < n; i++) {
+            ans += Math.min(left[i], right[i]) - height[i];
+        }
+        return ans;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

@@ -1374,6 +1374,32 @@ public class Solution {
 
 
 
+```java
+public class Solution {
+    public ListNode detectCycle(ListNode head) {
+        ListNode fast = head, slow = head;
+        while (true) {
+            if (fast == null || fast.next == null) {
+                return null;
+            }
+            fast = fast.next.next;
+            slow = slow.next;
+            if (fast == slow) {
+                break;
+            }
+        }
+        fast = head;
+        while (fast != slow) {
+            fast = fast.next;
+            slow = slow.next;
+        }
+        return slow;
+    }
+}
+```
+
+
+
 
 
 
@@ -3630,6 +3656,36 @@ class Solution {
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
+```
+
+
+
+* 记录前序节点
+
+```java
+class Solution {
+    TreeNode vroot, pre;//虚拟根节点和前序节点
+    public TreeNode increasingBST(TreeNode root) {
+        if (root == null) {
+            return root;
+        }
+        vroot = new TreeNode(-1);
+        pre = vroot;
+        inorder(root);
+        return vroot.right;
+    }
+    public void inorder(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        inorder(root.left);
+        //改变节点指向
+        pre.right = root;//前序节点right指向root
+        root.left = null;//左指针置空
+        pre = root;//更新前序节点
+        inorder(root.right);
+    }
+}
 ```
 
 
