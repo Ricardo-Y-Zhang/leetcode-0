@@ -103,6 +103,12 @@ public class Test {
         res >>>= 2;
         System.out.println("res" + res);
     }
+    @org.junit.Test
+    public void test4() {
+        Stack<Integer> temp = new Stack<>();
+        System.out.println("temp.getClass() = " + temp.getClass());
+        System.out.println("temp.toString() = " + temp.toString());
+    }
 }
 
 
@@ -173,96 +179,96 @@ class Solution {
 }
 
 
-class Solution {
-
-    public List<Integer> findKDistantIndices(int[] nums, int key, int k) {
-        HashSet<Integer> set = new HashSet<>();
-        for (int i = 0; i < nums.length; i++) {
-            if (nums[i] == key) {
-                int left = i-k, right = i+k;
-                left = left >= 0 ? left : 0;
-                right = right < nums.length ? right : nums.length-1;
-                for (int j = left; j <= right; j++) {
-                    set.add(j);
-                }
-            }
-        }
-        ArrayList<Integer> ans = new ArrayList<>(set);
-        Collections.sort(ans);
-        return ans;
-    }
-}
-
-
-class Solution {
-    public int digArtifacts(int n, int[][] artifacts, int[][] dig) {
-        boolean[][] matrix = new boolean[n][n];
-        for (int[] temp : dig){
-            matrix[temp[0]][temp[1]] = true;//代表已挖掘
-        }
-        int ans = 0;
-        for (int[] artifact : artifacts) {
-            int r1 = artifact[0], c1 = artifact[1], r2  = artifact[2], c2 = artifact[3];
-            boolean flag = true;
-            table : for (int i = r1; i <= r2; i++) {
-                for (int j = c1; j <= c2; j++) {
-                    if (!matrix[i][j]) {
-                        flag = false;
-                        break table;
-                    }
-                }
-            }
-            if (flag) {
-                ans++;
-            }
-        }
-        return ans;
-    }
-}
-
-class Solution {
-    public int maximumTop(int[] nums, int k) {
-        int n = nums.length;
-        if (n == 1 && k % 2 ==1){
-            return -1;
-        }
-        if (k == 0) {
-            return nums[0];
-        }
-        if (k == 1) {
-            return nums[1];
-        }
-        PriorityQueue<Integer> queue = new PriorityQueue<>(new Comparator<Integer>() {
-            @Override
-            public int compare(Integer o1, Integer o2) {
-                return Integer.compare(o2, o1);
-            }
-        });
-        for (int i = 0; i < n && i < k-1; i++) {
-            queue.add(nums[i]);
-        }
-        int max = queue.peek();
-        if (k < n){
-            max =  Math.max(max, nums[k]);
-        }
-        return max;
-    }
-}
-
-class Solution {
-    int[][] matrix;
-    public long minimumWeight(int n, int[][] edges, int src1, int src2, int dest) {
-        matrix = new int[n][n];
-        for (int i = 0; i < n; i++) {
-            Arrays.fill(matrix[i], Integer.MAX_VALUE);
-        }
-        for (int[] edge : edges) {
-            int from = edge[0], to = edge[1], weight = edge[2];
-            matrix[from][to] = weight;
-        }
-
-    }
-    public long find(int src, int dest) {
-
-    }
-}
+//class Solution {
+//
+//    public List<Integer> findKDistantIndices(int[] nums, int key, int k) {
+//        HashSet<Integer> set = new HashSet<>();
+//        for (int i = 0; i < nums.length; i++) {
+//            if (nums[i] == key) {
+//                int left = i-k, right = i+k;
+//                left = left >= 0 ? left : 0;
+//                right = right < nums.length ? right : nums.length-1;
+//                for (int j = left; j <= right; j++) {
+//                    set.add(j);
+//                }
+//            }
+//        }
+//        ArrayList<Integer> ans = new ArrayList<>(set);
+//        Collections.sort(ans);
+//        return ans;
+//    }
+//}
+//
+//
+//class Solution {
+//    public int digArtifacts(int n, int[][] artifacts, int[][] dig) {
+//        boolean[][] matrix = new boolean[n][n];
+//        for (int[] temp : dig){
+//            matrix[temp[0]][temp[1]] = true;//代表已挖掘
+//        }
+//        int ans = 0;
+//        for (int[] artifact : artifacts) {
+//            int r1 = artifact[0], c1 = artifact[1], r2  = artifact[2], c2 = artifact[3];
+//            boolean flag = true;
+//            table : for (int i = r1; i <= r2; i++) {
+//                for (int j = c1; j <= c2; j++) {
+//                    if (!matrix[i][j]) {
+//                        flag = false;
+//                        break table;
+//                    }
+//                }
+//            }
+//            if (flag) {
+//                ans++;
+//            }
+//        }
+//        return ans;
+//    }
+//}
+//
+//class Solution {
+//    public int maximumTop(int[] nums, int k) {
+//        int n = nums.length;
+//        if (n == 1 && k % 2 ==1){
+//            return -1;
+//        }
+//        if (k == 0) {
+//            return nums[0];
+//        }
+//        if (k == 1) {
+//            return nums[1];
+//        }
+//        PriorityQueue<Integer> queue = new PriorityQueue<>(new Comparator<Integer>() {
+//            @Override
+//            public int compare(Integer o1, Integer o2) {
+//                return Integer.compare(o2, o1);
+//            }
+//        });
+//        for (int i = 0; i < n && i < k-1; i++) {
+//            queue.add(nums[i]);
+//        }
+//        int max = queue.peek();
+//        if (k < n){
+//            max =  Math.max(max, nums[k]);
+//        }
+//        return max;
+//    }
+//}
+//
+//class Solution {
+//    int[][] matrix;
+//    public long minimumWeight(int n, int[][] edges, int src1, int src2, int dest) {
+//        matrix = new int[n][n];
+//        for (int i = 0; i < n; i++) {
+//            Arrays.fill(matrix[i], Integer.MAX_VALUE);
+//        }
+//        for (int[] edge : edges) {
+//            int from = edge[0], to = edge[1], weight = edge[2];
+//            matrix[from][to] = weight;
+//        }
+//
+//    }
+//    public long find(int src, int dest) {
+//
+//    }
+//}

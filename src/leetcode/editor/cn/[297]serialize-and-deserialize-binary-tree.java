@@ -55,6 +55,7 @@ package leetcode.editor.cn;
 
 
 import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * Definition for a binary tree node.
@@ -69,112 +70,52 @@ public class Codec {
 
     // Encodes a tree to a single string.
     public String serialize(TreeNode root) {
-        String str = "";
-        LinkedList<TreeNode> list = new LinkedList<>();
-        list.add(root);
-        str += nodeToString(root);
-        while (!list.isEmpty()){
-            TreeNode first = list.pollFirst();
+        //层序遍历序列化
+        StringBuilder sb = new StringBuilder();
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            TreeNode first = queue.poll();
+            if (sb.length()!=0){
+                sb.append(",");
+            }
             if (first != null){
-                list.add(first.left);
-                str += nodeToString(first.left);
-                list.add(first.right);
-                str += nodeToString(first.right);
+                sb.append(first.val);
+                queue.add(first.left);
+                queue.add(first.right);
+            }else{
+                sb.append("null");
             }
         }
-        return str;
+        return sb.toString();
     }
 
     // Decodes your encoded data to tree.
     public TreeNode deserialize(String data) {
-        boolean flag = false;
-        LinkedList<TreeNode> list = new LinkedList<>();
-        TreeNode root = null;
-        String state = data.substring(0, 1);
-        data = data.substring(1);
-        if ("0".equals(state)){
-            root = null;
-        }else{
-            String temp = data.substring(0, 1);//正负
-            data = data.substring(1);
-            int digit = Integer.parseInt(data.substring(0, 1));
-            data = data.substring(1);
-            int val = Integer.parseInt(data.substring(0, digit));
-            data = data.substring(digit);
-            if ("0".equals(temp)){
-                val *= -1;
-            }
-            root = new TreeNode(val);
-        }
-        list.add(root);
-        boolean flag1 = false;
-        boolean flag2 = false;
-
-        TreeNode first = list.pollFirst();
-        while (!data.isEmpty()){
-
-            state = data.substring(0, 1);
-            data = data.substring(1);
-            TreeNode node = null;
-            if ("0".equals(state)){
-                node = null;
-            }else{
-                String temp = data.substring(0, 1);//正负
-                data = data.substring(1);
-                int digit = Integer.parseInt(data.substring(0, 1));
-                data = data.substring(1);
-                int val = Integer.parseInt(data.substring(0, digit));
-                data = data.substring(digit);
-                if ("0".equals(temp)){
-                    val *= -1;
-                }
-                node = new TreeNode(val);
-                list.add(node);
-            }
-            if (flag1 == false){
-                first.left = node;
-                flag1 = true;
-            }else{
-                first.right = node;
-                flag2 = true;
-            }
-            if (flag1 == true && flag2 == true && !data.isEmpty()){
-                first = list.pollFirst();
-                flag1 = false;
-                flag2 = false;
+        String[] datas = data.split(",");
+        TreeNode root = strToNode(datas[0]);
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        int index = 1;
+        while (!queue.isEmpty()) {
+            TreeNode first = queue.poll();
+            if (first != null) {
+                TreeNode leftNode = strToNode(datas[index++]);
+                TreeNode rightNode = strToNode(datas[index++]);
+                first.left = leftNode;
+                first.right = rightNode;
+                queue.add(leftNode);
+                queue.add(rightNode);
             }
         }
         return root;
     }
-
-    public String nodeToString(TreeNode root){
-        var str = "";
-        if (root == null){
-            str += 0;
-        }else{
-            str += 1;
-            int val = root.val;
-            if (val < 0){
-                str += 0;
-            }else{
-                str += 1;
-            }
-            val = Math.abs(val);
-            int digit = 0;
-            if (val == 0){
-                digit++;
-            }
-            int temp = val;
-            while (temp != 0){
-                temp /= 10;
-                digit++;
-            }
-            str += digit;
-            str += val;
+    public TreeNode strToNode(String str) {
+        if (str.equals("null")){
+            return null;
         }
-        return str;
+        return new TreeNode(Integer.parseInt(str));
     }
-
 }
 
 // Your Codec object will be instantiated and called as such:

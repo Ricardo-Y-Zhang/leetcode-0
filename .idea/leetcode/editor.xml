@@ -1027,6 +1027,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[445]add-two-numbers-ii.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[445]add-two-numbers-ii.java" />
+              <option name="questionId" value="445" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[448]find-all-numbers-disappeared-in-an-array.java">
           <value>
             <LeetcodeEditor>
@@ -1355,6 +1363,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[606]construct-string-from-binary-tree.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[606]construct-string-from-binary-tree.java" />
+              <option name="questionId" value="606" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[617]merge-two-binary-trees.java">
           <value>
             <LeetcodeEditor>
@@ -1464,6 +1480,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[689]maximum-sum-of-3-non-overlapping-subarrays.java" />
               <option name="questionId" value="689" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[69]sqrtx.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[69]sqrtx.java" />
+              <option name="questionId" value="69" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1656,6 +1680,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[851]loud-and-rich.java" />
               <option name="questionId" value="881" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[852]peak-index-in-a-mountain-array.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[852]peak-index-in-a-mountain-array.java" />
+              <option name="questionId" value="882" />
             </LeetcodeEditor>
           </value>
         </entry>
