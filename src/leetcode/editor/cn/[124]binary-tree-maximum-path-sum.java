@@ -53,25 +53,21 @@ package leetcode.editor.cn;
  * }
  */
 class Solution {
-    int max = -10001;
+    int max = Integer.MIN_VALUE;
     public int maxPathSum(TreeNode root) {
-        max = -10001;
-        getMax(root);
+        dfs(root);
         return max;
     }
-
-    public int getMax(TreeNode root){
-        if (root == null){
+    public int dfs(TreeNode root) {//返回以root为起点的路径的最大值
+        if (root == null) {
             return 0;
         }
-        int left = getMax(root.left);
-        int right = getMax(root.right);
-        int tempMax = Math.max(left+root.val, right+root.val);
-        int tempMax1 = Math.max(tempMax, left+right+root.val);
-        if (tempMax1 > max){
-            max = tempMax1;
-        }
-        return Math.max(0, tempMax);
+        int left = dfs(root.left);
+        left = left > 0 ? left : 0;
+        int right = dfs(root.right);
+        right = right > 0 ? right : 0;
+        max = Math.max(max, left+right+root.val);//记录经过root的路径的最大值
+        return Math.max(left, right)+root.val;
     }
 
 }

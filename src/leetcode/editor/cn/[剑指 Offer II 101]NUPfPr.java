@@ -41,23 +41,23 @@ package leetcode.editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public boolean canPartition(int[] nums) {
-        int length = nums.length;
-        int target = 0;
-        for (int temp : nums){
-            target += temp;
+        int sum = 0;
+        for (int num : nums) {
+            sum += num;
         }
-        if (target % 2 == 1){//奇数，不满足条件
+        if (sum % 2 == 1) {
             return false;
         }
-        target /= 2;
-        boolean[][] dp = new boolean[length+1][target+1];
+        sum /= 2;
+        int n = nums.length;
+        boolean[][] dp = new boolean[n+1][sum+1];
         dp[0][0] = true;
-        for (int i = 1; i < length+1; i++) {
-            for (int j = 0; j < target+1; j++) {
-                dp[i][j] = dp[i-1][j] || ((j-nums[i-1])>=0&&dp[i-1][j-nums[i-1]]);
+        for (int i = 1; i < n+1; i++) {
+            for (int j = 1; j < sum+1; j++) {
+                dp[i][j] = dp[i-1][j] || (j-nums[i-1]>=0 && dp[i-1][j-nums[i-1]]);
             }
         }
-        return dp[length][target];
+        return dp[n][sum];
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
