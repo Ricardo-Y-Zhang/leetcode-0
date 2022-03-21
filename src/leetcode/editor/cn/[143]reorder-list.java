@@ -52,46 +52,38 @@ package leetcode.editor.cn;
  */
 class Solution {
     public void reorderList(ListNode head) {
-        if (head == null || head.next == null){
+        if (head == null || head.next == null) {
             return;
         }
-
-        //记录链表长度
-        int length = 0;
-        ListNode now = head;
-        while (now != null){
-            now = now.next;
-            length++;
+        //找链表中点
+        ListNode fast = head, slow = head;
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
         }
-
-        //记录链表的中间节点
-        ListNode tail = head;
-        for (int i = 0; i < (length-1)/2; i++) {
-            tail = tail.next;
+        //翻转后半链表
+        ListNode head2 = reverse(slow.next);
+        slow.next = null;
+        //合并链表
+        ListNode node1 = head, node2 = head2;
+        while (node1 != null && node2 != null) {
+            ListNode temp_node1 = node1.next;
+            ListNode temp_node2 = node2.next;
+            node1.next = node2;
+            node1 = temp_node1;
+            node2.next = node1;
+            node2 = temp_node2;
         }
-
-        //将链表的后半节点翻转并组成新链表
-        ListNode head2 = new ListNode();
-        head2.next = null;//虚拟头节点
-        now = tail.next;
-        tail.next = null;//链表中间节点next置为null
-        while (now != null){//头插法翻转链表
-            ListNode temp = now;
-            now = now.next;
-            temp.next = head2.next;
-            head2.next = temp;
+    }
+    public ListNode reverse(ListNode head) {
+        ListNode vhead = new ListNode(-1, null);
+        while (head != null) {
+            ListNode node = head;
+            head = head.next;
+            node.next = vhead.next;
+            vhead.next = node;
         }
-
-        //将翻转后的新链表插入前半节点中
-        head2 = head2.next;
-        now = head;
-        while (head2 != null){
-            ListNode temp1 = now, temp2 = head2;
-            now = now.next;
-            head2 = head2.next;
-            temp2.next = temp1.next;
-            temp1.next = temp2;
-        }
+        return vhead.next;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
