@@ -43,40 +43,38 @@
 package leetcode.editor.cn;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class MinStack {
 
-    private ArrayList<Integer> list;
-    private ArrayList<Integer> minList;
+    Stack<Integer> stack, minstack;
     /** initialize your data structure here. */
     public MinStack() {
-        list = new ArrayList<>();
-        minList = new ArrayList<>();//前 n 个元素的最小值
+        stack = new Stack<>();
+        minstack = new Stack<>();
     }
     
     public void push(int val) {
-        list.add(val);
-        if (minList.size() == 0){
-            minList.add(val);
-        }else{
-            int lastMin = minList.get(minList.size() - 1);
-            int min = val < lastMin ? val : lastMin;
-            minList.add(min);
+        stack.push(val);
+        if (minstack.isEmpty() || minstack.peek() >= val) {
+            minstack.push(val);
         }
     }
     
     public void pop() {
-        list.remove(list.size() - 1);
-        minList.remove(minList.size() - 1);
+        int top = stack.pop();
+        if (minstack.peek() == top) {
+            minstack.pop();
+        }
     }
     
     public int top() {
-        return list.get(list.size() - 1);
+        return stack.peek();
     }
     
     public int getMin() {
-        return minList.get(minList.size() - 1);
+        return minstack.peek();
     }
 }
 

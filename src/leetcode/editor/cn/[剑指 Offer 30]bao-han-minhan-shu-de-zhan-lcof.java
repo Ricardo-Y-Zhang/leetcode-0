@@ -32,36 +32,39 @@
 package leetcode.editor.cn;
 
 import java.util.LinkedList;
+import java.util.Stack;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class MinStack {
-    LinkedList<Integer> stack1, stack2;
+    Stack<Integer> stack, minstack;
     /** initialize your data structure here. */
     public MinStack() {
-        stack1 = new LinkedList<>();
-        stack2 = new LinkedList<>();
+        stack = new Stack<>();
+        minstack = new Stack<>();
     }
     
     public void push(int x) {
-        stack1.offer(x);
-        if (stack2.isEmpty()){
-            stack2.offer(x);
-        }else{
-            stack2.offer(Math.min(x, stack2.peekLast()));
+        stack.push(x);
+        if (minstack.isEmpty()) {
+            minstack.push(x);
+        }else if (!minstack.isEmpty() && minstack.peek() >= x){
+            minstack.push(x);
         }
     }
     
     public void pop() {
-        stack1.pollLast();
-        stack2.pollLast();
+        int top = stack.pop();
+        if (minstack.peek() == top) {
+            minstack.pop();
+        }
     }
     
     public int top() {
-        return stack1.peekLast();
+        return stack.peek();
     }
     
     public int min() {
-        return stack2.peekLast();
+        return minstack.peek();
     }
 }
 
