@@ -21,6 +21,7 @@ package leetcode.editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 
 import java.util.LinkedList;
+import java.util.Stack;
 
 /**
  * Definition for singly-linked list.
@@ -32,20 +33,19 @@ import java.util.LinkedList;
  */
 class Solution {
     public int[] reversePrint(ListNode head) {
-        if (head == null){
-            return new int[0];
+        if (head == null) return new int[0];
+        Stack<Integer> stack = new Stack<>();
+        ListNode node = head;
+        while (node != null){
+            stack.push(node.val);
+            node = node.next;
         }
-        LinkedList<Integer> linkedList = new LinkedList<>();
-        while (head != null){
-            linkedList.offerLast(head.val);
-            head = head.next;
+        int[] ans = new int[stack.size()];
+        for (int i = 0; i < ans.length; i++) {
+            ans[i] = stack.pop();
         }
-        int[] res = new int[linkedList.size()];
-        for (int i = 0; i < res.length; i++) {
-            res[i] = linkedList.pollLast();
-        }
-        return res;
-    }
+        return ans;
+     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
 

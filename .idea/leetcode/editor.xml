@@ -139,6 +139,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[132]palindrome-partitioning-ii.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[132]palindrome-partitioning-ii.java" />
+              <option name="questionId" value="132" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[136]single-number.java">
           <value>
             <LeetcodeEditor>
@@ -416,6 +424,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[1]two-sum.java" />
               <option name="questionId" value="1" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[2038]remove-colored-pieces-if-both-neighbors-are-the-same-color.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[2038]remove-colored-pieces-if-both-neighbors-are-the-same-color.java" />
+              <option name="questionId" value="2149" />
             </LeetcodeEditor>
           </value>
         </entry>
