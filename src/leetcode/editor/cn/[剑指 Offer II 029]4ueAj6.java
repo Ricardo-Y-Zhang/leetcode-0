@@ -89,29 +89,31 @@ class Solution {
             head.next = node;
             return head;
         }
-        Node min = head.next, minPre = head, node = head.next, pre = head;
-        int max = head.val;
+        Node max = head.next, maxPre = head, node = head.next, pre = head;//max记录最大节点，即尾节点
+        int min = head.val;
         while (node != head){
-            if (node.val < min.val){
-                min = node;
-                minPre = pre;
+            if (node.val > node.next.val) {
+                max = node;
             }
-            max = Math.max(max, node.val);
+            min = Math.min(min, node.val);
             node = node.next;
             pre = pre.next;
         }
-        if (node.val <= min.val){
-            min = node;
-            minPre = pre;
+        if (node.val > max.val) {
+            max = node;
         }
-        if (insertVal > min.val && insertVal < max){
-            while (min.val < insertVal){
-                min = min.next;
-                minPre = minPre.next;
+        if (insertVal <= min || insertVal >= max.val){
+            node = new Node(insertVal, max.next);//插入节点,若不在(min,max)中，则插在min节点之前
+            max.next = node;
+        }else{
+            Node tempNode = max.next, preNode = max;
+            while (tempNode.val < insertVal) {
+                tempNode = tempNode.next;
+                preNode = preNode.next;
             }
+            node = new Node(insertVal, tempNode);
+            preNode.next = node;
         }
-        node = new Node(insertVal, min);
-        minPre.next = node;
         return head;
     }
 }

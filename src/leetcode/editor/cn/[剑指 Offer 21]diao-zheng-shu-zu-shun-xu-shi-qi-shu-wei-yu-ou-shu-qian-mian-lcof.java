@@ -26,22 +26,19 @@ package leetcode.editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int[] exchange(int[] nums) {
-        int left = 0, right = nums.length-1;
-        while (left < right){
-            while (left < right && nums[left]%2!=0){//找到第一个偶数
-                left++;
+        int fast = 0, slow = 0;
+        while (fast < nums.length) {
+            if ((nums[fast]&1)==1){
+                int temp = nums[slow];
+                nums[slow] = nums[fast];
+                nums[fast] = temp;
+                slow++;
             }
-            while (left < right && nums[right]%2 == 0){//找到第一个奇数
-                right--;
-            }
-            if (left < right){//交换奇偶数
-                int temp = nums[left];
-                nums[left] = nums[right];
-                nums[right] = temp;
-            }
+            fast++;
         }
         return nums;
     }
+
 }
 //leetcode submit region end(Prohibit modification and deletion)
 

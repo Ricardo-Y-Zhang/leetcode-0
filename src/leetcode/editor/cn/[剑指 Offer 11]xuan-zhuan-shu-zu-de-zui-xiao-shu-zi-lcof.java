@@ -31,15 +31,12 @@ class Solution {
         int left = 0, right = numbers.length-1;
         while (left < right) {
             int mid = (left + right)/2;
-            if (numbers[left] == numbers[mid] && numbers[mid] == numbers[right]) {
-                left++;
-                right--;
-            }else if (numbers[left] <= numbers[mid] && numbers[mid] <= numbers[right]){
-                right = mid-1;
-            }else if (numbers[left]<=numbers[mid] && numbers[mid] >= numbers[right]){
+            if (numbers[mid] > numbers[right]){
                 left = mid+1;
-            }else if (numbers[left] > numbers[mid] && numbers[mid] <= numbers[right]){
+            } else if (numbers[mid] < numbers[right]) {
                 right = mid;
+            }else if (numbers[mid] == numbers[right]){
+                right--;
             }
         }
         return numbers[left];

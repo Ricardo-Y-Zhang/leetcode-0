@@ -91,6 +91,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[115]distinct-subsequences.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[115]distinct-subsequences.java" />
+              <option name="questionId" value="115" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[11]container-with-most-water.java">
           <value>
             <LeetcodeEditor>
@@ -1512,6 +1520,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[653]two-sum-iv-input-is-a-bst.java" />
               <option name="questionId" value="653" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[661]image-smoother.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[661]image-smoother.java" />
+              <option name="questionId" value="661" />
             </LeetcodeEditor>
           </value>
         </entry>

@@ -28,11 +28,10 @@ package leetcode.editor.cn;
 class Solution {
     public ListNode getKthFromEnd(ListNode head, int k) {
         ListNode fast = head, slow = head;
-        while (k !=0){
-            fast=fast.next;
-            k--;
+        for (int i = 0; i < k; i++) {
+            fast = fast.next;
         }
-        while (fast != null){
+        while (fast != null) {
             fast = fast.next;
             slow = slow.next;
         }

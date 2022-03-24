@@ -43,17 +43,13 @@ package leetcode.editor.cn;
  */
 class Solution {
     public ListNode deleteNode(ListNode head, int val) {
-        ListNode vhead = new ListNode();
+        ListNode vhead = new ListNode(-1);
         vhead.next = head;
-        ListNode pre = vhead, temp = head;
-        while (temp != null){
-            if (temp.val == val){
-                pre.next = temp.next;
-                break;
-            }
+        ListNode pre = vhead;
+        while (pre.next.val != val) {
             pre = pre.next;
-            temp = temp.next;
         }
+        pre.next = pre.next.next;
         return vhead.next;
     }
 }
