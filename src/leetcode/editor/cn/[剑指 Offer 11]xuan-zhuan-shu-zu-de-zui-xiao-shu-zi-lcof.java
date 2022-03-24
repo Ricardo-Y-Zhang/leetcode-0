@@ -29,17 +29,17 @@ package leetcode.editor.cn;
 class Solution {
     public int minArray(int[] numbers) {
         int left = 0, right = numbers.length-1;
-        while (left < right){
-            int mid = left + (right-left)/2;
-            if (numbers[left] == numbers[mid] && numbers[right] == numbers[mid]){
+        while (left < right) {
+            int mid = (left + right)/2;
+            if (numbers[left] == numbers[mid] && numbers[mid] == numbers[right]) {
                 left++;
                 right--;
-            }else if (numbers[mid] <= numbers[right] && numbers[right]<= numbers[left]){
-                    right = mid;
-            }else if (numbers[right] <= numbers[left] && numbers[left] <= numbers[mid]){
-                left = mid+1;
-            }else{
+            }else if (numbers[left] <= numbers[mid] && numbers[mid] <= numbers[right]){
                 right = mid-1;
+            }else if (numbers[left]<=numbers[mid] && numbers[mid] >= numbers[right]){
+                left = mid+1;
+            }else if (numbers[left] > numbers[mid] && numbers[mid] <= numbers[right]){
+                right = mid;
             }
         }
         return numbers[left];
