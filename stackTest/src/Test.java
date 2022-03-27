@@ -274,3 +274,86 @@ class Solution {
 //
 //    }
 //}
+
+class Solution {
+    public List<List<Integer>> findDifference(int[] nums1, int[] nums2) {
+        HashSet<Integer> set1 = new HashSet<>(), set2 = new HashSet<>();
+        for (int num : nums1) {
+            set1.add(num);
+        }
+        for (int num : nums2) {
+            set2.add(num);
+        }
+        List<List<Integer>> ans = new ArrayList<>();
+        List<Integer> temp1 = new ArrayList<>();
+        for (int num : set1) {
+            if (!set2.contains(num)) {
+                temp1.add(num);
+            }
+        }
+        ans.add(temp1);
+        List<Integer> temp2 = new ArrayList<>();
+        for (int num : set2) {
+            if (!set1.contains(num)) {
+                temp2.add(num);
+            }
+        }
+        ans.add(temp2);
+        return ans;
+    }
+}
+
+class Solution {
+    public int minDeletion(int[] nums) {
+        int ans = 0;
+        for (int i = 0; i < nums.length - 1; i++) {
+            if (nums[i] == nums[i+1]) {
+                ans++;
+            }else{
+                i++;
+            }
+        }
+        int n = nums.length;
+        if ((n-ans)%2==1){
+            ans++;
+        }
+        return ans;
+    }
+}
+
+class Solution {
+    public long[] kthPalindrome(int[] queries, int intLength) {
+        if ()
+    }
+    public long getnum(int length, int num) {
+        if (length == 1) {
+            return num-1;
+        }
+
+    }
+    public String get(int length, int num) {
+        if (length  == 1){
+            if (num <= 10)
+            return String.valueOf(num);
+        }
+        String temp;
+        if (length%2 == 0) {
+            String pre = get(length-1, num);
+            String half = pre.substring(0, (pre.length()+1)/2);
+            StringBuilder sb = new StringBuilder(half);
+            temp = half + sb.reverse();
+        }else {
+            String pre = get(length-1, (int)Math.ceil((double)num/10));
+            String half = pre.substring(0, (pre.length()+1)/2);
+            StringBuilder sb = new StringBuilder(half);
+            temp = half + (num-1) + sb.reverse();
+        }
+        return temp;
+    }
+
+    public String convert(String str) {
+        StringBuilder sb = new StringBuilder(str);
+        return str + sb.reverse().toString();
+    }
+}
+

@@ -42,6 +42,7 @@ package leetcode.editor.cn;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * Definition for a binary tree node.
@@ -54,30 +55,28 @@ import java.util.List;
  */
 class Solution {
     public List<List<Integer>> levelOrder(TreeNode root) {
-        if (root == null){
-            return new ArrayList<List<Integer>>();
+        List<List<Integer>> ans = new ArrayList<>();
+        if (root == null) {
+            return ans;
         }
-        ArrayList<List<Integer>> res = new ArrayList<>();//记录结果
-        ArrayList<Integer> temp = new ArrayList<>();//记录当前层的节点值
-        LinkedList<TreeNode> list = new LinkedList<TreeNode>();//队列
-        list.offerLast(root);
-        TreeNode last = root;
-        while (!list.isEmpty()){
-            TreeNode first = list.pollFirst();
-            temp.add(first.val);
-            if (first.left != null){
-                list.offerLast(first.left);
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            List<Integer> temp = new ArrayList<>();
+            int size = queue.size();//该层节点个数
+            for (int i = 0; i < size; i++) {
+                TreeNode first = queue.poll();
+                temp.add(first.val);
+                if (first.left!=null) {
+                    queue.add(first.left);
+                }
+                if (first.right!= null) {
+                    queue.add(first.right);
+                }
             }
-            if (first.right != null){
-                list.offerLast(first.right);
-            }
-            if (first == last){//当前节点为该层的最后一个节点
-                res.add(new ArrayList<>(temp));
-                temp.clear();
-                last = list.peekLast();//更新last节点
-            }
+            ans.add(temp);
         }
-        return res;
+        return ans;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

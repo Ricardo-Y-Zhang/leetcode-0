@@ -52,50 +52,23 @@ import java.util.Stack;
  *     }
  * }
  */
-//class Solution {
-//    public boolean isSymmetric(TreeNode root) {
-//        return judge(root, root);
-//    }
-//
-//    public boolean judge(TreeNode root1, TreeNode root2){
-//        if (root1 != null && root2 != null){
-//            if (root1.val == root2.val){
-//                return judge(root1.left, root2.right) && judge(root1.right, root2.left);
-//            }else{
-//                return false;
-//            }
-//        }else if (root1 == null && root2 == null){
-//            return true;
-//        }else{
-//            return false;
-//        }
-//    }
-//}
 
 class Solution{
     public boolean isSymmetric(TreeNode root){
-        Stack<TreeNode> stack1 = new Stack<TreeNode>();
-        Stack<TreeNode> stack2 = new Stack<TreeNode>();
-        TreeNode root1 = root, root2 = root;
-        while (root1 != null || root2 != null || !stack1.isEmpty() || !stack2.isEmpty()){
-            if (root1 != null && root2 != null){
-                stack1.add(root1);
-                stack2.add(root2);
-                if (root1.val != root2.val){
-                    return false;
-                }
-                root1 = root1.left;
-                root2 = root2.right;
-            }else if(root1 == null && root2 == null){
-                root1 = stack1.pop();
-                root2 = stack2.pop();
-                root1 = root1.right;
-                root2 = root2.left;
-            }else{
-                return false;
-            }
+        if (root == null) {
+            return true;
         }
-        return true;
+        return compare(root.left, root.right);
+    }
+
+    public boolean compare(TreeNode root1, TreeNode root2) {
+        if (root1 == null && root2 == null) {
+            return true;
+        }
+        if (root1 == null || root2 == null) {
+            return false;
+        }
+        return root1.val == root2.val && compare(root1.left, root2.right) && compare(root1.right, root2.left);
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

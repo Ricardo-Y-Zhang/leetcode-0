@@ -33,14 +33,14 @@ import java.util.PriorityQueue;
 class Solution {
     public int[] getLeastNumbers(int[] arr, int k) {
         PriorityQueue<Integer> queue = new PriorityQueue<>();
-        for (int temp : arr){
-            queue.offer(temp);
+        for (int temp : arr) {
+            queue.add(temp);
         }
-        int[] res = new int[k];
+        int[] ans = new int[k];
         for (int i = 0; i < k; i++) {
-            res[i] = queue.poll();
+            ans[i] = queue.poll();
         }
-        return res;
+        return ans;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
