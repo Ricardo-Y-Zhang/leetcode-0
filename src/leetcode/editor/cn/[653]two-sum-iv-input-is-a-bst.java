@@ -27,14 +27,14 @@
 // -105 <= k <= 105 
 // 
 // Related Topics 树 深度优先搜索 广度优先搜索 二叉搜索树 哈希表 双指针 二叉树 
-// 👍 329 👎 0
+// 👍 319 👎 0
 
+
+package leetcode.editor.cn;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 
-import java.lang.annotation.Target;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Definition for a binary tree node.
@@ -52,24 +52,32 @@ import java.util.List;
  * }
  */
 class Solution {
-    List<Integer> list;
+    ArrayList<Integer> list;
     public boolean findTarget(TreeNode root, int k) {
         list = new ArrayList<>();
-        inorder(root);
+        dfs(root);
         int left = 0, right = list.size()-1;
         while (left < right) {
             int sum = list.get(left) + list.get(right);
-            if (sum == k) return true;
-            if (sum < k) left++;
-            else right--;
+            if (sum == k) {
+                return true;
+            }else if (sum < k) {
+                left++;
+            }else{
+                right--;
+            }
         }
         return false;
     }
-    public void inorder(TreeNode root) {
-        if (root == null) return;
-        inorder(root.left);
+    public void dfs(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        dfs(root.left);
         list.add(root.val);
-        inorder(root.right);
+        dfs(root.right);
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
+
+
