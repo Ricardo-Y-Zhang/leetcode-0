@@ -843,6 +843,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[329]longest-increasing-path-in-a-matrix.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[329]longest-increasing-path-in-a-matrix.java" />
+              <option name="questionId" value="329" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[32]longest-valid-parentheses.java">
           <value>
             <LeetcodeEditor>
@@ -928,6 +936,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[372]super-pow.java" />
               <option name="questionId" value="372" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[380]insert-delete-getrandom-o1.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[380]insert-delete-getrandom-o1.java" />
+              <option name="questionId" value="380" />
             </LeetcodeEditor>
           </value>
         </entry>

@@ -101,8 +101,8 @@ package leetcode.editor.cn;
  */
 public class Solution {
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-        if (headA == headB) {
-            return headA;
+        if (headA == null || headB == null) {
+            return null;
         }
         ListNode node1 = headA, node2 = headB;
         while (node1 != node2) {
