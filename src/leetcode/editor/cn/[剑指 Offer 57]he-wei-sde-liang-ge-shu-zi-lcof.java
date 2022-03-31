@@ -31,21 +31,21 @@ package leetcode.editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int[] twoSum(int[] nums, int target) {
-        int[] res = new int[2];
-        int left = 0, right = nums.length-1;
-        while (left < right){
-            if (nums[left]+nums[right]==target){
-                res[0]=nums[left];
-                res[1]=nums[right];
+        int[] ans = new int[2];
+        int l = 0, r = nums.length-1;
+        while (l < r) {
+            int sum = nums[l] + nums[r];
+            if (sum == target) {
+                ans[0] = nums[l];
+                ans[1] = nums[r];
                 break;
-            }
-            if (nums[left]+nums[right]<target){
-                left++;
+            }else if (sum > target) {
+                r--;
             }else{
-                right--;
+                l++;
             }
         }
-        return res;
+        return ans;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

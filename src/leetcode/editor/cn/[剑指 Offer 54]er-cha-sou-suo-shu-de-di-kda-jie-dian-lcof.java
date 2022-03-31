@@ -46,21 +46,24 @@ package leetcode.editor.cn;
  * }
  */
 class Solution {
-    int k,res;
+    int k ;
     public int kthLargest(TreeNode root, int k) {
-        inorder(root, k);
-        return res;
+        this.k = k;
+        return dfs(root);
     }
-    public void inorder(TreeNode root, int k){
-        if (root == null || this.k > k){
-            return;
+    public int dfs(TreeNode root) {
+        if (root == null) {
+            return 0;
         }
-        inorder(root.right, k);
-        this.k++;
-        if (this.k == k){
-            res = root.val;
+        int right = dfs(root.right);
+        if (k == 0) {
+            return right;
         }
-        inorder(root.left, k);
+        k--;
+        if (k == 0) {
+            return root.val;
+        }
+        return dfs(root.left);
     }
 
 }

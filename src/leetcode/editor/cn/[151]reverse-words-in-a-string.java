@@ -80,31 +80,18 @@ package leetcode.editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public String reverseWords(String s) {
-
-        String res = "";
-        for (int i = 0; i < s.length();) {
-            if (s.charAt(i) == ' '){
-                i++;
+        StringBuilder sb = new StringBuilder();
+        String[] strs = s.trim().split(" ");
+        for (int i = 0; i < strs.length; i++) {
+            if (strs[strs.length-i-1].equals("")){
                 continue;
             }
-
-            int j = i;
-            for (; j < s.length(); j++) {
-                if (s.charAt(j) == ' '){
-                    break;
-                }
+            if (sb.length() != 0) {
+                sb.append(" ");
             }
-
-            String temp = s.substring(i, j);
-            if ("".equals(res)){
-                res = temp + res;
-            }else {
-                res = temp + " " + res;
-            }
-
-            i = j;
+            sb.append(strs[strs.length-i-1]);
         }
-        return res;
+        return sb.toString();
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

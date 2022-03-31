@@ -83,6 +83,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[110]balanced-binary-tree.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[110]balanced-binary-tree.java" />
+              <option name="questionId" value="110" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[1122]relative-sort-array.java">
           <value>
             <LeetcodeEditor>
@@ -456,6 +464,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[1]two-sum.java" />
               <option name="questionId" value="1" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[2024]maximize-the-confusion-of-an-exam.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[2024]maximize-the-confusion-of-an-exam.java" />
+              <option name="questionId" value="2134" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1640,6 +1656,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[725]split-linked-list-in-parts.java" />
               <option name="questionId" value="725" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[728]self-dividing-numbers.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[728]self-dividing-numbers.java" />
+              <option name="questionId" value="728" />
             </LeetcodeEditor>
           </value>
         </entry>

@@ -32,34 +32,36 @@
 package leetcode.editor.cn;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int[][] findContinuousSequence(int target) {
-        ArrayList<int[]> res = new ArrayList();
-
-        int left = 1, right = 2;
-
-        int sum = left + right;
-        while (left < target && right < target){
-            if (sum == target){
-                int[] temp = new int[right-left+1];
-                for (int i = left; i <= right; i++) {
-                    temp[i-left]=i;
+        int max = target/2;
+        int l = 1, r = 1;
+        List<int[]> ans = new ArrayList<>();
+        int sum = 1;
+        while (l <= max) {
+            if (sum == target) {
+                int[] temp = new int[r-l+1];
+                for (int i = l; i <= r; i++) {
+                    temp[i-l] = i;
                 }
-                res.add(temp);
-                right++;
-                sum += right;
-            }else if (sum < target){//右指针右移
-                right++;
-                sum += right;
-            }else{//左指针右移
-                sum -= left;
-                left++;
+                ans.add(temp);
+                sum -= l;
+                l++;
+            }else if (sum < target) {
+                r++;
+                sum += r;
+            }else {
+                sum -= l;
+                l++;
             }
         }
-        return res.toArray(new int[0][]);
+        return ans.toArray(new int[0][]);
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

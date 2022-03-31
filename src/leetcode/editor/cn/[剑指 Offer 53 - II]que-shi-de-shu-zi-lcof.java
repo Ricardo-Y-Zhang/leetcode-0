@@ -28,22 +28,17 @@ package leetcode.editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int missingNumber(int[] nums) {
-        if (nums[0] != 0){
-            return 0;
-        }
-        if (nums[nums.length-1] == nums.length-1){
-            return nums.length;
-        }
-        int left = 0, right = nums.length-1;
-        while (left < right){
-            int mid = left + (right-left)/2;
-            if (nums[mid] == mid){
-                left = mid+1;
+        int n = nums.length;
+        int l = 0, r = n;
+        while (l < r) {//第一个 nums[mid] != mid 的元素
+            int mid = l +(r-l)/2;
+            if (nums[mid] == mid) {
+                l = mid+1;
             }else{
-                right = mid;
+                r = mid;
             }
         }
-        return left;
+        return l;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
