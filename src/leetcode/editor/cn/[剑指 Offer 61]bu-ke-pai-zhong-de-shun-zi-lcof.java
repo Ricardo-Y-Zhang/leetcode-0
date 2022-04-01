@@ -31,23 +31,22 @@
 package leetcode.editor.cn;
 
 import java.util.Arrays;
+import java.util.HashSet;
 
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public boolean isStraight(int[] nums) {
-        int min = 20;
-        Arrays.sort(nums);
-        for (int i = 0; i < nums.length; i++) {
-            if (nums[i] != 0){
-                min = Math.min(nums[i],min);
-                if (i!=0&&nums[i]==nums[i-1]){
-                    return false;
-                }
-            }
-        }
-
-        return nums[4]-min<=4;
+       int min = Integer.MAX_VALUE, max = Integer.MIN_VALUE;
+        HashSet<Integer> set = new HashSet<>();
+       for (int num : nums) {
+           if (num == 0) continue;
+           if (set.contains(num)) return false;
+           set.add(num);
+           min = Math.min(min, num);
+           max = Math.max(max, num);
+       }
+       return max-min<5;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
