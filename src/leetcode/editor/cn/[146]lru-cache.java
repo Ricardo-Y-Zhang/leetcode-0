@@ -62,89 +62,66 @@ import java.util.Map;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class LRUCache {
-
-
-    class DLinkedNode{
+    class Node {
         int key;
         int value;
-        DLinkedNode prev;
-        DLinkedNode next;
-        public DLinkedNode(){}
-        public DLinkedNode(int key, int value){
-            this.key = key;
-            this.value = value;
-        }
+        Node pre, next;
+        public Node(){};
     }
-
-    private Map<Integer, DLinkedNode> cache = new HashMap<>();
-    private int size;
-    private int capacity;
-    private DLinkedNode head, tail;
+    Node head, tail;//双向链表头尾
+    int size;
+    HashMap<Integer, Node> map;
     public LRUCache(int capacity) {
-        this.size = 0;
-        this.capacity = capacity;
-
-        head = new DLinkedNode();
-        tail = new DLinkedNode();
+        size = capacity;
+        head = new Node();
+        tail = new Node();
         head.next = tail;
-        tail.prev = head;
+        tail.pre = head;
+        map = new HashMap<>();
     }
     
     public int get(int key) {
-        DLinkedNode node = cache.get(key);
-        if (node == null){
+        if (!map.containsKey(key)) {
             return -1;
         }
-
-        moveToHead(node);
+        Node node = map.get(key);
+        deleteNode(node);
+        removeToHead(node);
         return node.value;
     }
     
     public void put(int key, int value) {
-        DLinkedNode node = cache.get(key);
-        if (node == null){
-
-            DLinkedNode newNode = new DLinkedNode(key, value);
-
-            cache.put(key, newNode);
-
-            addToHead(newNode);
-
-            size++;
-            if (size > capacity){
-                DLinkedNode tail = removeTail();
-
-                cache.remove(tail.key);
-                size--;
-            }
-        }else{
+        if (map.containsKey(key)) {
+            Node node = map.get(key);
             node.value = value;
-            moveToHead(node);
+            deleteNode(node);
+            removeToHead(node);
+        }else{
+            Node node = new Node();
+            node.key = key;
+            node.value = value;
+            removeToHead(node);
+            map.put(key, node);
+            if (map.size() > size) {//删除最后一个节点
+                int lastKey = tail.pre.key;
+                map.remove(lastKey);
+                deleteNode(tail.pre);
+            }
         }
     }
 
-    private void addToHead(DLinkedNode node) {
-        node.prev = head;
+    public void deleteNode(Node node) {
+        node.pre.next = node.next;
+        node.next.pre = node.pre;
+    }
+
+    public void removeToHead(Node node) {
         node.next = head.next;
-        head.next.prev = node;
         head.next = node;
+        node.pre = head;
+        node.next.pre = node;
     }
 
-    private void removeNode(DLinkedNode node) {
-        node.prev.next = node.next;
-        node.next.prev = node.prev;
-    }
-
-    private void moveToHead(DLinkedNode node){
-        removeNode(node);
-        addToHead(node);
-    }
-
-    private DLinkedNode removeTail(){
-        DLinkedNode res = tail.prev;
-        removeNode(res);
-        return res;
-    }
 }
 
 /**

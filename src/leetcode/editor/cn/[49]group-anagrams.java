@@ -43,26 +43,19 @@ import java.util.*;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public List<List<String>> groupAnagrams(String[] strs) {
-
-
-        HashMap<String, List<String>> map = new HashMap<>();
-
-        for (int i = 0; i < strs.length; i++) {
-
-            //转换为字典序升序的字符串
-            String key = strs[i];
-
-            char[] chars = key.toCharArray();
-            Arrays.sort(chars);
-
-            key = new String(chars);
-
-            List<String> list = map.getOrDefault(key, new ArrayList<String>());
-            list.add(strs[i]);
-
-            map.put(key, list);
+        if (strs.length == 0){
+            return new ArrayList<>();
         }
-        return new ArrayList<List<String>>(map.values());
+        HashMap<String, List<String>> map = new HashMap<>();
+        for (String str : strs) {
+            char[] chs = str.toCharArray();
+            Arrays.sort(chs);
+            String newstr = new String(chs);
+            List<String> temp = map.getOrDefault(newstr, new ArrayList<>());
+            temp.add(str);
+            map.put(newstr, temp);
+        }
+        return new ArrayList<>(map.values());
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

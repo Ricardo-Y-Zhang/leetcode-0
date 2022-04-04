@@ -73,6 +73,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[110]balanced-binary-tree.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[110]balanced-binary-tree.java" />
+              <option name="questionId" value="110" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[1122]relative-sort-array.java">
           <value>
             <LeetcodeEditor>
@@ -161,6 +169,14 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[139]word-break.java" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[13]roman-to-integer.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[13]roman-to-integer.java" />
+              <option name="questionId" value="13" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -413,6 +429,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[2024]maximize-the-confusion-of-an-exam.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[2024]maximize-the-confusion-of-an-exam.java" />
+              <option name="questionId" value="2134" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[2028]find-missing-observations.java">
           <value>
             <LeetcodeEditor>
@@ -571,6 +595,14 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[234]palindrome-linked-list.java" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[235]lowest-common-ancestor-of-a-binary-search-tree.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[235]lowest-common-ancestor-of-a-binary-search-tree.java" />
+              <option name="questionId" value="235" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -953,6 +985,14 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[419]battleships-in-a-board.java" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[420]strong-password-checker.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[420]strong-password-checker.java" />
+              <option name="questionId" value="420" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1460,6 +1500,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[728]self-dividing-numbers.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[728]self-dividing-numbers.java" />
+              <option name="questionId" value="728" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[739]daily-temperatures.java">
           <value>
             <LeetcodeEditor>
@@ -1580,6 +1628,14 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[82]remove-duplicates-from-sorted-list-ii.java" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[839]similar-string-groups.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[839]similar-string-groups.java" />
+              <option name="questionId" value="869" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1716,6 +1772,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[954]array-of-doubled-pairs.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[954]array-of-doubled-pairs.java" />
+              <option name="questionId" value="991" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[96]unique-binary-search-trees.java">
           <value>
             <LeetcodeEditor>
@@ -1748,6 +1812,14 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[99]recover-binary-search-tree.java" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[9]palindrome-number.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[9]palindrome-number.java" />
+              <option name="questionId" value="9" />
             </LeetcodeEditor>
           </value>
         </entry>

@@ -33,14 +33,21 @@
 
 package leetcode.editor.cn;
 
+import java.util.ArrayList;
+
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int lastRemaining(int n, int m) {
-        int res = 0;
-        for (int i = 2; i <= n; i++) {
-            res = (res + m)%i;//每次向前移动 m 个位置
+        ArrayList<Integer> list = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            list.add(i);
         }
-        return res;
+        int index = 0;
+        for (int i = 0; i < n - 1; i++) {
+            index = (index+m-1) % list.size();
+            list.remove(index);
+        }
+        return list.get(0);
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

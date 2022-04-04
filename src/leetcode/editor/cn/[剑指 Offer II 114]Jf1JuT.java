@@ -56,90 +56,75 @@
 package leetcode.editor.cn;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-    boolean[][] matrix;//有向图
-    HashMap<Character, Integer> map;//字符和下标的映射
-    HashMap<Integer, Character> inToch;//下标和字符的映射
-    int[] in;//入度
+    boolean[][] matrix = new boolean[26][26];//matrix[i][j]表示 i < j
+    int[] in = new int[26];
+    HashSet<Integer> set = new HashSet<>();
     public String alienOrder(String[] words) {
-        if (words.length == 1){
-            return words[0];
-        }
-        map = new HashMap<>();
-        inToch = new HashMap<>();
-        //创建字符和下标，下标和字符的映射
-        for (int i = 0; i < words.length; i++) {
-            String word = words[i];
-            for (char ch : word.toCharArray()){
-                if (!map.containsKey(ch)){
-                    map.put(ch, map.size());
-                    inToch.put(inToch.size(), ch);
-                }
+        //统计出现的字母
+        for (String word : words) {
+            for (char ch : word.toCharArray()) {
+                set.add(ch-'a');
             }
         }
-        int n = map.size();
-        matrix = new boolean[n][n];
-        in = new int[n];
-        //创建有向图
+        //建图
         for (int i = 0; i < words.length - 1; i++) {
-            String word1 = words[i], word2 = words[i+1];
-            if (!compare(word1, word2)){//word1 和 word2 的排序不合法
+            if (!compare(words[i], words[i+1])) {
                 return "";
             }
         }
 
         //拓扑排序
-        boolean[] isvisit = new boolean[n];
         StringBuilder sb = new StringBuilder();
         Queue<Integer> queue = new LinkedList<>();
-        for (int i = 0; i < n; i++) {
-            if (in[i] == 0){
+        //入度为0的节点入队
+        for (int i = 0; i < 26; i++) {
+            if (set.contains(i) && in[i] == 0){
                 queue.add(i);
-                isvisit[i] = true;
             }
         }
-        while (!queue.isEmpty()){
+        while (!queue.isEmpty()) {
             int first = queue.poll();
-            sb.append(inToch.get(first));
-            for (int i = 0; i < n; i++) {
-                if (matrix[first][i] == true){
+            char ch = (char)('a'+first);
+            sb.append(ch);
+            for (int i = 0; i < 26; i++) {
+                if (matrix[first][i]) {
                     in[i]--;
-                    if (isvisit[i] == false && in[i] == 0){
+                    if (in[i] == 0){
                         queue.add(i);
-                        isvisit[i] = true;
                     }
                 }
             }
         }
-        if (sb.length() != n){//拓扑序列不完全，存在环，不满足要求
+        if (sb.length() != set.size()) {
             return "";
         }
         return sb.toString();
     }
-    public boolean compare(String str1, String str2){
-        if (str1.equals(str2)){//str1 == str2 时符合要求
+    public boolean compare(String word1, String word2) {
+        int len1 = word1.length(), len2 = word2.length();
+        int index = 0;
+        while (index < len1 && index < len2 && word1.charAt(index) == word2.charAt(index)) {
+            index++;
+        }
+        if (index == len1) {
             return true;
         }
-        int i = 0;//i 指向 str1 和 str2 第一个不相同的字符
-        while (i < str1.length() && i < str2.length() && str1.charAt(i) == str2.charAt(i)){
-            i++;
-        }
-        if (i == str1.length()){// str1是str2的前缀，符合要求
-            return true;
-        }
-        if (i == str2.length()){// str2是str1的前缀，不符合要求
+        if (index == len2) {
             return false;
         }
-
-        //index1的映射字符 < index2的映射字符
-        int index1 = map.get(str1.charAt(i)), index2 = map.get(str2.charAt(i));
-        if (matrix[index1][index2] == false){//创建有向图
-            matrix[index1][index2] = true;
-            in[index2]++;
+        int i1 = word1.charAt(index) - 'a', i2 = word2.charAt(index) - 'a';
+        if (matrix[i2][i1]) {
+            return false;
+        }
+        if (!matrix[i1][i2]) {
+            matrix[i1][i2] = true;
+            in[i2]++;
         }
         return true;
     }

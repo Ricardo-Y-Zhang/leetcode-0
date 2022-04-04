@@ -24,11 +24,11 @@ package leetcode.editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int add(int a, int b) {
-        while (b != 0){
-            int temp = a ^ b;//不进位
-            b = a & b;//进位
-            b <<= 1;//进位左移
-            a = temp;
+        //将 a 看作 a+b 不进位的结果，b 看作 a+b 只算进位的结果
+        while (b != 0) {
+            int temp = a;
+            a = a^b;//不算进位
+            b = (temp&b)<<1;
         }
         return a;
     }

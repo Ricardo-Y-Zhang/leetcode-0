@@ -100,26 +100,17 @@ import java.util.ArrayList;
 class Solution {
     TreeNode res = null;
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        res = null;
-        DFS(root, p, q);
-        return res;
+        if (root == null || root == p || root == q) {
+            return root;
+        }
+        TreeNode l = lowestCommonAncestor(root.left, p, q);
+        TreeNode r = lowestCommonAncestor(root.right, p, q);
+        if (l != null && r != null) {
+            return root;
+        }
+        return l == null ? r : l;
     }
 
-    public boolean DFS(TreeNode root, TreeNode p, TreeNode q){
-        if (root == null){
-            return false;
-        }
-
-        //左右子树是否符合条件
-        boolean lson = DFS(root.left, p, q);
-        boolean rson = DFS(root.right, p, q);
-
-        if ((lson && rson) || ((root.val == p.val || root.val == q.val) && (lson || rson))){
-            res = root;
-        }
-
-        return lson || rson || (root.val == p.val || root.val == q.val);
-    }
 }
 //leetcode submit region end(Prohibit modification and deletion)
 
