@@ -322,38 +322,166 @@ class Solution {
 }
 
 class Solution {
-    public long[] kthPalindrome(int[] queries, int intLength) {
-        if ()
-    }
-    public long getnum(int length, int num) {
-        if (length == 1) {
-            return num-1;
+    public int convertTime(String current, String correct) {
+        int h1 = Integer.parseInt(current.substring(0, 2));
+        int min1 = Integer.parseInt(current.substring(3));
+        int h2 = Integer.parseInt(correct.substring(0,2));
+        int min2 = Integer.parseInt(correct.substring(3));
+        int sum1 = h1*60+min1, sum2 = h2*60+min2;
+        int need = sum2-sum1;
+        if (need < 0) need += 24*60;
+        int ans = 0;
+        while (need >= 60) {
+            need -= 60;
+            ans++;
         }
-
-    }
-    public String get(int length, int num) {
-        if (length  == 1){
-            if (num <= 10)
-            return String.valueOf(num);
+        while (need >= 15) {
+            need -= 15;
+            ans++;
         }
-        String temp;
-        if (length%2 == 0) {
-            String pre = get(length-1, num);
-            String half = pre.substring(0, (pre.length()+1)/2);
-            StringBuilder sb = new StringBuilder(half);
-            temp = half + sb.reverse();
-        }else {
-            String pre = get(length-1, (int)Math.ceil((double)num/10));
-            String half = pre.substring(0, (pre.length()+1)/2);
-            StringBuilder sb = new StringBuilder(half);
-            temp = half + (num-1) + sb.reverse();
+        while (need >= 5) {
+            need -= 5;
+            ans++;
         }
-        return temp;
-    }
-
-    public String convert(String str) {
-        StringBuilder sb = new StringBuilder(str);
-        return str + sb.reverse().toString();
+        while (need > 0) {
+            need-=1;
+            ans++;
+        }
+        return ans;
     }
 }
 
+class Solution {
+    public List<List<Integer>> findWinners(int[][] matches) {
+        List<List<Integer>> ans = new ArrayList<>();
+        TreeMap<Integer, Integer> map = new TreeMap<>();//id-失败次数
+        for (int[] match : matches) {
+            int win = match[0], lose = match[1];
+            map.put(win, map.getOrDefault(win, 0));
+            map.put(lose, map.getOrDefault(lose, 0)+1);
+        }
+        List<Integer> win = new ArrayList<>();
+        List<Integer> lose = new ArrayList<>();
+        for (int key : map.keySet()) {
+            if (map.get(key) == 0) {
+                win.add(key);
+            }else if (map.get(key) == 1) {
+                lose.add(key);
+            }
+        }
+        ans.add(win);
+        ans.add(lose);
+        return ans;
+    }
+}
+
+class Solution {
+    public int maximumCandies(int[] candies, long k) {
+        long sum = 0;
+        for (int cand : candies) {
+            sum += cand;
+        }
+        long r = sum/k;
+        System.out.println("r = " + r);
+        if (r == 0) return 0;
+        long l = 0;
+        while (l < r) {
+            long mid = l +(r-l+1)/2;
+            System.out.println("mid = " + mid);
+            long ans = solute(candies, mid);
+            if (ans >= k) {
+                l = mid;
+            } else if (ans < k) {
+                r=mid-1;
+            }
+        }
+        return (int)l;
+    }
+    public long solute(int[] candies, long target) {
+        long ans = 0;
+        for (int can : candies) {
+            ans += can/target;
+        }
+        return ans;
+    }
+}
+
+class Encrypter {
+    class TreeNode{
+        boolean isEnd;
+        TreeNode[] next;
+        TreeNode(){
+            isEnd = false;
+            next = new TreeNode[26];
+        }
+    }
+    TreeNode root;
+    public void addWord(String word) {
+        TreeNode node = root;
+        for (int i = 0; i < word.length(); i++) {
+            int index = word.charAt(i)-'a';
+            if (node.next[index] == null) {
+                node.next[index] = new TreeNode();
+            }
+            node = node.next[index];
+        }
+        node.isEnd = true;
+    }
+
+    HashMap<Character, String> map1;
+    HashMap<String, HashSet<Character>> map2;
+    public Encrypter(char[] keys, String[] values, String[] dictionary) {
+        map1 = new HashMap<>();
+        map2 = new HashMap<>();
+        for (int i = 0; i < keys.length; i++) {
+            char key = keys[i];
+            String value = values[i];
+            map1.put(key, value);
+            HashSet<Character> set = map2.getOrDefault(value, new HashSet<>());
+            set.add(key);
+            map2.put(value, set);
+        }
+        root = new TreeNode();
+        for (String word : dictionary) {
+            addWord(word);
+        }
+    }
+
+    public String encrypt(String word1) {
+        StringBuilder sb = new StringBuilder();
+        char[] chs = word1.toCharArray();
+        for (int i = 0; i < chs.length; i++) {
+            sb.append(map1.get(chs[i]));
+        }
+        return sb.toString();
+    }
+
+    public int decrypt(String word2) {
+        int len = word2.length();
+        if (len%2 == 1){
+            return 0;
+        }
+        return find(word2, 0, root);
+    }
+    public int find(String word, int index, TreeNode node) {
+        if (node == null) {
+            return 0;
+        }
+        if (index == word.length() && node.isEnd) {
+            return 1;
+        }
+        if (index == word.length() && !node.isEnd) {
+            return 0;
+        }
+        String str = word.substring(index, index+2);
+        if (!map2.containsKey(str)){
+            return 0;
+        }
+        int ans = 0;
+        for (char ch : map2.get(str)) {
+            int in = ch - 'a';
+            ans += find(word, index+2, node.next[in]);
+        }
+        return ans;
+    }
+}
