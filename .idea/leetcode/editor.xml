@@ -77,7 +77,6 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[110]balanced-binary-tree.java" />
-              <option name="questionId" value="110" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -176,7 +175,6 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[13]roman-to-integer.java" />
-              <option name="questionId" value="13" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -216,6 +214,17 @@
               <option name="host" value="leetcode-cn.com" />
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[14]longest-common-prefix.java" />
               <option name="titleSlug" value="longest-common-prefix" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[150]evaluate-reverse-polish-notation.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[150]evaluate-reverse-polish-notation.md" />
+              <option name="frontendQuestionId" value="leetcode-cn.com150" />
+              <option name="host" value="leetcode-cn.com" />
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[150]evaluate-reverse-polish-notation.java" />
+              <option name="titleSlug" value="evaluate-reverse-polish-notation" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -433,7 +442,6 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[2024]maximize-the-confusion-of-an-exam.java" />
-              <option name="questionId" value="2134" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -507,6 +515,17 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[20]valid-parentheses.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[20]valid-parentheses.md" />
+              <option name="frontendQuestionId" value="leetcode-cn.com20" />
+              <option name="host" value="leetcode-cn.com" />
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[20]valid-parentheses.java" />
+              <option name="titleSlug" value="valid-parentheses" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[2100]find-good-days-to-rob-the-bank.java">
           <value>
             <LeetcodeEditor>
@@ -545,7 +564,11 @@
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[21]merge-two-sorted-lists.java">
           <value>
             <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[21]merge-two-sorted-lists.md" />
+              <option name="frontendQuestionId" value="leetcode-cn.com21" />
+              <option name="host" value="leetcode-cn.com" />
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[21]merge-two-sorted-lists.java" />
+              <option name="titleSlug" value="merge-two-sorted-lists" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -602,7 +625,6 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[235]lowest-common-ancestor-of-a-binary-search-tree.java" />
-              <option name="questionId" value="235" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -669,6 +691,17 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[25]reverse-nodes-in-k-group.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[25]reverse-nodes-in-k-group.md" />
+              <option name="frontendQuestionId" value="leetcode-cn.com25" />
+              <option name="host" value="leetcode-cn.com" />
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[25]reverse-nodes-in-k-group.java" />
+              <option name="titleSlug" value="reverse-nodes-in-k-group" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[260]single-number-iii.java">
           <value>
             <LeetcodeEditor>
@@ -680,6 +713,17 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[268]missing-number.java" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[26]remove-duplicates-from-sorted-array.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[26]remove-duplicates-from-sorted-array.md" />
+              <option name="frontendQuestionId" value="leetcode-cn.com26" />
+              <option name="host" value="leetcode-cn.com" />
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[26]remove-duplicates-from-sorted-array.java" />
+              <option name="titleSlug" value="remove-duplicates-from-sorted-array" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -697,6 +741,17 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[27]remove-element.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[27]remove-element.md" />
+              <option name="frontendQuestionId" value="leetcode-cn.com27" />
+              <option name="host" value="leetcode-cn.com" />
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[27]remove-element.java" />
+              <option name="titleSlug" value="remove-element" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[287]find-the-duplicate-number.java">
           <value>
             <LeetcodeEditor>
@@ -708,6 +763,17 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[289]game-of-life.java" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[28]implement-strstr.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[28]implement-strstr.md" />
+              <option name="frontendQuestionId" value="leetcode-cn.com28" />
+              <option name="host" value="leetcode-cn.com" />
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[28]implement-strstr.java" />
+              <option name="titleSlug" value="implement-strstr" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -992,7 +1058,6 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[420]strong-password-checker.java" />
-              <option name="questionId" value="420" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1206,6 +1271,17 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[539]minimum-time-difference.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[539]minimum-time-difference.md" />
+              <option name="frontendQuestionId" value="leetcode-cn.com539" />
+              <option name="host" value="leetcode-cn.com" />
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[539]minimum-time-difference.java" />
+              <option name="titleSlug" value="minimum-time-difference" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[53]maximum-subarray.java">
           <value>
             <LeetcodeEditor>
@@ -1300,7 +1376,11 @@
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[58]length-of-last-word.java">
           <value>
             <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[58]length-of-last-word.md" />
+              <option name="frontendQuestionId" value="leetcode-cn.com58" />
+              <option name="host" value="leetcode-cn.com" />
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[58]length-of-last-word.java" />
+              <option name="titleSlug" value="length-of-last-word" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1504,7 +1584,6 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[728]self-dividing-numbers.java" />
-              <option name="questionId" value="728" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1551,6 +1630,17 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[74]search-a-2d-matrix.java" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[762]prime-number-of-set-bits-in-binary-representation.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[762]prime-number-of-set-bits-in-binary-representation.md" />
+              <option name="frontendQuestionId" value="leetcode-cn.com762" />
+              <option name="host" value="leetcode-cn.com" />
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[762]prime-number-of-set-bits-in-binary-representation.java" />
+              <option name="titleSlug" value="prime-number-of-set-bits-in-binary-representation" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1635,7 +1725,6 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[839]similar-string-groups.java" />
-              <option name="questionId" value="869" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1776,7 +1865,6 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[954]array-of-doubled-pairs.java" />
-              <option name="questionId" value="991" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1819,7 +1907,6 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[9]palindrome-number.java" />
-              <option name="questionId" value="9" />
             </LeetcodeEditor>
           </value>
         </entry>

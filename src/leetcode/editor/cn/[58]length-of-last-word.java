@@ -41,20 +41,18 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int lengthOfLastWord(String s) {
-        int res = 0;
-        for (int i = 0; i < s.length(); i++) {
-            char ch = s.charAt(i);
-
-            if (ch != ' '){
-                if (i == 0 || s.charAt(i-1) == ' '){
-                    res = 1;
-                }else {
-                    res++;
-                }
+        int ans = 0, temp = 0;
+        char[] chs = s.toCharArray();
+        for (int i = 0; i < chs.length; i++) {
+            if (chs[i] == ' '){
+                if (temp != 0) ans = temp;
+                temp = 0;
+            }else{
+                temp++;
             }
         }
-
-        return res;
+        if (temp != 0) ans = temp;
+        return ans;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
