@@ -1090,6 +1090,17 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[429]n-ary-tree-level-order-traversal.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[429]n-ary-tree-level-order-traversal.md" />
+              <option name="frontendQuestionId" value="leetcode-cn.com429" />
+              <option name="host" value="leetcode-cn.com" />
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[429]n-ary-tree-level-order-traversal.java" />
+              <option name="titleSlug" value="n-ary-tree-level-order-traversal" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[42]trapping-rain-water.java">
           <value>
             <LeetcodeEditor>
