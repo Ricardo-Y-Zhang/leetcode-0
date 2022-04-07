@@ -70,13 +70,14 @@ class Solution {
             add(to, from);
         }
 
-        //向下更新高度
+        //以0为根节点，向下更新高度
         dfs1(0,-1);
-        //向上更新高度
+        //以0为根节点，向上更新高度
         dfs2(0, -1);
         int min = Integer.MAX_VALUE;
         List<Integer> ans = new ArrayList<>();
         for (int i = 0; i < n; i++) {
+            //对于每一节点，f1[i],g[i]中的最大值即为以 i 为根节点的树的高度
             int cur = Math.max(f1[i], g[i]);
             if (cur < min) {
                 min = cur;
@@ -93,7 +94,7 @@ class Solution {
         for (int i = head[u]; i != -1; i = next[i]){//i表示以 u 为起点的边的编号
             int j = edge[i];
             if (j == fa) continue;//防止向上走
-            int sub = 1 + dfs1(j, u);//向 j 走的最大高度
+            int sub = 1 + dfs1(j, u);//递归更新每一个与u相连的节点j
             if (sub > f1[u]) {
                 f2[u] = f1[u];//更新次最大高度
                 f1[u] = sub;//更新最大高度
@@ -109,14 +110,15 @@ class Solution {
         for (int i = head[u]; i != -1; i = next[i]) {
             int j = edge[i];
             if (j == fa) continue;
-            //更新 j 的最大向上高度
+            //向上再向下
             if (p[u] != j) {//u的最大向下高度不经过j，使用 u 的最大高度更新
                 g[j] = Math.max(g[j], f1[u]+1);
             } else {//u的最大向下高度经过 j，使用u的次最大高度更新
                 g[j] = Math.max(g[j], f2[u]+1);
             }
+            //向上
             g[j] = Math.max(g[j],g[u]+1);
-            dfs2(j, u);//遍历整棵树
+            dfs2(j, u);//递归更新每一个与u相连的节点j
         }
     }
 
