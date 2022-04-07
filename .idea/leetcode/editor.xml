@@ -24,6 +24,17 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[100]same-tree.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[100]same-tree.md" />
+              <option name="frontendQuestionId" value="leetcode-cn.com100" />
+              <option name="host" value="leetcode-cn.com" />
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[100]same-tree.java" />
+              <option name="titleSlug" value="same-tree" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[101]symmetric-tree.java">
           <value>
             <LeetcodeEditor>
@@ -851,6 +862,17 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[310]minimum-height-trees.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[310]minimum-height-trees.md" />
+              <option name="frontendQuestionId" value="leetcode-cn.com310" />
+              <option name="host" value="leetcode-cn.com" />
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[310]minimum-height-trees.java" />
+              <option name="titleSlug" value="minimum-height-trees" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[318]maximum-product-of-word-lengths.java">
           <value>
             <LeetcodeEditor>
@@ -1499,7 +1521,11 @@
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[66]plus-one.java">
           <value>
             <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[66]plus-one.md" />
+              <option name="frontendQuestionId" value="leetcode-cn.com66" />
+              <option name="host" value="leetcode-cn.com" />
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[66]plus-one.java" />
+              <option name="titleSlug" value="plus-one" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1513,7 +1539,11 @@
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[67]add-binary.java">
           <value>
             <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[67]add-binary.md" />
+              <option name="frontendQuestionId" value="leetcode-cn.com67" />
+              <option name="host" value="leetcode-cn.com" />
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[67]add-binary.java" />
+              <option name="titleSlug" value="add-binary" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1534,7 +1564,11 @@
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[69]sqrtx.java">
           <value>
             <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[69]sqrtx.md" />
+              <option name="frontendQuestionId" value="leetcode-cn.com69" />
+              <option name="host" value="leetcode-cn.com" />
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[69]sqrtx.java" />
+              <option name="titleSlug" value="sqrtx" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1672,6 +1706,17 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[796]rotate-string.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[796]rotate-string.md" />
+              <option name="frontendQuestionId" value="leetcode-cn.com796" />
+              <option name="host" value="leetcode-cn.com" />
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[796]rotate-string.java" />
+              <option name="titleSlug" value="rotate-string" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[798]smallest-rotation-with-highest-score.java">
           <value>
             <LeetcodeEditor>
@@ -1728,6 +1773,17 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[83]remove-duplicates-from-sorted-list.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[83]remove-duplicates-from-sorted-list.md" />
+              <option name="frontendQuestionId" value="leetcode-cn.com83" />
+              <option name="host" value="leetcode-cn.com" />
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[83]remove-duplicates-from-sorted-list.java" />
+              <option name="titleSlug" value="remove-duplicates-from-sorted-list" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[846]hand-of-straights.java">
           <value>
             <LeetcodeEditor>
@@ -1781,6 +1837,17 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[86]partition-list.java" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[88]merge-sorted-array.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[88]merge-sorted-array.md" />
+              <option name="frontendQuestionId" value="leetcode-cn.com88" />
+              <option name="host" value="leetcode-cn.com" />
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[88]merge-sorted-array.java" />
+              <option name="titleSlug" value="merge-sorted-array" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1850,7 +1917,11 @@
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[94]binary-tree-inorder-traversal.java">
           <value>
             <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[94]binary-tree-inorder-traversal.md" />
+              <option name="frontendQuestionId" value="leetcode-cn.com94" />
+              <option name="host" value="leetcode-cn.com" />
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[94]binary-tree-inorder-traversal.java" />
+              <option name="titleSlug" value="binary-tree-inorder-traversal" />
             </LeetcodeEditor>
           </value>
         </entry>

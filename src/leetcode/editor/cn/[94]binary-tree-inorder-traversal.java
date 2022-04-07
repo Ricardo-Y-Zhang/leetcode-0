@@ -78,19 +78,21 @@ import java.util.Stack;
  */
 class Solution {
     public List<Integer> inorderTraversal(TreeNode root) {
-        ArrayList<Integer> list = new ArrayList<>();
-        Stack<TreeNode> stack = new Stack<>();
-        while (root != null || !stack.isEmpty()){
-            if (root != null){
-                stack.add(root);
-                root = root.left;
-            }else{
-                root = stack.pop();
-                list.add(root.val);
-                root = root.right;
-            }
+        List<Integer> ans = new ArrayList<>();
+        if (root==null) return ans;
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        TreeNode node = root;
+        while (!stack.isEmpty()||node!=null) {
+           if (node != null) {
+               stack.add(node);
+               node = node.left;
+           }else{
+               node = stack.pop();
+               ans.add(node.val);
+               node = node.right;
+           }
         }
-        return list;
+        return ans;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
