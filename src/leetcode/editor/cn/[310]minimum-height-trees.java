@@ -49,41 +49,37 @@ import java.util.List;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-    int N = 20010,M = 2*N, index = 0;//N为最大节点数，M为最大边数，index为当前边的编号
     //链式前向星图
-    int[] head = new int[N];//head[i]表示以i为起点的最后一条边的编号
-    int[] next = new int[M];//next表示与这个边起点相同的上一条边的编号
-    int[] edge = new int[M];//edge表示边的终点
-
-    //f1：最大向下高度，f2：最大向下次高度，g：向上高度，p：最大向下高度由哪个节点得到
-    int[] f1 = new int[N], f2 = new int[N], g = new int[N], p = new int[N];
-    void add(int a, int b) {
+    int N = 20010, M = 2*N, index = 0;
+    int[] head = new int[N];//head[i]表示以 i 为起点的最后一条边的编号
+    int[] edge = new int[M];//每条边的终点
+    int[] next = new int[M];//与该边拥有相同起点的前一条边的编号
+    void add(int a , int b) {
         edge[index] = b;
         next[index] = head[a];
         head[a] = index++;
     }
+
+    //f1：节点最大向下高度，f2：节点次最大向下高度，p：节点最大向下高度由哪个节点得到，g：节点最大向上高度
+    int[] f1 = new int[N], f2 = new int[N], p = new int[N], g = new int[N];
     public List<Integer> findMinHeightTrees(int n, int[][] edges) {
-        Arrays.fill(head, -1);//初始化最后一条边的编号为-1
-        for (int[] e : edges) {
-            int from = e[0], to = e[1];
-            add(from, to);
-            add(to, from);
+        Arrays.fill(head, -1);//每个节点最后一条边的编号初始化为-1
+        for (int[] e : edges) {//建图
+            add(e[0], e[1]);
+            add(e[1], e[0]);
         }
 
-        //以0为根节点，向下更新高度
-        dfs1(0,-1);
-        //以0为根节点，向上更新高度
-        dfs2(0, -1);
+        dfs1(0, -1);//更新每个节点最大向下高度
+        dfs2(0, -1);//更新每个节点最大向上高度
         int min = Integer.MAX_VALUE;
         List<Integer> ans = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            //对于每一节点，f1[i],g[i]中的最大值即为以 i 为根节点的树的高度
-            int cur = Math.max(f1[i], g[i]);
-            if (cur < min) {
-                min = cur;
+            int height = Math.max(f1[i], g[i]);
+            if (height < min) {
+                min = height;
                 ans.clear();
                 ans.add(i);
-            }else if (cur == min) {
+            }else if (height == min) {
                 ans.add(i);
             }
         }
@@ -91,14 +87,14 @@ class Solution {
     }
 
     public int dfs1(int u, int fa) {
-        for (int i = head[u]; i != -1; i = next[i]){//i表示以 u 为起点的边的编号
+        for (int i = head[u]; i != -1; i = next[i]) {// i 为以 u 为起点的边的编号
             int j = edge[i];
-            if (j == fa) continue;//防止向上走
-            int sub = 1 + dfs1(j, u);//递归更新每一个与u相连的节点j
+            if (j == fa) continue;
+            int sub = dfs1(j, u) + 1;
             if (sub > f1[u]) {
-                f2[u] = f1[u];//更新次最大高度
-                f1[u] = sub;//更新最大高度
-                p[u] = j;//更新最大高度由 j 节点得出
+                f2[u] = f1[u];
+                f1[u] = sub;
+                p[u] = j;
             }else if (sub > f2[u]) {
                 f2[u] = sub;
             }
@@ -106,21 +102,20 @@ class Solution {
         return f1[u];
     }
 
-    public void dfs2(int u, int fa) {
+    void dfs2(int u, int fa) {
         for (int i = head[u]; i != -1; i = next[i]) {
             int j = edge[i];
             if (j == fa) continue;
             //向上再向下
-            if (p[u] != j) {//u的最大向下高度不经过j，使用 u 的最大高度更新
+            if (p[u] != j) {
                 g[j] = Math.max(g[j], f1[u]+1);
-            } else {//u的最大向下高度经过 j，使用u的次最大高度更新
+            }else {
                 g[j] = Math.max(g[j], f2[u]+1);
             }
             //向上
-            g[j] = Math.max(g[j],g[u]+1);
-            dfs2(j, u);//递归更新每一个与u相连的节点j
+            g[j] = Math.max(g[j], g[u]+1);
+            dfs2(j, u);
         }
     }
-
 }
 //leetcode submit region end(Prohibit modification and deletion)
