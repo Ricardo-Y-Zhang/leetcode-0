@@ -58,22 +58,20 @@ package leetcode.editor.cn;
  * }
  */
 class Solution {
-    TreeNode res = null;
+//若当前节点值小于等于p节点值，则向右子树寻找，若当前节点值大于p节点值，则该节点可能为p的中序后继，但需要继续向左子树寻找是否有更小的
     public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
-        dfs(root, p);
-        return res;
-    }
-    public void dfs(TreeNode root, TreeNode p){
-        if (root == null){
-            return;
+        TreeNode ans = null;
+        while (root != null) {
+            if (root.val > p.val) {
+                ans = root;
+                root = root.left;//在左子树中找更小的节点
+            }else{
+                root = root.right;
+            }
         }
-        dfs(root.left, p);
-        if (res == null && root.val>p.val){//第一个比 p 节点的值大的节点
-            res = root;
-            return;
-        }
-        dfs(root.right, p);
+        return ans;
     }
+
 }
 //leetcode submit region end(Prohibit modification and deletion)
 

@@ -76,25 +76,17 @@ import java.util.ArrayList;
  * }
  */
 class Solution {
-    ArrayList<Integer> list = new ArrayList<>();
+    //右根左遍历
+    int sum = 0;//记录大于等于root的节点val之和
     public TreeNode convertBST(TreeNode root) {
-        list.clear();
-        convert(root);
+        if (root == null) return root;
+        convertBST(root.right);
+        sum += root.val;
+        root.val = sum;
+        convertBST(root.left);
         return root;
     }
 
-    public void convert(TreeNode root){
-        if (root == null){
-            return ;
-        }
-
-        convert(root.right);
-        if (!list.isEmpty()){
-            root.val += list.get(list.size()-1);
-        }
-        list.add(root.val);
-        convert(root.left);
-    }
 }
 //leetcode submit region end(Prohibit modification and deletion)
 

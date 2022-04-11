@@ -38,44 +38,24 @@ import java.util.Stack;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-//    public int[] dailyTemperatures(int[] temperatures) {
-//        Stack<Integer> stack1 = new Stack<>();
-//        Stack<Integer> stack2 = new Stack<>();
-//        int[] wait = new int[temperatures.length];
-//
-//        for (int i = 0; i < temperatures.length; i++) {
-//            if (i == 0){
-//                stack1.add(i);
-//                stack2.add(temperatures[i]);
-//            }else{
-//                int now = temperatures[i];
-//                while (!stack2.isEmpty() && stack2.peek() < now){
-//                    int day = i - stack1.peek();
-//                    wait[stack1.peek()] = day;
-//                    stack1.pop();
-//                    stack2.pop();
-//                }
-//                stack1.add(i);
-//                stack2.add(temperatures[i]);
-//            }
-//        }
-//        return wait;
-//    }
-
+    //单调栈
     public int[] dailyTemperatures(int[] temperatures){
-        Stack<Integer> indexStack = new Stack<>();
-        int[] wait = new int[temperatures.length];
-        for (int i = 0; i < temperatures.length; i++) {
-            if (i != 0) {
-                while (!indexStack.isEmpty() && temperatures[indexStack.peek()] < temperatures[i]){
-                    wait[indexStack.peek()] = i - indexStack.peek();
-                    indexStack.pop();
-                }
+        Stack<Integer> stack = new Stack<>();
+        int n = temperatures.length;
+        int[] ans = new int[n];
+        for (int i = n-1; i >= 0; i--) {
+            int temp = temperatures[i];
+            while (!stack.isEmpty() && temperatures[stack.peek()] <= temp) {
+                stack.pop();
             }
-            indexStack.add(i);
+            if (stack.isEmpty()) {
+                ans[i] = 0;
+            }else{
+                ans[i] = stack.peek()-i;
+            }
+            stack.push(i);
         }
-
-        return wait;
+        return ans;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

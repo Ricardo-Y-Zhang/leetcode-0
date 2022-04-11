@@ -57,32 +57,21 @@ import java.util.Map;
  * }
  */
 class Solution {
-    int res = 0;
+    HashMap<Integer, Integer> map = new HashMap<>();
     public int pathSum(TreeNode root, int targetSum) {
-        Map<Integer, Integer> map = new HashMap<>();
         map.put(0, 1);
-        dfs(root, 0, map, targetSum);
-        return res;
+        return dfs(root, 0, targetSum);
     }
-
-    void dfs(TreeNode root, int sum, Map<Integer, Integer> map, int targetSum) {
-        if (root == null){
-            return;
-        }
-
+    public int dfs(TreeNode root, int sum, int targetSum) {
+        if (root == null) return 0;
         sum += root.val;
-
+        int res = 0;
         res += map.getOrDefault(sum-targetSum, 0);
-
         map.put(sum, map.getOrDefault(sum, 0)+1);
-        if (root.left != null){
-            dfs(root.left, sum, map, targetSum);
-        }
-        if (root.right != null){
-            dfs(root.right, sum, map, targetSum);
-        }
-
-        map.put(sum,map.getOrDefault(sum, 0)-1);
+        res += dfs(root.left, sum, targetSum);
+        res += dfs(root.right, sum, targetSum);
+        map.put(sum, map.get(sum)-1);//状态回溯
+        return res;
     }
 
 }
