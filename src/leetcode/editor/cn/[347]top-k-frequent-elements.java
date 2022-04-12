@@ -40,43 +40,23 @@ import java.util.*;
 class Solution {
     public int[] topKFrequent(int[] nums, int k) {
         HashMap<Integer, Integer> map = new HashMap<>();
-
-
-        for (int i = 0; i < nums.length; i++) {
-            int num = map.getOrDefault(nums[i], 0);
-            num++;
-            map.put(nums[i], num);
+        for (int num : nums) {
+            map.put(num, map.getOrDefault(num, 0)+1);
         }
-
-        Set<Integer> keySet = map.keySet();
-
-        ArrayList<Integer> times = new ArrayList<>();
-        for (Integer key : keySet){
-            times.add(map.get(key));
-        }
-
-        Collections.sort(times, new Comparator<Integer>() {
+        PriorityQueue<Integer> queue = new PriorityQueue<>(new Comparator<Integer>() {
             @Override
             public int compare(Integer integer, Integer t1) {
-                return Integer.compare(t1, integer);
+                return map.getOrDefault(t1, 0)-map.getOrDefault(integer, 0);
             }
         });
-
-        //第k多的出现次数
-        int ktime = times.get(k-1);
-
-        int[] res = new int[k];
-
-        int i = 0;
-
-        for (Integer key : keySet) {
-            int value = map.get(key);
-            if (value >= ktime){
-                res[i++] = key;
-            }
+        for (int key : map.keySet()) {
+            queue.add(key);
         }
-
-        return res;
+        int[] ans = new int[k];
+        for (int i = 0; i < k; i++) {
+            ans[i] = queue.poll();
+        }
+        return ans;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

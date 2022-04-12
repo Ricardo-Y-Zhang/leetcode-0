@@ -67,6 +67,7 @@ package leetcode.editor.cn;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * Definition for a binary tree node.
@@ -84,29 +85,34 @@ import java.util.List;
  * }
  */
 class BSTIterator {
-    List<Integer> list;
-    int index;
+    //迭代中序遍历
+    Stack<TreeNode> stack = new Stack<TreeNode>();
+    TreeNode root;
     public BSTIterator(TreeNode root) {
-        list = new ArrayList<>();
-        inorder(root);
+        this.root = root;
     }
     
     public int next() {
-        return list.get(index++);
+        int res = 0;
+        while (!stack.isEmpty() || root != null) {
+            if (root != null) {
+                stack.push(root);
+                root = root.left;
+            }else {
+                root = stack.pop();
+                res = root.val;
+                root = root.right;
+                break;
+            }
+        }
+        return res;
     }
     
     public boolean hasNext() {
-        if (index == list.size()) {
-            return false;
+        if (root != null || !stack.isEmpty()) {
+            return true;
         }
-        return true;
-    }
-
-    public void inorder(TreeNode root) {
-        if (root == null) return;
-        inorder(root.left);
-        list.add(root.val);
-        inorder(root.right);
+        return false;
     }
 }
 

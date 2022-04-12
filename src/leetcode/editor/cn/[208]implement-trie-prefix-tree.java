@@ -52,53 +52,60 @@ package leetcode.editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Trie {
 
-    private Trie[] children;
-    private boolean isEnd;
+    class TreeNode{
+        boolean isEnd;
+        TreeNode[] next;
+        TreeNode(){
+            isEnd = false;
+            next = new TreeNode[26];
+        }
+    }
 
+    TreeNode root;
     /** Initialize your data structure here. */
     public Trie() {
-        children = new Trie[26];
-        isEnd = false;
+        root = new TreeNode();
     }
     
     /** Inserts a word into the trie. */
     public void insert(String word) {
-        Trie node = this;
-        for (int i = 0; i < word.length(); i++) {
-            char ch = word.charAt(i);
+        TreeNode node = root;
+        char[] chs = word.toCharArray();
+        for (char ch : chs) {
             int index = ch - 'a';
-            if (node.children[index] == null){
-                node.children[index] = new Trie();
+            if (node.next[index] == null) {
+                node.next[index] = new TreeNode();
             }
-            node = node.children[index];
+            node = node.next[index];
         }
-
         node.isEnd = true;
     }
     
     /** Returns if the word is in the trie. */
     public boolean search(String word) {
-        Trie node = searchPrefix(word);
-        return node != null && node.isEnd;
+        TreeNode node = root;
+        char[] chs = word.toCharArray();
+        for (char ch : chs) {
+            int index = ch - 'a';
+            if (node.next[index] == null) return false;
+            node = node.next[index];
+        }
+        return node.isEnd;
     }
     
     /** Returns if there is any word in the trie that starts with the given prefix. */
     public boolean startsWith(String prefix) {
-        return searchPrefix(prefix) != null;
+        TreeNode node = root;
+        char[] chs = prefix.toCharArray();
+        for (char ch : chs) {
+            int index = ch - 'a';
+            if (node.next[index] == null) return false;
+            node = node.next[index];
+        }
+        return true;
     }
 
-    private Trie searchPrefix(String prefix){
-        Trie node = this;
-        for (int i = 0; i < prefix.length(); i++) {
-            char ch = prefix.charAt(i);
-            int index = ch - 'a';
-            if (node.children[index] == null){
-                return null;
-            }
-            node = node.children[index];
-        }
-        return node;
-    }
+
 }
 
 /**

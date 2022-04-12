@@ -33,30 +33,26 @@
 // 0 <= k <= 104 
 // 0 <= t <= 231 - 1 
 // 
-//
-// 
-//
-// 注意：本题与主站 220 题相同： https://leetcode-cn.com/problems/contains-duplicate-iii/ 
 // Related Topics 数组 桶排序 有序集合 排序 滑动窗口 
-// 👍 18 👎 0
+// 👍 587 👎 0
 
 
 package leetcode.editor.cn;
+
 
 import java.util.TreeSet;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
-        TreeSet<Long> set =  new TreeSet<>();
-        for (int i = 0; i < nums.length; i++) {
+        TreeSet<Long> set = new TreeSet<>();
+        int n = nums.length;
+        for (int i = 0; i < n; i++) {
             Long ceil = set.ceiling((long)nums[i]-t);
-            if (ceil != null && ceil <= (long)nums[i]+t){
-                return true;
-            }
+            if (ceil != null && ceil <= (long)nums[i]+t) return true;
             set.add((long)nums[i]);
-            if (i>=k){
-                set.remove((long)nums[i-k]);//无需担心会重复删除元素，若集合中存在nums[i-k]相同的元素，则已经返回true
+            if (i>=k) {//保证滑动窗口大小为k
+                set.remove((long)nums[i-k]);
             }
         }
         return false;

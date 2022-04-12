@@ -552,6 +552,7 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[208]implement-trie-prefix-tree.java" />
+              <option name="questionId" value="208" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -608,6 +609,14 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[21]merge-two-sorted-lists.java" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[220]contains-duplicate-iii.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[220]contains-duplicate-iii.java" />
+              <option name="questionId" value="220" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -945,6 +954,7 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[347]top-k-frequent-elements.java" />
+              <option name="questionId" value="347" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -988,6 +998,14 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[372]super-pow.java" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[373]find-k-pairs-with-smallest-sums.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[373]find-k-pairs-with-smallest-sums.java" />
+              <option name="questionId" value="373" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1527,6 +1545,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[648]replace-words.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[648]replace-words.java" />
+              <option name="questionId" value="648" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[64]minimum-path-sum.java">
           <value>
             <LeetcodeEditor>
@@ -1559,6 +1585,14 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[673]number-of-longest-increasing-subsequence.java" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[676]implement-magic-dictionary.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[676]implement-magic-dictionary.java" />
+              <option name="questionId" value="676" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1636,6 +1670,14 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[728]self-dividing-numbers.java" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[729]my-calendar-i.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[729]my-calendar-i.java" />
+              <option name="questionId" value="729" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1743,6 +1785,14 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[79]word-search.java" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[806]number-of-lines-to-write-string.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[806]number-of-lines-to-write-string.java" />
+              <option name="questionId" value="824" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -2915,6 +2965,7 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer II 057]7WqeDu.java" />
+              <option name="questionId" value="1000321" />
             </LeetcodeEditor>
           </value>
         </entry>
