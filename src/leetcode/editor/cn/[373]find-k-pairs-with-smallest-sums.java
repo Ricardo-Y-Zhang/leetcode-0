@@ -55,29 +55,41 @@ import java.util.PriorityQueue;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
+    boolean flag = false;//标识是否交换数组
     public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
-        PriorityQueue<List<Integer>> queue = new PriorityQueue<>(new Comparator<List<Integer>>() {
+        int n = nums1.length, m = nums2.length;
+        if (n > m) {//优化，使优先队列中元素较少
+            flag = true;
+            return kSmallestPairs(nums2, nums1, k);
+        }
+        PriorityQueue<int[]> queue = new PriorityQueue<>(new Comparator<int[]>() {
             @Override
-            public int compare(List<Integer> integers, List<Integer> t1) {
-                int sum1 = integers.get(0) + integers.get(1);
-                int sum2 = t1.get(0) + t1.get(1);
-                return sum2-sum1;
+            public int compare(int[] ints, int[] t1) {
+                return nums1[ints[0]]+nums2[ints[1]]-nums1[t1[0]]-nums2[t1[1]];
             }
         });
-        for (int i = 0; i < k && i < nums1.length; i++) {
-            for (int j = 0; j < k && j < nums2.length; j++) {
-                List<Integer> temp = new ArrayList<>();
-                temp.add(nums1[i]);
-                temp.add(nums2[j]);
-                queue.add(temp);
-                if (queue.size() > k) {
-                    queue.poll();
-                }
-            }
+        for (int i = 0; i < n; i++) {
+            queue.add(new int[]{i, 0});
         }
-        return new ArrayList<>(queue);
+        List<List<Integer>> ans = new ArrayList<>();
+        while (k > 0 && !queue.isEmpty()) {
+            int[] poll = queue.poll();
+            List<Integer> temp = new ArrayList<>();
+            int a = poll[0], b = poll[1];
+            //保证答案数组元素顺序的正确性
+            temp.add(flag ? nums2[b] : nums1[a]);
+            temp.add(flag ? nums1[a] : nums2[b]);
+            ans.add(temp);
+            if (b < m-1){
+                queue.add(new int[]{a, b+1});
+            }
+            k--;
+        }
+        return ans;
     }
 }
+
+
 //leetcode submit region end(Prohibit modification and deletion)
 
 

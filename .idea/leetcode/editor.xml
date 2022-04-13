@@ -1009,6 +1009,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[380]insert-delete-getrandom-o1.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[380]insert-delete-getrandom-o1.java" />
+              <option name="questionId" value="380" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[383]ransom-note.java">
           <value>
             <LeetcodeEditor>
@@ -1111,6 +1119,14 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[420]strong-password-checker.java" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[421]maximum-xor-of-two-numbers-in-an-array.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[421]maximum-xor-of-two-numbers-in-an-array.java" />
+              <option name="questionId" value="421" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1363,6 +1379,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[540]single-element-in-a-sorted-array.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[540]single-element-in-a-sorted-array.java" />
+              <option name="questionId" value="540" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[543]diameter-of-binary-tree.java">
           <value>
             <LeetcodeEditor>
@@ -1596,6 +1620,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[677]map-sum-pairs.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[677]map-sum-pairs.java" />
+              <option name="questionId" value="677" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[67]add-binary.java">
           <value>
             <LeetcodeEditor>
@@ -1822,6 +1854,14 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[81]search-in-rotated-sorted-array-ii.java" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[820]short-encoding-of-words.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[820]short-encoding-of-words.java" />
+              <option name="questionId" value="839" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -3015,6 +3055,7 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer II 064]US1pGT.java" />
+              <option name="questionId" value="1000328" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -3036,6 +3077,7 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer II 067]ms70jA.java" />
+              <option name="questionId" value="1000331" />
             </LeetcodeEditor>
           </value>
         </entry>

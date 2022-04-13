@@ -57,22 +57,51 @@
 
 package leetcode.editor.cn;
 
+import java.util.HashMap;
+import java.util.HashSet;
+
 //leetcode submit region begin(Prohibit modification and deletion)
 class MagicDictionary {
-
+    HashMap<Integer, HashSet<String>> map;
+    /** Initialize your data structure here. */
     public MagicDictionary() {
-
+        map = new HashMap<>();
     }
-    
+
     public void buildDict(String[] dictionary) {
-
+        for (String str : dictionary){
+            int len = str.length();
+            HashSet<String> set = map.getOrDefault(len, new HashSet<>());
+            set.add(str);
+            map.put(len, set);
+        }
     }
-    
-    public boolean search(String searchWord) {
 
+    public boolean search(String searchWord) {
+        int len = searchWord.length();
+        if (!map.containsKey(len)){
+            return false;
+        }
+        HashSet<String> set = map.get(len);
+        char[] words = searchWord.toCharArray();
+        for (String str : set){
+            int diff = 0;
+            char[] strs = str.toCharArray();
+            for (int i = 0; i < strs.length; i++) {
+                if (words[i] != strs[i]){
+                    diff++;
+                }
+                if (diff > 1){
+                    break;
+                }
+            }
+            if (diff == 1){
+                return true;
+            }
+        }
+        return false;
     }
 }
-
 /**
  * Your MagicDictionary object will be instantiated and called as such:
  * MagicDictionary obj = new MagicDictionary();
