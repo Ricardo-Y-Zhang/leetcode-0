@@ -39,22 +39,21 @@ import java.util.List;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public List<List<Integer>> subsets(int[] nums) {
-        List<List<Integer>> res = new ArrayList<>();
-
-        for (int i = 0; i < (int) Math.pow(2, nums.length); i++) {
-            int temp = i;
-            ArrayList<Integer> list = new ArrayList<>();
-            for (int j = 0; j < nums.length && temp != 0; j++) {
-                int state = temp & 1;
-                if (state == 1){
-                    list.add(nums[j]);
+        //使用二进制的前 n 位表示，nums[i]是否加入集合
+        int n = nums.length;
+        int max = (1 << n) -1;
+        List<List<Integer>> ans = new ArrayList<>();
+        for (int i = 0; i <= max; i++) {
+            List<Integer> temp = new ArrayList<>();
+            for (int j = 0; j < n; j++) {
+                int bit = (i>>j) & 1;
+                if (bit == 1) {
+                    temp.add(nums[j]);
                 }
-                temp >>= 1;
             }
-            res.add(list);
+            ans.add(temp);
         }
-
-        return res;
+        return ans;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

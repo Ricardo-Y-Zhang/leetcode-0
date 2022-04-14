@@ -57,45 +57,45 @@
 
 package leetcode.editor.cn;
 
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class MagicDictionary {
-    HashMap<Integer, HashSet<String>> map;
-    /** Initialize your data structure here. */
+    HashSet<String> set;//记录dictionary中字符串
+    HashMap<String, Integer> map;
     public MagicDictionary() {
+        set = new HashSet<>();
         map = new HashMap<>();
     }
-
+    public List<String> similarStr(String word) {//返回word替换一个字符构成的字符串集合
+        List<String> ans = new ArrayList<>();
+        char[] chs = word.toCharArray();
+        for (int i = 0; i < chs.length; i++) {
+            char ch = chs[i];
+            chs[i] = '*';//'*'作为万能符，表示当前字符可以替换为任意字符
+            ans.add(new String(chs));
+            chs[i] = ch;
+        }
+        return ans;
+    }
     public void buildDict(String[] dictionary) {
-        for (String str : dictionary){
-            int len = str.length();
-            HashSet<String> set = map.getOrDefault(len, new HashSet<>());
-            set.add(str);
-            map.put(len, set);
+        for (String word : dictionary) {
+            set.add(word);
+            List<String> strs = similarStr(word);
+            for (String str : strs) {
+                map.put(str, map.getOrDefault(str, 0)+1);
+            }
         }
     }
 
     public boolean search(String searchWord) {
-        int len = searchWord.length();
-        if (!map.containsKey(len)){
-            return false;
-        }
-        HashSet<String> set = map.get(len);
-        char[] words = searchWord.toCharArray();
-        for (String str : set){
-            int diff = 0;
-            char[] strs = str.toCharArray();
-            for (int i = 0; i < strs.length; i++) {
-                if (words[i] != strs[i]){
-                    diff++;
-                }
-                if (diff > 1){
-                    break;
-                }
-            }
-            if (diff == 1){
+        int tar = set.contains(searchWord) ? 1 : 0;//若searchWord存在于dictionary中，取1
+        for (String word : similarStr(searchWord)) {
+            if (map.getOrDefault(word, 0)-tar > 0) {
                 return true;
             }
         }
@@ -109,5 +109,45 @@ class MagicDictionary {
  * boolean param_2 = obj.search(searchWord);
  */
 //leetcode submit region end(Prohibit modification and deletion)
+public class MagicDictionary {
+    Set<String> words;//不同的字符串
+    Map<String, Integer> count;//字符串及其个数的映射
+
+    public MagicDictionary() {
+        words = new HashSet();
+        count = new HashMap();
+    }
+
+    private ArrayList<String> generalizedNeighbors(String word) {//返回word替换一个字母所有构成的字符串集合
+        ArrayList<String> ans = new ArrayList();
+        char[] ca = word.toCharArray();
+        for (int i = 0; i < word.length(); ++i) {
+            char letter = ca[i];
+            ca[i] = '*';//将当前字符替换
+            String magic = new String(ca);
+            ans.add(magic);
+            ca[i] = letter;
+        }
+        return ans;
+    }
+
+    public void buildDict(String[] words) {
+        for (String word: words) {
+            this.words.add(word);
+            for (String nei: generalizedNeighbors(word)) {
+                count.put(nei, count.getOrDefault(nei, 0) + 1);
+            }
+        }
+    }
+
+    public boolean search(String word) {
+        for (String nei: generalizedNeighbors(word)) {
+            int c = count.getOrDefault(nei, 0);
+            if (c > 1 || c == 1 && !words.contains(word)) return true;
+        }
+        return false;
+    }
+}
+
 
 

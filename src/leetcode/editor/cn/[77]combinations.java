@@ -43,31 +43,27 @@ import java.util.List;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-
-    List<List<Integer>> res = new ArrayList<>();
-
+    List<List<Integer>> ans = new ArrayList<>();
+    List<Integer> temp = new ArrayList<>();
+    int n, k;
     public List<List<Integer>> combine(int n, int k) {
-
-        int[] num = new int[n];
-        for (int i = 0; i < n; i++) {
-            num[i] = i + 1;
-        }
-
-        find(num, k, new ArrayList<>(), -1);
-
-        return res;
+        this.n = n;
+        this.k = k;
+        dfs(1, 0);
+        return ans;
     }
-
-    public void find(int[] num, int k, List<Integer> temp, int index){
-        for (int i = index + 1; i < num.length; i++) {
-            temp.add(num[i]);
-            if (temp.size() == k){
-                res.add(new ArrayList<>(temp));
-            }else{
-                find(num, k, temp, i);
-            }
-            temp.remove(temp.size()-1);
+    public void dfs(int index, int num) {//index为当前选择元素，num为集合中已选择元素个数
+        if (num == k) {
+            ans.add(new ArrayList<>(temp));
+            return;
         }
+        if (index == n+1) {
+            return;
+        }
+        temp.add(index);
+        dfs(index+1, num+1);
+        temp.remove(temp.size()-1);
+        dfs(index+1, num);
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
