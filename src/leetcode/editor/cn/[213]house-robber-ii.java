@@ -44,29 +44,18 @@ package leetcode.editor.cn;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
+    //分别考虑偷窃1号和不偷窃1号两种情况
     public int rob(int[] nums) {
-        int[] dp1 = new int[nums.length];
-
-        int[] dp2 = new int[nums.length];
-
-        dp1[0] = 0;
-        dp2[0] = nums[0];
-
-        for (int i = 1; i < nums.length; i++) {
-            if (i == 1){
-                dp1[i] = nums[1];
-                dp2[i] = Math.max(nums[0], nums[1]);
-            }else{
-                dp1[i] = Math.max(dp1[i-1], dp1[i-2] + nums[i]);
-                dp2[i] = Math.max(dp2[i-1], dp2[i-2] + nums[i]);
-            }
+        int n = nums.length;
+        int[] dp1 = new int[n+1];
+        int[] dp2 = new int[n+1];
+        dp1[1] = nums[0];
+        dp2[1] = 0;
+        for (int i = 2; i < n+1; i++) {
+            dp1[i] = i==n ? dp1[i-1] : Math.max(dp1[i-1],dp1[i-2]+nums[i-1]);//不能同时偷窃第1个和最后一个房间
+            dp2[i] = Math.max(dp2[i-1], dp2[i-2]+nums[i-1]);
         }
-
-        if (nums.length == 1){
-            return nums[0];
-        }
-
-        return Math.max(dp1[nums.length-1], dp2[nums.length-2]);
+        return Math.max(dp1[n], dp2[n]);
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

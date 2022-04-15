@@ -49,33 +49,27 @@ import java.util.List;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-    List<List<Integer>> res = new ArrayList<>();
+    List<List<Integer>> ans = new ArrayList<>();
+    List<Integer> temp = new ArrayList<>();
     public List<List<Integer>> combinationSum2(int[] candidates, int target) {
-
-
         Arrays.sort(candidates);
-
-        find(candidates, target,  0, new ArrayList<>(), 0);
-
-        return res;
+        dfs(candidates, 0, target);
+        return ans;
     }
-
-    public void find(int[] candidates, int target, int num, List<Integer> temp, int sum){
-        if (sum == target){
-            res.add(new ArrayList<>(temp));
-        }
-        if (sum >= target){
+    //index：当前选择元素的起始下标
+    public void dfs(int[] candidates, int index, int target) {
+        if (target == 0) {
+            ans.add(new ArrayList<>(temp));
             return;
         }
-
-        for (int i = num; i < candidates.length; i++) {
-
-            if ((i == num) || (i != num && candidates[i] != candidates[i-1])){
-                temp.add(candidates[i]);
-                find(candidates, target, i+1, temp, sum + candidates[i]);
-                temp.remove(temp.size()-1);
-            }
-
+        if (index == candidates.length || target<0) {
+            return;
+        }
+        for (int i = index; i < candidates.length; i++) {
+            if (i != index && candidates[i] == candidates[i-1]) continue;
+            temp.add(candidates[i]);
+            dfs(candidates, i+1, target-candidates[i]);
+            temp.remove(temp.size()-1);
         }
     }
 }

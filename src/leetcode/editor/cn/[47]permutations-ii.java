@@ -39,34 +39,32 @@ import java.util.List;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-
-    List<List<Integer>> res = new ArrayList<>();
-
+    List<List<Integer>> ans = new ArrayList<>();
     List<Integer> temp = new ArrayList<>();
-
+    boolean[] isvisit;
     public List<List<Integer>> permuteUnique(int[] nums) {
         Arrays.sort(nums);
-        find(new boolean[nums.length], nums);
-        return res;
+        int n = nums.length;
+        isvisit = new boolean[n];
+        dfs(nums, 0);
+        return ans;
     }
-
-    public void find(boolean[] isChoosen, int[] nums) {
+    public void dfs(int[] nums, int index) {
+        if (index == nums.length) {
+            ans.add(new ArrayList<>(temp));
+            return;
+        }
         for (int i = 0; i < nums.length; i++) {
-            if (isChoosen[i] == true || (i != 0 && nums[i] == nums[i-1] && isChoosen[i] == false && isChoosen[i-1] == false)){
-            }else{
-                isChoosen[i] = true;
+            if (!isvisit[i]){
+                if (i != 0 && !isvisit[i-1] && nums[i-1] == nums[i]) continue;
+                isvisit[i] = true;
                 temp.add(nums[i]);
-                if (temp.size() == nums.length){
-                    res.add(new ArrayList<>(temp));
-                }else{
-                    find(isChoosen, nums);
-                }
-                isChoosen[i] = false;
+                dfs(nums, index+1);
+                isvisit[i] = false;
                 temp.remove(temp.size()-1);
             }
         }
     }
-
 }
 //leetcode submit region end(Prohibit modification and deletion)
 

@@ -36,24 +36,27 @@ import java.util.List;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-    List<String> res = new ArrayList<>();
+    //有效括号：右括号前存在可匹配的左括号
+    List<String> ans = new ArrayList<>();
+    StringBuilder sb = new StringBuilder();
     public List<String> generateParenthesis(int n) {
-        res.clear();
-        generate(n, n, "");
-        return res;
+        dfs(n, n);
+        return ans;
     }
-
-    public void generate(int left, int right, String str){
-        if (left == 0 && right == 0){
-            res.add(str);
+    public void dfs(int l, int r) {//l,r分别代表左右括号的剩余数量
+        if (l == 0 && r == 0) {
+            ans.add(sb.toString());
             return;
         }
-
-        if (left > 0){
-            generate(left-1, right, str + "(");
+        if (l > 0) {
+            sb.append("(");
+            dfs(l-1, r);
+            sb.deleteCharAt(sb.length()-1);
         }
-        if (right > 0 && right > left){
-            generate(left, right-1, str + ")");
+        if (r > l) {
+            sb.append(")");
+            dfs(l, r-1);
+            sb.deleteCharAt(sb.length()-1);
         }
     }
 }

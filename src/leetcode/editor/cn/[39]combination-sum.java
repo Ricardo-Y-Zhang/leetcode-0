@@ -63,35 +63,25 @@ import java.util.List;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-
-    List<List<Integer>> res = new ArrayList<>();
-
+    List<List<Integer>> ans = new ArrayList<>();
+    List<Integer> temp = new ArrayList<>();
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
-
-        Arrays.sort(candidates);
-
-        generate(candidates, target, 0, 0, new ArrayList<>());
-
-        return res;
+        solute(candidates, 0, target);
+        return ans;
     }
-
-    void generate(int[] candidates, int target, int index, int sum, ArrayList<Integer> list){
-        if (sum == target){
-            res.add(new ArrayList<>(list));
+    public void solute(int[] candidates, int index, int target) {
+        if (index == candidates.length || target < 0) return;
+        if (target == 0) {
+            ans.add(new ArrayList<>(temp));
             return;
         }
+        //跳过
+        solute(candidates, index+1, target);
+        //选取index元素，并进入下一层递归
+        temp.add(candidates[index]);
+        solute(candidates, index, target-candidates[index]);
+        temp.remove(temp.size()-1);
 
-        for (int i = index; i < candidates.length; i++) {
-            int tempSum = sum + candidates[i];
-
-            if (tempSum <= target){
-                list.add(candidates[i]);
-                generate(candidates, target, i, tempSum, list);
-                list.remove(list.size()-1);
-            }else{
-                break;
-            }
-        }
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

@@ -175,6 +175,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[131]palindrome-partitioning.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[131]palindrome-partitioning.java" />
+              <option name="questionId" value="131" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[132]palindrome-partitioning-ii.java">
           <value>
             <LeetcodeEditor>
@@ -472,6 +480,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[198]house-robber.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[198]house-robber.java" />
+              <option name="questionId" value="198" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[1995]count-special-quadruplets.java">
           <value>
             <LeetcodeEditor>
@@ -611,6 +627,7 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[213]house-robber-ii.java" />
+              <option name="questionId" value="213" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -683,6 +700,7 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[22]generate-parentheses.java" />
+              <option name="questionId" value="22" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1055,6 +1073,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[385]mini-parser.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[385]mini-parser.java" />
+              <option name="questionId" value="385" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[38]count-and-say.java">
           <value>
             <LeetcodeEditor>
@@ -1094,6 +1120,7 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[39]combination-sum.java" />
+              <option name="questionId" value="39" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1115,6 +1142,7 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[40]combination-sum-ii.java" />
+              <option name="questionId" value="40" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1243,6 +1271,7 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[46]permutations.java" />
+              <option name="questionId" value="46" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1264,6 +1293,7 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[47]permutations-ii.java" />
+              <option name="questionId" value="47" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -2074,6 +2104,7 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[93]restore-ip-addresses.java" />
+              <option name="questionId" value="93" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -3296,6 +3327,7 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer II 091]JEj789.java" />
+              <option name="questionId" value="1000268" />
             </LeetcodeEditor>
           </value>
         </entry>

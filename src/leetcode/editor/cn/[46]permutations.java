@@ -43,32 +43,30 @@ import java.util.List;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-    List<List<Integer>> res = new ArrayList<List<Integer>>();
+    List<List<Integer>> ans = new ArrayList<>();
+    List<Integer> temp = new ArrayList<>();
+    boolean[] isvisit;
     public List<List<Integer>> permute(int[] nums) {
-        boolean[]   flag = new boolean[nums.length];
-        generate(nums, flag, 0, new ArrayList<>());
-
-        return res;
+        int n = nums.length;
+        isvisit = new boolean[n];
+        dfs(nums, 0);
+        return ans;
     }
-
-    void generate(int[] nums, boolean[] flag, int count, ArrayList<Integer> list){
-        if (count == nums.length){
-            res.add(new ArrayList<>(list));
+    public void dfs(int[] nums, int count) {
+        if (count == nums.length) {
+            ans.add(new ArrayList<>(temp));
             return;
         }
-        for (int i = 0; i < flag.length; i++) {
-            if (flag[i] == false){
-                list.add(nums[i]);
-                flag[i] = true;
-                generate(nums, flag, count+1, list);
-
-                //回溯
-                list.remove(count);
-                flag[i] = false;
+        for (int i = 0; i < nums.length; i++) {
+            if (!isvisit[i]) {
+                isvisit[i] = true;
+                temp.add(nums[i]);
+                dfs(nums, count+1);
+                isvisit[i] = false;
+                temp.remove(temp.size()-1);
             }
         }
     }
-
 }
 //leetcode submit region end(Prohibit modification and deletion)
 

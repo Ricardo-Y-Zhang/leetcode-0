@@ -61,46 +61,38 @@ import java.util.List;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-    List<String> res = new ArrayList<>();
+    List<String> ans = new ArrayList<>();
+    char[] chs;
+    int n;
     public List<String> restoreIpAddresses(String s) {
-        find(s, 1, "");
-        return res;
+        chs = s.toCharArray();
+        n = s.length();
+        dfs(0, 0, "");
+        return ans;
     }
-
-    public void find(String s, int index, String temp){
-        if (index > 4 || s.length() == 0){
+    //index表示当前转换字符下标，count表示已转换字段个数，temp表示当前已转换ip
+    public void dfs(int index, int count, String temp) {
+        if (index == n && count == 4) {//满足要求
+            ans.add(temp);
             return;
         }
+        if (index == n || count == 4) {//不满足要求
+            return;
+        }
+        String str = temp;
+        if (str.length()!=0) str += ".";
+        if (chs[index] == '0'){//特殊处理 0
+            str += 0;
+            dfs(index+1, count+1, str);
 
-        if (s.charAt(0) == '0'){
-            if (index == 4){
-                if (s.length() == 1){
-                    res.add(new String(temp+"0"));
-                }else{
-                    return;
-                }
-            }else {
-                find(s.substring(1), index+1, temp + "0.");
-            }
-        }else {
-            if (index == 4){
-                if (s.length() > 3){
-                    return;
-                }
-                int num = Integer.parseInt(s);
-                if (num >= 0 && num <= 255){
-                    res.add(temp + num);
-                }
-            }else{
-                for (int i = 1; i <= 3 && i <= s.length() ; i++) {
-                    int num = Integer.parseInt(s.substring(0, i));
-                    if (num >= 0 && num <= 255){
-                        find(s.substring(i), index+1, temp + num + ".");
-                    }
-                }
+        }else{
+            int number = 0;
+            for (int i = index; i < n; i++) {
+                number = number * 10 + chs[i]-'0';
+                if (number > 255) break;
+                dfs(i+1, count+1, str+number);
             }
         }
-
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
