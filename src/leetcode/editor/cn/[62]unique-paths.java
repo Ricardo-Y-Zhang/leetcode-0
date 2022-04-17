@@ -55,25 +55,14 @@ package leetcode.editor.cn;
 class Solution {
 
     public int uniquePaths(int m, int n) {
-        int[][] path = new int[n][m];
+        int[] dp = new int[n];
+        dp[0] = 1;
         for (int i = 0; i < m; i++) {
-
-            for (int j = 0; j < n; j++) {
-
-                if (i == 0 && j == 0){
-                    path[j][i] = 1;
-                }else if (i == 0){
-                    path[j][i] = path[j-1][i];
-                }else if (j == 0){
-                    path[j][i] = path[j][i-1];
-                }else {
-                    path[j][i] = path[j][i-1] + path[j-1][i];
-                }
+            for (int j = 1; j < n; j++) {
+                dp[j] = dp[j] + dp[j-1];
             }
         }
-
-        return path[n-1][m-1];
-
+        return dp[n-1];
     }
 
 }

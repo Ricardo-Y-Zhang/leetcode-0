@@ -60,21 +60,18 @@ import java.util.Arrays;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int coinChange(int[] coins, int amount) {
-
+        int n = coins.length;
         int[] dp = new int[amount+1];
-
-        Arrays.fill(dp, 0x3f3f3f3f);
+        Arrays.fill(dp, Integer.MAX_VALUE);
         dp[0] = 0;
-
-        for (int i = 0; i < coins.length; i++){
-            int t = coins[i];
-
-            for (int j = t; j <= amount; j++) {
-                dp[j] = Math.min(dp[j-t]+1, dp[j]);
+        for (int coin : coins) {
+            for (int i = coin; i < dp.length; i++) {
+                if (dp[i-coin]!=Integer.MAX_VALUE) {//前序的硬币可以组成 i-coin
+                    dp[i] = Math.min(dp[i], dp[i-coin]+1);
+                }
             }
         }
-
-        return dp[amount] == 0x3f3f3f3f ? -1 : dp[amount];
+        return dp[amount]==Integer.MAX_VALUE ? -1 : dp[amount];
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

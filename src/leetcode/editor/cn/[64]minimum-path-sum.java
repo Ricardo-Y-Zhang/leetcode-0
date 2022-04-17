@@ -38,26 +38,20 @@ package leetcode.editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int minPathSum(int[][] grid) {
-        int x = grid[0].length, y = grid.length;
+        int m = grid.length, n = grid[0].length;
+        int[] dp = new int[n];
 
-        int[] pathSum = new int[x];
-
-        for (int i = 0; i < y; i++) {
-            for (int j = 0; j < x; j++) {
-
-                if (i == 0 && j == 0){
-                    pathSum[0] = grid[0][0];
-                }else if (i == 0){
-                    pathSum[j] = pathSum[j-1] + grid[i][j];
-                }else if (j == 0){
-                    pathSum[j] = pathSum[j] + grid[i][j];
-                }else {
-                    pathSum[j] = ( pathSum[j-1] < pathSum[j] ? pathSum[j-1] : pathSum[j] ) + grid[i][j];
+        for (int i = 0; i < m; i++) {
+            dp[0] += grid[i][0];
+            for (int j = 1; j < n; j++) {
+                if (i == 0){
+                    dp[j] = dp[j-1] + grid[i][j];
+                }else{
+                    dp[j] = Math.min(dp[j], dp[j-1])+grid[i][j];
                 }
             }
         }
-
-        return pathSum[x-1];
+        return dp[n-1];
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

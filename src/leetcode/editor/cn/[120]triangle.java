@@ -55,33 +55,26 @@ import java.util.List;
 class Solution {
     public int minimumTotal(List<List<Integer>> triangle) {
         int n = triangle.size();
-
-        int[] res = new int[n];
-
-        res[0] = triangle.get(0).get(0);
-
-        for (int i = 1; i < n; i++) {
-
-            List<Integer> temp = triangle.get(i);
-
-            for (int j = temp.size()-1; j >= 0; j--) {
-                if (j == temp.size()-1){
-                    res[j] = res[j-1] + temp.get(j);
-                }else if (j == 0){
-                    res[j] += temp.get(j);
+        int[] dp = new int[n];
+        for (int i = 0; i < n; i++) {
+            List<Integer> tri = triangle.get(i);
+            int[] tempdp = new int[n];
+            for (int j = 0; j <= i; j++) {
+                if (j == 0) {
+                    tempdp[j] = dp[j] + tri.get(j);
+                }else if (j == i){
+                    tempdp[j] = dp[j-1] + tri.get(j);
                 }else {
-                    res[j] = Math.min(res[j], res[j-1]) + temp.get(j);
+                    tempdp[j] = Math.min(dp[j-1], dp[j])+tri.get(j);
                 }
             }
+            dp = tempdp;
         }
-
-        int min = 1 << 31 - 1;
+        int ans = Integer.MAX_VALUE;
         for (int i = 0; i < n; i++) {
-            min = Math.min(min, res[i]);
+            ans = Math.min(ans, dp[i]);
         }
-
-        return min;
-
+        return ans;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

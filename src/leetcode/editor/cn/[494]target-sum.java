@@ -50,38 +50,24 @@ package leetcode.editor.cn;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
+    //背包问题
     public int findTargetSumWays(int[] nums, int target) {
-
-        int[] sum = new int[nums.length];
-
-        for (int i = 0; i < nums.length; i++) {
-            if (i == 0){
-                sum[i] = nums[i];
-            }else{
-                sum[i] = sum[i-1] + nums[i];
-            }
-        }
-
-        int[][] dp = new int[nums.length][4003];
-
-        for (int i = 0; i < nums.length; i++) {
-            if (i == 0){
-                dp[0][nums[i]+2001]++;
-                dp[0][-nums[i]+2001]++;
-            }else{
-                for (int j = 0; j < 4003; j++) {
-                    int left = j - nums[i], right = j + nums[i];
-
-                    int dpl = (left < 0) ? 0 : dp[i-1][left];
-                    int dpr = (right >= 4003) ? 0 : dp[i-1][right];
-
-                    dp[i][j] = dpl + dpr;
+        int N = 2010;
+        int n = nums.length;
+        int[][] dp = new int[n+1][N];//dp[i][j]表示nums中[0,i)元素组成 j-1000 的表达式的数目
+        dp[0][1000] = 1;
+        for (int i = 1; i < n+1; i++) {
+            for (int j = 0; j < N; j++) {
+                if (j-nums[i-1]>=0){
+                    dp[i][j] += dp[i-1][j-nums[i-1]];//nums中[0,i-1)元素组成 j-1000-nums[i-1]
                 }
+                if (j+nums[i-1] < N){
+                    dp[i][j] += dp[i-1][j+nums[i-1]];//nums中[0,i-1)元素组成 j-1000+nums[i-1]
+                }
+
             }
         }
-
-        return dp[nums.length-1][target + 2001];
-
+        return dp[n][target+1000];
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

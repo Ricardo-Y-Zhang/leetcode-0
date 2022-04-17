@@ -52,31 +52,22 @@ package leetcode.editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public boolean isInterleave(String s1, String s2, String s3) {
-        if (s1.length() + s2.length() != s3.length()){
-            return false;
-        }
-
-        boolean[][] dp = new boolean[s1.length()+1][s2.length()+1];
-
+        int n = s1.length(), m = s2.length(), k = s3.length();
+        if (n+m != k) return false;
+        boolean[][] dp = new boolean[n+1][m+1];
         dp[0][0] = true;
-
-        for (int i = 0; i <= s1.length(); i++) {
-            for (int j = 0; j <= s2.length(); j++) {
-                if (i == 0 && j == 0){
-                    continue;
+        char[] chs1 = s1.toCharArray(), chs2 = s2.toCharArray(), chs3 = s3.toCharArray();
+        for (int i = 0; i < n+1; i++) {
+            for (int j = 0; j < m+1; j++) {
+                if (i>0&&chs1[i-1]==chs3[i+j-1]){
+                    dp[i][j] = dp[i][j] || dp[i-1][j];
                 }
-
-                if (i == 0){
-                    dp[i][j] = dp[i][j-1] && (s2.charAt(j-1) == s3.charAt(i+j-1));
-                }else if (j == 0){
-                    dp[i][j] = dp[i-1][j] && (s1.charAt(i-1) == s3.charAt(i+j-1));
-                }else {
-                    dp[i][j] = (dp[i][j-1] && (s2.charAt(j-1) == s3.charAt(i+j-1))) || (dp[i-1][j] && (s1.charAt(i-1) == s3.charAt(i+j-1)));
+                if (j>0&&chs2[j-1] == chs3[i+j-1]){
+                    dp[i][j] = dp[i][j] || dp[i][j-1];
                 }
             }
         }
-
-        return dp[s1.length()][s2.length()];
+        return dp[n][m];
     }
 
 }
