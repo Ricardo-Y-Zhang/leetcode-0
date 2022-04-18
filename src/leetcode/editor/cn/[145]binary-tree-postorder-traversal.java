@@ -1,4 +1,4 @@
-//给定一个二叉树的根节点 root ，返回它的 中序 遍历。 
+//给你一棵二叉树的根节点 root ，返回其节点值的 后序遍历 。 
 //
 // 
 //
@@ -6,7 +6,7 @@
 //
 // 
 //输入：root = [1,null,2,3]
-//输出：[1,3,2]
+//输出：[3,2,1]
 // 
 //
 // 示例 2： 
@@ -23,34 +23,20 @@
 //输出：[1]
 // 
 //
-// 示例 4： 
-//
-// 
-//输入：root = [1,2]
-//输出：[2,1]
-// 
-//
-// 示例 5： 
-//
-// 
-//输入：root = [1,null,2]
-//输出：[1,2]
-// 
-//
 // 
 //
 // 提示： 
 //
 // 
-// 树中节点数目在范围 [0, 100] 内 
+// 树中节点的数目在范围 [0, 100] 内 
 // -100 <= Node.val <= 100 
 // 
 //
 // 
 //
-// 进阶: 递归算法很简单，你可以通过迭代算法完成吗？ 
+// 进阶：递归算法很简单，你可以通过迭代算法完成吗？ 
 // Related Topics 栈 树 深度优先搜索 二叉树 
-// 👍 1051 👎 0
+// 👍 814 👎 0
 
 
 package leetcode.editor.cn;
@@ -77,21 +63,27 @@ import java.util.Stack;
  * }
  */
 class Solution {
-    public List<Integer> inorderTraversal(TreeNode root) {
-        List<Integer> ans = new ArrayList<>();
+    public List<Integer> postorderTraversal(TreeNode root) {
         Stack<TreeNode> stack = new Stack<TreeNode>();
+        List<Integer> list = new ArrayList<>();
+        TreeNode pre = null;//记录上一个遍历的节点
         while (!stack.isEmpty()||root!=null) {
-            if (root!=null) {
-                stack.push(root);
+            if (root!=null){
+                stack.add(root);
                 root=root.left;
             }else{
-                root=stack.pop();
-                ans.add(root.val);
-                root=root.right;
-
+                TreeNode node = stack.peek();
+                if (node.right!=null&&pre!=node.right){//存在右孩子节点且未遍历过
+                    root = node.right;
+                }else{//不存在右孩子节点或已经遍历过右孩子节点
+                    root = stack.pop();
+                    list.add(root.val);//遍历当前节点
+                    pre = root;//更新遍历过的节点
+                    root = null;//置为空，防止再次入栈
+                }
             }
         }
-        return ans;
+        return list;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
