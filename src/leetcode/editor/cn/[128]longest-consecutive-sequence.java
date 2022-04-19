@@ -33,81 +33,44 @@
 package leetcode.editor.cn;
 
 import java.util.HashMap;
-import java.util.Map;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
+    HashMap<Integer, Integer> parent = new HashMap<>();
+    public int findFa(int x){
+        if (parent.get(x) != x) {//路径压缩
+            parent.put(x, findFa(parent.get(x)));
+        }
+        return parent.get(x);
+    }
+    public void union(int x, int y) {
+        int fa1 = findFa(x), fa2 = findFa(y);
+        if (fa1 != fa2) {
+            parent.put(fa1, fa2);
+        }
+    }
     public int longestConsecutive(int[] nums) {
+       for (int num : nums) {
+           parent.put(num, num);//初始化并查集
+       }
 
-        if (nums.length == 0){
-            return 0;
-        }
-
-        UnionFind uf = new UnionFind(nums);
-
-        for (int v : nums){
-            uf.union(v, v+1);//结盟
-        }
-
-        //二次遍历，记录领队距离
-        int max = 1;
-        for (int v : nums){
-            max = max > uf.find(v) - v + 1 ? max : (uf.find(v) - v +1);
-        }
-
-        return max;
+       for (int num : nums) {
+           if (parent.containsKey(num+1)) {
+               union(num, num+1);
+           }
+       }
+       int ans = 0;
+       for (int num : nums) {
+           int fa = findFa(num);
+           ans = Math.max(ans,  fa-num+1);
+       }
+       return ans;
     }
 
 }
 
-class UnionFind {
-    private int count;
-    private Map<Integer, Integer> parent;
-
-    UnionFind(int[] arr){
-        parent = new HashMap<Integer, Integer>();
-
-        for (int v : arr){
-            parent.put(v, v);
-        }
-
-        count = parent.size();//无用
-    }
-
-    void union(int p, int q){
-        Integer rootP = find(p), rootQ = find(q);
-        if (rootP == rootQ){
-            return;
-        }
-        if (rootP == null || rootQ == null){
-            return;
-        }
-
-        parent.put(rootP, rootQ);
-
-        count--;
-    }
-
-    Integer find(int p){
-        if (!parent.containsKey(p)){
-            return null;
-        }
-
-        int root = p;
-        while (root != parent.get(root)){
-            root = parent.get(root);
-        }
-
-        //路径压缩
-        while (p != parent.get(p)){
-            int curr = p;
-            p = parent.get(p);
-            parent.put(curr, root);
-        }
-
-        return root;
-    }
-}
 //leetcode submit region end(Prohibit modification and deletion)
+
+
 
 

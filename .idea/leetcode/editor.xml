@@ -168,6 +168,7 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[128]longest-consecutive-sequence.java" />
+              <option name="questionId" value="128" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1998,6 +1999,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[821]shortest-distance-to-a-character.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[821]shortest-distance-to-a-character.java" />
+              <option name="questionId" value="841" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[825]friends-of-appropriate-ages.java">
           <value>
             <LeetcodeEditor>
@@ -3571,6 +3580,7 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer II 115]ur2n8P.java" />
+              <option name="questionId" value="1000314" />
             </LeetcodeEditor>
           </value>
         </entry>
