@@ -62,64 +62,12 @@ import java.util.*;
 class Solution {
     public boolean sequenceReconstruction(int[] org, List<List<Integer>> seqs) {
         int n = org.length;
-        List<List<Integer>> list = new ArrayList<>();
-        //初始化邻接表
+        List<List<Integer>> matrix = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            list.add(new ArrayList<>());
+            matrix.add(new ArrayList<>());
         }
-        boolean[] isvisit = new boolean[n];//记录节点是否进入拓扑序列
         int[] in = new int[n];
-        HashSet<Integer> set = new HashSet<>();//记录1~n是否均出现在seqs中
-        for (List<Integer> seq : seqs){
-            for (int i = 0; i < seq.size()-1; i++) {
-                int start = seq.get(i)-1, end = seq.get(i+1)-1;
-                if (start < 0 || start >= n || end < 0 || end >= n){//判断元素是否属于 1~n
-                    return false;
-                }
-                if (!list.get(start).contains(end)){//去除重复边
-                    list.get(start).add(end);
-                    in[end]++;//入度
-                }
-                set.add(start);
-            }
-            int last = seq.get(seq.size()-1)-1;//只有一个元素的情况
-            if (last < 0 || last >= n){
-                return false;
-            }
-            set.add(last);
-        }
-        if (set.size() != n){
-            return false;
-        }
-        Queue<Integer> queue = new LinkedList<>();
-        for (int i = 0; i < n; i++) {
-            if (in[i] == 0){
-                queue.add(i);
-                isvisit[i] = true;
-            }
-        }
-
-        int index = 0;
-        while (!queue.isEmpty()){
-            if (queue.size() != 1){//保证队列中只有一个元素
-                return false;
-            }
-            int first = queue.poll();
-            if (first != org[index++]-1){
-                return false;
-            }
-            for (int i = 0; i < list.get(first).size(); i++) {
-                int next = list.get(first).get(i);
-                if (isvisit[next] == false){
-                    in[next]--;
-                    if (in[next] == 0){
-                        queue.add(next);
-                        isvisit[next] = true;
-                    }
-                }
-            }
-        }
-        return index == n;
+        for
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
