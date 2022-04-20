@@ -143,6 +143,17 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[121]best-time-to-buy-and-sell-stock.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[121]best-time-to-buy-and-sell-stock.md" />
+              <option name="frontendQuestionId" value="leetcode-cn.com121" />
+              <option name="host" value="leetcode-cn.com" />
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[121]best-time-to-buy-and-sell-stock.java" />
+              <option name="titleSlug" value="best-time-to-buy-and-sell-stock" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[124]binary-tree-maximum-path-sum.java">
           <value>
             <LeetcodeEditor>
@@ -168,7 +179,6 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[128]longest-consecutive-sequence.java" />
-              <option name="questionId" value="128" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -253,7 +263,6 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[144]binary-tree-preorder-traversal.java" />
-              <option name="questionId" value="144" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -261,7 +270,6 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[145]binary-tree-postorder-traversal.java" />
-              <option name="questionId" value="145" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -338,7 +346,11 @@
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[15]3sum.java">
           <value>
             <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[15]3sum.md" />
+              <option name="frontendQuestionId" value="leetcode-cn.com15" />
+              <option name="host" value="leetcode-cn.com" />
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[15]3sum.java" />
+              <option name="titleSlug" value="3sum" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -583,7 +595,11 @@
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[206]reverse-linked-list.java">
           <value>
             <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[206]reverse-linked-list.md" />
+              <option name="frontendQuestionId" value="leetcode-cn.com206" />
+              <option name="host" value="leetcode-cn.com" />
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[206]reverse-linked-list.java" />
+              <option name="titleSlug" value="reverse-linked-list" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -633,7 +649,6 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[210]course-schedule-ii.java" />
-              <option name="questionId" value="210" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1103,7 +1118,6 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[386]lexicographical-numbers.java" />
-              <option name="questionId" value="386" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1111,7 +1125,6 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[388]longest-absolute-file-path.java" />
-              <option name="questionId" value="388" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1147,7 +1160,6 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[399]evaluate-division.java" />
-              <option name="questionId" value="399" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1876,7 +1888,6 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[752]open-the-lock.java" />
-              <option name="questionId" value="753" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1933,7 +1944,6 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[797]all-paths-from-source-to-target.java" />
-              <option name="questionId" value="813" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -2011,7 +2021,6 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[821]shortest-distance-to-a-character.java" />
-              <option name="questionId" value="841" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -2208,7 +2217,6 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[94]binary-tree-inorder-traversal.java" />
-              <option name="questionId" value="94" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -3588,7 +3596,6 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[剑指 Offer II 115]ur2n8P.java" />
-              <option name="questionId" value="1000314" />
             </LeetcodeEditor>
           </value>
         </entry>

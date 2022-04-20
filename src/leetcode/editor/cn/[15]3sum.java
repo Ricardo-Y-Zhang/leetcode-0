@@ -111,33 +111,31 @@ import java.util.List;
 
 class Solution {
     public List<List<Integer>> threeSum(int[] nums) {
-        List<List<Integer>> ans = new ArrayList<>();
+        //nums从小到大排序
         Arrays.sort(nums);
+        List<List<Integer>> ans = new ArrayList<>();
         int n = nums.length;
-        for (int i = 0; i < n-2; i++) {
-            if (i != 0 && nums[i] == nums[i-1]){
-                continue;
-            }
-            int j = i+1, k = n-1;
-            while (j < k){
-                if (nums[j]+nums[k] == -nums[i]){
-                    ArrayList<Integer> temp = new ArrayList<>();
-                    temp.add(nums[i]);
-                    temp.add(nums[j]);
-                    temp.add(nums[k]);
-                    ans.add(temp);
-                    while (j < k) {
+        for (int i = 0; i < n; i++) {
+            if (i == 0 || nums[i] != nums[i-1]) {//去重
+                int target = -nums[i];
+                //滑动窗口在 [i+1,n) 中查找和为target的二元组
+                int j = i+1, k = n-1;
+                while (j < k) {
+                    if (nums[j]+nums[k] == target) {
+                        List<Integer> temp = new ArrayList<>();
+                        temp.add(nums[i]);
+                        temp.add(nums[j]);
+                        temp.add(nums[k]);
+                        ans.add(temp);
                         j++;
-                        if (nums[j] != nums[j-1]) break;
-                    }
-                    while (j < k) {
+                        while (j < k && nums[j] == nums[j-1]){
+                            j++;
+                        }
+                    }else if (nums[j]+nums[k] < target) {
+                        j++;
+                    }else{
                         k--;
-                        if (nums[k] != nums[k+1]) break;
                     }
-                }else if (nums[j]+nums[k] < -nums[i]){
-                    j++;
-                }else{
-                    k--;
                 }
             }
         }

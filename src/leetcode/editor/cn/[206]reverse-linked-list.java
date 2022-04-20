@@ -56,26 +56,22 @@ package leetcode.editor.cn;
  * }
  */
 class Solution {
-//    public ListNode reverseList(ListNode head) {//头插法
-//        if (head == null) {
-//            return head;
-//        }
+    //头插法
+//    public ListNode reverseList(ListNode head){
+//        if (head == null) return head;
 //        ListNode vhead = new ListNode();
-//        vhead.next = null;
-//        ListNode node = head;
-//        while (node != null) {
-//            ListNode temp = node;
-//            node = node.next;
-//            temp.next = vhead.next;
-//            vhead.next = temp;
+//        while (head != null) {
+//            ListNode node = head;
+//            head = head.next;
+//            node.next = vhead.next;
+//            vhead.next = node;
 //        }
 //        return vhead.next;
 //    }
 
+    //递归
     public ListNode reverseList(ListNode head){
-        if (head == null || head.next == null) {
-            return head;
-        }
+        if (head == null || head.next == null) return head;
         ListNode newhead = reverseList(head.next);
         head.next.next = head;
         head.next = null;
