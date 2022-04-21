@@ -52,30 +52,27 @@ package leetcode.editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int search(int[] nums, int target) {
-        int left = 0, right = nums.length-1;
-        while (left <= right){
-            int mid = (left + right)/2;
-
-            if (nums[mid] == target){
-                return mid;
+        int l = 0, r = nums.length-1;
+        while (l < r) {
+            int m = l + (r-l)/2;
+            if (nums[m] == target) {
+                break;
             }
-
-            //左半有序
-            if (nums[mid] >= nums[left]){
-                if (nums[left] <= target && target < nums[mid]){
-                    right = mid-1;
+            if (nums[l] <= nums[m]) {//左半有序
+                if (nums[l] <= target && nums[m] >= target) {
+                    r = m-1;
                 }else{
-                    left = mid + 1;
+                    l = m+1;
                 }
-            }else {
-                if (nums[mid] < target && target <= nums[right]){
-                    left = mid + 1;
+            }else{//右半有序
+                if (nums[m] <= target && nums[r] >= target) {
+                    l = m + 1;
                 }else{
-                    right = mid - 1;
+                    r = m - 1;
                 }
             }
         }
-        return -1;
+        return nums[l] == target ? l : -1;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
