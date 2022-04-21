@@ -98,17 +98,13 @@ import java.util.ArrayList;
 //}
 
 class Solution {
-    TreeNode res = null;
+    //返回root子树中p,q的最近公共父节点，若不存在，返回null
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if (root == null || root == p || root == q) {
-            return root;
-        }
-        TreeNode l = lowestCommonAncestor(root.left, p, q);
-        TreeNode r = lowestCommonAncestor(root.right, p, q);
-        if (l != null && r != null) {
-            return root;
-        }
-        return l == null ? r : l;
+        if (root == null || root == p || root == q) return root;//不存在返回null，本身为最近公共父节点
+        TreeNode l = lowestCommonAncestor(root.left, p, q);//在左子树中找
+        TreeNode r = lowestCommonAncestor(root.right, p, q);//在右子树中找
+        if (l != null && r != null) return root;//p,q在root异侧
+        return l == null ? r :  l;
     }
 
 }

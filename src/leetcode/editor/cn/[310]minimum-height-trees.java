@@ -43,79 +43,117 @@
 // Related Topics 深度优先搜索 广度优先搜索 图 拓扑排序 👍 621 👎 0
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-    //链式前向星图
-    int N = 20010, M = 2*N, index = 0;
-    int[] head = new int[N];//head[i]表示以 i 为起点的最后一条边的编号
-    int[] edge = new int[M];//每条边的终点
-    int[] next = new int[M];//与该边拥有相同起点的前一条边的编号
-    void add(int a , int b) {
-        edge[index] = b;
-        next[index] = head[a];
-        head[a] = index++;
-    }
+//    //链式前向星图
+//    int N = 20010, M = 2*N, index = 0;
+//    int[] head = new int[N];//head[i]表示以 i 为起点的最后一条边的编号
+//    int[] edge = new int[M];//每条边的终点
+//    int[] next = new int[M];//与该边拥有相同起点的前一条边的编号
+//    void add(int a , int b) {
+//        edge[index] = b;
+//        next[index] = head[a];
+//        head[a] = index++;
+//    }
+//
+//    //f1：节点最大向下高度，f2：节点次最大向下高度，p：节点最大向下高度由哪个节点得到，g：节点最大向上高度
+//    int[] f1 = new int[N], f2 = new int[N], p = new int[N], g = new int[N];
+//    public List<Integer> findMinHeightTrees(int n, int[][] edges) {
+//        Arrays.fill(head, -1);//每个节点最后一条边的编号初始化为-1
+//        for (int[] e : edges) {//建图
+//            add(e[0], e[1]);
+//            add(e[1], e[0]);
+//        }
+//
+//        dfs1(0, -1);//更新每个节点最大向下高度
+//        dfs2(0, -1);//更新每个节点最大向上高度
+//        int min = Integer.MAX_VALUE;
+//        List<Integer> ans = new ArrayList<>();
+//        for (int i = 0; i < n; i++) {
+//            int height = Math.max(f1[i], g[i]);
+//            if (height < min) {
+//                min = height;
+//                ans.clear();
+//                ans.add(i);
+//            }else if (height == min) {
+//                ans.add(i);
+//            }
+//        }
+//        return ans;
+//    }
+//
+//    public int dfs1(int u, int fa) {
+//        for (int i = head[u]; i != -1; i = next[i]) {// i 为以 u 为起点的边的编号
+//            int j = edge[i];
+//            if (j == fa) continue;
+//            int sub = dfs1(j, u) + 1;
+//            if (sub > f1[u]) {
+//                f2[u] = f1[u];
+//                f1[u] = sub;
+//                p[u] = j;
+//            }else if (sub > f2[u]) {
+//                f2[u] = sub;
+//            }
+//        }
+//        return f1[u];
+//    }
+//
+//    void dfs2(int u, int fa) {
+//        for (int i = head[u]; i != -1; i = next[i]) {
+//            int j = edge[i];
+//            if (j == fa) continue;
+//            //向上再向下
+//            if (p[u] != j) {
+//                g[j] = Math.max(g[j], f1[u]+1);
+//            }else {
+//                g[j] = Math.max(g[j], f2[u]+1);
+//            }
+//            //向上
+//            g[j] = Math.max(g[j], g[u]+1);
+//            dfs2(j, u);
+//        }
+//    }
 
-    //f1：节点最大向下高度，f2：节点次最大向下高度，p：节点最大向下高度由哪个节点得到，g：节点最大向上高度
-    int[] f1 = new int[N], f2 = new int[N], p = new int[N], g = new int[N];
     public List<Integer> findMinHeightTrees(int n, int[][] edges) {
-        Arrays.fill(head, -1);//每个节点最后一条边的编号初始化为-1
-        for (int[] e : edges) {//建图
-            add(e[0], e[1]);
-            add(e[1], e[0]);
+        List<List<Integer>> matrix = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            matrix.add(new ArrayList<>());
+        }
+        //建图并维护出度
+        int[] in = new int[n];
+        for (int[] edge : edges) {
+            int i = edge[0], j = edge[1];
+            matrix.get(i).add(j);
+            matrix.get(j).add(i);
+            in[i]++;
+            in[j]++;
         }
 
-        dfs1(0, -1);//更新每个节点最大向下高度
-        dfs2(0, -1);//更新每个节点最大向上高度
-        int min = Integer.MAX_VALUE;
         List<Integer> ans = new ArrayList<>();
+
+        Queue<Integer> queue = new LinkedList<>();
         for (int i = 0; i < n; i++) {
-            int height = Math.max(f1[i], g[i]);
-            if (height < min) {
-                min = height;
-                ans.clear();
-                ans.add(i);
-            }else if (height == min) {
-                ans.add(i);
+            if (in[i] == 1 || in[i] == 0) {//注意只有一个节点的情况
+                queue.add(i);
+            }
+        }
+        while (!queue.isEmpty()) {
+            ans.clear();
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                int first = queue.poll();
+                ans.add(first);
+                for (int next : matrix.get(first)) {
+                    in[next]--;
+                    if (in[next] == 1) {
+                        queue.add(next);
+                    }
+                }
             }
         }
         return ans;
-    }
-
-    public int dfs1(int u, int fa) {
-        for (int i = head[u]; i != -1; i = next[i]) {// i 为以 u 为起点的边的编号
-            int j = edge[i];
-            if (j == fa) continue;
-            int sub = dfs1(j, u) + 1;
-            if (sub > f1[u]) {
-                f2[u] = f1[u];
-                f1[u] = sub;
-                p[u] = j;
-            }else if (sub > f2[u]) {
-                f2[u] = sub;
-            }
-        }
-        return f1[u];
-    }
-
-    void dfs2(int u, int fa) {
-        for (int i = head[u]; i != -1; i = next[i]) {
-            int j = edge[i];
-            if (j == fa) continue;
-            //向上再向下
-            if (p[u] != j) {
-                g[j] = Math.max(g[j], f1[u]+1);
-            }else {
-                g[j] = Math.max(g[j], f2[u]+1);
-            }
-            //向上
-            g[j] = Math.max(g[j], g[u]+1);
-            dfs2(j, u);
-        }
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
