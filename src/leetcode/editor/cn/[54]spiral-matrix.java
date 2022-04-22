@@ -38,29 +38,28 @@ import java.util.List;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public List<Integer> spiralOrder(int[][] matrix) {
-        List<Integer> ans = new ArrayList<>();
         int m = matrix.length, n = matrix[0].length;
-        int left = 0, right = n-1, up = 0, down = m-1;
-        while (left <= right && up <= down) {
-            for (int i = left; i <= right; i++) {
-                ans.add(matrix[up][i]);
+        int l = 0 , r = n-1, u = 0, d = m-1;
+        List<Integer> ans = new ArrayList<>();
+        while (l <= r && u <= d) {
+            for (int i = l; i <= r; i++) {
+                ans.add(matrix[u][i]);
+
             }
-            for (int i = up+1; i <= down; i++) {
-                ans.add(matrix[i][right]);
+            for (int i = u+1; i <= d; i++) {
+                ans.add(matrix[i][r]);
             }
-            if (left == right || up == down) {
-                break;
+            if (l==r||u==d) break;//只剩一行或一列
+            for (int i = r-1; i > l; i--) {
+                ans.add(matrix[d][i]);
             }
-            for (int i = right-1; i >= left; i--) {
-                ans.add(matrix[down][i]);
+            for (int i = d; i>u; i--) {
+                ans.add(matrix[i][l]);
             }
-            for (int i = down-1; i > up; i--) {
-                ans.add(matrix[i][left]);
-            }
-            left++;
-            right--;
-            up++;
-            down--;
+            l++;
+            r--;
+            u++;
+            d--;
         }
         return ans;
     }

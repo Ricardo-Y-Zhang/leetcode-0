@@ -58,42 +58,33 @@
  * }
  */
 class Solution {
+    //归并
     public ListNode mergeKLists(ListNode[] lists) {
         return solute(lists, 0, lists.length-1);
     }
-
-    public ListNode solute(ListNode[] lists, int left, int right) {
-        if (left > right) {
-            return null;
-        }
-        if (left == right) {
-            return lists[left];
-        }
-        int mid = (left + right) / 2;
-        ListNode l = solute(lists, left, mid);
-        ListNode r = solute(lists, mid+1, right);
-        return merge(l, r);
+    public ListNode solute(ListNode[] lists, int l, int r) {
+        if (l > r) return null;
+        if (l == r) return lists[l];
+        int m = (l+r)/2;
+        ListNode left = solute(lists, l, m);
+        ListNode right = solute(lists,m+1,r);
+        return merge(left, right);
     }
-    public ListNode merge(ListNode list1, ListNode list2) {
-        ListNode vhead = new ListNode(-1, null);
+    public ListNode merge(ListNode head1, ListNode head2) {
+        ListNode vhead = new ListNode();
         ListNode tail = vhead;
-        while (list1 != null && list2 != null) {
-            if (list1.val < list2.val) {
-                tail.next = list1;
-                tail = tail.next;
-                list1 = list1.next;
+        while (head1 != null && head2 != null) {
+            if (head1.val < head2.val) {
+                tail.next = head1;
+                head1 = head1.next;
             }else{
-                tail.next = list2;
-                tail = tail.next;
-                list2 = list2.next;
+                tail.next = head2;
+                head2 = head2.next;
             }
+            tail = tail.next;
         }
-        if (list1 != null) {
-            tail.next = list1;
-        }
-        if (list2 != null) {
-            tail.next = list2;
-        }
+        if (head1 != null) tail.next = head1;
+        if (head2 != null) tail.next = head2;
         return vhead.next;
     }
 }

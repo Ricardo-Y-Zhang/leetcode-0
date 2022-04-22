@@ -34,21 +34,26 @@
 
 package leetcode.editor.cn;
 
+import java.util.Stack;
+
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int trap(int[] height) {
         int n = height.length;
-        int[] left = new int[n], right = new int[n];//left[i]记录[0,i]中最大值，right[i]记录[i,n-1]中最大值
-        int lmax = 0, rmax = 0;
+        int[] l = new int[n], r = new int[n];
+        int max = -1;
         for (int i = 0; i < n; i++) {
-            lmax = Math.max(lmax, height[i]);
-            left[i] = lmax;
-            rmax = Math.max(rmax, height[n-i-1]);
-            right[n-i-1] = rmax;
+            max = Math.max(max, height[i]);
+            l[i] = max;
+        }
+        max = -1;
+        for (int i = n-1; i >= 0; i--) {
+            max = Math.max(max, height[i]);
+            r[i] = max;
         }
         int ans = 0;
         for (int i = 0; i < n; i++) {
-            ans += Math.min(left[i], right[i]) - height[i];
+            ans += Math.min(l[i], r[i])-height[i];
         }
         return ans;
     }
