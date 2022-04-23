@@ -49,31 +49,30 @@
 
 package leetcode.editor.cn;
 
-import java.util.Arrays;
+import java.util.TreeMap;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int lengthOfLIS(int[] nums) {
-
-        int res = 0;
-
-        int[] dp = new int[nums.length];
-
-        Arrays.fill(dp, 1);
-
-        for (int i = 0; i < nums.length; i++) {
-
-            for (int j = 0; j < i; j++) {
-
-                if (nums[j] < nums[i]){
-                    dp[i] = Math.max(dp[i], dp[j] + 1);
+        int n = nums.length;
+        int ans = 0;
+        int[] dp = new int[n];
+        for (int num : nums) {
+            int i = 0, j = ans;
+            while (i < j) {
+                int m = (i+j)/2;
+                if (dp[m] < num) {
+                    i = m+1;
+                }else{
+                    j = m;
                 }
             }
-
-            res = Math.max(res, dp[i]);
+            dp[i] = num;
+            if (i == ans) {
+                ans++;
+            }
         }
-
-        return res;
+        return ans;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

@@ -59,14 +59,15 @@ class Solution {
         }
         for (int i = 0; i < nums.length; i++) {
             if (!isvisit[i]) {
-                isvisit[i] = true;
                 temp.add(nums[i]);
+                isvisit[i] = true;
                 dfs(nums, count+1);
-                isvisit[i] = false;
                 temp.remove(temp.size()-1);
+                isvisit[i] = false;
             }
         }
     }
+
 }
 //leetcode submit region end(Prohibit modification and deletion)
 

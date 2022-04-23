@@ -48,35 +48,35 @@ package leetcode.editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public String longestPalindrome(String s) {
-
-        String res = "";
-        for (int i = 0; i < s.length(); i++) {
-            int left = i, right = i;
-            for (; left >= 0 && right < s.length(); left--, right++){
-                if (s.charAt(left) == s.charAt(right)){
-                    String temp = s.substring(left, right+1);
-                    if (temp.length() > res.length()){
-                        res = temp;
-                    }
-                }else{
-                    break;
-                }
+        String ans = "";
+        int n = s.length();
+        char[] chs = s.toCharArray();
+        for (int i = 0; i < n; i++) {
+            //以 i 为回文串的中心位置
+            int l = i, r = i;
+            while (l >= 0 && r < n && chs[l] == chs[r]) {
+                l--;
+                r++;
             }
-
-
-
-            for (left = i, right = i + 1; left >= 0 && right < s.length(); left--, right++){
-                if (s.charAt(left) == s.charAt(right)){
-                    String temp = s.substring(left, right+1);
-                    if (temp.length() > res.length()){
-                        res = temp;
-                    }
-                }else{
-                    break;
-                }
+            if (l < 0 || r >= n || chs[l] != chs[r]){
+                l++;
+                r--;
             }
+            if (r-l+1 > ans.length()) ans = s.substring(l, r+1);
+
+            //以 i 为回文串的左中心位置
+            l = i; r = i+1;
+            while (l >= 0 && r < n && chs[l] == chs[r]) {
+                l--;
+                r++;
+            }
+            if (l < 0 || r>=n || chs[l] != chs[r]) {
+                l++;
+                r--;
+            }
+            if (r-l+1 > ans.length()) ans = s.substring(l, r+1);
         }
-        return res;
+        return ans;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
