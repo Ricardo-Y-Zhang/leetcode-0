@@ -244,7 +244,11 @@
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[143]reorder-list.java">
           <value>
             <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[143]reorder-list.md" />
+              <option name="frontendQuestionId" value="leetcode-cn.com143" />
+              <option name="host" value="leetcode-cn.com" />
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[143]reorder-list.java" />
+              <option name="titleSlug" value="reorder-list" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -517,7 +521,11 @@
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[199]binary-tree-right-side-view.java">
           <value>
             <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[199]binary-tree-right-side-view.md" />
+              <option name="frontendQuestionId" value="leetcode-cn.com199" />
+              <option name="host" value="leetcode-cn.com" />
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[199]binary-tree-right-side-view.java" />
+              <option name="titleSlug" value="binary-tree-right-side-view" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -622,7 +630,11 @@
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[20]valid-parentheses.java">
           <value>
             <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[20]valid-parentheses.md" />
+              <option name="frontendQuestionId" value="leetcode-cn.com20" />
+              <option name="host" value="leetcode-cn.com" />
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[20]valid-parentheses.java" />
+              <option name="titleSlug" value="valid-parentheses" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -770,7 +782,6 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[23]merge-k-sorted-lists.java" />
-              <option name="questionId" value="23" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -917,7 +928,11 @@
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[300]longest-increasing-subsequence.java">
           <value>
             <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[300]longest-increasing-subsequence.md" />
+              <option name="frontendQuestionId" value="leetcode-cn.com300" />
+              <option name="host" value="leetcode-cn.com" />
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[300]longest-increasing-subsequence.java" />
+              <option name="titleSlug" value="longest-increasing-subsequence" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1149,7 +1164,6 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[396]rotate-function.java" />
-              <option name="questionId" value="396" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1248,7 +1262,6 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[42]trapping-rain-water.java" />
-              <option name="questionId" value="42" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1318,7 +1331,11 @@
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[46]permutations.java">
           <value>
             <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[46]permutations.md" />
+              <option name="frontendQuestionId" value="leetcode-cn.com46" />
+              <option name="host" value="leetcode-cn.com" />
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[46]permutations.java" />
+              <option name="titleSlug" value="permutations" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1515,7 +1532,6 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[54]spiral-matrix.java" />
-              <option name="questionId" value="54" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1589,6 +1605,17 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[587]erect-the-fence.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[587]erect-the-fence.md" />
+              <option name="frontendQuestionId" value="leetcode-cn.com587" />
+              <option name="host" value="leetcode-cn.com" />
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[587]erect-the-fence.java" />
+              <option name="titleSlug" value="erect-the-fence" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[589]n-ary-tree-preorder-traversal.java">
           <value>
             <LeetcodeEditor>
@@ -1634,7 +1661,11 @@
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[5]longest-palindromic-substring.java">
           <value>
             <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[5]longest-palindromic-substring.md" />
+              <option name="frontendQuestionId" value="leetcode-cn.com5" />
+              <option name="host" value="leetcode-cn.com" />
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[5]longest-palindromic-substring.java" />
+              <option name="titleSlug" value="longest-palindromic-substring" />
             </LeetcodeEditor>
           </value>
         </entry>

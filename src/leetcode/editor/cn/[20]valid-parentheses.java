@@ -60,18 +60,19 @@ import java.util.Stack;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public boolean isValid(String s) {
+        char[][] chs = new char[][]{{')','('}, {']','['}, {'}','{'}};
         HashMap<Character, Character> map = new HashMap<>();
-        map.put(')', '(');
-        map.put(']', '[');
-        map.put('}', '{');
+        for (char[] ch : chs) {
+            map.put(ch[0], ch[1]);
+        }
+        char[] ch = s.toCharArray();
         Stack<Character> stack = new Stack<>();
-        for (char ch : s.toCharArray()) {
-            if (!map.containsKey(ch)) {
-                stack.push(ch);
-            }else {
-                if (stack.isEmpty() || map.get(ch) != stack.pop()) {
-                    return false;
-                }
+        for (char c : ch) {
+            if (!map.containsKey(c)){
+                stack.push(c);
+            }else{
+                if (stack.isEmpty() || stack.peek() != map.get(c)) return false;
+                stack.pop();
             }
         }
         return stack.isEmpty();

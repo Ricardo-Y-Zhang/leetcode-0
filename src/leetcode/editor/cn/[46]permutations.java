@@ -38,8 +38,7 @@
 
 package leetcode.editor.cn;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
@@ -70,5 +69,4 @@ class Solution {
 
 }
 //leetcode submit region end(Prohibit modification and deletion)
-
 

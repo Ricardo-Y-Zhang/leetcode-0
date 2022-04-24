@@ -52,39 +52,43 @@ package leetcode.editor.cn;
  */
 class Solution {
     public void reorderList(ListNode head) {
-        if (head == null || head.next == null) {
-            return;
-        }
-        //找链表中点
-        ListNode fast = head, slow = head;
+        if (head == null || head.next == null) return;
+        //找中点
+        ListNode fast = head.next, slow = head;
         while (fast != null && fast.next != null) {
             fast = fast.next.next;
             slow = slow.next;
         }
-        //翻转后半链表
-        ListNode head2 = reverse(slow.next);
+        ListNode nextHead = slow.next;
         slow.next = null;
-        //合并链表
-        ListNode node1 = head, node2 = head2;
-        while (node1 != null && node2 != null) {
-            ListNode temp_node1 = node1.next;
-            ListNode temp_node2 = node2.next;
-            node1.next = node2;
-            node1 = temp_node1;
-            node2.next = node1;
-            node2 = temp_node2;
-        }
+        nextHead = reverse(nextHead);
+        merge(head, nextHead);
     }
-    public ListNode reverse(ListNode head) {
-        ListNode vhead = new ListNode(-1, null);
-        while (head != null) {
-            ListNode node = head;
-            head = head.next;
+
+    public ListNode reverse(ListNode root) {
+        ListNode vhead = new ListNode();
+        while (root != null) {
+            ListNode node = root;
+            root = root.next;
             node.next = vhead.next;
             vhead.next = node;
         }
         return vhead.next;
     }
+
+    public void merge(ListNode root1, ListNode root2) {
+        while (root1 != null && root2 != null) {
+            ListNode root1_tmp = root1.next;
+            ListNode root2_tmp = root2.next;
+
+            root1.next = root2;
+            root1 = root1_tmp;
+
+            root2.next = root1;
+            root2 = root2_tmp;
+        }
+    }
+
 }
 //leetcode submit region end(Prohibit modification and deletion)
 

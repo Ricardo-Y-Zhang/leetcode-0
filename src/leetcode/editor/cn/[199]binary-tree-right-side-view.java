@@ -69,9 +69,7 @@ class Solution {
     }
     public void dfs(TreeNode root, int deepth) {
         if (root == null) return;
-        if (deepth == ans.size()) {
-            ans.add(root.val);
-        }
+        if (ans.size() == deepth) ans.add(root.val);
         dfs(root.right, deepth+1);
         dfs(root.left, deepth+1);
     }
