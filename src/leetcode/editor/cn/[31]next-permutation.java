@@ -53,32 +53,37 @@ import java.util.Arrays;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public void nextPermutation(int[] nums) {
-        int target = -1;
-        for (int i = 0; i < nums.length-1; i++) {
-            if (i+1 < nums.length && nums[i] < nums[i+1]){
-                target = i;
-            }
+        int n = nums.length;
+        int i = n-2;
+        //从后向前，找到第一个升序对 (i,i+1)
+        while (i >= 0 && nums[i] >= nums[i+1]){
+            i--;
         }
 
-        if (target != -1){
-            int min = 110, minIndex = -1;
-            for (int i = target + 1; i < nums.length; i++) {
-               if (nums[i] < min && nums[i] > nums[target]){
-                   min = nums[i];
-                   minIndex = i;
-               }
+        if (i >= 0) {
+            //在[i+1, n-1]中从后向前，找到第一个比nums[i]大的数nums[k]
+            int j = i+1, k = n-1;
+            while (k >= j && nums[k] <= nums[i]) {
+                k--;
             }
+            //交换nums[i]和nums[k]
+            int temp = nums[i];
+            nums[i] = nums[k];
+            nums[k] = temp;
+        }
+        //[i+1, n-1]降序排列，反转
+        reverse(nums, i+1);
+    }
 
-            nums[minIndex] = nums[target];
-            nums[target] = min;
-            Arrays.sort(nums, target+1, nums.length);
-        }else{
-            for (int i = 0; i < nums.length / 2; i++) {
-                int temp = nums[i];
-                int index = nums.length - 1 - i;
-                nums[i] = nums[index];
-                nums[index] = temp;
-            }
+    public void reverse(int[] nums, int start) {
+        int n = nums.length;
+        int i = start, j = n-1;
+        while (i < j) {
+            int temp = nums[i];
+            nums[i] = nums[j];
+            nums[j] = temp;
+            i++;
+            j--;
         }
     }
 }

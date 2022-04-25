@@ -53,39 +53,23 @@ import java.util.concurrent.ArrayBlockingQueue;
  */
 class Solution {
     public List<List<Integer>> levelOrder(TreeNode root) {
-        ArrayList<List<Integer>> list = new ArrayList<>();
-        ArrayList<Integer> list1 = new ArrayList<>();
-
-        if (root == null){
-            return list;
+        List<List<Integer>> ans = new ArrayList<>();
+        List<Integer> temp = new ArrayList<>();
+        if (root == null) return ans;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            temp.clear();
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                temp.add(node.val);
+                if (node.left != null) queue.add(node.left);
+                if (node.right != null) queue.add(node.right);
+            }
+            ans.add(new ArrayList<>(temp));
         }
-
-        TreeNode last = root;//记录每一层的最后一个节点
-
-        LinkedList<TreeNode> list2 = new LinkedList<TreeNode>();
-        list2.add(root);
-
-        while (!list2.isEmpty()){
-            TreeNode  now = list2.poll();
-            list1.add(now.val);
-
-            if (now.left != null){
-                list2.add(now.left);
-            }
-            if (now.right != null){
-                list2.add(now.right);
-            }
-
-            if (now == last){
-                ArrayList<Integer> tempList = new ArrayList<>(list1);
-                list.add(tempList);
-                list1.clear();
-                if (!list2.isEmpty()){
-                    last = list2.getLast();
-                }
-            }
-        }
-        return list;
+        return ans;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
