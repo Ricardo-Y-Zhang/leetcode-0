@@ -56,20 +56,15 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public void merge(int[] nums1, int m, int[] nums2, int n) {
-        int i = m-1, j = n-1;
-        int index = n+m-1;
-        while (i >= 0 && j >= 0) {
-            if (nums1[i] >= nums2[j]) {
-                nums1[index--] = nums1[i--];
+        int i = m-1, j = n-1, k = n+m-1;
+        while (i >= 0 || j >= 0) {
+            int num1 = i >= 0 ? nums1[i] : Integer.MIN_VALUE;
+            int num2 = j >= 0 ? nums2[j] : Integer.MIN_VALUE;
+            if (num1 >= num2) {
+                nums1[k--] = nums1[i--];
             }else{
-                nums1[index--] = nums2[j--];
+                nums1[k--] = nums2[j--];
             }
-        }
-        while (i>=0) {
-            nums1[index--] = nums1[i--];
-        }
-        while (j>=0) {
-            nums1[index--] = nums2[j--];
         }
     }
 }

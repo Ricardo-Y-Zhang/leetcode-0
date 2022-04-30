@@ -1239,6 +1239,17 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[415]add-strings.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[415]add-strings.md" />
+              <option name="frontendQuestionId" value="leetcode-cn.com415" />
+              <option name="host" value="leetcode-cn.com" />
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[415]add-strings.java" />
+              <option name="titleSlug" value="add-strings" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[416]partition-equal-subset-sum.java">
           <value>
             <LeetcodeEditor>
@@ -1246,10 +1257,32 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[417]pacific-atlantic-water-flow.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[417]pacific-atlantic-water-flow.md" />
+              <option name="frontendQuestionId" value="leetcode-cn.com417" />
+              <option name="host" value="leetcode-cn.com" />
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[417]pacific-atlantic-water-flow.java" />
+              <option name="titleSlug" value="pacific-atlantic-water-flow" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[419]battleships-in-a-board.java">
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[419]battleships-in-a-board.java" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[41]first-missing-positive.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[41]first-missing-positive.md" />
+              <option name="frontendQuestionId" value="leetcode-cn.com41" />
+              <option name="host" value="leetcode-cn.com" />
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[41]first-missing-positive.java" />
+              <option name="titleSlug" value="first-missing-positive" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -1271,6 +1304,17 @@
           <value>
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[423]reconstruct-original-digits-from-english.java" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[427]construct-quad-tree.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[427]construct-quad-tree.md" />
+              <option name="frontendQuestionId" value="leetcode-cn.com427" />
+              <option name="host" value="leetcode-cn.com" />
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[427]construct-quad-tree.java" />
+              <option name="titleSlug" value="construct-quad-tree" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -2199,7 +2243,11 @@
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[88]merge-sorted-array.java">
           <value>
             <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[88]merge-sorted-array.md" />
+              <option name="frontendQuestionId" value="leetcode-cn.com88" />
+              <option name="host" value="leetcode-cn.com" />
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[88]merge-sorted-array.java" />
+              <option name="titleSlug" value="merge-sorted-array" />
             </LeetcodeEditor>
           </value>
         </entry>
