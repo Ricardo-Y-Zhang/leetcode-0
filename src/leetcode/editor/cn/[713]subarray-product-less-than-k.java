@@ -38,17 +38,16 @@ package leetcode.editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int numSubarrayProductLessThanK(int[] nums, int k) {
-        int ans = 0, n = nums.length;
-        int left = 0, right = 0, product = nums[0];//双指针，滑动窗口
-        while (left < n && right < n) {
-            if (product < k){
-                ans += right-left+1;//以right为结尾的符合要求的组合个数
-                right++;
-                if (right < n) product*=nums[right];
-            }else{
-                product/=nums[left];
-                left++;
+        if (k == 0) return 0;
+        int n = nums.length, ans = 0;
+        int l = 0, r = 0, product = 1;
+        //计算以nums[i]结尾的复合要求的子序列数
+        while (r<n) {
+            product *= nums[r++];
+            while (product >= k && l < r) {
+                product /= nums[l++];
             }
+            ans += r-l;
         }
         return ans;
     }

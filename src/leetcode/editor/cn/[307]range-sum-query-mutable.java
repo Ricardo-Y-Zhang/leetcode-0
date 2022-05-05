@@ -49,37 +49,37 @@
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class NumArray {
-    int[] tree;
-    public int lowbit(int x) {//x最后一位1所代表的二进制
-        return x &(-x);
-    }
-    public int query(int x) {
-        int ans = 0;
-        for (int i = x; i>0; i-=lowbit(i)) ans += tree[i];
-        return ans;
-    }
-    public void add(int x, int u) {
-        for (int i = x; i<=n;i+=lowbit(i)) tree[i] += u;
-    }
-
+    int[] tree;//树状数组下标从 1 开始
     int[] nums;
-    int n;
-    public NumArray(int[] _nums) {
-        nums = _nums;
-        n = nums.length;
-        tree = new int[n+1];
+    //二进制最低位 1
+    int lowbit(int x) {
+        return x&(-x);
+    }
+    public NumArray(int[] nums) {
+       int n = nums.length;
+       tree = new int[n+1];
+       this.nums = new int[n];
         for (int i = 0; i < n; i++) {
-            add(i+1,nums[i]);
+            update(i, nums[i]);
         }
     }
 
-    public void update(int i, int val) {
-        add(i+1,val-nums[i]);
-        nums[i] = val;
+    public void update(int index, int val) {
+        for (int i = index+1; i < tree.length; i+=lowbit(i)){
+            tree[i] += val-nums[index];
+        }
+        nums[index] = val;
     }
 
-    public int sumRange(int l, int r) {
-        return query(r + 1) - query(l);
+    public int sumRange(int left, int right) {
+        return getSum(right)-getSum(left-1);
+    }
+    public int getSum(int x) {
+        int ans = 0;
+        for (int i = x+1; i>0; i-=lowbit(i)){
+            ans += tree[i];
+        }
+        return ans;
     }
 }
 

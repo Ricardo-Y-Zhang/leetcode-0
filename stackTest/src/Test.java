@@ -404,3 +404,20 @@ class Solution {
         }
     }
 }
+class Solution {
+    HashMap<Integer, Integer> map = new HashMap<>();
+    public long appealSum(String s) {
+        HashSet<Character> set = new HashSet<>();
+        char[] chs = s.toCharArray();
+        int n = s.length();
+        for (int i = 0; i < n; i++) {
+            set.add(chs[i]);
+            map.put(i, set.size());
+        }
+
+    }
+
+    public int judge(int left, int right) {
+        return map.get(right)-map.get(left);
+    }
+}

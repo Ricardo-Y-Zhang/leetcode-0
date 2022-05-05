@@ -53,23 +53,21 @@ package leetcode.editor.cn;
  * }
  */
 class Solution {
-    int max = Integer.MIN_VALUE;
+    int ans = Integer.MIN_VALUE;
     public int maxPathSum(TreeNode root) {
         dfs(root);
-        return max;
+        return ans;
     }
-    public int dfs(TreeNode root) {//返回以root为起点的路径的最大值
-        if (root == null) {
-            return 0;
-        }
+    public int dfs(TreeNode root) {//返回以root为起点的最大路径和
+        if (root == null) return 0;
         int left = dfs(root.left);
-        left = left > 0 ? left : 0;
+        left = left < 0 ? 0 : left;//考虑以root.left为起点的最大路径和为负数的情况
         int right = dfs(root.right);
-        right = right > 0 ? right : 0;
-        max = Math.max(max, left+right+root.val);//记录经过root的路径的最大值
-        return Math.max(left, right)+root.val;
+        right = right < 0 ? 0 : right;//考虑以root.right为起点的最大路径和为负数的情况
+        int max = Math.max(left, right);
+        ans = Math.max(ans, left + root.val + right);
+        return root.val + max;
     }
-
 }
 //leetcode submit region end(Prohibit modification and deletion)
 

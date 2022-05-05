@@ -49,26 +49,24 @@ package leetcode.editor.cn;
  */
 class Solution {
     public ListNode reverseBetween(ListNode head, int left, int right) {
-        if (left == right){
-            return head;
-        }
-        ListNode vhead = new ListNode();//虚拟头节点，解决left = 1的情况
-        vhead.next = head;
-
-        ListNode lnode = head, pre = vhead;//lnode记录left位置上的节点，pre记录left-1位置的节点
-        for (int i = 1; i < left; i++) {
+        if (left == right) return head;
+        ListNode vhead = new ListNode(-1, head);//虚拟头节点，无需特判left=1的情况
+        //找到第left-1个节点
+        ListNode pre = vhead;
+        for (int i = 0; i < left-1; i++) {
             pre = pre.next;
-            lnode = lnode.next;
         }
-
-        ListNode now = lnode.next;
-        for (int i = left; i < right; i++) {
-            ListNode temp = now;//记录当前遍历节点
-            now = now.next;
-            temp.next = pre.next;//头插法
+        ListNode lnode = pre.next;//第left个节点，作为反转链表段的尾节点
+        //头插法反转链表[left, right]
+        ListNode node = pre.next;
+        for (int i = 0; i < right - left+1; i++) {
+            ListNode temp = node;
+            node = node.next;
+            temp.next = pre.next;
             pre.next = temp;
         }
-        lnode.next = now;
+        //连接第left节点和第right+1节点
+        lnode.next = node;
         return vhead.next;
     }
 }
