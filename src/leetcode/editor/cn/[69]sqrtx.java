@@ -35,19 +35,16 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int mySqrt(int x) {
-        if (x == 0) {
-            return x;
-        }
-        int left = 1, right = x;
+        long left = 0, right = x;
         while (left < right) {
-           int mid = left + (right-left+1)/2;
-           if (mid <= x/mid) {
-               left = mid;
-           }else {
-               right = mid - 1;
-           }
+            long mid = left + (right-left+1)/2;
+            if (x/mid>=mid) {
+                left = mid;
+            }else{
+                right = mid-1;
+            }
         }
-        return left;
+        return (int)left;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

@@ -78,8 +78,12 @@ class Solution {
         if (root == null) {
             return;
         }
-        temp = temp * 10 + root.val;
-        if (root.left == null && root.right == null) ans += temp;
+        temp *= 10;
+        temp += root.val;
+        if (root.left == null && root.right == null) {
+            ans += temp;
+            return;
+        }
         dfs(root.left, temp);
         dfs(root.right, temp);
     }

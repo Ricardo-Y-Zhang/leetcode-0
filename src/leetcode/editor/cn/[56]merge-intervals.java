@@ -40,23 +40,21 @@ import java.util.Stack;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int[][] merge(int[][] intervals) {
-        Arrays.sort(intervals, new Comparator<int[]>(){
-            public int compare(int[] ins1, int[] ins2) {
-                return ins1[0]-ins2[0];
-            }
+        Arrays.sort(intervals, (a, b)->{
+            return a[0] != b[0] ? a[0] - b[0] : a[1] - b[1];
         });
         Stack<int[]> stack = new Stack<>();
-        for (int[] inter : intervals) {
+        for (int[] interval : intervals) {
             if (stack.isEmpty()) {
-                stack.add(inter);
-            }else {
-                int[] last = stack.peek();
-                if (last[1] >= inter[0]) {
-                    stack.pop();
-                    inter[0] = last[0];
-                    inter[1] = Math.max(last[1], inter[1]);
+                stack.add(interval);
+            }else{
+                if (stack.peek()[1] >= interval[0]) {
+                    int[] pre = stack.pop();
+                    pre[1] = Math.max(pre[1], interval[1]);
+                    stack.add(pre);
+                }else{
+                    stack.add(interval);
                 }
-                stack.push(inter);
             }
         }
         return stack.toArray(new int[0][]);
