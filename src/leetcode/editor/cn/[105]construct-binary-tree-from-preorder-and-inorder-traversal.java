@@ -56,29 +56,24 @@ import java.util.ArrayList;
  * }
  */
 class Solution {
+    int[] preorder, inorder;    `
     public TreeNode buildTree(int[] preorder, int[] inorder) {
-
-        return build(preorder, inorder, 0, preorder.length-1, 0, inorder.length-1);
+        this.preorder = preorder;
+        this.inorder = inorder;
+        return build(0, preorder.length-1, 0, inorder.length-1);
     }
-
-    public TreeNode build(int[] preorder, int[] inorder, int left1, int right1, int left2, int right2){
-        if (left1 > right1){
-            return null;
-        }
-        TreeNode root = new TreeNode();
-        //当前根节点在中序遍历序列中的位置
-        int i = left2;
-        for (; i <=  right2; i++){
-            if (preorder[left1] == inorder[i]){
+    public TreeNode build(int l1, int r1, int l2, int r2) {
+        if (l1 > r1) return null;
+        TreeNode root = new TreeNode(preorder[l1]);
+        int i = l2;
+        for (; i <= r2; i++) {
+            if (inorder[i] == preorder[l1]){
                 break;
             }
         }
-
-        //左子树节点数
-        int nums = i - left2;
-        root.val = preorder[left1];
-        root.left = build(preorder, inorder, left1+1, left1+nums, left2, i-1);
-        root.right = build(preorder, inorder, left1+nums+1, right1, i+1, right2);
+        int left = i-l2;
+        root.left = build(l1+1,l1+left, l2,i-1);
+        root.right = build(l1+left+1, r1, i+1, r2);
         return root;
     }
 }

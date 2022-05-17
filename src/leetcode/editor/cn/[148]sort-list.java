@@ -58,37 +58,36 @@ package leetcode.editor.cn;
 class Solution {
     public ListNode sortList(ListNode head) {
         if (head == null || head.next == null) return head;
+        ListNode midl = findMid(head);
+        ListNode mid = midl.next;
+        midl.next = null;
+        ListNode left = sortList(head);
+        ListNode right = sortList(mid);
+        return merge(left, right);
+    }
+    public ListNode findMid(ListNode head) {
         ListNode fast = head.next, slow = head;
         while (fast != null && fast.next != null) {
             fast = fast.next.next;
             slow = slow.next;
         }
-        ListNode mid = slow.next;
-        slow.next = null;//分割链表
-        ListNode l = sortList(head);
-        ListNode r = sortList(mid);
-        return merge(l, r);
+        return slow;
     }
-
-    public ListNode merge(ListNode list1, ListNode list2) {
-        ListNode head = new ListNode(-1);
+    public ListNode merge(ListNode head1, ListNode head2) {
+        ListNode head = new ListNode();
         ListNode tail = head;
-        while(list1 != null && list2 != null) {
-            if (list1.val < list2.val) {
-                tail.next = list1;
-                list1 = list1.next;
+        while (head1 != null && head2 != null) {
+            if (head1.val <= head2.val) {
+                tail.next = head1;
+                head1 = head1.next;
             }else{
-                tail.next = list2;
-                list2 = list2.next;
+                tail.next = head2;
+                head2 = head2.next;
             }
             tail = tail.next;
         }
-        if (list1 != null) {
-            tail.next = list1;
-        }
-        if (list2 != null) {
-            tail.next = list2;
-        }
+        if (head1 != null) tail.next = head1;
+        if (head2 != null) tail.next = head2;
         return head.next;
     }
 }

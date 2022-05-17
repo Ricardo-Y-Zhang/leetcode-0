@@ -43,43 +43,33 @@ package leetcode.editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int maximalSquare(char[][] matrix) {
-
-        int res = 0;
-
-        int[][] dp = new int[matrix.length][matrix[0].length];
-
-        for (int i = 0; i < matrix.length; i++) {
-
-            for (int j = 0; j < matrix[0].length; j++) {
-
-                if (matrix[i][j] == '1'){
-                    if (i == 0 || j == 0){
-                        dp[i][j] = 1;
-                    }else{
-                        //左上位置的最大边长
-                        int len = dp[i-1][j-1];
-
-                        //记录行列同为'1'的个数
-                        int plus = 0;
-                        for (int k = i, l = j; k >= i-len && l >= j-len; k--, l--) {
-                            if (matrix[k][j] == '0' || matrix[i][l] == '0'){
-                                break;
-                            }
-
-                            plus++;
-                        }
-
-                        //更新以(i, j) 为底角的矩阵的最大正方形边长
-                        dp[i][j] = plus;
+        int m = matrix.length, n = matrix[0].length;
+        int[][] dp = new int[m][n];//dp[i][j]表示以(i,j)为右下角的最大正方形边长
+        int ans = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (matrix[i][j] == '0') continue;
+                if (i == 0 || j == 0) {
+                    dp[i][j] = 1;
+                }else{
+                    int len = dp[i-1][j-1];
+                    int len1 = 0, len2 = 0;
+                    for (int k = i; k >= i-len; k--) {
+                        if (matrix[k][j] == '0') break;
+                        len1++;
                     }
-                }
+                    for (int k = j; k >= j-len; k--) {
+                        if (matrix[i][k] == '0') break;
+                        len2++;
+                    }
+                    len = Math.min(len1, len2);
+                    dp[i][j] = len;
 
-                //更新整个矩阵的最大正方形边长
-                res = res > dp[i][j] ? res : dp[i][j];
+                }
+                ans = Math.max(ans, dp[i][j]);
             }
         }
-
-        return res * res;
+        return ans*ans;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
