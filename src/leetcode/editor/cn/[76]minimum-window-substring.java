@@ -50,54 +50,40 @@
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public String minWindow(String s, String t) {
-        int m = s.length(), n = t.length();
-        if (m < n) return "";
-        String ans = "";
-        int[] dict = new int[52];
-        for (int i = 0; i < n; i++) {
-            char ch = t.charAt(i);
-            int index = dicttoindex(ch);
-            dict[index]--;
+        char[] ss = s.toCharArray(), tt = t.toCharArray();
+        int[] need = new int[52];
+        for (int i = 0; i < tt.length; i++) {
+            need[getindex(tt[i])]--;
         }
-        int diff = 0;//字母数量不同个数
-        for (int i = 0; i < dict.length; i++) {
-            if (dict[i] != 0) {
-                diff++;
-            }
+        int diff = 0;
+        for (int temp : need) {
+            if (temp <  0) diff++;
         }
         int left = 0, right = 0;
-        while (right < m) {
-            char ch = s.charAt(right);
-            int index = dicttoindex(ch);
-            dict[index]++;
-            if (dict[index] == 0) {
+        String ans = "";
+        while (right < s.length()) {
+            char ch = ss[right++];
+            int index = getindex(ch);
+            need[index]++;
+            if (need[index]==0) {
                 diff--;
-                if (diff == 0){//[left, right]包含所有元素
-                    //缩小窗口，求当前满足条件的最小窗口
-                    while (left < m && dict[dicttoindex(s.charAt(left))]>0) {
-                        dict[dicttoindex(s.charAt(left))]--;
-                        left++;
+                if (diff == 0) {
+                    while (need[getindex(ss[left])]>0) {
+                        need[getindex(ss[left++])]--;
                     }
-                    String temp = s.substring(left, right+1);
-                    if (ans.equals("")) {
-                        ans = temp;
-                    }else if (ans.length() > temp.length()) {
-                        ans = temp;
+                    if (ans.equals("") || ans.length() > (right-left)) {
+                        ans = s.substring(left, right);
                     }
-                    //再次右移左指针
-                    dict[dicttoindex(s.charAt(left++))]--;
+                    need[getindex(ss[left++])]--;
                     diff++;
                 }
             }
-            right++;
+
         }
         return ans;
     }
-    public int dicttoindex (char ch) {//字符映射
-        if (ch>='A'&&ch<='Z'){
-            return ch-'A'+26;
-        }
-        return ch-'a';
+    public int getindex(char ch) {
+        return (ch >= 'a' && ch <= 'z') ? (ch-'a') : (ch-'A' + 26);
     }
 
 }

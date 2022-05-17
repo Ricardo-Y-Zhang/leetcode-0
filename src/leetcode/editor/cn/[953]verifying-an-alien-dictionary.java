@@ -44,30 +44,38 @@
 
 package leetcode.editor.cn;
 
+
 import java.util.HashMap;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-    HashMap<Character, Integer> map;
+    HashMap<Character, Integer> map;//字母与下标的映射
     public boolean isAlienSorted(String[] words, String order) {
         map = new HashMap<>();
         for (int i = 0; i < order.length(); i++) {
             map.put(order.charAt(i), i);
         }
-        for (int i = 0; i < words.length-1; i++) {
-            if (!judge(words[i], words[i+1])){
+        for (int i = 0; i < words.length - 1; i++) {
+            if (!judge(words[i], words[i+1])) {
                 return false;
             }
         }
         return true;
     }
-    public boolean judge(String str1, String str2) {
-        for (int i = 0; i < str1.length() && i < str2.length(); i++) {
-            char ch1 = str1.charAt(i), ch2 = str2.charAt(i);
-            if (map.get(ch1) < map.get(ch2)) return true;
-            if (map.get(ch1) > map.get(ch2)) return false;
+    public boolean judge(String word1, String word2) {
+        if (word1.equals(word2)) return true;
+        char[] chs1 = word1.toCharArray(), chs2 = word2.toCharArray();
+        int i = 0;
+        while (i < word1.length() && i < word2.length()) {
+            if (chs1[i] == chs2[i]){
+                i++;
+            }else if (map.get(chs1[i]) > map.get(chs2[i])){
+                return false;
+            }else{
+                return true;
+            }
         }
-        return str1.length() <= str2.length();
+        return i == word1.length();
     }
 
 }

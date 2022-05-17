@@ -53,6 +53,9 @@
 package leetcode.editor.cn;
 
 //leetcode submit region begin(Prohibit modification and deletion)
+
+import java.util.Stack;
+
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
@@ -90,4 +93,32 @@ class Solution {
 }
 //leetcode submit region end(Prohibit modification and deletion)
 
+class Solution {
+    boolean[][] isvisit;
+    boolean ans;
+    int n, m;
+    public boolean hasValidPath(char[][] grid) {
+        n = grid.length;
+        m = grid[0].length;
+        if (n+m%2 == 0) return false;
+        isvisit = new boolean[n][m];
+        dfs(0, 0, grid, 0, 0);
+        return ans;
+    }
+    public void dfs(int i, int j, char[][] grid, int left, int right) {
+        if (ans) return;
+        isvisit[i][j] = true;
+        if (grid[i][j] == '(') left++;
+        else right++;
+        if (left == right && i == n-1 && j == m-1) {
+            ans = true;
+            return;
+        }
+        if (right > left || left > (n+m)/2) return;
+
+        if (i+1<grid.length&&!isvisit[i+1][j]) dfs(i+1,j, grid, left, right);
+        if (j+1<grid[0].length&&!isvisit[i][j+1]) dfs(i, j+1, grid, left, right);
+        isvisit[i][j] = false;
+    }
+}
 
