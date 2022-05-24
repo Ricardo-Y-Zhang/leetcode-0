@@ -72,54 +72,35 @@
 
 package leetcode.editor.cn;
 
+import java.util.Deque;
+import java.util.LinkedList;
+
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int compareVersion(String version1, String version2) {
-        for (int i = 0, j = 0; i < version1.length() || j < version2.length();) {
-
-            while (i < version1.length() && version1.charAt(i) == '.' ) {// i指向version1中不是"."的字符
-                i++;
-            }
-
-            while (j < version2.length() && version2.charAt(j) == '.' ) {// j指向version2中不是"."的字符
-                j++;
-            }
-
-            int k = i;
-            for (; k < version1.length(); k++) {// k指向i之后的第一个"."位置
-                if (version1.charAt(k) == '.'){
-                    break;
-                }
-            }
-
-            int l = j;
-            for (; l < version2.length(); l++) {// l指向j之后的第一个"."的位置
-                if (version2.charAt(l) == '.') {
-                    break;
-                }
-            }
-
-            int num1 = 0;
-            if (i != version1.length()){//若字符串已经遍历结束，则当前修订号置为0
-                num1 = Integer.parseInt(version1.substring(i, k));// 修订号字符串转换为整数
-            }
-
-            int num2 = 0;
-            if (j != version2.length()){
-                num2 = Integer.parseInt(version2.substring(j, l));// 修订号字符串转换为整数
-            }
-
-            if (num1 > num2){
-                return 1;
-            }else if (num1 < num2){
-                return -1;
-            }
-
-            i = k;
-            j = l;
+        String[] vers1 = version1.split("\\.");
+        String[] vers2 = version2.split("\\.");
+        Deque<Integer> que1 = new LinkedList<>();
+        Deque<Integer> que2 = new LinkedList<>();
+        for (String temp : vers1) {
+            que1.add(Integer.parseInt(temp));
         }
-
-        return 0;
+        for (String temp : vers2) {
+            que2.add(Integer.parseInt(temp));
+        }
+        while (!que1.isEmpty() && que1.peekLast() == 0) {
+            que1.pollLast();
+        }
+        while (!que2.isEmpty() && que2.peekLast() == 0) {
+            que2.pollLast();
+        }
+        while (!que1.isEmpty() && !que2.isEmpty()) {
+            int i1 = que1.poll();
+            int i2 = que2.poll();
+            if (i1 != i2) return i1>i2 ? 1 : -1;
+        }
+        if (que1.isEmpty() && que2.isEmpty()) return 0;
+        return que1.isEmpty() ? -1 : 1;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

@@ -45,6 +45,7 @@ package leetcode.editor.cn;
  * }
  */
 class Solution {
+    /*
     public ListNode deleteDuplicates(ListNode head) {
         ListNode pre = new ListNode(-1, head), now = head;
         head = pre;//新头节点
@@ -66,6 +67,26 @@ class Solution {
             }
         }
         return head.next;
+    }
+
+     */
+    public ListNode deleteDuplicates(ListNode head) {
+        ListNode vhead = new ListNode(-1, head);
+        ListNode node = head, pre = vhead;
+        while (node != null) {
+            if (node.next != null && node.val == node.next.val) {//当前节点和下一节点重复
+                ListNode next = node.next;
+                while (next != null && next.val == node.val) {
+                    next = next.next;
+                }
+                pre.next = next;
+                node = next;
+            }else{
+                pre = pre.next;
+                node = node.next;
+            }
+        }
+        return vhead.next;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

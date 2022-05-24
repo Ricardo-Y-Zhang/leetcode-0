@@ -78,17 +78,18 @@ import java.util.Stack;
  */
 class Solution {
     public List<Integer> inorderTraversal(TreeNode root) {
+        //左根右
         List<Integer> ans = new ArrayList<>();
         Stack<TreeNode> stack = new Stack<TreeNode>();
-        while (!stack.isEmpty()||root!=null) {
-            if (root!=null) {
-                stack.push(root);
-                root=root.left;
+        TreeNode node = root;
+        while (node != null || !stack.isEmpty()) {
+            if (node != null) {
+                stack.push(node);
+                node = node.left;
             }else{
-                root=stack.pop();
-                ans.add(root.val);
-                root=root.right;
-
+                node = stack.pop();
+                ans.add(node.val);
+                node = node.right;
             }
         }
         return ans;
