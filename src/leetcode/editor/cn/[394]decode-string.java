@@ -41,41 +41,32 @@ import java.util.Stack;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-    public String decodeString(String s) {
 
-        Stack<String> stack = new Stack<>();
+    public String decodeString(String s) {
+        char[] chs = s.toCharArray();
+        Stack<Integer> number = new Stack<>();
+        Stack<String> string = new Stack<>();
         String str = "";
-        //遍历字符串
-        for (int i = 0; i < s.length(); i++) {
-            String sub = s.substring(i, i+1);
-            if (sub.equals("]")){
-                String temp = "", temp0 ="";
-                //拼接栈内字符串
-                while (!stack.isEmpty() && !stack.peek().equals("[")){
-                    temp = stack.pop() + temp;
+        int num = 0;
+        for (char ch : chs) {
+            if (ch >= '0' && ch <= '9') {
+                num = num*10+ch-'0';
+            }else if (ch >= 'a' && ch <= 'z') {
+                str = str + ch;
+            }else if (ch == '[') {
+                number.add(num);
+                string.add(str);
+                num = 0;
+                str = "";
+            }else if (ch == ']') {
+                String temp = "";
+                int count = number.pop();
+                for (int i = 0; i < count; i++) {
+                    temp += str;
                 }
-                stack.pop();//"["出栈
-                String times ="";
-                //拼接重复次数k
-                while (!stack.isEmpty() && (stack.peek().charAt(0) >= '0' && stack.peek().charAt(0) <= '9')){
-                    times = stack.pop() + times;
-                }
-                int time = Integer.parseInt(times);
-                //字符串重复k次拼接
-                for (int j = 0; j < time; j++) {
-                    temp0 += temp;
-                }
-                //拼接后的字符串入栈
-                stack.add(temp0);
-            }else{
-                stack.add(sub);
+                str = string.pop() + temp;
             }
         }
-        //栈内字符串拼接
-        for (int i = 0; i < stack.size(); i++) {
-            str += stack.get(i);
-        }
-
         return str;
     }
 }

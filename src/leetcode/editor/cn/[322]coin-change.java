@@ -59,6 +59,7 @@ import java.util.Arrays;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
+    /*
     public int coinChange(int[] coins, int amount) {
         int n = coins.length;
         int[] dp = new int[amount+1];
@@ -73,6 +74,23 @@ class Solution {
         }
         return dp[amount]==Integer.MAX_VALUE ? -1 : dp[amount];
     }
+
+     */
+
+    public int coinChange(int[] coins, int amount) {
+        int[] dp = new int[amount+1];
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        dp[0] = 0;
+        for (int coin : coins) {
+            for (int i = 0; i < amount+1; i++) {
+                if (i-coin >= 0 && dp[i-coin] != Integer.MAX_VALUE) {
+                    dp[i] = Math.min(dp[i], dp[i-coin]+1);
+                }
+            }
+        }
+        return dp[amount] == Integer.MAX_VALUE ? -1 : dp[amount];
+    }
+
 }
 //leetcode submit region end(Prohibit modification and deletion)
 

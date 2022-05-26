@@ -56,29 +56,23 @@ package leetcode.editor.cn;
  */
 class Solution {
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-
-        ListNode root = build(l1, l2, 0);
-        return root;
-    }
-
-    public ListNode build (ListNode l1, ListNode l2, int k){
-        if (l1 == null && l2 == null && k == 0){
-            return null;
+        ListNode vhead = new ListNode(-1);
+        ListNode tail = vhead;
+        int add = 0;
+        while (l1 != null || l2 != null || add != 0) {
+            if (l1 != null) {
+                add += l1.val;
+                l1 = l1.next;
+            }
+            if (l2 != null) {
+                add += l2.val;
+                l2 = l2.next;
+            }
+            tail.next = new ListNode(add%10);
+            tail = tail.next;
+            add /= 10;
         }
-
-        ListNode node = new ListNode();
-
-        int x = (l1 != null) ? l1.val : 0;
-        int y = (l2 != null) ? l2.val : 0;
-
-        node.val = (x + y + k) % 10;
-        k = (x + y + k) / 10;
-
-        l1 = (l1 != null) ? l1.next : null;
-        l2 = (l2 != null) ? l2.next : null;
-
-        node.next = build(l1, l2, k);
-        return node;
+        return vhead.next;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

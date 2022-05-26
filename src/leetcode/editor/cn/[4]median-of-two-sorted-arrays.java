@@ -63,6 +63,8 @@ package leetcode.editor.cn;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
+
+    /*
     //找到nums1和nums2中第(nums1.length+nums2.length)/2个数
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
         int leng= nums1.length + nums2.length;
@@ -97,6 +99,37 @@ class Solution {
         return find(nums1, nums2, start1, end1, mid2+1, end2, k-(mid2-start2+1));
     }
 
+     */
+
+
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        int m = nums1.length, n = nums2.length;
+        if ((m+n)%2 == 1) {
+            return (double)find(nums1, nums2, 0, m-1, 0,n-1,(m+n)/2+1);
+        }
+        double l = (double)find(nums1, nums2, 0, m-1,0,n-1,(m+n)/2);
+        double r = (double)find(nums1, nums2, 0, m-1, 0, n-1,(m+n)/2+1);
+        return (l+r)/2;
+    }
+
+    public int find(int[] nums1, int[] nums2, int l1, int r1, int l2, int r2, int k) {
+        if (l1 > r1) {
+            return nums2[l2+k-1];
+        }
+        if (l2 > r2) {
+            return nums1[l1+k-1];
+        }
+        if (k==1) {
+            return Math.min(nums1[l1],nums2[l2]);
+        }
+        int m1 = l1+k/2-1, m2 = l2+k/2-1;
+        m1 = m1 > r1 ? r1 : m1;
+        m2 = m2 > r2 ? r2 : m2;
+        if (nums1[m1] <= nums2[m2]) {
+            return find(nums1, nums2, m1+1, r1, l2, r2, k-(m1-l1+1));
+        }
+        return find(nums1, nums2, l1, r1, m2+1, r2, k-(m2-l2+1));
+    }
 }
 //leetcode submit region end(Prohibit modification and deletion)
 

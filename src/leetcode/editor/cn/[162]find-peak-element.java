@@ -63,7 +63,7 @@ class Solution {
         int left = 0, right = nums.length-1;
         while (left < right) {
             int mid = (left + right) / 2;
-            if (nums[mid] > nums[mid+1]) {//左侧存在峰值
+            if (nums[mid] > nums[mid+1]) {//nums[-1]<nums[mid]>nums[mid+1],左侧存在峰值
                 right = mid;
             }else{//右侧存在峰值
                 left = mid+1;
