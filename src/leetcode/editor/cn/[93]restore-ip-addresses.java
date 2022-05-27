@@ -60,6 +60,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 //leetcode submit region begin(Prohibit modification and deletion)
+
+/*
 class Solution {
     List<String> ans = new ArrayList<>();
     char[] chs;
@@ -95,6 +97,45 @@ class Solution {
         }
     }
 }
+
+ */
+
+class Solution {
+    List<String> res = new ArrayList<>();
+    StringBuilder sb = new StringBuilder();
+    int n;
+    char[] chs;
+    public List<String> restoreIpAddresses(String s) {
+        n = s.length();
+        chs = s.toCharArray();
+        dfs(0, 0);
+        return res;
+    }
+
+    public void dfs(int index,int num) {
+        if (index == n && num == 4) {
+            res.add(sb.toString().substring(1));
+            return;
+        }
+        if (index == n || num == 4) return;
+        if (chs[index] == '0') {
+            sb.append(".0");
+            dfs(index+1, num+1);
+            sb.delete(sb.length()-2, sb.length());
+        }else{
+            for (int i = index, number = 0; i < n && number < 256; i++) {
+                number = number * 10 + chs[i] - '0';
+                if (number < 256) {
+                    sb.append("."+number);
+                    dfs(i+1, num+1);
+                    sb.delete(sb.length()-(i-index+1)-1, sb.length());
+                }
+            }
+        }
+    }
+}
+
+
 //leetcode submit region end(Prohibit modification and deletion)
 
 

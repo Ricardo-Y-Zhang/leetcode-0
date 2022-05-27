@@ -41,33 +41,61 @@ import java.util.Stack;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
+//
+//    public String decodeString(String s) {
+//        char[] chs = s.toCharArray();
+//        Stack<Integer> number = new Stack<>();
+//        Stack<String> string = new Stack<>();
+//        String str = "";
+//        int num = 0;
+//        for (char ch : chs) {
+//            if (ch >= '0' && ch <= '9') {
+//                num = num*10+ch-'0';
+//            }else if (ch >= 'a' && ch <= 'z') {
+//                str = str + ch;
+//            }else if (ch == '[') {
+//                number.add(num);
+//                string.add(str);
+//                num = 0;
+//                str = "";
+//            }else if (ch == ']') {
+//                String temp = "";
+//                int count = number.pop();
+//                for (int i = 0; i < count; i++) {
+//                    temp += str;
+//                }
+//                str = string.pop() + temp;//栈中肯定元素，首个为""
+//            }
+//        }
+//        return str;
+//    }
 
     public String decodeString(String s) {
         char[] chs = s.toCharArray();
-        Stack<Integer> number = new Stack<>();
-        Stack<String> string = new Stack<>();
-        String str = "";
-        int num = 0;
+        Stack<Integer> multi = new Stack<>();
+        Stack<String> strs = new Stack<>();
+        StringBuilder sb = new StringBuilder();
+        int number = 0;
         for (char ch : chs) {
             if (ch >= '0' && ch <= '9') {
-                num = num*10+ch-'0';
+                number = number*10+ch-'0';
             }else if (ch >= 'a' && ch <= 'z') {
-                str = str + ch;
+                sb.append(ch);
             }else if (ch == '[') {
-                number.add(num);
-                string.add(str);
-                num = 0;
-                str = "";
-            }else if (ch == ']') {
-                String temp = "";
-                int count = number.pop();
+                multi.push(number);
+                strs.push(sb.toString());
+                number = 0;
+                sb = new StringBuilder();
+            }else{
+                int count = multi.pop();
+                StringBuilder temp = new StringBuilder();
                 for (int i = 0; i < count; i++) {
-                    temp += str;
+                    temp.append(sb.toString());
                 }
-                str = string.pop() + temp;
+                sb = new StringBuilder(strs.pop()+temp.toString());
             }
         }
-        return str;
+        return sb.toString();
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

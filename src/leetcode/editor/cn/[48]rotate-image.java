@@ -50,6 +50,7 @@
 package leetcode.editor.cn;
 
 //leetcode submit region begin(Prohibit modification and deletion)
+/*
 class Solution {
     public void rotate(int[][] matrix) {
         int n = matrix.length;
@@ -73,6 +74,38 @@ class Solution {
     }
 
 }
+
+ */
+
+import java.util.LinkedList;
+import java.util.Queue;
+
+class Solution {
+    public void rotate(int[][] matrix) {
+        int n = matrix.length;
+        for (int i = 0; i < n/2; i++) {
+            int x = i, y = n-1-i;
+            for (int j = x; j < y; j++) {
+                swap(matrix, x, j, j, y);
+            }
+            for (int j = x; j < y; j++) {
+                swap(matrix, x, j, y, n-1-j);
+            }
+            for (int j = x; j < y; j++) {
+                swap(matrix, x, j, n-1-j, x);
+            }
+        }
+
+    }
+
+    public void swap(int[][] matrix, int i1, int j1, int i2, int j2) {
+        int temp = matrix[i1][j1];
+        matrix[i1][j1] = matrix[i2][j2];
+        matrix[i2][j2] = temp;
+    }
+}
+
+
 //leetcode submit region end(Prohibit modification and deletion)
 
 
