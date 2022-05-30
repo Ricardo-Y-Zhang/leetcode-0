@@ -40,6 +40,7 @@
 
 
 //leetcode submit region begin(Prohibit modification and deletion)
+/*
 class Solution {
     boolean[][] isvisit;
     int m, n;
@@ -67,6 +68,36 @@ class Solution {
         for (int k = 0; k < 4; k++) {
             int x = i+add[0][k], y = j+add[1][k];
             if (x>=0&&x<m&&y>=0&&y<n&&grid[x][y]==1&&!isvisit[x][y]){//上下左右节点合法且是1且未访问
+                ans += dfs(grid, x, y);
+            }
+        }
+        return ans;
+    }
+}
+
+ */
+
+class Solution {
+    public int maxAreaOfIsland(int[][] grid) {
+        int m = grid.length;int n = grid[0].length;
+        int ans = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == 1) {
+                    ans = Math.max(ans, dfs(grid, i, j));
+                }
+            }
+        }
+        return ans;
+    }
+    public int dfs(int[][] grid, int i, int j) {
+        int m = grid.length, n = grid[0].length;
+        grid[i][j] = 0;//改变状态为已访问
+        int[][] add = {{-1,1,0,0},{0,0,-1,1}};
+        int ans = 1;
+        for (int k = 0; k < 4; k++) {
+            int x = i + add[0][k], y = j + add[1][k];
+            if (x>=0 && x<m && y>=0 && y<n &&  grid[x][y] == 1) {//合法且未访问的岛屿
                 ans += dfs(grid, x, y);
             }
         }
