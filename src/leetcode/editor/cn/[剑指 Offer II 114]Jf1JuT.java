@@ -61,6 +61,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 //leetcode submit region begin(Prohibit modification and deletion)
+/*
 class Solution {
     boolean[][] matrix = new boolean[26][26];//matrix[i][j]表示 i < j
     int[] in = new int[26];
@@ -129,6 +130,68 @@ class Solution {
         return true;
     }
 
+}
+
+ */
+
+
+class Solution {
+    boolean[][] matrix = new boolean[26][26];
+    int[] in = new int[26];//入度
+    public String alienOrder(String[] words) {
+        HashSet<Character> dict = new HashSet<>();
+        for (String word : words) {
+            for (char ch : word.toCharArray()) {
+                dict.add(ch);
+            }
+        }
+        for (int i = 0; i < words.length - 1; i++) {
+            if (!compare(words[i], words[i+1])){
+                System.out.println("1 = " + 1);
+                return "";
+            }
+        }
+        Queue<Character> queue = new LinkedList<>();
+        for (int i = 0; i < 26; i++) {
+            char ch = (char)('a'+i);
+            if (dict.contains(ch)&&in[i]==0) {
+                queue.add(ch);
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        while (!queue.isEmpty()) {
+            char ch = queue.poll();
+            int ind = ch -'a';
+            sb.append(ch);
+            for (int i = 0; i < 26; i++) {
+                if (matrix[ind][i]) {
+                    in[i]--;
+                    if (in[i]==0){
+                        queue.add((char)(i+'a'));
+                    }
+                }
+            }
+        }
+        return sb.length() == dict.size() ? sb.toString() : "";
+    }
+
+    public boolean compare(String word1, String word2) {
+        char[] chs1 = word1.toCharArray(), chs2 = word2.toCharArray();
+        int i = 0;
+        for (;i<chs1.length&&i<chs2.length;i++) {
+            int ind1 = chs1[i]-'a', ind2 = chs2[i]-'a';
+            if (ind1 == ind2) continue;
+            if (matrix[ind2][ind1]) return false;
+            if (matrix[ind1][ind2]) {
+                return true;
+            } else{
+                matrix[ind1][ind2] = true;
+                in[ind2]++;
+                return true;
+            }
+        }
+        return word1.length() <= word2.length();
+    }
 }
 //leetcode submit region end(Prohibit modification and deletion)
 
