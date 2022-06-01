@@ -33,9 +33,11 @@
 
 package leetcode.editor.cn;
 
+import java.util.Arrays;
 import java.util.List;
 
 //leetcode submit region begin(Prohibit modification and deletion)
+/*
 class Solution {
 
     public boolean wordBreak(String s, List<String> wordDict) {
@@ -57,6 +59,25 @@ class Solution {
 
     }
 
+}
+ */
+
+class Solution {
+    public boolean wordBreak(String s, List<String> wordDict) {
+        if (s.length() == 0) return true;
+        int n = s.length();
+        boolean[] dp = new boolean[n+1];//dp[i]表示s[0, i)是否能由wordDict组成
+        dp[0] = true;
+        for (int i = 1; i < n+1; i++) {
+            for (int j = 0; j < i; j++) {
+                if (dp[j] && wordDict.contains(s.substring(j, i))) {//s[0,j)能被组成且s[j,i)在wordDict中
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+        return dp[n];
+    }
 }
 //leetcode submit region end(Prohibit modification and deletion)
 

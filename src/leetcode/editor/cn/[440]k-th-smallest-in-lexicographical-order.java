@@ -31,10 +31,9 @@
 class Solution {
     public int findKthNumber(int n, int k) {
         int prefix = 1;
-        k--;
-        while (k > 0) {
+        while (k > 1) {
             int count = getCount(prefix, n);
-            if (count <= k) {
+            if (count < k) {
                 k -= count;
                 prefix++;
             }else{
@@ -45,7 +44,7 @@ class Solution {
         return prefix;
     }
 
-    //求该字典树中以 prefix 节点为父节点的树的节点数(不计算prefix节点)
+    //求该字典树中以 prefix 节点为父节点的树的节点数
     public int getCount (int prefix, int n) {
         int count = 0;
         long first = prefix, last = prefix;//下一层的第一个节点和最后一个节点
