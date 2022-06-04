@@ -35,10 +35,11 @@ package leetcode.editor.cn;
 import java.util.HashMap;
 
 //leetcode submit region begin(Prohibit modification and deletion)
+
 class Solution {
     HashMap<Integer, Integer> parent = new HashMap<>();
     public int findFa(int x){
-        if (parent.get(x) != x) {//路径压缩
+        if (x != parent.get(x)){
             parent.put(x, findFa(parent.get(x)));
         }
         return parent.get(x);
@@ -68,6 +69,8 @@ class Solution {
     }
 
 }
+
+
 
 //leetcode submit region end(Prohibit modification and deletion)
 

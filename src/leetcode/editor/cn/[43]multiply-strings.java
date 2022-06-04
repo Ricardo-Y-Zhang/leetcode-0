@@ -27,31 +27,29 @@ package leetcode.editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public String multiply(String num1, String num2) {
-        if (num1.charAt(0) == '0' || num2.charAt(0) == '0') {
-            return "0";
-        }
-
-        int[] res = new int[num1.length() + num2.length()];
-
-        for (int i = num1.length()-1; i >= 0; i--) {
-            int value1 = num1.charAt(i) - '0';
-            for (int j = num2.length()-1; j >= 0; j--) {
-                int value2 = num2.charAt(j) - '0';
-                int value = res[i+j+1] + value1 * value2;
-                res[i+j+1] = value % 10;
-                res[i+j] += value / 10;
+        if (num1.equals("0") || num2.equals("0")) return "0";
+        StringBuilder sb1 = new StringBuilder(num1).reverse();
+        StringBuilder sb2 = new StringBuilder(num2).reverse();
+        StringBuilder ans = new StringBuilder();
+        for (int i = 0; i < sb1.length(); i++) {
+            int i1 = sb1.charAt(i)-'0';
+            int add = 0;
+            for (int j = 0; j < sb2.length(); j++) {
+                int i2 = sb2.charAt(j)-'0';
+                add += i1*i2 + (ans.length() > (i+j) ? ans.charAt(i+j) : '0') - '0';
+                char ch = (char)(add%10+'0');
+                if (ans.length() > (i+j)) {
+                    ans.setCharAt(i+j, ch);
+                }else{
+                    ans.append(ch);
+                }
+                add /= 10;
+            }
+            if (add != 0) {
+                ans.append(add);
             }
         }
-
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < res.length; i++) {
-            if (i == 0 && res[i] == 0){
-                continue;
-            }
-            stringBuilder.append(res[i]);
-        }
-        return stringBuilder.toString();
-
+        return ans.reverse().toString();
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
