@@ -92,6 +92,13 @@ public class Test {
         System.out.println("temp.getClass() = " + temp.getClass());
         System.out.println("temp.toString() = " + temp.toString());
     }
+
+
+
+    @org.junit.Test
+    public void test5(){
+        String str = "1:2:::";
+        String[] strs = str.split(":");
+        System.out.println("strs.length = " + strs.length);
+    }
 }
-
-

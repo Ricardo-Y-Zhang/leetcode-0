@@ -50,6 +50,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 //leetcode submit region begin(Prohibit modification and deletion)
+/*
 class MyCalendar {
     TreeMap<Integer, Integer> map;
     public MyCalendar() {
@@ -71,6 +72,71 @@ class MyCalendar {
             return true;
         }
         return false;
+    }
+}
+
+ */
+
+class MyCalendar {
+    class Node{
+        int lc, rc, add, val;
+    }
+    int N = (int)1e9, M = 120010;
+    int count = 1;
+    Node[] tree = new Node[M];
+    public void update(int u, int lc, int rc, int left, int right, int val) {
+        if (left <= lc && rc <= right) {
+            tree[u].val += (rc-lc+1) * val;
+            tree[u].add += val;
+            return;
+        }
+        lazyCreate(u);
+        int mid = lc+rc >> 1;
+        if (left <= mid) update(tree[u].lc, lc, mid, left, right, val);
+        if (mid+1 <= right) update(tree[u].rc, mid+1, rc, left, right, val);
+        pushup(u);
+    }
+    public int query(int treeIndex, int lc, int rc, int left, int right) {
+        if (left <= lc && rc <= right) return tree[treeIndex].val;
+        lazyCreate(treeIndex);
+        pushdown(treeIndex);
+        int mid = lc+rc >> 1;
+        int ans = 0;
+        if (left <= mid) {
+            ans = Math.max(ans, query(tree[treeIndex].lc,lc, mid, left, right ));
+        }
+        if (mid+1 <= right) {
+            ans = Math.max(ans, query(tree[treeIndex].rc, mid+1, rc, left, right));
+        }
+        return ans;
+    }
+    public void lazyCreate(int u) {//动态开点
+        if (tree[u] == null) tree[u] = new Node();
+        if (tree[u].lc == 0) {
+            tree[u].lc = ++count;
+            tree[tree[u].lc] = new Node();
+        }
+        if (tree[u].rc == 0) {
+            tree[u].rc = ++count;
+            tree[tree[u].rc] = new Node();
+        }
+    }
+    public void pushdown(int u) {
+        tree[tree[u].lc].add += tree[u].add; tree[tree[u].rc].add += tree[u].add;
+        tree[tree[u].lc].val += tree[u].add; tree[tree[u].rc].val += tree[u].add;
+        tree[u].add = 0;
+    }
+    public void pushup(int u) {
+        tree[u].val = Math.max(tree[tree[u].lc].val, tree[tree[u].rc].val);
+    }
+    public MyCalendar() {
+
+    }
+
+    public boolean book(int start, int end) {
+        if (query(1, 1, N+1, start+1, end) > 0) return false;
+        update(1, 1, N+1, start+1, end, 1);
+        return true;
     }
 }
 

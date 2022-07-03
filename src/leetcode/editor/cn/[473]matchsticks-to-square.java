@@ -35,8 +35,11 @@
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 
 //leetcode submit region begin(Prohibit modification and deletion)
+/*
 class Solution {
     int max = 0;
     ArrayList<Integer> list = new ArrayList<>();
@@ -86,4 +89,66 @@ class Solution {
 
     }
 }
+ */
+
+/*
+class Solution {
+
+    public boolean makesquare(int[] matchsticks) {
+        int n = matchsticks.length;
+        Arrays.sort(matchsticks);
+        for (int i = 0; i < n/2; i++) {
+            int temp = matchsticks[i];
+            matchsticks[i] = matchsticks[n-i-1];
+            matchsticks[n-i-1] = temp;
+        }
+        int len = 0;
+        for (int stick : matchsticks) len += stick;
+        if (len % 4 != 0) return false;
+        len /= 4;
+        return dfs(matchsticks, 0, new int[4], len);
+    }
+
+    public boolean dfs(int[] matchsticks, int index, int[] edges, int len) {
+        if (index == matchsticks.length) return true;
+        //加入4条边中的任意一条边
+        for (int i = 0; i < 4; i++) {
+            edges[i] += matchsticks[index];
+            if (edges[i] <= len && dfs(matchsticks, index+1, edges, len)) {
+                return true;
+            }
+            edges[i] -= matchsticks[index];
+        }
+        return false;
+    }
+}
+
+ */
+
+class Solution {
+
+    public boolean makesquare(int[] matchsticks) {
+        int n = matchsticks.length;
+        int len = 0;
+        for (int stick : matchsticks) len += stick;
+        if (len % 4 != 0) return false;
+        len /= 4;
+        int[] dp = new int[1<<n];//当前状态下，未被放满的边的长度
+        Arrays.fill(dp, -1);
+        dp[0] = 0;
+        for (int i = 1; i < 1<<n; i++) {//遍历所有的状态
+            for (int j = 0; j < n; j++) {
+                if ((i&(1<<j)) == 0) continue;
+                int pre = i ^ (1<<j);//删除第j条火柴
+                if (dp[pre] >= 0 && dp[pre]+matchsticks[j] <= len) {//状态转移
+                    dp[i] = (dp[pre]+matchsticks[j]) % len;
+                    break;//从任意状态转移，当前边的长度都应相等
+                }
+            }
+        }
+        return dp[(1<<n)-1]== 0;
+    }
+}
 //leetcode submit region end(Prohibit modification and deletion)
+
+

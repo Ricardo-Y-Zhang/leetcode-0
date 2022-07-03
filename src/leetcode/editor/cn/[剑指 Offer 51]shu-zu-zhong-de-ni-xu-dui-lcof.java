@@ -20,6 +20,7 @@ package leetcode.editor.cn;
 
 
 //leetcode submit region begin(Prohibit modification and deletion)
+/*
 class Solution {
     int[] temp;
     int res = 0;
@@ -53,6 +54,53 @@ class Solution {
         for (int k = left; k <= right; k++) {
             nums[k]=temp[k];
         }
+    }
+}
+
+ */
+
+
+import java.util.Arrays;
+import java.util.HashMap;
+
+class Solution {
+    int[] tree;//树状数组，原数组中d[i]表示i出现的次数
+    int lowbit(int x) {
+        return x&-x;
+    }
+    void add(int x) {
+        for(int i = x+1; i < tree.length; i+=lowbit(i)) {
+            tree[i]++;
+        }
+    }
+    int getSum(int x) {
+        int res = 0;
+        for (int i = x+1; i > 0; i-=lowbit(i)) {
+            res += tree[i];
+        }
+        return res;
+    }
+    public int reversePairs(int[] nums) {
+        int n = nums.length;
+        tree = new int[n+1];
+
+        //离散化为 0,1,2,3....
+        int[] sortnums = Arrays.copyOf(nums, n);
+        Arrays.sort(sortnums);//nums数组排序
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int temp = 0;
+        for(int i = 0; i < sortnums.length; i++) {
+            if (!map.containsKey(sortnums[i])) {
+                map.put(sortnums[i], temp++);
+            }
+        }
+        int res = 0;
+        for(int i = n-1; i>=0; i--) {
+            int index = map.get(nums[i]);
+            res += getSum(index-1);//找到比nums[i]小的元素数量
+            add(index);
+        }
+        return res;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

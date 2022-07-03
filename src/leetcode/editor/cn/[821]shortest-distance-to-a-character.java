@@ -58,7 +58,7 @@ class Solution {
             if (chs[i] == c) {
                 queue.add(i);
                 set.add(i);
-            }`
+            }
         }
         int temp = 0;
         while (!queue.isEmpty()) {

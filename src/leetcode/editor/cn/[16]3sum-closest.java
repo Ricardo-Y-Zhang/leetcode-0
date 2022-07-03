@@ -25,35 +25,62 @@
 
 package leetcode.editor.cn;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.TreeSet;
 //leetcode submit region begin(Prohibit modification and deletion)
+//class Solution {
+//    public int threeSumClosest(int[] nums, int target) {
+//        Arrays.sort(nums);
+//
+//        int res = 0x3f3f3f3f;
+//
+//        for (int i = 0; i < nums.length - 2; i++) {
+//            for (int j = i + 1, k = nums.length-1; j != k;){
+//                int temp = nums[i] + nums[j] + nums[k];
+//                int min1 = Math.abs(temp - target), min2 = Math.abs(res - target);
+//                if (min1 == 0){
+//                    return target;
+//                }
+//
+//                if (min1 < min2){
+//                    res = temp;
+//                }
+//
+//                if (temp < target){
+//                    j++;
+//                }else if (temp > target){
+//                    k--;
+//                }
+//            }
+//        }
+//
+//        return res;
+//    }
+//}
+
+
 class Solution {
     public int threeSumClosest(int[] nums, int target) {
         Arrays.sort(nums);
+        int n = nums.length;
+        int ans = 1000000;
+        for (int i = 0; i < n-2; i++) {
+            int a = nums[i];
+            int l = i+1, r = n-1;
+            while (l < r) {
+                int sum = a + nums[l] + nums[r];
+                if (sum == target) return target;
+                if (Math.abs(sum-target) < Math.abs(ans-target)) ans = sum;
+                if (sum < target) {
+                    while (l < r && nums[l] == nums[++l] ){}
 
-        int res = 0x3f3f3f3f;
-
-        for (int i = 0; i < nums.length - 2; i++) {
-            for (int j = i + 1, k = nums.length-1; j != k;){
-                int temp = nums[i] + nums[j] + nums[k];
-                int min1 = Math.abs(temp - target), min2 = Math.abs(res - target);
-                if (min1 == 0){
-                    return target;
-                }
-
-                if (min1 < min2){
-                    res = temp;
-                }
-
-                if (temp < target){
-                    j++;
-                }else if (temp > target){
-                    k--;
+                }else{
+                    while (l < r && nums[r] == nums[--r]){}
                 }
             }
         }
-
-        return res;
+        return ans;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)

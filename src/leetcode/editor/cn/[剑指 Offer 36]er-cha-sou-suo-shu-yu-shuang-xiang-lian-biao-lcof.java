@@ -36,6 +36,8 @@
 package leetcode.editor.cn;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 /*
@@ -59,32 +61,77 @@ class Node {
 };
 */
 class Solution {
-    ArrayList<Node> list;
+//    ArrayList<Node> list;
+//    public Node treeToDoublyList(Node root) {
+//        if (root == null){
+//            return root;
+//        }
+//        list = new ArrayList<Node>();
+//        inorder(root);
+//        Node head = list.get(0), tail = list.get(list.size()-1);
+//        head.left = tail;
+//        tail.right = head;
+//        return head;
+//    }
+//    public void inorder(Node root) {
+//        if (root == null){
+//            return;
+//        }
+//        inorder(root.left);
+//        if (list.size()!=0){
+//            Node tail = list.get(list.size()-1);
+//            tail.right=root;
+//            root.left=tail;
+//        }
+//        list.add(root);
+//        inorder(root.right);
+//    }
+    Node pre = null, head = null,tail = null;
     public Node treeToDoublyList(Node root) {
-        if (root == null){
-            return root;
-        }
-        list = new ArrayList<Node>();
+        if (root == null) return null;
         inorder(root);
-        Node head = list.get(0), tail = list.get(list.size()-1);
         head.left = tail;
         tail.right = head;
         return head;
     }
     public void inorder(Node root) {
-        if (root == null){
-            return;
-        }
+        if (root == null) return;
         inorder(root.left);
-        if (list.size()!=0){
-            Node tail = list.get(list.size()-1);
-            tail.right=root;
-            root.left=tail;
-        }
-        list.add(root);
+        if (head == null) head = root;
+        if (pre != null) pre.right = root;
+        root.left = pre;
+        pre = root;
+        tail = root;
         inorder(root.right);
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
 
-
+class Solution {
+    public int longestSubsequence(String s, int k) {
+        int n = s.length();
+        int m = n+1;
+        int[][] dp = new int[n+1][m];
+        int ans = 0;
+        for (int i = 0; i < n + 1; i++) {
+            Arrays.fill(dp[i], -1);
+        }
+        for (int i = 0; i < n+1; i++) {
+            dp[i][0] = 0;
+        }
+        for (int i = 1; i < n+1; i++) {
+            for (int j = 1; j < m; j++) {
+                if (dp[i-1][j] != -1) dp[i][j] = dp[i-1][j];
+                if(dp[i-1][j-1] != -1) {
+                    int temp = (dp[i-1][j-1] << 1) +(s.charAt(i-1) == '1' ? 1 : 0);
+                    if (temp <= k) {
+                        if (dp[i][j] == -1) dp[i][j] = temp;
+                        else dp[i][j] = Math.min(dp[i][j], temp);
+                    }
+                }
+                if (dp[i][j] != -1 && dp[i][j] <= k && j > ans) ans = j;
+            }
+        }
+        return ans;
+    }
+}

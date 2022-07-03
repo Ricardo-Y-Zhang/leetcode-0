@@ -47,32 +47,29 @@
 
 package leetcode.editor.cn;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
+import java.awt.*;
+import java.util.*;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
+
+
+    //低身高的people排在哪并不会对高身高的people产生影响
+    //对于低身高的people，此时队列中均是比其高或相等的people，此时将该people插入对应的p[1]位置即可
     public int[][] reconstructQueue(int[][] people) {
-        Arrays.sort(people, new Comparator<int[]>() {
-            @Override
-            public int compare(int[] ints, int[] t1) {
-                if (ints[0] != t1[0]){
-                    return -Integer.compare(ints[0], t1[0]);
-                }
-                return Integer.compare(ints[1], t1[1]);
+        //按照 hi 从高到低，ki 从低到高排序
+        Arrays.sort(people, (x, y)->{
+            if (x[0]!=y[0]){
+                return -Integer.compare(x[0], y[0]);
             }
+            return Integer.compare(x[1], y[1]);
         });
 
-        ArrayList<int[]> ints = new ArrayList<>();
-        for (int i = 0; i < people.length; i++) {
-            ints.add(people[i][1], people[i]);
+        ArrayList<int[]> list = new ArrayList<>();
+        for (int[] p : people) {
+            list.add(p[1], p);
         }
-        int[][] ints1 = new int[people.length][2];
-        for (int i = 0; i < ints.size(); i++) {
-            ints1[i] = ints.get(i);
-        }
-        return ints1;
+        return list.toArray(new int[0][]);
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
