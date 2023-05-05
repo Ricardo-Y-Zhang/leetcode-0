@@ -1,7 +1,6 @@
 package exer1;
 
-import java.util.HashMap;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * @program: leetcode-1
@@ -47,3 +46,4 @@ class Solution {
         return stack.isEmpty();
     }
 }
+

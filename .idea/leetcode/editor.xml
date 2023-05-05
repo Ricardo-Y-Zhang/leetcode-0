@@ -113,6 +113,17 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[1694]reformat-phone-number.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[1694]reformat-phone-number.md" />
+              <option name="frontendQuestionId" value="leetcode.cn1694" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[1694]reformat-phone-number.java" />
+              <option name="titleSlug" value="reformat-phone-number" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[16]3sum-closest.java">
           <value>
             <LeetcodeEditor>
@@ -223,6 +234,17 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[2432]the-employee-that-worked-on-the-longest-task.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[2432]the-employee-that-worked-on-the-longest-task.md" />
+              <option name="frontendQuestionId" value="leetcode.cn2432" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[2432]the-employee-that-worked-on-the-longest-task.java" />
+              <option name="titleSlug" value="the-employee-that-worked-on-the-longest-task" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[2]add-two-numbers.java">
           <value>
             <LeetcodeEditor>
@@ -253,6 +275,17 @@
               <option name="host" value="leetcode.cn" />
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[322]coin-change.java" />
               <option name="titleSlug" value="coin-change" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[37]sudoku-solver.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[37]sudoku-solver.md" />
+              <option name="frontendQuestionId" value="leetcode.cn37" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[37]sudoku-solver.java" />
+              <option name="titleSlug" value="sudoku-solver" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -454,6 +487,17 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[565]array-nesting.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[565]array-nesting.md" />
+              <option name="frontendQuestionId" value="leetcode.cn565" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[565]array-nesting.java" />
+              <option name="titleSlug" value="array-nesting" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[61]rotate-list.java">
           <value>
             <LeetcodeEditor>
@@ -561,6 +605,17 @@
               <option name="host" value="leetcode.cn" />
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[732]my-calendar-iii.java" />
               <option name="titleSlug" value="my-calendar-iii" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[741]cherry-pickup.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[741]cherry-pickup.md" />
+              <option name="frontendQuestionId" value="leetcode.cn741" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[741]cherry-pickup.java" />
+              <option name="titleSlug" value="cherry-pickup" />
             </LeetcodeEditor>
           </value>
         </entry>

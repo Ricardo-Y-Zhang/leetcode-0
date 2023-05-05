@@ -46,11 +46,8 @@
 
 package leetcode.editor.cn;
 
-import java.util.HashMap;
-import java.util.HashSet;
 
-
-//leetcode submit region begin(Prohibit modification and deletion)
+leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int[] twoSum(int[] nums, int target) {
         int[] ans = new int[2];
@@ -67,6 +64,6 @@ class Solution {
         return ans;
     }
 }
-//leetcode submit region end(Prohibit modification and deletion)
+leetcode submit region end(Prohibit modification and deletion)
 
 
