@@ -55,6 +55,7 @@ package leetcode.editor.cn;
  * }
  */
 class Solution {
+    /*
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
         ListNode vhead = new ListNode(-1);
         ListNode tail = vhead;
@@ -68,6 +69,31 @@ class Solution {
                 add += l2.val;
                 l2 = l2.next;
             }
+            tail.next = new ListNode(add%10);
+            tail = tail.next;
+            add /= 10;
+        }
+        return vhead.next;
+    }
+     */
+
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        //虚拟头节点，方便操作
+        ListNode vhead = new ListNode();
+        //尾插法，插入新节点
+        ListNode tail = vhead;
+        int add = 0;
+        while (l1 != null || l2 != null || add != 0) {
+            //节点值相加并指向下一节点
+            if (l1 != null) {
+                add += l1.val;
+                l1 = l1.next;
+            }
+            if (l2 != null) {
+                add += l2.val;
+                l2 = l2.next;
+            }
+            //构建新的节点，并将tail指向尾节点
             tail.next = new ListNode(add%10);
             tail = tail.next;
             add /= 10;

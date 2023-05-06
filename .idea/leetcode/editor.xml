@@ -69,6 +69,17 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[1419]minimum-number-of-frogs-croaking.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[1419]minimum-number-of-frogs-croaking.md" />
+              <option name="frontendQuestionId" value="leetcode.cn1419" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[1419]minimum-number-of-frogs-croaking.java" />
+              <option name="titleSlug" value="minimum-number-of-frogs-croaking" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[148]sort-list.java">
           <value>
             <LeetcodeEditor>
@@ -143,6 +154,17 @@
               <option name="host" value="leetcode.cn" />
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[179]largest-number.java" />
               <option name="titleSlug" value="largest-number" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[1]two-sum.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[1]two-sum.md" />
+              <option name="frontendQuestionId" value="leetcode.cn1" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[1]two-sum.java" />
+              <option name="titleSlug" value="two-sum" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -308,6 +330,17 @@
               <option name="host" value="leetcode.cn" />
               <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[39]combination-sum.java" />
               <option name="titleSlug" value="combination-sum" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/leetcode/editor/cn/[3]longest-substring-without-repeating-characters.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="contentPath" value="$PROJECT_DIR$/src/leetcode/editor/cn/doc/content/[3]longest-substring-without-repeating-characters.md" />
+              <option name="frontendQuestionId" value="leetcode.cn3" />
+              <option name="host" value="leetcode.cn" />
+              <option name="path" value="$PROJECT_DIR$/src/leetcode/editor/cn/[3]longest-substring-without-repeating-characters.java" />
+              <option name="titleSlug" value="longest-substring-without-repeating-characters" />
             </LeetcodeEditor>
           </value>
         </entry>

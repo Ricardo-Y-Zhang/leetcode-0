@@ -47,23 +47,36 @@
 package leetcode.editor.cn;
 
 
-leetcode submit region begin(Prohibit modification and deletion)
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+
+
+//leetcode submit region begin(Prohibit modification and deletion)
+/*
+ O(n)的时间复杂度：
+    （1）不能使用双重循环
+    （2）使用HashMap存储数组元素和下标的映射，再对数组进行排序，最后使用双指针查询两数之和等于target；
+        时间复杂度为O(logn)；
+        如果数组中存在相同元素，则应使用HashMap<Integer, List<Integer>>存储下标集合；
+    （3）HashMap.containsKey()的时间复杂度为O(1)，计算key的hash值进行查询
+ */
 class Solution {
     public int[] twoSum(int[] nums, int target) {
-        int[] ans = new int[2];
         HashMap<Integer, Integer> map = new HashMap<>();
+        int[] ans = new int[2];
         for (int i = 0; i < nums.length; i++) {
-            if (map.containsKey(target- nums[i])) {
+            if (map.containsKey(target-nums[i])) {
                 ans[0] = map.get(target-nums[i]);
                 ans[1] = i;
                 break;
-            }else{
-                map.put(nums[i], i);
             }
+            map.put(nums[i], i);
         }
         return ans;
     }
 }
-leetcode submit region end(Prohibit modification and deletion)
+//leetcode submit region end(Prohibit modification and deletion)
 
 
